@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tentang Kami — Nusantara Digital</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: { sans: ['Inter','sans-serif'], display: ['Plus Jakarta Sans','sans-serif'] },
+      colors: { primary: '#0F172A', accent: '#2563EB', accent2: '#06B6D4' }
+    }
+  }
+}
+</script>
+</head>
+<body class="font-sans text-slate-800 bg-white antialiased">
+
+<!-- NAV -->
+<nav id="navbar" class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="flex justify-between items-center h-[72px]">
+      <a href="index.html" class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-400 flex items-center justify-center text-white font-black text-sm">ND</div>
+        <span class="font-display font-extrabold text-[17px] tracking-tight text-slate-900">NUSANTARA<span class="text-blue-600"> DIGITAL</span></span>
+      </a>
+      <div class="hidden lg:flex items-center gap-8 text-[13px] font-semibold tracking-widest text-slate-500">
+        <a href="index.html#home" class="hover:text-blue-600 transition">HOME</a>
+        <a href="about.html" class="text-blue-600">ABOUT</a>
+        <a href="index.html#services" class="hover:text-blue-600 transition">SERVICES</a>
+        <a href="index.html#portfolio" class="hover:text-blue-600 transition">PORTFOLIO</a>
+        <a href="index.html#team" class="hover:text-blue-600 transition">TEAM</a>
+        <a href="index.html#contact" class="hover:text-blue-600 transition">CONTACT</a>
+      </div>
+      <a href="index.html#contact" class="hidden lg:inline-flex px-6 py-2.5 rounded-full bg-slate-900 text-white text-sm font-semibold hover:bg-black transition">Hubungi Kami</a>
+      <button id="menuBtn" class="lg:hidden w-10 h-10 rounded-xl border border-slate-200 flex items-center justify-center"><i class="fa-solid fa-bars"></i></button>
+    </div>
+  </div>
+  <div id="mobileMenu" class="hidden lg:hidden border-t border-slate-100 bg-white px-6 py-6 space-y-4">
+    <a href="index.html" class="block font-semibold">Home</a>
+    <a href="about.html" class="block font-semibold text-blue-600">About</a>
+    <a href="index.html#services" class="block font-semibold">Services</a>
+    <a href="index.html#portfolio" class="block font-semibold">Portfolio</a>
+    <a href="index.html#contact" class="block text-center py-3 rounded-full bg-blue-600 text-white font-semibold">Hubungi Kami</a>
+  </div>
+</nav>
+
+<!-- HERO ABOUT -->
+<section class="pt-[88px] bg-slate-50">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 py-12 lg:py-16">
+    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-slate-200 text-xs font-bold tracking-widest text-blue-600 mb-6">
+      <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span> ABOUT US — TENTANG KAMI
+    </div>
+    <div class="grid lg:grid-cols-2 gap-10 items-center">
+      <div>
+        <h1 class="font-display font-extrabold text-[38px] lg:text-[50px] leading-[0.95] tracking-tight text-slate-900">
+          Lebih dari sekedar<br>
+          <span class="bg-gradient-to-r from-blue-600 to-cyan-400 bg-clip-text text-transparent">Software House</span>
+        </h1>
+        <p class="mt-6 text-[17px] leading-7 text-slate-600">
+          Kami adalah partner pertumbuhan — membantu bisnis Anda melompat lebih jauh lewat teknologi yang cepat, aman, dan berdampak.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="index.html#contact" class="px-7 py-3.5 rounded-full bg-blue-600 text-white font-semibold hover:bg-blue-700 transition inline-flex items-center gap-2">Konsultasi Gratis <i class="fa-solid fa-arrow-right text-xs"></i></a>
+          <a href="index.html#portfolio" class="px-7 py-3.5 rounded-full border border-slate-200 bg-white font-semibold hover:bg-slate-50 transition inline-flex items-center gap-2"><i class="fa-regular fa-circle-play"></i> Lihat Karya</a>
+        </div>
+        <div class="mt-10 grid grid-cols-3 gap-6 border-t border-slate-200 pt-8">
+          <div><div class="font-display font-extrabold text-3xl text-slate-900">300+</div><div class="text-xs tracking-widest font-semibold text-slate-500">PROJECT</div></div>
+          <div><div class="font-display font-extrabold text-3xl text-slate-900">45+</div><div class="text-xs tracking-widest font-semibold text-slate-500">TEAM</div></div>
+          <div><div class="font-display font-extrabold text-3xl text-slate-900">8 THN</div><div class="text-xs tracking-widest font-semibold text-slate-500">PENGALAMAN</div></div>
+        </div>
+      </div>
+      <div class="relative">
+        <div class="absolute -inset-4 bg-gradient-to-br from-blue-100 via-cyan-50 to-indigo-100 rounded-[32px] -z-10"></div>
+        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=900&q=80" class="w-full h-[380px] lg:h-[460px] object-cover rounded-[28px] shadow-2xl">
+        <div class="absolute -left-4 bottom-6 bg-white rounded-2xl shadow-xl p-5 flex gap-4 items-center max-w-[300px] border border-slate-100">
+          <div class="w-12 h-12 rounded-xl bg-slate-900 text-white flex items-center justify-center"><i class="fa-solid fa-award"></i></div>
+          <div>
+            <div class="font-bold text-slate-900">Top 10 Software House ID</div>
+            <div class="text-sm text-slate-500">Clutch & Sribu 2023-2025</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section class="py-16 lg:py-24">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-12 items-start">
+      <div>
+        <div class="text-xs font-bold tracking-[0.2em] text-blue-600">OUR STORY</div>
+        <h2 class="font-display font-extrabold text-[30px] lg:text-[38px] leading-none tracking-tight mt-2">Berawal dari 3 orang,<br>tumbuh untuk ribuan bisnis</h2>
+        <div class="mt-6 space-y-4 text-[15px] leading-7 text-slate-600">
+          <p><b class="text-slate-900">2018 —</b> Bermula di co-working kecil Surabaya, 3 founder dengan 1 laptop membangun website UMKM pertama. Gratis.</p>
+          <p><b class="text-slate-900">2020 —</b> Pandemi jadi momentum: 80+ UMKM go-online bersama kami. Tim tumbuh jadi 15 orang.</p>
+          <p><b class="text-slate-900">2023 —</b> Ekspansi ke Jakarta, layani enterprise & startup scale-up. 200+ project, rating 4.9/5.</p>
+          <p><b class="text-slate-900">Hari ini —</b> 45+ talenta, 2 kantor, 300+ klien dari fintech, logistik, edukasi, hingga kesehatan. Misi tetap sama: teknologi harus menggerakkan bisnis, bukan sekedar terlihat keren.</p>
+        </div>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100">
+          <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center mb-4"><i class="fa-solid fa-bullseye"></i></div>
+          <div class="font-bold">Visi</div>
+          <p class="text-sm text-slate-500 mt-1 leading-6">Menjadi partner digital paling terpercaya di Asia Tenggara — yang mengukur sukses dari pertumbuhan klien.</p>
+        </div>
+        <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100">
+          <div class="w-10 h-10 rounded-xl bg-cyan-500 text-white flex items-center justify-center mb-4"><i class="fa-solid fa-compass"></i></div>
+          <div class="font-bold">Misi</div>
+          <p class="text-sm text-slate-500 mt-1 leading-6">Bangun produk yang cepat, aman, scalable, dan indah — dengan proses transparan & agile.</p>
+        </div>
+        <div class="sm:col-span-2 bg-slate-900 rounded-2xl p-6 text-white flex gap-4 items-center">
+          <img src="https://i.pravatar.cc/100?img=15" class="w-12 h-12 rounded-full object-cover">
+          <div>
+            <div class="font-semibold text-sm leading-6">“Kami tidak jual jam kerja, kami jual hasil. Kalau bisnis klien tidak tumbuh, kami belum selesai.”</div>
+            <div class="text-xs text-white/60 mt-1">— Riko Aditya, CEO & Founder</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="py-16 bg-slate-50">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="text-center max-w-2xl mx-auto">
+      <div class="text-xs font-bold tracking-[0.2em] text-blue-600">NILAI KAMI</div>
+      <h2 class="font-display font-extrabold text-[32px] lg:text-[40px] leading-none tracking-tight mt-2">Prinsip yang kami pegang</h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6 mt-10">
+      <div class="bg-white rounded-2xl p-7 border border-slate-100">
+        <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center mb-4"><i class="fa-solid fa-bolt"></i></div>
+        <div class="font-bold">Speed with Quality</div><p class="text-sm text-slate-500 mt-2 leading-6">Cepat tanpa mengorbankan kualitas. Sprint 2 mingguan, demo tiap minggu.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-7 border border-slate-100">
+        <div class="w-10 h-10 rounded-xl bg-violet-600 text-white flex items-center justify-center mb-4"><i class="fa-solid fa-eye"></i></div>
+        <div class="font-bold">Transparansi Total</div><p class="text-sm text-slate-500 mt-2 leading-6">Akses board, repo, dan laporan progres real-time. Tanpa kejutan.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-7 border border-slate-100">
+        <div class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center mb-4"><i class="fa-solid fa-heart"></i></div>
+        <div class="font-bold">User First</div><p class="text-sm text-slate-500 mt-2 leading-6">Keputusan desain & teknologi selalu mulai dari pengguna akhir.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-7 border border-slate-100">
+        <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center mb-4"><i class="fa-solid fa-shield-halved"></i></div>
+        <div class="font-bold">Security by Default</div><p class="text-sm text-slate-500 mt-2 leading-6">Audit, enkripsi, dan best practice sejak hari pertama.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-7 border border-slate-100">
+        <div class="w-10 h-10 rounded-xl bg-cyan-500 text-white flex items-center justify-center mb-4"><i class="fa-solid fa-infinity"></i></div>
+        <div class="font-bold">Scalable Mindset</div><p class="text-sm text-slate-500 mt-2 leading-6">Bangun untuk 100 user hari ini, siap untuk 1 juta esok.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-7 border border-slate-100">
+        <div class="w-10 h-10 rounded-xl bg-rose-500 text-white flex items-center justify-center mb-4"><i class="fa-solid fa-handshake"></i></div>
+        <div class="font-bold">Long-term Partner</div><p class="text-sm text-slate-500 mt-2 leading-6">Support, maintenance, dan growth — bukan lepas tangan setelah launch.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="py-16">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="grid lg:grid-cols-[380px_1fr] gap-10">
+      <div>
+        <div class="text-xs font-bold tracking-[0.2em] text-blue-600">MILESTONE</div>
+        <h2 class="font-display font-extrabold text-[30px] leading-none tracking-tight mt-2">Perjalanan 8 tahun</h2>
+        <p class="text-slate-500 mt-4 leading-7">Dari project UMKM gratis hingga dipercaya enterprise nasional.</p>
+      </div>
+      <div class="relative border-l border-slate-200 pl-8 space-y-8">
+        <div class="absolute left-[-5px] top-0 w-2.5 h-2.5 rounded-full bg-blue-600"></div>
+        <div><div class="text-xs font-bold tracking-widest text-blue-600">2018</div><div class="font-bold mt-1">Didirikan di Surabaya</div><p class="text-sm text-slate-500">3 founder, project pertama untuk UMKM kuliner.</p></div>
+        <div><div class="text-xs font-bold tracking-widest text-blue-600">2020</div><div class="font-bold mt-1">80+ UMKM Go-Digital</div><p class="text-sm text-slate-500">Bantu UMKM bertahan pandemi lewat website & toko online.</p></div>
+        <div><div class="text-xs font-bold tracking-widest text-blue-600">2022</div><div class="font-bold mt-1">Kantor Jakarta & 30+ Team</div><p class="text-sm text-slate-500">Masuk pasar enterprise & fintech.</p></div>
+        <div><div class="text-xs font-bold tracking-widest text-blue-600">2024</div><div class="font-bold mt-1">300+ Project & Ekspansi Regional</div><p class="text-sm text-slate-500">Klien dari 12 kota, 4.9/5 rating, Top Software House.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="py-10">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="rounded-[28px] bg-slate-900 p-8 lg:p-10 flex flex-col lg:flex-row justify-between gap-6 items-center text-white">
+      <div>
+        <div class="font-display font-extrabold text-[24px] lg:text-[28px] leading-none">Ingin kenal lebih dekat?</div>
+        <p class="text-white/60 mt-2">Ngobrol 30 menit gratis — kami dengarkan ide Anda dan beri roadmap.</p>
+      </div>
+      <div class="flex gap-3 shrink-0">
+        <a href="index.html" class="px-6 py-3 rounded-full border border-white/20 font-semibold hover:bg-white/10 transition">Kembali ke Home</a>
+        <a href="index.html#contact" class="px-6 py-3 rounded-full bg-white text-slate-900 font-bold hover:bg-slate-100 transition">Hubungi Kami</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="border-t border-slate-100 py-10">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col lg:flex-row justify-between gap-6 text-sm text-slate-500">
+    <div>
+      <div class="font-display font-extrabold text-slate-900">NUSANTARA DIGITAL</div>
+      <div class="mt-1">© 2026 Nusantara Digital. All rights reserved.</div>
+    </div>
+    <div class="flex gap-6 font-semibold">
+      <a href="index.html" class="hover:text-slate-900">Home</a>
+      <a href="about.html" class="hover:text-slate-900">About</a>
+      <a href="index.html#contact" class="hover:text-slate-900">Contact</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const btn = document.getElementById('menuBtn');
+  const menu = document.getElementById('mobileMenu');
+  btn?.addEventListener('click', () => menu.classList.toggle('hidden'));
+</script>
+</body>
+</html>
