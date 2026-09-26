@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nusantara Digital — Company Profile</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: { sans: ['Inter','sans-serif'], display: ['Plus Jakarta Sans','sans-serif'] },
+      colors: {
+        primary: '#0F172A',
+        accent: '#2563EB',
+        accent2: '#06B6D4',
+      }
+    }
+  }
+}
+</script>
+<style>
+  .glass { backdrop-filter: blur(12px); background: rgba(255,255,255,0.8); }
+</style>
+</head>
+<body class="font-sans text-slate-800 bg-white antialiased">
+
+<!-- NAV -->
+<nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300 bg-white/80 backdrop-blur-md border-b border-slate-100">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="flex justify-between items-center h-[72px]">
+      <a href="#home" class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-400 flex items-center justify-center text-white font-black text-sm">ND</div>
+        <span class="font-display font-extrabold text-[17px] tracking-tight text-slate-900">NUSANTARA<span class="text-blue-600"> DIGITAL</span></span>
+      </a>
+      <div class="hidden lg:flex items-center gap-8 text-[13px] font-semibold tracking-widest text-slate-500">
+        <a href="#home" class="hover:text-blue-600 transition">HOME</a>
+        <a href="#about" class="hover:text-blue-600 transition">ABOUT</a>
+        <a href="#services" class="hover:text-blue-600 transition">SERVICES</a>
+        <a href="#portfolio" class="hover:text-blue-600 transition">PORTFOLIO</a>
+        <a href="#team" class="hover:text-blue-600 transition">TEAM</a>
+        <a href="#contact" class="hover:text-blue-600 transition">CONTACT</a>
+      </div>
+      <div class="hidden lg:flex items-center gap-3">
+        <a href="#contact" class="px-6 py-2.5 rounded-full bg-slate-900 text-white text-sm font-semibold hover:bg-black transition">Hubungi Kami</a>
+      </div>
+      <button id="menuBtn" class="lg:hidden w-10 h-10 rounded-xl border border-slate-200 flex items-center justify-center">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+    </div>
+  </div>
+  <!-- mobile -->
+  <div id="mobileMenu" class="hidden lg:hidden border-t border-slate-100 bg-white px-6 py-6 space-y-4">
+    <a href="#home" class="block font-semibold">Home</a>
+    <a href="#about" class="block font-semibold">About</a>
+    <a href="#services" class="block font-semibold">Services</a>
+    <a href="#portfolio" class="block font-semibold">Portfolio</a>
+    <a href="#team" class="block font-semibold">Team</a>
+    <a href="#contact" class="block font-semibold">Contact</a>
+    <a href="#contact" class="block text-center py-3 rounded-full bg-blue-600 text-white font-semibold">Hubungi Kami</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="home" class="pt-[72px] overflow-hidden">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-10 items-center py-12 lg:py-20">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-xs font-bold tracking-widest text-blue-600 mb-6">
+          <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span> SINCE 2018 — TRUSTED BY 300+ CLIENTS
+        </div>
+        <h1 class="font-display font-extrabold text-[42px] lg:text-[58px] leading-[0.95] tracking-tight text-slate-900">
+          Bangun Masa<br>
+          <span class="bg-gradient-to-r from-blue-600 to-cyan-400 bg-clip-text text-transparent">Depan Digital</span><br>
+          Bersama Kami
+        </h1>
+        <p class="mt-6 text-[17px] leading-7 text-slate-500 max-w-xl">
+          Kami membantu perusahaan scale-up & enterprise bertransformasi lewat website, aplikasi mobile, dan sistem yang cepat, aman, dan siap scale.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="#contact" class="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">
+            Konsultasi Gratis <i class="fa-solid fa-arrow-right text-xs"></i>
+          </a>
+          <a href="#portfolio" class="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-slate-200 font-semibold hover:bg-slate-50 transition">
+            <i class="fa-regular fa-circle-play"></i> Lihat Portfolio
+          </a>
+        </div>
+        <div class="mt-10 flex items-center gap-8">
+          <div class="flex -space-x-3">
+            <img src="https://i.pravatar.cc/100?img=11" class="w-9 h-9 rounded-full border-2 border-white object-cover">
+            <img src="https://i.pravatar.cc/100?img=12" class="w-9 h-9 rounded-full border-2 border-white object-cover">
+            <img src="https://i.pravatar.cc/100?img=32" class="w-9 h-9 rounded-full border-2 border-white object-cover">
+            <div class="w-9 h-9 rounded-full bg-slate-900 border-2 border-white flex items-center justify-center text-white text-xs font-bold">+2k</div>
+          </div>
+          <div class="text-sm">
+            <div class="flex text-amber-400 text-xs">★★★★★ <span class="text-slate-900 font-bold ml-2">4.9/5</span></div>
+            <div class="text-slate-500">dari 1.200+ ulasan klien</div>
+          </div>
+          <div class="hidden sm:block h-10 w-px bg-slate-200"></div>
+          <div class="hidden sm:block">
+            <div class="font-extrabold text-slate-900">300+</div>
+            <div class="text-xs text-slate-500 tracking-widest font-semibold">PROJECT SELESAI</div>
+          </div>
+        </div>
+      </div>
+      <div class="relative">
+        <div class="absolute -inset-6 bg-gradient-to-br from-blue-100 via-cyan-50 to-indigo-100 rounded-[32px] -z-10"></div>
+        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80" class="w-full h-[420px] lg:h-[520px] object-cover rounded-[28px] shadow-2xl">
+        <!-- floating card -->
+        <div class="absolute -left-4 lg:-left-8 bottom-8 bg-white rounded-2xl shadow-xl p-5 flex gap-4 items-start max-w-[320px] border border-slate-100">
+          <div class="w-12 h-12 rounded-xl bg-emerald-500 flex items-center justify-center text-white"><i class="fa-solid fa-chart-line"></i></div>
+          <div>
+            <div class="font-bold text-slate-900">Revenue +240%</div>
+            <div class="text-sm text-slate-500 leading-5">Rata-rata pertumbuhan klien setelah 6 bulan go-digital bersama kami.</div>
+            <div class="mt-2 flex gap-1">
+              <span class="h-1.5 w-8 rounded-full bg-emerald-500"></span><span class="h-1.5 w-8 rounded-full bg-emerald-500"></span><span class="h-1.5 w-8 rounded-full bg-emerald-500"></span><span class="h-1.5 w-4 rounded-full bg-slate-200"></span>
+            </div>
+          </div>
+        </div>
+        <div class="absolute -right-2 top-10 bg-slate-900 text-white rounded-2xl px-5 py-4 shadow-xl flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-white/15 flex items-center justify-center"><i class="fa-solid fa-bolt"></i></div>
+          <div>
+            <div class="text-xs tracking-widest font-semibold opacity-70">UPTIME</div>
+            <div class="font-bold">99.9% SLA</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- clients -->
+    <div class="border-y border-slate-100 py-6 flex flex-wrap items-center justify-between gap-6 opacity-60 text-sm font-bold tracking-widest text-slate-400">
+      <span>GOJEK</span><span>TOKOPEDIA</span><span>TRAVELOKA</span><span>BUKALAPAK</span><span>BRI</span><span>TELKOM</span><span>PERTAMINA</span>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="py-20 lg:py-28 bg-slate-50">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-12 items-start">
+      <div>
+        <div class="text-xs font-bold tracking-[0.2em] text-blue-600 mb-3">TENTANG KAMI — ABOUT US</div>
+        <h2 class="font-display font-extrabold text-[36px] lg:text-[44px] leading-none tracking-tight text-slate-900">
+          Partner Teknologi<br>untuk Pertumbuhan<br>Bisnis Anda
+        </h2>
+        <div class="mt-8 grid sm:grid-cols-2 gap-4">
+          <div class="bg-white rounded-2xl p-6 border border-slate-100">
+            <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center mb-4"><i class="fa-solid fa-rocket"></i></div>
+            <div class="font-bold">Sejak 2018</div>
+            <p class="text-sm text-slate-500 mt-1 leading-6">8 tahun membantu 300+ perusahaan dari startup hingga enterprise.</p>
+          </div>
+          <div class="bg-white rounded-2xl p-6 border border-slate-100">
+            <div class="w-10 h-10 rounded-xl bg-cyan-500 text-white flex items-center justify-center mb-4"><i class="fa-solid fa-shield-halved"></i></div>
+            <div class="font-bold">Aman & Scalable</div>
+            <p class="text-sm text-slate-500 mt-1 leading-6">Arsitektur modern, security audit, dan siap scale jutaan user.</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p class="text-[17px] leading-8 text-slate-600">
+          <b class="text-slate-900">Nusantara Digital</b> adalah software house berbasis di Jakarta & Surabaya. Kami tidak hanya membuat website — kami merancang sistem yang menggerakkan bisnis: cepat, indah, dan terukur.
+        </p>
+        <p class="text-[15px] leading-7 text-slate-500 mt-4">
+          Tim kami 45+ engineer, designer, dan product manager yang bekerja dengan metodologi agile, transparan, dan fokus pada ROI klien.
+        </p>
+        <div class="mt-8 grid grid-cols-3 gap-6 border-t border-slate-200 pt-8">
+          <div><div class="font-display font-extrabold text-3xl">45+</div><div class="text-xs tracking-widest font-semibold text-slate-500">TEAM EXPERT</div></div>
+          <div><div class="font-display font-extrabold text-3xl">8</div><div class="text-xs tracking-widest font-semibold text-slate-500">TAHUN PENGALAMAN</div></div>
+          <div><div class="font-display font-extrabold text-3xl">15+</div><div class="text-xs tracking-widest font-semibold text-slate-500">PENGHARGAAN</div></div>
+        </div>
+        <div class="mt-8 flex gap-3">
+          <a href="#contact" class="px-6 py-3 rounded-full bg-slate-900 text-white font-semibold text-sm">Pelajari Budaya Kami</a>
+          <span class="inline-flex items-center gap-2 text-sm font-semibold text-slate-600"><i class="fa-solid fa-play w-8 h-8 rounded-full bg-white border flex items-center justify-center text-xs"></i> Company Profile (2:30)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services" class="py-20 lg:py-28">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="flex flex-wrap justify-between items-end gap-6 mb-10">
+      <div>
+        <div class="text-xs font-bold tracking-[0.2em] text-blue-600">LAYANAN — SERVICES</div>
+        <h2 class="font-display font-extrabold text-[34px] lg:text-[42px] leading-none tracking-tight mt-2">Solusi end-to-end<br>untuk kebutuhan digital</h2>
+      </div>
+      <p class="max-w-md text-slate-500 leading-7">Dari landing page hingga ekosistem aplikasi — kami bangun dengan stack modern dan desain yang konversi.</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- card -->
+      <div class="group rounded-[24px] border border-slate-100 p-7 hover:shadow-xl hover:border-blue-100 transition bg-white">
+        <div class="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center text-lg mb-5"><i class="fa-solid fa-globe"></i></div>
+        <h3 class="font-bold text-[18px]">Web Development</h3>
+        <p class="text-sm leading-6 text-slate-500 mt-2">Company profile, e-commerce, dashboard — Next.js & Laravel, SEO-ready, super cepat.</p>
+        <ul class="mt-4 space-y-2 text-sm text-slate-600">
+          <li class="flex gap-2"><i class="fa-solid fa-check text-emerald-500 mt-1 text-xs"></i> SEO & Core Web Vitals 90+</li>
+          <li class="flex gap-2"><i class="fa-solid fa-check text-emerald-500 mt-1 text-xs"></i> CMS mudah kelola</li>
+        </ul>
+      </div>
+      <div class="group rounded-[24px] border border-slate-100 p-7 hover:shadow-xl hover:border-blue-100 transition bg-white">
+        <div class="w-12 h-12 rounded-2xl bg-violet-600 text-white flex items-center justify-center text-lg mb-5"><i class="fa-solid fa-mobile-screen"></i></div>
+        <h3 class="font-bold text-[18px]">Mobile Apps</h3>
+        <p class="text-sm leading-6 text-slate-500 mt-2">Aplikasi Android & iOS native atau cross-platform (Flutter/React Native).</p>
+        <ul class="mt-4 space-y-2 text-sm text-slate-600">
+          <li class="flex gap-2"><i class="fa-solid fa-check text-emerald-500 mt-1 text-xs"></i> Publish Play Store & App Store</li>
+          <li class="flex gap-2"><i class="fa-solid fa-check text-emerald-500 mt-1 text-xs"></i> Push notif & realtime</li>
+        </ul>
+      </div>
+      <div class="group rounded-[24px] border border-slate-100 p-7 hover:shadow-xl hover:border-blue-100 transition bg-white">
+        <div class="w-12 h-12 rounded-2xl bg-cyan-500 text-white flex items-center justify-center text-lg mb-5"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+        <h3 class="font-bold text-[18px]">UI/UX Design</h3>
+        <p class="text-sm leading-6 text-slate-500 mt-2">Desain yang tidak hanya cantik tapi mengarahkan user ke aksi — konversi first.</p>
+        <ul class="mt-4 space-y-2 text-sm text-slate-600">
+          <li class="flex gap-2"><i class="fa-solid fa-check text-emerald-500 mt-1 text-xs"></i> Design system & prototype</li>
+          <li class="flex gap-2"><i class="fa-solid fa-check text-emerald-500 mt-1 text-xs"></i> Riset & usability test</li>
+        </ul>
+      </div>
+      <div class="group rounded-[24px] border border-slate-100 p-7 hover:shadow-xl hover:border-blue-100 transition bg-white">
+        <div class="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center text-lg mb-5"><i class="fa-solid fa-cloud"></i></div>
+        <h3 class="font-bold text-[18px]">Cloud & DevOps</h3>
+        <p class="text-sm leading-6 text-slate-500 mt-2">Infra auto-scale di AWS/GCP, CI/CD, monitoring, dan security hardening.</p>
+        <ul class="mt-4 space-y-2 text-sm text-slate-600">
+          <li class="flex gap-2"><i class="fa-solid fa-check text-emerald-500 mt-1 text-xs"></i> Uptime 99.9% SLA</li>
+          <li class="flex gap-2"><i class="fa-solid fa-check text-emerald-500 mt-1 text-xs"></i> Backup & disaster recovery</li>
+        </ul>
+      </div>
+      <div class="group rounded-[24px] border border-slate-100 p-7 hover:shadow-xl hover:border-blue-100 transition bg-white">
+        <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center text-lg mb-5"><i class="fa-solid fa-bullhorn"></i></div>
+        <h3 class="font-bold text-[18px]">Digital Marketing</h3>
+        <p class="text-sm leading-6 text-slate-500 mt-2">SEO, SEM, social & content yang terhubung langsung dengan website Anda.</p>
+        <ul class="mt-4 space-y-2 text-sm text-slate-600">
+          <li class="flex gap-2"><i class="fa-solid fa-check text-emerald-500 mt-1 text-xs"></i> SEO on-page & off-page</li>
+          <li class="flex gap-2"><i class="fa-solid fa-check text-emerald-500 mt-1 text-xs"></i> Analytics & tracking</li>
+        </ul>
+      </div>
+      <div class="rounded-[24px] bg-slate-900 text-white p-7 flex flex-col justify-between">
+        <div>
+          <div class="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-lg mb-5"><i class="fa-solid fa-headset"></i></div>
+          <h3 class="font-bold text-[18px]">Butuh Konsultasi?</h3>
+          <p class="text-sm leading-6 text-white/60 mt-2">Diskusikan ide Anda gratis 30 menit dengan product consultant kami.</p>
+        </div>
+        <a href="#contact" class="mt-6 inline-flex justify-center items-center gap-2 py-3 rounded-full bg-white text-slate-900 font-bold">Jadwalkan Sekarang <i class="fa-solid fa-arrow-right text-xs"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio" class="py-20 bg-slate-50">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="text-center max-w-2xl mx-auto mb-10">
+      <div class="text-xs font-bold tracking-[0.2em] text-blue-600">PORTFOLIO</div>
+      <h2 class="font-display font-extrabold text-[34px] lg:text-[42px] leading-none tracking-tight mt-2">Karya yang berbicara</h2>
+      <p class="text-slate-500 mt-4 leading-7">Beberapa project pilihan yang membantu klien tumbuh lebih cepat dan efisien.</p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="rounded-[24px] overflow-hidden bg-white border border-slate-100 group">
+        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80" class="h-56 w-full object-cover group-hover:scale-105 transition duration-500">
+        <div class="p-6">
+          <div class="text-xs font-bold tracking-widest text-blue-600">FINTECH • 2024</div>
+          <div class="font-bold text-lg mt-1">PayNusa — E-Wallet Nasional</div>
+          <p class="text-sm text-slate-500 mt-1">5M+ download, rating 4.8 di Play Store.</p>
+        </div>
+      </div>
+      <div class="rounded-[24px] overflow-hidden bg-white border border-slate-100 group">
+        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80" class="h-56 w-full object-cover group-hover:scale-105 transition duration-500">
+        <div class="p-6">
+          <div class="text-xs font-bold tracking-widest text-violet-600">E-COMMERCE • 2024</div>
+          <div class="font-bold text-lg mt-1">TaniHub Fresh</div>
+          <p class="text-sm text-slate-500 mt-1">Omset naik 180% setelah redesign & PWA.</p>
+        </div>
+      </div>
+      <div class="rounded-[24px] overflow-hidden bg-white border border-slate-100 group">
+        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80" class="h-56 w-full object-cover group-hover:scale-105 transition duration-500">
+        <div class="p-6">
+          <div class="text-xs font-bold tracking-widest text-emerald-600">HEALTH • 2023</div>
+          <div class="font-bold text-lg mt-1">Sehat Bersama</div>
+          <p class="text-sm text-slate-500 mt-1">Platform telemedicine untuk 2.000+ dokter.</p>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-8">
+      <a href="#contact" class="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-slate-200 bg-white font-semibold hover:bg-slate-50">Lihat Semua Project <i class="fa-solid fa-arrow-right text-xs"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM + TESTI -->
+<section id="team" class="py-20">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-12">
+      <div>
+        <div class="text-xs font-bold tracking-[0.2em] text-blue-600">OUR TEAM</div>
+        <h2 class="font-display font-extrabold text-[32px] leading-none tracking-tight mt-2">Dipimpin oleh yang<br>terbaik di bidangnya</h2>
+        <div class="grid grid-cols-3 gap-4 mt-8">
+          <div class="text-center">
+            <img src="https://i.pravatar.cc/200?img=15" class="w-full aspect-square object-cover rounded-2xl">
+            <div class="font-bold text-sm mt-3">Riko Aditya</div><div class="text-xs text-slate-500">CEO & Founder</div>
+          </div>
+          <div class="text-center">
+            <img src="https://i.pravatar.cc/200?img=26" class="w-full aspect-square object-cover rounded-2xl">
+            <div class="font-bold text-sm mt-3">Sinta Dewi</div><div class="text-xs text-slate-500">CTO</div>
+          </div>
+          <div class="text-center">
+            <img src="https://i.pravatar.cc/200?img=33" class="w-full aspect-square object-cover rounded-2xl">
+            <div class="font-bold text-sm mt-3">Bima Pratama</div><div class="text-xs text-slate-500">Head of Design</div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-slate-900 rounded-[28px] p-8 lg:p-10 text-white relative overflow-hidden">
+        <div class="absolute -top-10 -right-10 w-40 h-40 bg-blue-600 rounded-full blur-3xl opacity-30"></div>
+        <div class="text-5xl opacity-20">“</div>
+        <p class="text-[18px] leading-8 text-white/90 -mt-2">Nusantara Digital bukan sekedar vendor — mereka partner yang benar-benar paham bisnis kami. Launching tepat waktu, performa kencang, dan support-nya luar biasa.</p>
+        <div class="flex items-center gap-4 mt-8">
+          <img src="https://i.pravatar.cc/100?img=14" class="w-12 h-12 rounded-full object-cover">
+          <div>
+            <div class="font-bold">Andi Wijaya</div>
+            <div class="text-sm text-white/60">COO, PayNusa</div>
+          </div>
+          <div class="ml-auto flex text-amber-400 text-sm">★★★★★</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA CONTACT -->
+<section id="contact" class="py-16">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="rounded-[32px] bg-gradient-to-br from-blue-600 via-blue-600 to-cyan-500 p-[1px]">
+      <div class="rounded-[31px] bg-gradient-to-br from-blue-600 via-blue-600 to-cyan-500 p-8 lg:p-12">
+        <div class="grid lg:grid-cols-2 gap-10 items-center">
+          <div class="text-white">
+            <h2 class="font-display font-extrabold text-[32px] lg:text-[40px] leading-none">Siap Akselerasi<br>Bisnis Anda?</h2>
+            <p class="text-white/80 mt-4 leading-7">Konsultasi gratis 30 menit. Kami akan audit kebutuhan Anda dan berikan roadmap jelas tanpa komitmen.</p>
+            <div class="mt-6 space-y-3 text-sm">
+              <div class="flex gap-3 items-center"><span class="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center"><i class="fa-solid fa-location-dot"></i></span> Jl. Sudirman Kav. 52-53, Jakarta Selatan & Jl. Tunjungan No. 6, Surabaya</div>
+              <div class="flex gap-3 items-center"><span class="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center"><i class="fa-solid fa-envelope"></i></span> halo@nusantaradigital.id</div>
+              <div class="flex gap-3 items-center"><span class="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center"><i class="fa-solid fa-phone"></i></span> +62 812-3456-7890</div>
+            </div>
+          </div>
+          <form onsubmit="event.preventDefault(); alert('Terima kasih! Tim kami akan menghubungi Anda segera.');" class="bg-white rounded-[24px] p-6 lg:p-8 shadow-xl">
+            <h3 class="font-bold text-lg">Minta Penawaran</h3>
+            <p class="text-sm text-slate-500">Balasan dalam &lt; 2 jam kerja</p>
+            <div class="mt-6 space-y-4">
+              <input required placeholder="Nama lengkap" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+              <input required type="email" placeholder="Email kerja" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+              <div class="grid grid-cols-2 gap-3">
+                <input placeholder="Perusahaan" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                <select class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm bg-white">
+                  <option>Budget</option><option>&lt; 50jt</option><option>50-200jt</option><option>200jt+</option>
+                </select>
+              </div>
+              <textarea rows="3" placeholder="Ceritakan kebutuhan Anda..." class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"></textarea>
+              <button type="submit" class="w-full py-3.5 rounded-full bg-slate-900 text-white font-bold hover:bg-black transition">Kirim Permintaan <i class="fa-solid fa-paper-plane ml-2 text-xs"></i></button>
+              <p class="text-xs text-center text-slate-400">Dengan mengirim, Anda setuju dengan Kebijakan Privasi kami.</p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="border-t border-slate-100 py-10">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col lg:flex-row justify-between gap-6 text-sm text-slate-500">
+    <div>
+      <div class="font-display font-extrabold text-slate-900">NUSANTARA DIGITAL</div>
+      <div class="mt-1">© 2026 Nusantara Digital. All rights reserved. Dibuat dengan ♥ di Indonesia.</div>
+    </div>
+    <div class="flex gap-6 font-semibold">
+      <a href="#" class="hover:text-slate-900">Privacy</a>
+      <a href="#" class="hover:text-slate-900">Terms</a>
+      <a href="#" class="hover:text-slate-900">Karir</a>
+      <div class="flex gap-3 ml-2">
+        <a href="#" class="w-8 h-8 rounded-full border flex items-center justify-center hover:bg-slate-900 hover:text-white transition"><i class="fa-brands fa-instagram text-xs"></i></a>
+        <a href="#" class="w-8 h-8 rounded-full border flex items-center justify-center hover:bg-slate-900 hover:text-white transition"><i class="fa-brands fa-linkedin-in text-xs"></i></a>
+        <a href="#" class="w-8 h-8 rounded-full border flex items-center justify-center hover:bg-slate-900 hover:text-white transition"><i class="fa-brands fa-x-twitter text-xs"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const btn = document.getElementById('menuBtn');
+  const menu = document.getElementById('mobileMenu');
+  btn?.addEventListener('click', () => menu.classList.toggle('hidden'));
+  document.querySelectorAll('#mobileMenu a').forEach(a=>a.addEventListener('click',()=>menu.classList.add('hidden')));
+  // navbar shadow on scroll
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 10) nav.classList.add('shadow-sm');
+    else nav.classList.remove('shadow-sm');
+  });
+</script>
+</body>
+</html>
