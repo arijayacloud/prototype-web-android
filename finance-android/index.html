@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Keuanganku — Manajemen Keuangan Android</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  *{font-family:Inter,sans-serif}
+  .no-scrollbar::-webkit-scrollbar{display:none}
+  .no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
+</style>
+</head>
+<body class="bg-[#EEF2F7] min-h-screen flex flex-col items-center">
+<!-- top bar desktop -->
+<div class="w-full bg-white border-b border-slate-200 sticky top-0 z-30">
+  <div class="max-w-[440px] mx-auto px-4 h-14 flex items-center justify-between">
+    <a href="../index.html" class="flex items-center gap-2 font-bold text-slate-700 hover:text-blue-600"><i class="fa-solid fa-arrow-left"></i> Kembali</a>
+    <span class="text-xs font-bold tracking-widest text-slate-400">PROTOTYPE ANDROID • HTML</span>
+    <a href="https://github.com/arijayacloud/prototype-web-android/tree/main/finance-android" target="_blank" rel="noopener" class="text-slate-400 hover:text-slate-700"><i class="fa-brands fa-github"></i></a>
+  </div>
+</div>
+
+<!-- phone frame -->
+<div class="w-full max-w-[400px] mx-auto mt-6 mb-10">
+<div class="bg-white rounded-[36px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] overflow-hidden border-[8px] border-slate-900">
+
+<!-- status bar -->
+<div class="h-7 bg-slate-900 flex items-center justify-between px-6 text-white text-[11px] font-semibold">
+  <span id="clock">09:41</span>
+  <div class="flex items-center gap-1.5"><i class="fa-solid fa-signal text-[10px]"></i><i class="fa-solid fa-wifi text-[10px]"></i><i class="fa-solid fa-battery-three-quarters"></i></div>
+</div>
+
+<!-- app header -->
+<div class="bg-gradient-to-br from-blue-600 to-cyan-500 px-6 pt-5 pb-8 text-white relative overflow-hidden">
+  <div class="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
+  <div class="relative">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <img src="https://i.pravatar.cc/100?img=12" class="w-9 h-9 rounded-full border-2 border-white/40">
+        <div>
+          <div class="text-[11px] tracking-widest opacity-70 font-semibold">SELAMAT PAGI</div>
+          <div class="font-bold text-sm">Rian — Keuanganku</div>
+        </div>
+      </div>
+      <button class="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center backdrop-blur"><i class="fa-regular fa-bell"></i></button>
+    </div>
+    <div class="mt-6 bg-white rounded-[20px] p-5 text-slate-900 shadow-lg">
+      <div class="text-xs font-bold tracking-widest text-slate-400">TOTAL SALDO</div>
+      <div id="balanceDisplay" class="font-black text-[28px] tracking-tight mt-1">Rp 12.450.000</div>
+      <div class="flex gap-3 mt-3">
+        <div class="flex-1 flex items-center gap-2 bg-emerald-50 rounded-xl px-3 py-2">
+          <div class="w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs"><i class="fa-solid fa-arrow-down"></i></div>
+          <div><div class="text-[10px] font-bold text-emerald-600 tracking-widest">PEMASUKAN</div><div id="incomeDisplay" class="font-bold text-sm text-emerald-700">Rp 8.200.000</div></div>
+        </div>
+        <div class="flex-1 flex items-center gap-2 bg-rose-50 rounded-xl px-3 py-2">
+          <div class="w-7 h-7 rounded-full bg-rose-500 text-white flex items-center justify-center text-xs"><i class="fa-solid fa-arrow-up"></i></div>
+          <div><div class="text-[10px] font-bold text-rose-600 tracking-widest">PENGELUARAN</div><div id="expenseDisplay" class="font-bold text-sm text-rose-700">Rp 3.750.000</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- quick actions -->
+<div class="px-4 -mt-3 relative z-10">
+  <div class="bg-slate-50 rounded-2xl p-3 flex justify-around border border-slate-100">
+    <button onclick="openAdd()" class="flex flex-col items-center gap-1.5">
+      <div class="w-11 h-11 rounded-2xl bg-blue-600 text-white flex items-center justify-center shadow-md"><i class="fa-solid fa-plus"></i></div>
+      <span class="text-[11px] font-bold text-slate-600">Tambah</span>
+    </button>
+    <button class="flex flex-col items-center gap-1.5 opacity-70">
+      <div class="w-11 h-11 rounded-2xl bg-white border border-slate-200 flex items-center justify-center"><i class="fa-solid fa-arrow-right-arrow-left text-slate-600"></i></div>
+      <span class="text-[11px] font-bold text-slate-600">Transfer</span>
+    </button>
+    <button class="flex flex-col items-center gap-1.5 opacity-70">
+      <div class="w-11 h-11 rounded-2xl bg-white border border-slate-200 flex items-center justify-center"><i class="fa-solid fa-chart-simple text-slate-600"></i></div>
+      <span class="text-[11px] font-bold text-slate-600">Laporan</span>
+    </button>
+    <button class="flex flex-col items-center gap-1.5 opacity-70">
+      <div class="w-11 h-11 rounded-2xl bg-white border border-slate-200 flex items-center justify-center"><i class="fa-solid fa-wallet text-slate-600"></i></div>
+      <span class="text-[11px] font-bold text-slate-600">Dompet</span>
+    </button>
+  </div>
+</div>
+
+<!-- chart mini -->
+<div class="px-6 mt-6">
+  <div class="flex items-center justify-between">
+    <h3 class="font-bold text-slate-900">Pengeluaran Minggu Ini</h3>
+    <span class="text-xs font-semibold text-slate-400">7 hari</span>
+  </div>
+  <div class="mt-3 flex items-end gap-2 h-20">
+    <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-blue-100 rounded-t-lg" style="height:28px"></div><span class="text-[10px] font-bold text-slate-400">Sen</span></div>
+    <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-blue-200 rounded-t-lg" style="height:44px"></div><span class="text-[10px] font-bold text-slate-400">Sel</span></div>
+    <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-blue-600 rounded-t-lg" style="height:68px"></div><span class="text-[10px] font-bold text-blue-600">Rab</span></div>
+    <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-blue-200 rounded-t-lg" style="height:36px"></div><span class="text-[10px] font-bold text-slate-400">Kam</span></div>
+    <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-blue-100 rounded-t-lg" style="height:52px"></div><span class="text-[10px] font-bold text-slate-400">Jum</span></div>
+    <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-slate-200 rounded-t-lg" style="height:20px"></div><span class="text-[10px] font-bold text-slate-400">Sab</span></div>
+    <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-slate-200 rounded-t-lg" style="height:32px"></div><span class="text-[10px] font-bold text-slate-400">Min</span></div>
+  </div>
+</div>
+
+<!-- transactions -->
+<div class="px-6 mt-6">
+  <div class="flex items-center justify-between">
+    <h3 class="font-bold text-slate-900">Transaksi Terbaru</h3>
+    <button class="text-xs font-bold text-blue-600">Lihat semua</button>
+  </div>
+  <div id="txList" class="mt-3 space-y-3">
+    <!-- items injected -->
+  </div>
+</div>
+
+<!-- budgets -->
+<div class="px-6 mt-6 pb-6">
+  <h3 class="font-bold text-slate-900">Anggaran Bulan Ini</h3>
+  <div class="mt-3 space-y-3">
+    <div>
+      <div class="flex justify-between text-xs font-semibold"><span class="text-slate-600"><i class="fa-solid fa-utensils mr-1 text-orange-400"></i> Makan & Minum</span><span class="text-slate-900">Rp 1.2jt / Rp 2jt</span></div>
+      <div class="mt-1.5 h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-orange-400 rounded-full" style="width:60%"></div></div>
+    </div>
+    <div>
+      <div class="flex justify-between text-xs font-semibold"><span class="text-slate-600"><i class="fa-solid fa-bus mr-1 text-blue-400"></i> Transport</span><span class="text-slate-900">Rp 450rb / Rp 800rb</span></div>
+      <div class="mt-1.5 h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-blue-400 rounded-full" style="width:56%"></div></div>
+    </div>
+    <div>
+      <div class="flex justify-between text-xs font-semibold"><span class="text-slate-600"><i class="fa-solid fa-bag-shopping mr-1 text-violet-400"></i> Belanja</span><span class="text-slate-900">Rp 1.8jt / Rp 1.5jt</span></div>
+      <div class="mt-1.5 h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-rose-400 rounded-full" style="width:100%"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- bottom nav -->
+<div class="sticky bottom-0 bg-white border-t border-slate-100 px-2 py-2 flex justify-around">
+  <button class="flex flex-col items-center gap-1 text-blue-600"><i class="fa-solid fa-house"></i><span class="text-[10px] font-bold">Beranda</span></button>
+  <button class="flex flex-col items-center gap-1 text-slate-400"><i class="fa-solid fa-chart-pie"></i><span class="text-[10px] font-bold">Statistik</span></button>
+  <div class="w-10"></div>
+  <button class="flex flex-col items-center gap-1 text-slate-400"><i class="fa-solid fa-wallet"></i><span class="text-[10px] font-bold">Dompet</span></button>
+  <button class="flex flex-col items-center gap-1 text-slate-400"><i class="fa-regular fa-user"></i><span class="text-[10px] font-bold">Profil</span></button>
+</div>
+</div>
+
+<!-- FAB -->
+<button onclick="openAdd()" class="fixed bottom-6 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full bg-slate-900 text-white shadow-xl flex items-center justify-center text-xl hover:bg-black transition"><i class="fa-solid fa-plus"></i></button>
+</div>
+
+<!-- add modal -->
+<div id="addModal" class="fixed inset-0 z-50 hidden">
+  <div onclick="closeAdd()" class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"></div>
+  <div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-[28px] max-w-[400px] mx-auto p-6 shadow-2xl">
+    <div class="w-10 h-1.5 bg-slate-200 rounded-full mx-auto mb-5"></div>
+    <h3 class="font-black text-lg">Tambah Transaksi</h3>
+    <p class="text-sm text-slate-500">Simulasi lokal — data tidak dikirim kemana-mana.</p>
+    <div class="mt-5 space-y-3">
+      <div class="grid grid-cols-2 gap-2">
+        <button id="btnIncome" onclick="setType('income')" class="py-3 rounded-xl bg-emerald-500 text-white font-bold">Pemasukan</button>
+        <button id="btnExpense" onclick="setType('expense')" class="py-3 rounded-xl bg-white border border-slate-200 font-bold text-slate-600">Pengeluaran</button>
+      </div>
+      <input id="txTitle" placeholder="Judul (cth: Gaji, Kopi, Bensin)" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-blue-400">
+      <input id="txAmount" type="number" placeholder="Nominal (cth: 50000)" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-blue-400">
+      <div class="grid grid-cols-2 gap-2">
+        <button onclick="closeAdd()" class="py-3 rounded-xl border border-slate-200 font-bold">Batal</button>
+        <button onclick="addTx()" class="py-3 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700">Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let txType='expense';
+let txs=[
+  {title:'Gaji Bulanan',cat:'Pemasukan',amount:6500000,type:'income',icon:'fa-briefcase',color:'emerald',time:'Hari ini'},
+  {title:'Kopi & Sarapan',cat:'Makan',amount:-45000,type:'expense',icon:'fa-mug-hot',color:'orange',time:'Hari ini'},
+  {title:'Bensin Motor',cat:'Transport',amount:-80000,type:'expense',icon:'fa-gas-pump',color:'blue',time:'Kemarin'},
+  {title:'Top-up E-Wallet',cat:'Dompet',amount:-200000,type:'expense',icon:'fa-wallet',color:'violet',time:'Kemarin'},
+  {title:'Freelance Design',cat:'Pemasukan',amount:1200000,type:'income',icon:'fa-pen-nib',color:'emerald',time:'2 hari lalu'},
+];
+function fmt(n){ return 'Rp ' + Math.abs(n).toLocaleString('id-ID'); }
+function render(){
+  const el=document.getElementById('txList');
+  el.innerHTML=txs.map(t=>`
+    <div class="flex items-center gap-3 bg-slate-50 rounded-2xl px-4 py-3 border border-slate-100">
+      <div class="w-10 h-10 rounded-xl bg-${t.color}-100 text-${t.color}-600 flex items-center justify-center"><i class="fa-solid ${t.icon} text-sm"></i></div>
+      <div class="flex-1 min-w-0">
+        <div class="font-bold text-sm text-slate-900 truncate">${t.title}</div>
+        <div class="text-xs text-slate-400">${t.cat} • ${t.time}</div>
+      </div>
+      <div class="font-black text-sm ${t.type==='income'?'text-emerald-600':'text-slate-900'}">${t.type==='income'?'+':''} ${fmt(t.amount)}</div>
+    </div>
+  `).join('');
+  // update balance mock
+  let bal=12450000, inc=8200000, exp=3750000;
+  txs.slice(0,5).forEach(t=>{ if(t.type==='income') inc+=0; });
+  document.getElementById('balanceDisplay').textContent='Rp ' + bal.toLocaleString('id-ID');
+}
+function openAdd(){ document.getElementById('addModal').classList.remove('hidden'); }
+function closeAdd(){ document.getElementById('addModal').classList.add('hidden'); }
+function setType(t){
+  txType=t;
+  document.getElementById('btnIncome').className = t==='income' ? 'py-3 rounded-xl bg-emerald-500 text-white font-bold' : 'py-3 rounded-xl bg-white border border-slate-200 font-bold text-slate-600';
+  document.getElementById('btnExpense').className = t==='expense' ? 'py-3 rounded-xl bg-rose-500 text-white font-bold' : 'py-3 rounded-xl bg-white border border-slate-200 font-bold text-slate-600';
+}
+function addTx(){
+  const title=document.getElementById('txTitle').value.trim();
+  const amount=parseInt(document.getElementById('txAmount').value,10);
+  if(!title || !amount) return alert('Isi judul dan nominal');
+  const sign = txType==='expense' ? -1 : 1;
+  txs.unshift({title, cat: txType==='income'?'Pemasukan':'Pengeluaran', amount: sign*Math.abs(amount), type:txType, icon: txType==='income'?'fa-arrow-down':'fa-arrow-up', color: txType==='income'?'emerald':'rose', time:'Baru saja'});
+  document.getElementById('txTitle').value=''; document.getElementById('txAmount').value='';
+  closeAdd(); render();
+}
+function tick(){
+  const d=new Date();
+  document.getElementById('clock').textContent = d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+}
+tick(); setInterval(tick, 60000);
+render();
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeAdd(); });
+</script>
+<p class="text-center text-xs text-slate-400 pb-8 max-w-[400px] mx-auto px-4">Prototype statis — buka di HP untuk rasa Android beneran. Data simulasi, tidak butuh backend.</p>
+</body>
+</html>
