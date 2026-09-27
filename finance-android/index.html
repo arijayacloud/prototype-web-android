@@ -65,15 +65,25 @@
         </div>
         <div id="balanceDisplay" class="font-black text-[28px] tracking-tight mt-1">Rp 12.450.000</div>
         <div id="balanceHint" class="text-[11px] text-slate-400 -mt-1 hidden">Tap mata untuk tampilkan</div>
-        <div class="flex gap-3 mt-3">
-          <button onclick="filterTx('income')" class="flex-1 flex items-center gap-2 bg-emerald-50 rounded-xl px-3 py-2 border border-emerald-100 hover:bg-emerald-100 text-left">
-            <div class="w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs"><i class="fa-solid fa-arrow-down"></i></div>
-            <div><div class="text-[10px] font-bold text-emerald-600 tracking-widest">PEMASUKAN</div><div id="incomeDisplay" class="font-bold text-sm text-emerald-700">Rp 8.200.000</div></div>
+        <div id="badgeRow" class="flex gap-3 mt-3">
+          <button id="badgeIncome" onclick="filterTx('income')" class="flex-1 flex items-center gap-2 bg-emerald-50 rounded-xl px-3 py-2 border border-emerald-100 hover:bg-emerald-100 text-left">
+            <div id="badgeIncomeIcon" class="w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-arrow-down"></i></div>
+            <div class="min-w-0"><div id="badgeIncomeLabel" class="text-[10px] font-bold text-emerald-600 tracking-widest leading-none">PEMASUKAN</div><div id="incomeDisplay" class="font-bold text-sm text-emerald-700 truncate">Rp 8.200.000</div></div>
           </button>
-          <button onclick="filterTx('expense')" class="flex-1 flex items-center gap-2 bg-rose-50 rounded-xl px-3 py-2 border border-rose-100 hover:bg-rose-100 text-left">
-            <div class="w-7 h-7 rounded-full bg-rose-500 text-white flex items-center justify-center text-xs"><i class="fa-solid fa-arrow-up"></i></div>
-            <div><div class="text-[10px] font-bold text-rose-600 tracking-widest">PENGELUARAN</div><div id="expenseDisplay" class="font-bold text-sm text-rose-700">Rp 3.750.000</div></div>
+          <button id="badgeExpense" onclick="filterTx('expense')" class="flex-1 flex items-center gap-2 bg-rose-50 rounded-xl px-3 py-2 border border-rose-100 hover:bg-rose-100 text-left">
+            <div id="badgeExpenseIcon" class="w-7 h-7 rounded-full bg-rose-500 text-white flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-arrow-up"></i></div>
+            <div class="min-w-0"><div id="badgeExpenseLabel" class="text-[10px] font-bold text-rose-600 tracking-widest leading-none">PENGELUARAN</div><div id="expenseDisplay" class="font-bold text-sm text-rose-700 truncate">Rp 3.750.000</div></div>
           </button>
+        </div>
+        <div class="mt-2.5 flex items-center gap-2 bg-white/85 backdrop-blur rounded-full px-2 py-1.5 border border-white/60 shadow-sm">
+          <span class="text-[10px] font-bold tracking-widest text-slate-500 pl-1 whitespace-nowrap">UKURAN BADGE</span>
+          <div class="flex items-center gap-1 ml-auto">
+            <button onclick="setBadgeSize('sm')" id="bs-sm" class="px-2.5 py-1 rounded-full text-[11px] font-bold border bg-white text-slate-600 border-slate-200">S</button>
+            <button onclick="setBadgeSize('md')" id="bs-md" class="px-2.5 py-1 rounded-full text-[11px] font-bold border bg-slate-900 text-white border-slate-900">M</button>
+            <button onclick="setBadgeSize('lg')" id="bs-lg" class="px-2.5 py-1 rounded-full text-[11px] font-bold border bg-white text-slate-600 border-slate-200">L</button>
+          </div>
+          <input id="badgeRange" type="range" min="85" max="130" step="5" value="100" oninput="setBadgeScale(this.value)" class="w-20 accent-blue-600">
+          <span id="badgeScaleLabel" class="text-[11px] font-bold text-slate-600 w-8 text-right">100%</span>
         </div>
         <!-- mini period -->
         <div class="mt-3 flex gap-1.5">
@@ -469,6 +479,29 @@ function toggleBalance(){ showBalance=!showBalance; document.getElementById('bal
 function setType(t){ txType=t; document.getElementById('btnIncome').className=t==='income'?'py-3 rounded-xl bg-emerald-500 text-white font-bold':'py-3 rounded-xl bg-white border border-slate-200 font-bold text-slate-600'; document.getElementById('btnExpense').className=t==='expense'?'py-3 rounded-xl bg-rose-500 text-white font-bold':'py-3 rounded-xl bg-white border border-slate-200 font-bold text-slate-600'; document.getElementById('txCat').value=t==='income'?'Pemasukan':'Makan'; }
 function setCat(c){ catFilter=c; document.querySelectorAll('.chip').forEach(b=>{ b.className = b.dataset.cat===c?'chip px-3 py-1.5 rounded-full bg-slate-900 text-white text-xs font-bold':'chip px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-xs font-bold'; }); renderTx(); }
 function filterTx(type){ setCat(type==='income'?'Pemasukan':'all'); if(type==='expense') toast('Filter: semua pengeluaran'); else toast('Filter: pemasukan'); }
+let badgeScale=parseInt(localStorage.getItem(LS_KEY+'_badgeScale')||'100',10);
+let badgePreset=localStorage.getItem(LS_KEY+'_badgePreset')||'md';
+function applyBadgeScale(pct,noStore){
+  badgeScale=Math.min(130,Math.max(85,parseInt(pct,10)||100));
+  const row=document.getElementById('badgeRow');
+  if(row) row.style.transform='scale('+(badgeScale/100)+')', row.style.transformOrigin='top center';
+  const lab=document.getElementById('badgeScaleLabel'); if(lab) lab.textContent=badgeScale+'%';
+  const rg=document.getElementById('badgeRange'); if(rg) rg.value=badgeScale;
+  ['sm','md','lg'].forEach(k=>{
+    const b=document.getElementById('bs-'+k);
+    if(!b) return;
+    const on=k===badgePreset;
+    b.className=on?'px-2.5 py-1 rounded-full text-[11px] font-bold border bg-slate-900 text-white border-slate-900':'px-2.5 py-1 rounded-full text-[11px] font-bold border bg-white text-slate-600 border-slate-200';
+  });
+  // ukuran font halus via scale, tapi label juga ikut biar tidak pelit
+  if(!noStore){ localStorage.setItem(LS_KEY+'_badgeScale', String(badgeScale)); localStorage.setItem(LS_KEY+'_badgePreset', badgePreset); }
+}
+function setBadgeScale(pct){ badgePreset='custom'; applyBadgeScale(pct); toast('Badge '+badgeScale+'%'); }
+function setBadgeSize(p){
+  badgePreset=p;
+  const map={sm:85, md:100, lg:120};
+  applyBadgeScale(map[p]); toast('Ukuran badge: '+(p==='sm'?'Kecil':p==='md'?'Sedang':'Besar')+' '+badgeScale+'%');
+}
 function setPeriod(p){ period=p; ['minggu','bulan','tahun'].forEach(x=>{ document.getElementById('p-'+x).className = x===p?'px-3 py-1.5 rounded-full bg-slate-900 text-white text-xs font-bold':'px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-xs font-bold';}); renderChart(); }
 function setStatRange(r){ statRange=r; ['minggu','bulan','tahun'].forEach(x=>{ document.getElementById('sr-'+x).className = x===r?'px-4 py-2 rounded-full bg-slate-900 text-white text-xs font-bold':'px-4 py-2 rounded-full bg-white border text-slate-600 text-xs font-bold';}); renderStat(); }
 
@@ -623,6 +656,7 @@ function clearData(){ if(!confirm('Reset semua data demo ke awal?')) return; loc
 function tick(){ const d=new Date(); document.getElementById('clock').textContent=d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}); }
 tick(); setInterval(tick,60000);
 renderChart(); renderTx(); renderBudgets(); renderGoals(); renderWallets(); updateTotals();
+applyBadgeScale(badgeScale, true);
 document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeAdd(); closeTransfer(); closeGoal(); closeBudget(); closeWallet(); closeNotif(); }});
 </script>
 <p class="text-center text-xs text-slate-400 pb-8 max-w-[400px] mx-auto px-4">Prototype interaktif — semua tombol hidup, data di localStorage. Buka di HP untuk rasa Android penuh.</p>
