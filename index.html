@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arijayacloud — Showcase Project | Prototype Web & Android</title>
+<meta name="description" content="Kumpulan showcase project Arijayacloud — lihat hasil kerja nyata, coba live preview langsung, dan hubungi untuk kolaborasi. Featured: Nusantara Digital Company Landing.">
+<meta property="og:title" content="Arijayacloud — Showcase Project">
+<meta property="og:description" content="Lihat hasil kerja nyata Arijayacloud. Coba live preview tiap project langsung di browser.">
+<meta property="og:image" content="https://images.unsplash.com/photo-1559028006-448665bd7c7f?w=1200&q=80">
+<meta property="og:url" content="https://arijayacloud.github.io/prototype-web-android/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Arijayacloud — Showcase Project">
+<meta name="twitter:description" content="Kumpulan showcase project Arijayacloud — coba live preview langsung.">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1559028006-448665bd7c7f?w=1200&q=80">
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script>
+tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter','sans-serif'], display: ['Plus Jakarta Sans','sans-serif'] } } } }
+</script>
+<style>body.modal-open{overflow:hidden}</style>
+</head>
+<body class="font-sans bg-[#F8FAFC] text-slate-800 antialiased">
+
+<!-- NAV -->
+<nav class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-100">
+  <div class="max-w-[1280px] mx-auto px-6 lg:px-8 h-[68px] flex items-center justify-between">
+    <a href="index.html" class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-400 flex items-center justify-center text-white font-black text-sm">AC</div>
+      <span class="font-display font-extrabold tracking-tight text-slate-900">ARIJAYACLOUD<span class="text-blue-600"> SHOWCASE</span></span>
+    </a>
+    <div class="hidden md:flex items-center gap-6 text-sm font-semibold text-slate-500">
+      <a href="#showcase" class="hover:text-blue-600">Projects</a>
+      <a href="web-company/index.html" class="hover:text-blue-600">Web Company</a>
+      <a href="web-company/about.html" class="hover:text-blue-600">About</a>
+      <a href="https://github.com/arijayacloud/prototype-web-android" target="_blank" rel="noopener" class="hover:text-blue-600"><i class="fa-brands fa-github"></i> GitHub</a>
+    </div>
+    <a href="#contact" class="hidden md:inline-flex px-5 py-2.5 rounded-full bg-slate-900 text-white text-sm font-semibold hover:bg-black transition">Hubungi Saya</a>
+    <button id="menuBtn" class="md:hidden w-10 h-10 rounded-xl border border-slate-200 flex items-center justify-center"><i class="fa-solid fa-bars"></i></button>
+  </div>
+  <div id="mobileMenu" class="hidden md:hidden border-t border-slate-100 bg-white px-6 py-5 space-y-3">
+    <a href="#showcase" class="block font-semibold">Projects</a>
+    <a href="web-company/index.html" class="block font-semibold">Web Company — Landing</a>
+    <a href="web-company/about.html" class="block font-semibold">Web Company — About</a>
+    <a href="https://github.com/arijayacloud/prototype-web-android" target="_blank" rel="noopener" class="block font-semibold">GitHub Repo</a>
+    <a href="#contact" class="block text-center py-3 rounded-full bg-slate-900 text-white font-semibold">Hubungi Saya</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="max-w-[1280px] mx-auto px-6 lg:px-8 pt-8 pb-6">
+  <div class="rounded-[32px] bg-white border border-slate-100 p-8 lg:p-10 overflow-hidden relative">
+    <div class="absolute -top-20 -right-20 w-[400px] h-[400px] bg-gradient-to-br from-blue-100 to-cyan-100 rounded-full blur-3xl opacity-60"></div>
+    <div class="relative grid lg:grid-cols-[1.1fr_0.9fr] gap-8 items-center">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-xs font-bold tracking-widest text-blue-600">
+          <span class="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span> GITHUB PAGES — LIVE SHOWCASE
+        </div>
+        <h1 class="font-display font-extrabold text-[34px] lg:text-[48px] leading-[0.95] tracking-tight text-slate-900 mt-5">
+          Hasil Kerja Nyata,<br>
+          <span class="bg-gradient-to-r from-blue-600 to-cyan-400 bg-clip-text text-transparent">Siap Dicoba</span>
+        </h1>
+        <p class="mt-4 text-[15px] leading-7 text-slate-500 max-w-xl">
+          Beranda baru <code class="px-1.5 py-0.5 rounded bg-slate-100 text-xs font-bold">index.html</code> — satu pintu untuk semua showcase. Pilih project di bawah, klik <b>Live Preview</b> untuk coba langsung tanpa pindah halaman.
+        </p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href="#showcase" class="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">Jelajahi Projects <i class="fa-solid fa-arrow-down text-xs"></i></a>
+          <a href="https://github.com/arijayacloud/prototype-web-android" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-slate-200 bg-white font-semibold hover:bg-slate-50 transition"><i class="fa-brands fa-github"></i> Lihat Source</a>
+        </div>
+        <div class="mt-6 flex items-center gap-6 text-sm">
+          <span class="inline-flex items-center gap-2 font-semibold text-slate-600"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Pages Active</span>
+          <span class="text-slate-400">•</span>
+          <span class="text-slate-500">1 project live • HTML statis</span>
+        </div>
+      </div>
+      <div class="relative">
+        <img src="https://images.unsplash.com/photo-1559028006-448665bd7c7f?w=800&q=80" loading="lazy" alt="Showcase preview" class="w-full h-[280px] lg:h-[360px] object-cover rounded-[24px] shadow-xl">
+        <div class="absolute -bottom-4 -left-4 bg-slate-900 text-white rounded-2xl px-5 py-4 shadow-xl flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center"><i class="fa-solid fa-cube"></i></div>
+          <div>
+            <div class="text-xs tracking-widest font-semibold opacity-60">SHOWCASE</div>
+            <div class="font-bold">1 Project Live</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- SHOWCASE GRID -->
+<section id="showcase" class="max-w-[1280px] mx-auto px-6 lg:px-8 pb-10">
+  <div class="flex flex-wrap justify-between items-end gap-4 mb-6">
+    <div>
+      <div class="text-xs font-bold tracking-[0.2em] text-blue-600">PROJECTS</div>
+      <h2 class="font-display font-extrabold text-[26px] lg:text-[34px] leading-none tracking-tight mt-2">Pilih project untuk dilihat</h2>
+    </div>
+    <p class="text-sm text-slate-500 max-w-md leading-6">Klik <b>Live Preview</b> untuk coba inline (modal iframe), atau <b>Detail</b> untuk baca latar belakang & fitur.</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+    <!-- WEB-COMPANY CARD -->
+    <article class="project-card group bg-white rounded-[24px] border border-slate-100 overflow-hidden hover:shadow-xl hover:border-blue-100 transition flex flex-col" data-project="web-company">
+      <div class="relative h-48 overflow-hidden bg-slate-100">
+        <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=700&q=80" loading="lazy" alt="Nusantara Digital Company Landing thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+        <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-blue-600 text-white text-[11px] font-bold tracking-widest">FEATURED</span>
+        <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur text-slate-700 text-[11px] font-bold">LIVE</span>
+      </div>
+      <div class="p-6 flex-1 flex flex-col">
+        <div class="text-xs font-bold tracking-widest text-blue-600">WEB-COMPANY • HTML + TAILWIND CDN</div>
+        <h3 class="font-display font-extrabold text-[18px] leading-tight mt-1">Nusantara Digital — Company Landing</h3>
+        <p class="text-sm text-slate-500 leading-6 mt-2 flex-1">Landing company lengkap dengan hero, about, services, portfolio, team & contact. Responsive dan siap pakai.</p>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <span class="px-2.5 py-1 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold">HTML</span>
+          <span class="px-2.5 py-1 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold">Tailwind CDN</span>
+          <span class="px-2.5 py-1 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold">Responsive</span>
+        </div>
+        <div class="mt-5 grid grid-cols-2 gap-2">
+          <a href="web-company/index.html" target="_blank" rel="noopener" data-action="preview" data-url="web-company/index.html" data-title="Nusantara Digital — Company Landing" class="inline-flex justify-center items-center gap-2 py-2.5 rounded-full bg-slate-900 text-white text-sm font-bold hover:bg-blue-600 transition"><i class="fa-solid fa-eye text-xs"></i> Live Preview</a>
+          <button data-action="detail" data-project="web-company" class="inline-flex justify-center items-center gap-2 py-2.5 rounded-full border border-slate-200 text-sm font-bold hover:bg-slate-50 transition"><i class="fa-solid fa-circle-info text-xs"></i> Detail</button>
+        </div>
+        <a href="https://github.com/arijayacloud/prototype-web-android/tree/main/web-company" target="_blank" rel="noopener" class="mt-2 inline-flex justify-center items-center gap-2 py-2 rounded-full text-xs font-semibold text-slate-500 hover:text-slate-900"><i class="fa-brands fa-github"></i> Lihat Kode — web-company/</a>
+      </div>
+    </article>
+
+    <!-- TEMPLATE: copy block di bawah untuk menambah project baru. Ganti URL, judul, deskripsi, tags, dan thumbnail. Tidak perlu ubah CSS. -->
+    <!--
+    <article class="project-card group bg-white rounded-[24px] border border-slate-100 overflow-hidden hover:shadow-xl hover:border-blue-100 transition flex flex-col" data-project="my-new-project">
+      <div class="relative h-48 overflow-hidden bg-slate-100">
+        <img src="https://images.unsplash.com/photo-xxxx?w=700&q=80" loading="lazy" alt="Judul Project thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+        <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur text-slate-700 text-[11px] font-bold">LIVE</span>
+      </div>
+      <div class="p-6 flex-1 flex flex-col">
+        <div class="text-xs font-bold tracking-widest text-blue-600">CATEGORY • STACK</div>
+        <h3 class="font-display font-extrabold text-[18px] leading-tight mt-1">Judul Project Baru</h3>
+        <p class="text-sm text-slate-500 leading-6 mt-2 flex-1">Deskripsi singkat 1-2 baris tentang project.</p>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <span class="px-2.5 py-1 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold">HTML</span>
+          <span class="px-2.5 py-1 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold">CSS</span>
+        </div>
+        <div class="mt-5 grid grid-cols-2 gap-2">
+          <a href="path/to/project/index.html" target="_blank" rel="noopener" data-action="preview" data-url="path/to/project/index.html" data-title="Judul Project Baru" class="inline-flex justify-center items-center gap-2 py-2.5 rounded-full bg-slate-900 text-white text-sm font-bold hover:bg-blue-600 transition"><i class="fa-solid fa-eye text-xs"></i> Live Preview</a>
+          <button data-action="detail" data-project="my-new-project" class="inline-flex justify-center items-center gap-2 py-2.5 rounded-full border border-slate-200 text-sm font-bold hover:bg-slate-50 transition"><i class="fa-solid fa-circle-info text-xs"></i> Detail</button>
+        </div>
+        <a href="https://github.com/arijayacloud/prototype-web-android/tree/main/path/to/project" target="_blank" rel="noopener" class="mt-2 inline-flex justify-center items-center gap-2 py-2 rounded-full text-xs font-semibold text-slate-500 hover:text-slate-900"><i class="fa-brands fa-github"></i> Lihat Kode</a>
+      </div>
+    </article>
+    -->
+
+    <!-- PLACEHOLDER -->
+    <div class="rounded-[24px] border-2 border-dashed border-slate-200 p-6 flex flex-col items-center justify-center text-center min-h-[380px] bg-slate-50/50">
+      <div class="w-12 h-12 rounded-2xl bg-white border border-slate-200 flex items-center justify-center text-slate-400"><i class="fa-solid fa-plus"></i></div>
+      <div class="font-bold mt-4">Showcase Berikutnya</div>
+      <p class="text-sm text-slate-500 mt-1 leading-6 max-w-[260px]">Duplikasi blok komentar di atas di <code class="px-1 py-0.5 rounded bg-white border text-xs">index.html</code> — ganti URL & thumbnail saja.</p>
+      <span class="mt-4 text-xs font-bold tracking-widest text-slate-400">COMING SOON</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- PREVIEW MODAL -->
+<div id="previewModal" class="fixed inset-0 z-50 hidden" aria-hidden="true">
+  <div id="previewBackdrop" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+  <div class="absolute inset-0 flex items-center justify-center p-4">
+    <div class="bg-white rounded-[24px] w-full max-w-[1100px] h-[85vh] max-h-[85vh] flex flex-col overflow-hidden shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="previewTitle">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100 shrink-0">
+        <div>
+          <div class="text-xs font-bold tracking-widest text-blue-600" id="previewLabel">LIVE PREVIEW</div>
+          <div id="previewTitle" class="font-bold text-slate-900">Preview</div>
+        </div>
+        <div class="flex items-center gap-2">
+          <a id="previewOpenNewTab" href="#" target="_blank" rel="noopener" class="px-4 py-2 rounded-full border border-slate-200 text-sm font-semibold hover:bg-slate-50"><i class="fa-solid fa-arrow-up-right-from-square mr-1"></i> Buka di Tab Baru</a>
+          <button id="previewClose" class="w-9 h-9 rounded-full border border-slate-200 flex items-center justify-center hover:bg-slate-50"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+      </div>
+      <div class="relative flex-1 bg-slate-50 overflow-hidden">
+        <div id="previewLoading" class="absolute inset-0 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm z-10">
+          <div class="w-10 h-10 rounded-full border-4 border-slate-200 border-t-blue-600 animate-spin"></div>
+          <div class="text-sm font-semibold text-slate-600 mt-3">Memuat preview...</div>
+        </div>
+        <div id="previewFallback" class="hidden absolute inset-0 flex flex-col items-center justify-center p-8 text-center bg-white">
+          <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center"><i class="fa-solid fa-triangle-exclamation"></i></div>
+          <div class="font-bold mt-4">Preview tidak bisa dimuat inline</div>
+          <p class="text-sm text-slate-500 mt-2 max-w-md">Project ini mungkin memblokir iframe atau butuh dibuka di tab baru. Gunakan tombol di atas untuk membuka langsung.</p>
+          <a id="previewFallbackLink" href="#" target="_blank" rel="noopener" class="mt-4 px-6 py-3 rounded-full bg-blue-600 text-white font-bold">Buka di Tab Baru</a>
+        </div>
+        <iframe id="previewFrame" class="w-full h-full border-0 bg-white" title="Live preview iframe" loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div id="detailModal" class="fixed inset-0 z-50 hidden" aria-hidden="true">
+  <div id="detailBackdrop" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+  <div class="absolute inset-0 flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-[24px] w-full max-w-[720px] max-h-[90vh] overflow-y-auto shadow-2xl my-8" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+      <div class="sticky top-0 bg-white border-b border-slate-100 px-6 py-4 flex items-center justify-between">
+        <div id="detailTitle" class="font-display font-extrabold text-lg">Detail Project</div>
+        <button id="detailClose" class="w-9 h-9 rounded-full border border-slate-200 flex items-center justify-center hover:bg-slate-50"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="detailContent" class="p-6 space-y-6">
+        <!-- injected via JS -->
+      </div>
+      <div class="p-6 border-t border-slate-100 flex gap-3">
+        <a id="detailPreviewBtn" href="#" target="_blank" rel="noopener" class="flex-1 inline-flex justify-center items-center gap-2 py-3 rounded-full bg-blue-600 text-white font-bold hover:bg-blue-700"><i class="fa-solid fa-eye text-xs"></i> Live Preview</a>
+        <a id="detailCodeBtn" href="#" target="_blank" rel="noopener" class="px-6 py-3 rounded-full border border-slate-200 font-bold hover:bg-slate-50"><i class="fa-brands fa-github"></i> Kode</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT CTA -->
+<section id="contact" class="max-w-[1280px] mx-auto px-6 lg:px-8 pb-10">
+  <div class="rounded-[28px] bg-slate-900 p-8 lg:p-10 flex flex-col lg:flex-row justify-between gap-6 items-center text-white">
+    <div>
+      <div class="font-display font-extrabold text-[22px] lg:text-[28px] leading-none">Tertarik kolaborasi?</div>
+      <p class="text-white/60 mt-2 text-sm leading-6">Hubungi langsung — respon cepat via email / WhatsApp. Link di bawah selalu aktif.</p>
+      <div class="mt-4 flex flex-wrap gap-3 text-sm">
+        <a href="mailto:contact@arijayacloud.example" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white text-slate-900 font-bold"><i class="fa-solid fa-envelope"></i> contact@arijayacloud.example</a>
+        <a href="https://wa.me/6281234567890" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 font-semibold"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+        <a href="https://github.com/arijayacloud/prototype-web-android" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 font-semibold"><i class="fa-brands fa-github"></i> GitHub</a>
+      </div>
+    </div>
+    <div class="flex gap-3 shrink-0">
+      <a href="web-company/index.html" class="px-6 py-3 rounded-full bg-white text-slate-900 font-bold hover:bg-slate-100 transition">Lihat Web Company</a>
+      <a href="#showcase" class="px-6 py-3 rounded-full border border-white/20 font-semibold hover:bg-white/10 transition">Kembali ke Showcase</a>
+    </div>
+  </div>
+</section>
+
+<footer class="border-t border-slate-100 bg-white py-8">
+  <div class="max-w-[1280px] mx-auto px-6 lg:px-8 flex flex-col md:flex-row justify-between gap-4 text-sm text-slate-500">
+    <div>© 2026 Arijayacloud — <a href="https://arijayacloud.github.io/prototype-web-android/" class="font-semibold text-slate-700 hover:text-blue-600">arijayacloud.github.io/prototype-web-android</a> • <a href="web-company/index.html" class="hover:text-blue-600">Web Company</a></div>
+    <div class="flex gap-4 font-semibold"><a href="https://github.com/arijayacloud/prototype-web-android" target="_blank" rel="noopener" class="hover:text-slate-900">GitHub</a><a href="#contact" class="hover:text-slate-900">Contact</a></div>
+  </div>
+</footer>
+
+<script>
+const menuBtn = document.getElementById('menuBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+menuBtn?.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+
+// project data for detail modal
+const PROJECTS = {
+  'web-company': {
+    title: 'Nusantara Digital — Company Landing',
+    url: 'web-company/index.html',
+    codeUrl: 'https://github.com/arijayacloud/prototype-web-android/tree/main/web-company',
+    thumbnail: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=700&q=80',
+    background: 'Dibuat sebagai landing company untuk showcase kemampuan frontend statis. Tujuannya memberi contoh landing modern yang bisa langsung dipakai calon klien sebagai referensi kualitas.',
+    problem: 'Calon klien butuh contoh landing yang meyakinkan tanpa harus build project kompleks. Halaman lama belum menampilkan bukti kerja yang bisa dicoba.',
+    features: ['Hero dengan CTA dan statistik', 'Section About, Services (6 layanan), Portfolio (3 project)', 'Team + Testimoni + Contact form responsif'],
+    stack: ['HTML', 'Tailwind CDN', 'Font Awesome', 'Vanilla JS'],
+    links: [
+      { label: 'Live Demo', href: 'web-company/index.html' },
+      { label: 'Halaman About', href: 'web-company/about.html' },
+      { label: 'Source di GitHub', href: 'https://github.com/arijayacloud/prototype-web-android/tree/main/web-company' }
+    ]
+  }
+};
+
+let lastScrollY = 0;
+let activePreviewUrl = '';
+let previewTimeout = null;
+
+function openPreview(url, title){
+  activePreviewUrl = url;
+  lastScrollY = window.scrollY;
+  document.getElementById('previewTitle').textContent = title || url;
+  const frame = document.getElementById('previewFrame');
+  const loading = document.getElementById('previewLoading');
+  const fallback = document.getElementById('previewFallback');
+  const openLink = document.getElementById('previewOpenNewTab');
+  const fallbackLink = document.getElementById('previewFallbackLink');
+  openLink.href = url; fallbackLink.href = url;
+  loading.classList.remove('hidden');
+  fallback.classList.add('hidden');
+  frame.removeAttribute('src');
+  // timeout fallback if iframe never loads (e.g. blocked)
+  clearTimeout(previewTimeout);
+  previewTimeout = setTimeout(()=>{ loading.classList.add('hidden'); fallback.classList.remove('hidden'); }, 8000);
+  frame.onload = ()=>{ clearTimeout(previewTimeout); loading.classList.add('hidden'); };
+  frame.onerror = ()=>{ clearTimeout(previewTimeout); loading.classList.add('hidden'); fallback.classList.remove('hidden'); };
+  frame.src = url;
+  document.getElementById('previewModal').classList.remove('hidden');
+  document.body.classList.add('modal-open');
+}
+function closePreview(){
+  clearTimeout(previewTimeout);
+  document.getElementById('previewModal').classList.add('hidden');
+  document.body.classList.remove('modal-open');
+  document.getElementById('previewFrame').removeAttribute('src');
+  window.scrollTo(0, lastScrollY);
+}
+function openDetail(projectId){
+  const p = PROJECTS[projectId];
+  if(!p) return;
+  lastScrollY = window.scrollY;
+  document.getElementById('detailTitle').textContent = p.title;
+  document.getElementById('detailPreviewBtn').href = p.url;
+  document.getElementById('detailPreviewBtn').dataset.url = p.url;
+  document.getElementById('detailPreviewBtn').dataset.title = p.title;
+  document.getElementById('detailCodeBtn').href = p.codeUrl;
+  document.getElementById('detailContent').innerHTML = `
+    <img src="${p.thumbnail}" alt="${p.title} thumbnail" loading="lazy" class="w-full h-56 object-cover rounded-2xl">
+    <div class="grid md:grid-cols-2 gap-6">
+      <div>
+        <div class="text-xs font-bold tracking-widest text-blue-600">LATAR BELAKANG</div>
+        <p class="text-sm leading-6 text-slate-600 mt-2">${p.background}</p>
+        <div class="text-xs font-bold tracking-widest text-blue-600 mt-6">MASALAH YANG DISELESAIKAN</div>
+        <p class="text-sm leading-6 text-slate-600 mt-2">${p.problem}</p>
+      </div>
+      <div>
+        <div class="text-xs font-bold tracking-widest text-blue-600">FITUR UTAMA</div>
+        <ul class="mt-2 space-y-2 text-sm text-slate-600 list-disc pl-5">${p.features.map(f=>`<li>${f}</li>`).join('')}</ul>
+        <div class="text-xs font-bold tracking-widest text-blue-600 mt-6">STACK</div>
+        <div class="flex flex-wrap gap-2 mt-2">${p.stack.map(s=>`<span class="px-2.5 py-1 rounded-full bg-slate-50 border border-slate-200 text-xs font-semibold">${s}</span>`).join('')}</div>
+      </div>
+    </div>
+    <div>
+      <div class="text-xs font-bold tracking-widest text-blue-600">TAUTAN</div>
+      <div class="flex flex-wrap gap-2 mt-2">${p.links.map(l=>`<a href="${l.href}" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-full border border-slate-200 text-xs font-semibold hover:bg-slate-50">${l.label}</a>`).join('')}</div>
+    </div>
+  `;
+  // allow detail preview btn to open preview modal instead of new tab
+  document.getElementById('detailPreviewBtn').onclick = (e)=>{ e.preventDefault(); closeDetail(); setTimeout(()=> openPreview(p.url, p.title), 150); };
+  document.getElementById('detailModal').classList.remove('hidden');
+  document.body.classList.add('modal-open');
+}
+function closeDetail(){
+  document.getElementById('detailModal').classList.add('hidden');
+  // only remove modal-open if preview not open
+  if(document.getElementById('previewModal').classList.contains('hidden')) document.body.classList.remove('modal-open');
+  window.scrollTo(0, lastScrollY);
+}
+
+document.addEventListener('click', (e)=>{
+  const a = e.target.closest('[data-action="preview"]');
+  if(a){ e.preventDefault(); openPreview(a.dataset.url, a.dataset.title); return; }
+  const b = e.target.closest('[data-action="detail"]');
+  if(b){ e.preventDefault(); openDetail(b.dataset.project); return; }
+});
+document.getElementById('previewClose').addEventListener('click', closePreview);
+document.getElementById('previewBackdrop').addEventListener('click', closePreview);
+document.getElementById('detailClose').addEventListener('click', closeDetail);
+document.getElementById('detailBackdrop').addEventListener('click', closeDetail);
+document.addEventListener('keydown', (e)=>{
+  if(e.key==='Escape'){
+    if(!document.getElementById('previewModal').classList.contains('hidden')) closePreview();
+    else if(!document.getElementById('detailModal').classList.contains('hidden')) closeDetail();
+  }
+});
+</script>
+</body>
+</html>

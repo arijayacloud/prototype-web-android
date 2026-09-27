@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 — Halaman tidak ditemukan | Arijayacloud Showcase</title>
+<meta http-equiv="refresh" content="0; url=index.html">
+<link rel="canonical" href="index.html">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+</head>
+<body class="font-[Inter] bg-[#F8FAFC] text-slate-800 flex min-h-screen items-center justify-center p-6">
+  <div class="bg-white rounded-[24px] border border-slate-100 p-8 max-w-lg w-full text-center shadow-sm">
+    <div class="text-6xl font-black text-slate-900 font-[Plus_Jakarta_Sans]">404</div>
+    <p class="text-slate-500 mt-2 leading-6">Halaman yang kamu cari tidak ada. Tautan lama sudah dipindahkan — showcase sekarang ada di halaman utama.</p>
+    <p class="text-xs text-slate-400 mt-2">Mengalihkan otomatis ke beranda...</p>
+    <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+      <a href="index.html" class="px-6 py-3 rounded-full bg-blue-600 text-white font-bold hover:bg-blue-700">Kembali ke Beranda</a>
+      <a href="web-company/index.html" class="px-6 py-3 rounded-full border border-slate-200 font-semibold hover:bg-slate-50">Lihat Web Company</a>
+    </div>
+    <script>
+      // JS redirect as fallback to meta refresh — preserve deep path? always to index.html
+      setTimeout(function(){ location.replace('index.html'); }, 1200);
+    </script>
+  </div>
+</body>
+</html>
