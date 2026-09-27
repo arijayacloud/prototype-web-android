@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AktifKu — Pencatatan Kegiatan Olahraga (Interactive)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{font-family:Inter,sans-serif}
+.no-scrollbar::-webkit-scrollbar{display:none}
+.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
+.shine{position:relative;overflow:hidden}
+.shine:after{content:"";position:absolute;top:-50%;left:-30%;width:60%;height:200%;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.22) 50%,transparent 70%);transform:rotate(15deg) translateX(-80%);animation:shine 3.2s infinite}
+@keyframes shine{0%{transform:rotate(15deg) translateX(-80%)} 60%,100%{transform:rotate(15deg) translateX(220%)}}
+.range{-webkit-appearance:none;appearance:none;height:6px;border-radius:999px;background:#e2e8f0}
+.range::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:999px;background:#0ea5e9;border:3px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+</style>
+</head>
+<body class="bg-[#EEF2F7] min-h-screen flex flex-col items-center">
+<!-- top bar -->
+<div class="w-full bg-white border-b border-slate-200 sticky top-0 z-30">
+  <div class="max-w-[1120px] mx-auto px-4 h-14 flex items-center justify-between">
+    <a href="../index.html" class="flex items-center gap-2 font-bold text-slate-700 hover:text-blue-600"><i class="fa-solid fa-arrow-left"></i> Kembali</a>
+    <span class="hidden md:inline text-xs font-bold tracking-widest text-slate-400">AKTIFKU • SPORT TRACKER • FRONTEND ONLY</span>
+    <span class="md:hidden text-xs font-bold tracking-widest text-slate-400">SPORT TRACKER</span>
+    <div class="flex items-center gap-2">
+      <button onclick="toast('Mode gelap (demo)')" class="w-8 h-8 rounded-full border border-slate-200 bg-white flex items-center justify-center text-slate-600 hover:bg-slate-50" title="Theme"><i class="fa-solid fa-circle-half-stroke text-xs"></i></button>
+      <a href="https://github.com/arijayacloud/prototype-web-android/tree/main/sport-android" target="_blank" class="text-slate-400 hover:text-slate-700"><i class="fa-brands fa-github"></i></a>
+    </div>
+  </div>
+</div>
+
+<div class="w-full max-w-[1120px] mx-auto px-4 mt-6 mb-10 flex flex-col lg:flex-row gap-6 items-start justify-center">
+<!-- phone frame -->
+<div class="w-full max-w-[400px] mx-auto lg:mx-0 shrink-0 relative">
+<div id="phone" class="bg-white rounded-[36px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] overflow-hidden border-[8px] border-slate-900 flex flex-col" style="min-height:780px">
+<!-- status bar -->
+<div class="h-7 bg-slate-900 flex items-center justify-between px-6 text-white text-[11px] font-semibold shrink-0">
+  <span id="clock">09:41</span>
+  <div class="flex items-center gap-1.5"><i class="fa-solid fa-signal text-[10px]"></i><i class="fa-solid fa-wifi text-[10px]"></i><i class="fa-solid fa-battery-three-quarters"></i></div>
+</div>
+
+<!-- VIEW: HOME -->
+<div id="view-home" class="flex-1 overflow-y-auto no-scrollbar">
+  <!-- header -->
+  <div class="bg-gradient-to-br from-emerald-600 via-teal-500 to-cyan-500 px-6 pt-5 pb-8 text-white relative overflow-hidden">
+    <div class="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
+    <div class="relative">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <img src="https://i.pravatar.cc/100?img=15" class="w-9 h-9 rounded-full border-2 border-white/40">
+          <div>
+            <div class="text-[11px] tracking-widest opacity-70 font-semibold">SEMANGAT PAGI</div>
+            <div class="font-bold text-sm">Rian — AktifKu</div>
+          </div>
+        </div>
+        <button onclick="openNotif()" class="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center backdrop-blur relative"><i class="fa-regular fa-bell"></i><span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-amber-400 rounded-full border-2 border-emerald-600"></span></button>
+      </div>
+      <div class="mt-6 bg-white rounded-[20px] p-5 text-slate-900 shadow-lg shine">
+        <div class="flex items-center justify-between">
+          <div class="text-xs font-bold tracking-widest text-slate-400">RINGKASAN MINGGU INI</div>
+          <span id="streakBadge" class="px-2.5 py-1 rounded-full bg-orange-100 text-orange-600 text-[11px] font-black"><i class="fa-solid fa-fire mr-1"></i><span id="streakVal">5</span> hari streak</span>
+        </div>
+        <div class="grid grid-cols-3 gap-2 mt-3">
+          <div class="bg-slate-50 rounded-2xl px-3 py-3 border border-slate-100 text-center">
+            <div class="text-[10px] font-bold tracking-wide text-slate-400">WORKOUT</div>
+            <div id="statWorkout" class="font-black text-lg text-slate-900 leading-none mt-1">4x</div>
+            <div class="text-[11px] text-slate-500">sesi</div>
+          </div>
+          <div class="bg-amber-50 rounded-2xl px-3 py-3 border border-amber-100 text-center">
+            <div class="text-[10px] font-bold tracking-wide text-amber-600">KALORI</div>
+            <div id="statCal" class="font-black text-lg text-amber-700 leading-none mt-1">1.840</div>
+            <div class="text-[11px] text-amber-600/70">kcal</div>
+          </div>
+          <div class="bg-emerald-50 rounded-2xl px-3 py-3 border border-emerald-100 text-center">
+            <div class="text-[10px] font-bold tracking-wide text-emerald-600">DURASI</div>
+            <div id="statDur" class="font-black text-lg text-emerald-700 leading-none mt-1">3j 20m</div>
+            <div class="text-[11px] text-emerald-600/70">total</div>
+          </div>
+        </div>
+        <div class="mt-3 grid grid-cols-2 gap-2">
+          <div class="flex items-center gap-2 bg-blue-50 rounded-xl px-3 py-2.5 border border-blue-100">
+            <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs"><i class="fa-solid fa-person-running"></i></div>
+            <div class="flex-1 min-w-0"><div class="text-[9px] font-bold text-blue-600 tracking-wide">JARAK LARI</div><div id="statDistance" class="font-bold text-sm text-blue-900 leading-none">12.4 km</div></div>
+          </div>
+          <div class="flex items-center gap-2 bg-violet-50 rounded-xl px-3 py-2.5 border border-violet-100">
+            <div class="w-8 h-8 rounded-full bg-violet-600 text-white flex items-center justify-center text-xs"><i class="fa-solid fa-dumbbell"></i></div>
+            <div class="flex-1 min-w-0"><div class="text-[9px] font-bold text-violet-600 tracking-wide">STRENGTH</div><div id="statSets" class="font-bold text-sm text-violet-900 leading-none">18 set</div></div>
+          </div>
+        </div>
+        <div class="mt-3 flex gap-1.5">
+          <button onclick="setPeriod('minggu')" id="p-minggu" class="px-3 py-1.5 rounded-full bg-slate-900 text-white text-xs font-bold">Minggu</button>
+          <button onclick="setPeriod('bulan')" id="p-bulan" class="px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-xs font-bold">Bulan</button>
+          <button onclick="setPeriod('tahun')" id="p-tahun" class="px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-xs font-bold">Tahun</button>
+          <span class="ml-auto text-[11px] font-semibold text-slate-400 self-center">tap chart untuk detail</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- quick actions -->
+  <div class="px-4 -mt-3 relative z-10">
+    <div class="bg-slate-50 rounded-2xl p-3 flex justify-around border border-slate-100">
+      <button onclick="openAdd()" class="flex flex-col items-center gap-1.5">
+        <div class="w-11 h-11 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shadow-md"><i class="fa-solid fa-plus"></i></div>
+        <span class="text-[11px] font-bold text-slate-600">Catat</span>
+      </button>
+      <button onclick="startTimer()" class="flex flex-col items-center gap-1.5">
+        <div class="w-11 h-11 rounded-2xl bg-white border border-slate-200 flex items-center justify-center"><i class="fa-solid fa-stopwatch text-slate-600"></i></div>
+        <span class="text-[11px] font-bold text-slate-600">Timer</span>
+      </button>
+      <button onclick="switchView('stat')" class="flex flex-col items-center gap-1.5">
+        <div class="w-11 h-11 rounded-2xl bg-white border border-slate-200 flex items-center justify-center"><i class="fa-solid fa-chart-simple text-slate-600"></i></div>
+        <span class="text-[11px] font-bold text-slate-600">Statistik</span>
+      </button>
+      <button onclick="switchView('plan')" class="flex flex-col items-center gap-1.5">
+        <div class="w-11 h-11 rounded-2xl bg-white border border-slate-200 flex items-center justify-center"><i class="fa-solid fa-calendar-check text-slate-600"></i></div>
+        <span class="text-[11px] font-bold text-slate-600">Jadwal</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- promo carousel -->
+  <div class="px-4 mt-4">
+    <div class="flex gap-2 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-1">
+      <div class="snap-start shrink-0 w-[260px] bg-gradient-to-br from-emerald-600 to-teal-600 rounded-2xl p-4 text-white flex flex-col justify-between">
+        <div class="text-xs font-bold tracking-widest opacity-70">CHALLENGE • MINGGU INI</div>
+        <div class="font-black leading-tight">Lari 15 km<br>progress 12.4 / 15 km</div>
+        <div class="mt-2 h-1.5 bg-white/25 rounded-full overflow-hidden"><div class="h-full bg-white" style="width:83%"></div></div>
+        <button onclick="switchView('stat')" class="mt-3 bg-white text-emerald-700 text-xs font-black px-3 py-2 rounded-full w-fit">Lihat progres →</button>
+      </div>
+      <div class="snap-start shrink-0 w-[260px] bg-gradient-to-br from-orange-500 to-rose-500 rounded-2xl p-4 text-white flex flex-col justify-between">
+        <div class="text-xs font-bold tracking-widest opacity-70">STREAK • 5 HARI</div>
+        <div class="font-black leading-tight">Jangan putus!<br>Lanjut hari ke-6 besok</div>
+        <button onclick="openAdd()" class="mt-3 bg-white text-orange-700 text-xs font-black px-3 py-2 rounded-full w-fit">Catat hari ini →</button>
+      </div>
+      <div class="snap-start shrink-0 w-[260px] bg-gradient-to-br from-violet-600 to-indigo-600 rounded-2xl p-4 text-white flex flex-col justify-between">
+        <div class="text-xs font-bold tracking-widest opacity-70">GOAL • BULAN INI</div>
+        <div class="font-black leading-tight">Turun 2 kg<br>1.2 / 2 kg tercapai</div>
+        <button onclick="openGoal()" class="mt-3 bg-white text-violet-700 text-xs font-black px-3 py-2 rounded-full w-fit">Atur goal →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- chart -->
+  <div class="px-6 mt-5">
+    <div class="flex items-center justify-between">
+      <h3 class="font-bold text-slate-900">Aktivitas Minggu Ini</h3>
+      <span id="chartUnit" class="text-xs font-semibold text-slate-400">menit / hari</span>
+    </div>
+    <div id="chart" class="mt-3 flex items-end gap-2 h-20"></div>
+    <div id="chartTip" class="mt-2 text-xs font-semibold text-emerald-600 min-h-[16px]"></div>
+  </div>
+
+  <!-- search + filter chips -->
+  <div class="px-6 mt-5">
+    <div class="flex items-center justify-between">
+      <h3 class="font-bold text-slate-900">Riwayat Kegiatan</h3>
+      <button onclick="toast('Filter di chips bawah — coba tap kategori')" class="text-xs font-bold text-emerald-600">Lihat semua</button>
+    </div>
+    <div class="mt-3 flex gap-2">
+      <div class="flex-1 relative">
+        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+        <input id="search" oninput="renderTx()" placeholder="Cari: lari, gym, yoga…" class="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-emerald-400">
+      </div>
+      <button onclick="openAdd()" class="px-4 rounded-xl bg-slate-900 text-white text-xs font-bold whitespace-nowrap">+ Catat</button>
+    </div>
+    <div class="mt-2 flex gap-1.5 flex-wrap">
+      <button onclick="setCat('all')" data-cat="all" class="chip px-3 py-1.5 rounded-full bg-slate-900 text-white text-xs font-bold">Semua</button>
+      <button onclick="setCat('Lari')" data-cat="Lari" class="chip px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-xs font-bold">Lari</button>
+      <button onclick="setCat('Gym')" data-cat="Gym" class="chip px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-xs font-bold">Gym</button>
+      <button onclick="setCat('Sepeda')" data-cat="Sepeda" class="chip px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-xs font-bold">Sepeda</button>
+      <button onclick="setCat('Yoga')" data-cat="Yoga" class="chip px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-xs font-bold">Yoga</button>
+      <button onclick="setCat('Renang')" data-cat="Renang" class="chip px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-xs font-bold">Renang</button>
+    </div>
+    <div id="txList" class="mt-3 space-y-3"></div>
+  </div>
+
+  <!-- targets -->
+  <div class="px-6 mt-6">
+    <div class="flex items-center justify-between">
+      <h3 class="font-bold text-slate-900">Target Mingguan</h3>
+      <button onclick="openTarget()" class="text-xs font-bold text-emerald-600">Atur</button>
+    </div>
+    <div id="targetList" class="mt-3 space-y-3"></div>
+  </div>
+
+  <!-- goals -->
+  <div id="goals" class="px-6 mt-6">
+    <div class="flex items-center justify-between">
+      <h3 class="font-bold text-slate-900">Goals Kebugaran</h3>
+      <button onclick="openGoal()" class="text-xs font-bold text-emerald-600">+ Goal</button>
+    </div>
+    <div id="goalList" class="mt-3 grid grid-cols-1 gap-3"></div>
+  </div>
+
+  <!-- jadwal teaser -->
+  <div class="px-6 mt-6 pb-6">
+    <h3 class="font-bold text-slate-900">Jadwal Minggu Ini</h3>
+    <div class="mt-3 grid grid-cols-7 gap-1.5 text-center">
+      <div class="bg-emerald-600 text-white rounded-xl py-2"><div class="text-[10px] font-bold opacity-80">SEN</div><div class="font-black text-sm">✓</div></div>
+      <div class="bg-emerald-600 text-white rounded-xl py-2"><div class="text-[10px] font-bold opacity-80">SEL</div><div class="font-black text-sm">✓</div></div>
+      <div class="bg-slate-100 text-slate-500 rounded-xl py-2"><div class="text-[10px] font-bold">RAB</div><div class="font-black text-sm">–</div></div>
+      <div class="bg-emerald-100 text-emerald-700 rounded-xl py-2 border border-emerald-200"><div class="text-[10px] font-bold">KAM</div><div class="font-black text-sm">●</div></div>
+      <div class="bg-white border border-slate-200 rounded-xl py-2"><div class="text-[10px] font-bold text-slate-400">JUM</div><div class="font-black text-sm text-slate-700">○</div></div>
+      <div class="bg-white border border-slate-200 rounded-xl py-2"><div class="text-[10px] font-bold text-slate-400">SAB</div><div class="font-black text-sm text-slate-700">○</div></div>
+      <div class="bg-white border border-slate-200 rounded-xl py-2"><div class="text-[10px] font-bold text-slate-400">MIN</div><div class="font-black text-sm text-slate-700">○</div></div>
+    </div>
+    <button onclick="switchView('plan')" class="mt-3 w-full py-2.5 rounded-xl bg-slate-900 text-white text-xs font-bold">Buka jadwal lengkap →</button>
+  </div>
+</div>
+
+<!-- VIEW: STAT -->
+<div id="view-stat" class="hidden flex-1 overflow-y-auto no-scrollbar p-6">
+  <h2 class="font-black text-xl text-slate-900">Statistik</h2>
+  <p class="text-xs text-slate-500">Tap donut & bar — semua interaktif tanpa backend.</p>
+  <div class="mt-4 flex gap-2">
+    <button onclick="setStatRange('minggu')" id="sr-minggu" class="px-4 py-2 rounded-full bg-slate-900 text-white text-xs font-bold">Minggu</button>
+    <button onclick="setStatRange('bulan')" id="sr-bulan" class="px-4 py-2 rounded-full bg-white border text-slate-600 text-xs font-bold">Bulan</button>
+    <button onclick="setStatRange('tahun')" id="sr-tahun" class="px-4 py-2 rounded-full bg-white border text-slate-600 text-xs font-bold">Tahun</button>
+  </div>
+  <div class="mt-4 bg-slate-50 border border-slate-100 rounded-2xl p-4 flex items-center gap-4">
+    <div class="relative w-28 h-28 shrink-0">
+      <svg viewBox="0 0 42 42" class="w-28 h-28 -rotate-90">
+        <circle cx="21" cy="21" r="15.9" fill="transparent" stroke="#e2e8f0" stroke-width="5"/>
+        <circle cx="21" cy="21" r="15.9" fill="transparent" stroke="#10b981" stroke-width="5" stroke-dasharray="38 62" stroke-linecap="round" class="cursor-pointer" onclick="toast('Lari 38% — 12.4 km')"/>
+        <circle cx="21" cy="21" r="15.9" fill="transparent" stroke="#f59e0b" stroke-width="5" stroke-dasharray="24 76" stroke-dashoffset="-38" stroke-linecap="round" class="cursor-pointer" onclick="toast('Gym 24% — 4 sesi')"/>
+        <circle cx="21" cy="21" r="15.9" fill="transparent" stroke="#8b5cf6" stroke-width="5" stroke-dasharray="18 82" stroke-dashoffset="-62" stroke-linecap="round" class="cursor-pointer" onclick="toast('Sepeda 18% — 28 km')"/>
+      </svg>
+      <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+        <div class="text-[11px] font-bold tracking-widest text-slate-400">TOTAL</div>
+        <div class="font-black text-sm text-slate-900">200 mnt</div>
+      </div>
+    </div>
+    <div class="flex-1 space-y-2 text-xs font-bold">
+      <div class="flex justify-between"><span class="text-slate-500"><span class="inline-block w-2 h-2 rounded-full bg-emerald-400"></span> Lari</span><span>38%</span></div>
+      <div class="flex justify-between"><span class="text-slate-500"><span class="inline-block w-2 h-2 rounded-full bg-amber-400"></span> Gym</span><span>24%</span></div>
+      <div class="flex justify-between"><span class="text-slate-500"><span class="inline-block w-2 h-2 rounded-full bg-violet-400"></span> Sepeda</span><span>18%</span></div>
+      <div class="flex justify-between"><span class="text-slate-500"><span class="inline-block w-2 h-2 rounded-full bg-slate-300"></span> Lainnya</span><span>20%</span></div>
+    </div>
+  </div>
+  <div class="mt-4 bg-white border border-slate-100 rounded-2xl p-4">
+    <div class="font-bold text-sm text-slate-900">Durasi Latihan</div>
+    <div id="statBars" class="mt-3 flex items-end gap-2 h-24"></div>
+    <div id="statTip" class="mt-2 text-xs font-semibold text-slate-500 min-h-[16px]">Tap bar untuk lihat nilai.</div>
+  </div>
+  <div class="mt-4 bg-emerald-50 border border-emerald-100 rounded-2xl p-4">
+    <div class="font-bold text-sm text-emerald-900"><i class="fa-solid fa-fire text-orange-500 mr-1"></i> Personal Best</div>
+    <div class="mt-2 grid grid-cols-3 gap-2 text-center">
+      <div class="bg-white rounded-xl p-2 border border-emerald-100"><div class="text-[10px] font-bold text-slate-400">LARI TERJAUH</div><div class="font-black text-sm">7.2 km</div></div>
+      <div class="bg-white rounded-xl p-2 border border-emerald-100"><div class="text-[10px] font-bold text-slate-400">KALORI MAX</div><div class="font-black text-sm">620 kcal</div></div>
+      <div class="bg-white rounded-xl p-2 border border-emerald-100"><div class="text-[10px] font-bold text-slate-400">STREAK</div><div class="font-black text-sm">9 hari</div></div>
+    </div>
+  </div>
+  <button onclick="switchView('home')" class="mt-4 w-full py-3 rounded-xl bg-slate-900 text-white font-bold text-sm">Kembali ke Beranda</button>
+</div>
+
+<!-- VIEW: PLAN -->
+<div id="view-plan" class="hidden flex-1 overflow-y-auto no-scrollbar p-6">
+  <h2 class="font-black text-xl text-slate-900">Jadwal Latihan</h2>
+  <p class="text-xs text-slate-500">Atur rencana — simpan lokal, drag tidak perlu.</p>
+  <div id="planList" class="mt-4 space-y-3"></div>
+  <button onclick="openPlan()" class="mt-3 w-full py-3 rounded-2xl border-2 border-dashed border-slate-200 font-bold text-sm text-slate-600 hover:bg-slate-50">+ Tambah jadwal</button>
+  <button onclick="switchView('home')" class="mt-4 w-full py-3 rounded-xl bg-slate-900 text-white font-bold text-sm">Kembali</button>
+</div>
+
+<!-- VIEW: PROFILE -->
+<div id="view-profile" class="hidden flex-1 overflow-y-auto no-scrollbar p-6">
+  <h2 class="font-black text-xl text-slate-900">Profil</h2>
+  <div class="mt-4 bg-gradient-to-br from-emerald-600 to-teal-500 rounded-2xl p-5 text-white flex items-center gap-3">
+    <img src="https://i.pravatar.cc/100?img=15" class="w-12 h-12 rounded-full border-2 border-white/40">
+    <div><div class="font-black">Rian Saputra</div><div class="text-xs opacity-80">Level 7 • 42 workout • AktifKu Pro</div></div>
+    <button onclick="toast('Edit profil — coming soon (demo)')" class="ml-auto w-8 h-8 rounded-full bg-white/15 flex items-center justify-center"><i class="fa-solid fa-pen text-xs"></i></button>
+  </div>
+  <div class="mt-4 grid grid-cols-3 gap-2 text-center">
+    <div class="bg-white border border-slate-100 rounded-2xl p-3"><div class="font-black text-lg">12.4<span class="text-xs font-bold text-slate-400"> km</span></div><div class="text-[11px] font-bold text-slate-500">Minggu ini</div></div>
+    <div class="bg-white border border-slate-100 rounded-2xl p-3"><div class="font-black text-lg">5<span class="text-xs font-bold text-slate-400"> hari</span></div><div class="text-[11px] font-bold text-slate-500">Streak</div></div>
+    <div class="bg-white border border-slate-100 rounded-2xl p-3"><div class="font-black text-lg">42</div><div class="text-[11px] font-bold text-slate-500">Total sesi</div></div>
+  </div>
+  <div class="mt-4 bg-white border border-slate-100 rounded-2xl divide-y">
+    <button onclick="exportCSV()" class="w-full text-left px-4 py-3 flex justify-between items-center"><span class="font-bold text-sm">Ekspor data (CSV)</span><i class="fa-solid fa-download text-slate-400 text-xs"></i></button>
+    <button onclick="clearData()" class="w-full text-left px-4 py-3 flex justify-between items-center"><span class="font-bold text-sm">Reset demo data</span><i class="fa-solid fa-rotate text-slate-400 text-xs"></i></button>
+    <button onclick="toast('Pengingat latihan 07:00 — aktif (demo)')" class="w-full text-left px-4 py-3 flex justify-between items-center"><span class="font-bold text-sm">Pengingat harian</span><i class="fa-solid fa-bell text-slate-400 text-xs"></i></button>
+  </div>
+  <button onclick="switchView('home')" class="mt-4 w-full py-3 rounded-xl bg-slate-900 text-white font-bold text-sm">Kembali</button>
+</div>
+
+<!-- bottom nav -->
+<div class="sticky bottom-0 bg-white border-t border-slate-100 px-2 py-2 flex justify-around shrink-0">
+  <button onclick="switchView('home')" data-nav="home" class="nav flex flex-col items-center gap-1 text-emerald-600"><i class="fa-solid fa-house"></i><span class="text-[10px] font-bold">Beranda</span></button>
+  <button onclick="switchView('stat')" data-nav="stat" class="nav flex flex-col items-center gap-1 text-slate-400"><i class="fa-solid fa-chart-simple"></i><span class="text-[10px] font-bold">Statistik</span></button>
+  <div class="w-10"></div>
+  <button onclick="switchView('plan')" data-nav="plan" class="nav flex flex-col items-center gap-1 text-slate-400"><i class="fa-solid fa-calendar"></i><span class="text-[10px] font-bold">Jadwal</span></button>
+  <button onclick="switchView('profile')" data-nav="profile" class="nav flex flex-col items-center gap-1 text-slate-400"><i class="fa-regular fa-user"></i><span class="text-[10px] font-bold">Profil</span></button>
+</div>
+</div>
+<button onclick="openAdd()" class="absolute bottom-6 right-6 w-14 h-14 rounded-full bg-slate-900 text-white shadow-xl flex items-center justify-center text-xl hover:bg-black transition z-20"><i class="fa-solid fa-plus"></i></button></div>
+<p class="text-center text-xs text-slate-400 mt-3">FAB & bottom nav semua hidup — catat, filter, timer, goals. Data di localStorage.</p>
+</div>
+
+<!-- DESKTOP PAJANGAN -->
+<div class="hidden lg:block flex-1 min-w-[420px]">
+  <h2 class="font-black text-2xl text-slate-900">AktifKu — Sport Tracker</h2>
+  <p class="text-sm text-slate-500 mt-1">Pencatatan olahraga harian: lari, gym, sepeda, yoga, renang. Semua interaktif — tambah, filter, timer, goals, jadwal, persist localStorage. Buka di HP kiri untuk rasa Android penuh.</p>
+  <div class="mt-5 grid grid-cols-2 gap-3">
+    <div class="bg-white rounded-2xl border border-slate-200 p-4">
+      <div class="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center"><i class="fa-solid fa-person-running"></i></div>
+      <div class="font-bold mt-2">Catat + Timer</div>
+      <div class="text-xs text-slate-500">Durasi, kalori, jarak otomatis. Timer stopwatch hidup di modal.</div>
+      <button onclick="document.getElementById('phone').scrollIntoView({behavior:'smooth'})" class="mt-3 text-xs font-bold text-emerald-600">Coba catat →</button>
+    </div>
+    <div class="bg-white rounded-2xl border border-slate-200 p-4">
+      <div class="w-9 h-9 rounded-xl bg-orange-500 text-white flex items-center justify-center"><i class="fa-solid fa-fire"></i></div>
+      <div class="font-bold mt-2">Streak & Challenge</div>
+      <div class="text-xs text-slate-500">Streak 5 hari, challenge lari 15 km, progress bar live.</div>
+      <div class="mt-3 h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-orange-500" style="width:83%"></div></div>
+    </div>
+    <div class="bg-white rounded-2xl border border-slate-200 p-4">
+      <div class="w-9 h-9 rounded-xl bg-violet-600 text-white flex items-center justify-center"><i class="fa-solid fa-chart-column"></i></div>
+      <div class="font-bold mt-2">Chart + Statistik</div>
+      <div class="text-xs text-slate-500">Bar minggu/bulan/tahun tap-to-detail, donut kategori.</div>
+      <div class="mt-3 flex gap-1"><span class="px-2 py-1 bg-slate-900 text-white rounded-full text-[11px] font-bold">Lari</span><span class="px-2 py-1 bg-slate-100 rounded-full text-[11px] font-bold">Gym</span></div>
+    </div>
+    <div class="bg-white rounded-2xl border border-slate-200 p-4">
+      <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center"><i class="fa-solid fa-bullseye"></i></div>
+      <div class="font-bold mt-2">Goals & Jadwal</div>
+      <div class="text-xs text-slate-500">Goals kebugaran + jadwal mingguan — tambah/hapus langsung.</div>
+      <button onclick="openGoal()" class="mt-3 text-xs font-bold text-blue-600">+ Tambah goal →</button>
+    </div>
+  </div>
+  <div class="mt-3 bg-slate-900 rounded-2xl p-4 text-white flex items-center gap-3">
+    <i class="fa-solid fa-lightbulb text-amber-300"></i>
+    <div class="text-sm"><span class="font-bold">Tips reviewer:</span> coba tambah aktivitas baru, ganti filter Lari/Gym, tap bar chart, jalankan timer, edit target.</div>
+  </div>
+</div>
+</div>
+
+<!-- MODALS -->
+<div id="addModal" class="fixed inset-0 z-50 hidden">
+  <div onclick="closeAdd()" class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"></div>
+  <div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-[28px] max-w-[400px] mx-auto p-6 shadow-2xl max-h-[86vh] overflow-y-auto no-scrollbar">
+    <div class="w-10 h-1.5 bg-slate-200 rounded-full mx-auto mb-5"></div>
+    <h3 class="font-black text-lg">Catat Kegiatan</h3>
+    <p class="text-sm text-slate-500">Pilih jenis, isi durasi & kalori. Data lokal saja.</p>
+    <div class="mt-4 space-y-3">
+      <div class="grid grid-cols-3 gap-2">
+        <button onclick="setSport('Lari')" data-sport="Lari" class="sport-btn py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-sm border border-emerald-600"><i class="fa-solid fa-person-running mr-1"></i> Lari</button>
+        <button onclick="setSport('Gym')" data-sport="Gym" class="sport-btn py-2.5 rounded-xl bg-white border border-slate-200 font-bold text-slate-600 text-sm"><i class="fa-solid fa-dumbbell mr-1"></i> Gym</button>
+        <button onclick="setSport('Sepeda')" data-sport="Sepeda" class="sport-btn py-2.5 rounded-xl bg-white border border-slate-200 font-bold text-slate-600 text-sm"><i class="fa-solid fa-bicycle mr-1"></i> Sepeda</button>
+        <button onclick="setSport('Yoga')" data-sport="Yoga" class="sport-btn py-2.5 rounded-xl bg-white border border-slate-200 font-bold text-slate-600 text-sm"><i class="fa-solid fa-spa mr-1"></i> Yoga</button>
+        <button onclick="setSport('Renang')" data-sport="Renang" class="sport-btn py-2.5 rounded-xl bg-white border border-slate-200 font-bold text-slate-600 text-sm"><i class="fa-solid fa-water mr-1"></i> Renang</button>
+        <button onclick="setSport('Lainnya')" data-sport="Lainnya" class="sport-btn py-2.5 rounded-xl bg-white border border-slate-200 font-bold text-slate-600 text-sm">Lainnya</button>
+      </div>
+      <input id="txTitle" placeholder="Judul (cth: Lari Pagi GBK)" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-emerald-400">
+      <div class="grid grid-cols-2 gap-2">
+        <input id="txDuration" type="number" placeholder="Durasi (menit)" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-emerald-400">
+        <input id="txCal" type="number" placeholder="Kalori (kcal)" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-emerald-400">
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <input id="txDistance" type="number" step="0.1" placeholder="Jarak km (opsional)" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-emerald-400">
+        <select id="txMood" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none bg-white text-sm">
+          <option value="🔥 Semangat">🔥 Semangat</option>
+          <option value="😊 Santai">😊 Santai</option>
+          <option value="💪 Intense">💪 Intense</option>
+          <option value="😮‍💨 Lelah">😮‍💨 Lelah</option>
+        </select>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="startTimer(); closeAdd();" class="flex-1 py-2.5 rounded-xl border border-slate-200 font-bold text-sm hover:bg-slate-50"><i class="fa-solid fa-stopwatch mr-1"></i> Pakai Timer</button>
+        <span id="timerMini" class="text-xs font-bold text-slate-500">00:00</span>
+      </div>
+      <div class="grid grid-cols-2 gap-2">
+        <button onclick="closeAdd()" class="py-3 rounded-xl border border-slate-200 font-bold">Batal</button>
+        <button onclick="addTx()" class="py-3 rounded-xl bg-emerald-600 text-white font-bold hover:bg-emerald-700">Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="timerModal" class="fixed inset-0 z-50 hidden">
+  <div onclick="closeTimer()" class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"></div>
+  <div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-[28px] max-w-[400px] mx-auto p-6 shadow-2xl text-center">
+    <div class="w-10 h-1.5 bg-slate-200 rounded-full mx-auto mb-5"></div>
+    <h3 class="font-black text-lg">Stopwatch</h3>
+    <div id="timerDisplay" class="font-black text-5xl tracking-tight mt-4">00:00</div>
+    <div class="text-xs text-slate-500 mt-1">Tap mulai / jeda — simpan otomatis ke durasi catat.</div>
+    <div class="mt-5 grid grid-cols-3 gap-2">
+      <button onclick="timerStart()" id="tStart" class="py-3 rounded-xl bg-emerald-600 text-white font-bold">Mulai</button>
+      <button onclick="timerPause()" class="py-3 rounded-xl border border-slate-200 font-bold">Jeda</button>
+      <button onclick="timerReset()" class="py-3 rounded-xl border border-slate-200 font-bold">Reset</button>
+    </div>
+    <button onclick="timerSave()" class="mt-3 w-full py-3 rounded-xl bg-slate-900 text-white font-bold">Pakai durasi ini → Catat</button>
+  </div>
+</div>
+
+<div id="goalModal" class="fixed inset-0 z-50 hidden">
+  <div onclick="closeGoal()" class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"></div>
+  <div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-[28px] max-w-[400px] mx-auto p-6 shadow-2xl">
+    <div class="w-10 h-1.5 bg-slate-200 rounded-full mx-auto mb-5"></div>
+    <h3 class="font-black text-lg">Tambah Goal</h3>
+    <div class="mt-4 space-y-3">
+      <input id="goalTitle" placeholder="Nama goal (cth: Lari 50 km bulan ini)" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-emerald-400">
+      <div class="grid grid-cols-2 gap-2">
+        <input id="goalTarget" type="number" placeholder="Target (angka)" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-emerald-400">
+        <input id="goalUnit" placeholder="Satuan (km / kg / sesi)" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-emerald-400">
+      </div>
+      <input id="goalSaved" type="number" placeholder="Progress sekarang" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-emerald-400">
+      <div class="grid grid-cols-2 gap-2">
+        <button onclick="closeGoal()" class="py-3 rounded-xl border border-slate-200 font-bold">Batal</button>
+        <button onclick="addGoal()" class="py-3 rounded-xl bg-violet-600 text-white font-bold">Simpan Goal</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="targetModal" class="fixed inset-0 z-50 hidden">
+  <div onclick="closeTarget()" class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"></div>
+  <div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-[28px] max-w-[400px] mx-auto p-6 shadow-2xl">
+    <div class="w-10 h-1.5 bg-slate-200 rounded-full mx-auto mb-5"></div>
+    <h3 class="font-black text-lg">Atur Target Mingguan</h3>
+    <div id="targetForm" class="mt-4 space-y-3"></div>
+    <button onclick="closeTarget()" class="mt-4 w-full py-3 rounded-xl bg-slate-900 text-white font-bold">Selesai</button>
+  </div>
+</div>
+
+<div id="planAddModal" class="fixed inset-0 z-50 hidden">
+  <div onclick="closePlan()" class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"></div>
+  <div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-[28px] max-w-[400px] mx-auto p-6 shadow-2xl">
+    <div class="w-10 h-1.5 bg-slate-200 rounded-full mx-auto mb-5"></div>
+    <h3 class="font-black text-lg">Tambah Jadwal</h3>
+    <div class="mt-4 space-y-3">
+      <input id="planTitle" placeholder="Kegiatan (cth: Lari Pagi)" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-blue-400">
+      <div class="grid grid-cols-2 gap-2">
+        <select id="planDay" class="px-4 py-3 rounded-xl border border-slate-200 bg-white text-sm"><option>Senin</option><option>Selasa</option><option>Rabu</option><option>Kamis</option><option>Jumat</option><option>Sabtu</option><option>Minggu</option></select>
+        <input id="planTime" type="time" value="06:30" class="px-4 py-3 rounded-xl border border-slate-200 outline-none">
+      </div>
+      <select id="planCat" class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-sm"><option>Lari</option><option>Gym</option><option>Sepeda</option><option>Yoga</option><option>Renang</option><option>Lainnya</option></select>
+      <div class="grid grid-cols-2 gap-2">
+        <button onclick="closePlan()" class="py-3 rounded-xl border border-slate-200 font-bold">Batal</button>
+        <button onclick="addPlan()" class="py-3 rounded-xl bg-blue-600 text-white font-bold">Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="notifDrawer" class="fixed inset-0 z-50 hidden">
+  <div onclick="closeNotif()" class="absolute inset-0 bg-slate-900/40"></div>
+  <div class="absolute top-0 right-0 bottom-0 w-[360px] max-w-[88vw] bg-white shadow-2xl overflow-y-auto">
+    <div class="sticky top-0 bg-white border-b p-4 flex justify-between items-center"><h3 class="font-black">Notifikasi</h3><button onclick="closeNotif()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"><i class="fa-solid fa-xmark text-xs"></i></button></div>
+    <div class="p-4 space-y-3">
+      <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-3"><div class="font-bold text-sm">Challenge lari 83%!</div><div class="text-xs text-emerald-700">12.4 / 15 km — 2.6 km lagi minggu ini.</div></div>
+      <div class="bg-amber-50 border border-amber-100 rounded-2xl p-3"><div class="font-bold text-sm">Streak 5 hari 🔥</div><div class="text-xs text-amber-700">Jangan putus — catat latihan hari ini.</div></div>
+      <div class="bg-blue-50 border border-blue-100 rounded-2xl p-3"><div class="font-bold text-sm">Jadwal besok: Yoga 06:30</div><div class="text-xs text-blue-700">Siap matras & air minum.</div></div>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-sm font-semibold px-4 py-2.5 rounded-full shadow-xl hidden z-50"></div>
+
+<script>
+let catFilter='all', period='minggu', statRange='minggu', selectedSport='Lari';
+const LS='aktifku_v1';
+let txs = JSON.parse(localStorage.getItem(LS+'_tx')||'null') || [
+  {id:1,title:'Lari Pagi GBK',cat:'Lari',duration:42,cal:380,distance:6.2,mood:'🔥 Semangat',time:'Hari ini',icon:'fa-person-running',color:'emerald'},
+  {id:2,title:'Gym Upper Body',cat:'Gym',duration:55,cal:320,distance:0,mood:'💪 Intense',time:'Kemarin',icon:'fa-dumbbell',color:'amber'},
+  {id:3,title:'Sepeda Santai CFD',cat:'Sepeda',duration:70,cal:480,distance:18.5,mood:'😊 Santai',time:'Kemarin',icon:'fa-bicycle',color:'violet'},
+  {id:4,title:'Yoga Morning Flow',cat:'Yoga',duration:30,cal:120,distance:0,mood:'😊 Santai',time:'2 hari lalu',icon:'fa-spa',color:'teal'},
+  {id:5,title:'Lari Interval Senayan',cat:'Lari',duration:35,cal:340,distance:5.1,mood:'💪 Intense',time:'2 hari lalu',icon:'fa-person-running',color:'emerald'},
+  {id:6,title:'Renang 20 Lap',cat:'Renang',duration:40,cal:360,distance:1.0,mood:'🔥 Semangat',time:'3 hari lalu',icon:'fa-water',color:'blue'},
+];
+let targets = JSON.parse(localStorage.getItem(LS+'_targets')||'null') || [
+  {cat:'Lari',icon:'fa-person-running',c:'#10b981',done:12.4,limit:15,unit:'km'},
+  {cat:'Gym',icon:'fa-dumbbell',c:'#f59e0b',done:3,limit:4,unit:'sesi'},
+  {cat:'Durasi',icon:'fa-clock',c:'#06b6d4',done:200,limit:240,unit:'menit'},
+];
+let goals = JSON.parse(localStorage.getItem(LS+'_goals')||'null') || [
+  {title:'Lari 50 km Bulan Ini',saved:32.5,target:50,unit:'km',icon:'fa-person-running',grad:'from-emerald-500 to-teal-600'},
+  {title:'Turun Berat 2 kg',saved:1.2,target:2,unit:'kg',icon:'fa-weight-scale',grad:'from-orange-500 to-rose-500'},
+  {title:'Konsisten 20 Sesi',saved:11,target:20,unit:'sesi',icon:'fa-fire',grad:'from-violet-500 to-purple-600'},
+];
+let plans = JSON.parse(localStorage.getItem(LS+'_plans')||'null') || [
+  {title:'Lari Pagi',day:'Senin',time:'06:00',cat:'Lari'},
+  {title:'Gym Upper',day:'Selasa',time:'18:00',cat:'Gym'},
+  {title:'Yoga',day:'Kamis',time:'06:30',cat:'Yoga'},
+  {title:'Sepeda CFD',day:'Minggu',time:'06:00',cat:'Sepeda'},
+];
+function save(){ localStorage.setItem(LS+'_tx',JSON.stringify(txs)); localStorage.setItem(LS+'_targets',JSON.stringify(targets)); localStorage.setItem(LS+'_goals',JSON.stringify(goals)); localStorage.setItem(LS+'_plans',JSON.stringify(plans));}
+function fmt(n){ return n.toLocaleString('id-ID');}
+function toast(m){ const t=document.getElementById('toast'); t.textContent=m; t.classList.remove('hidden'); setTimeout(()=>t.classList.add('hidden'),2200); }
+function setSport(s){ selectedSport=s; document.querySelectorAll('.sport-btn').forEach(b=>{ const on=b.dataset.sport===s; b.className=on?'sport-btn py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-sm border border-emerald-600':'sport-btn py-2.5 rounded-xl bg-white border border-slate-200 font-bold text-slate-600 text-sm';});}
+function setCat(c){ catFilter=c; document.querySelectorAll('.chip').forEach(b=>{ b.className = b.dataset.cat===c?'chip px-3 py-1.5 rounded-full bg-slate-900 text-white text-xs font-bold':'chip px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-xs font-bold'; }); renderTx(); }
+function setPeriod(p){ period=p; ['minggu','bulan','tahun'].forEach(x=>{ document.getElementById('p-'+x).className = x===p?'px-3 py-1.5 rounded-full bg-slate-900 text-white text-xs font-bold':'px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-xs font-bold';}); renderChart(); }
+function setStatRange(r){ statRange=r; ['minggu','bulan','tahun'].forEach(x=>{ document.getElementById('sr-'+x).className = x===r?'px-4 py-2 rounded-full bg-slate-900 text-white text-xs font-bold':'px-4 py-2 rounded-full bg-white border text-slate-600 text-xs font-bold';}); renderStat(); }
+
+function renderChart(){
+  const sets={minggu:[32,44,18,54,38,62,28],bulan:[62,48,55,70,38,44],tahun:[30,55,42,68,52,40,60,48,35,58,62,45]};
+  const labels={minggu:['Sen','Sel','Rab','Kam','Jum','Sab','Min'],bulan:['M1','M2','M3','M4','M5','M6'],tahun:['J','F','M','A','M','J','J','A','S','O','N','D']};
+  const vals=sets[period]; const labs=labels[period];
+  document.getElementById('chart').innerHTML=vals.map((h,i)=>`<button onclick="tipChart(${i},${h})" class="flex-1 flex flex-col items-center gap-1"><div class="w-full ${i===5?'bg-emerald-600':'bg-emerald-200'} rounded-t-lg hover:bg-emerald-400 transition" style="height:${h}px"></div><span class="text-[10px] font-bold ${i===5?'text-emerald-600':'text-slate-400'}">${labs[i]}</span></button>`).join('');
+  document.getElementById('chartUnit').textContent = period==='minggu'?'menit / hari':period==='bulan'?'menit / minggu':'menit / bulan';
+}
+function tipChart(i,h){ const names={minggu:['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','Minggu'],bulan:['Minggu 1','Minggu 2','Minggu 3','Minggu 4','Minggu 5','Minggu 6'],tahun:['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des']}; const n=names[period][i]; document.getElementById('chartTip').textContent = `${n} — ${h} menit`; toast(`${n}: ${h} menit`); }
+
+function renderTx(){
+  const q=(document.getElementById('search')?.value||'').toLowerCase();
+  let list=txs.filter(t=> (catFilter==='all'||t.cat===catFilter) && (!q || t.title.toLowerCase().includes(q) || t.cat.toLowerCase().includes(q)));
+  if(!list.length) document.getElementById('txList').innerHTML=`<div class="text-center text-sm text-slate-400 py-6">Tidak ada kegiatan untuk filter ini.</div>`;
+  else document.getElementById('txList').innerHTML=list.slice(0,20).map(t=>`
+    <div onclick="toast('${t.title} • ${t.duration}mnt • ${t.cal}kcal')" class="flex items-center gap-3 bg-slate-50 rounded-2xl px-4 py-3 border border-slate-100 hover:bg-white hover:shadow-sm cursor-pointer group">
+      <div class="w-10 h-10 rounded-xl bg-${t.color}-100 text-${t.color}-600 flex items-center justify-center shrink-0"><i class="fa-solid ${t.icon} text-sm"></i></div>
+      <div class="flex-1 min-w-0">
+        <div class="font-bold text-sm text-slate-900 truncate">${t.title}</div>
+        <div class="text-xs text-slate-400">${t.cat} • ${t.duration}mnt • ${t.cal} kcal${t.distance?` • ${t.distance} km`:''} • ${t.time}</div>
+      </div>
+      <div class="text-right shrink-0"><div class="font-black text-sm text-slate-900">${t.cal} <span class="text-[11px] font-bold text-slate-400">kcal</span></div><div class="text-[11px] font-bold text-slate-400">${t.mood||''}</div></div>
+      <button onclick="event.stopPropagation(); delTx(${t.id})" class="hidden group-hover:flex w-7 h-7 rounded-full bg-white border border-slate-200 items-center justify-center text-slate-400 hover:text-rose-600"><i class="fa-solid fa-trash text-[11px]"></i></button>
+    </div>`).join('');
+}
+function delTx(id){ txs=txs.filter(t=>t.id!==id); save(); renderTx(); updateTotals(); toast('Kegiatan dihapus'); }
+function addTx(){
+  const title=document.getElementById('txTitle').value.trim();
+  const duration=parseInt(document.getElementById('txDuration').value,10);
+  const cal=parseInt(document.getElementById('txCal').value,10);
+  const distance=parseFloat(document.getElementById('txDistance').value)||0;
+  const mood=document.getElementById('txMood').value;
+  if(!title || !duration || !cal) return toast('Isi judul, durasi & kalori dulu');
+  const mapIcon={Lari:'fa-person-running',Gym:'fa-dumbbell',Sepeda:'fa-bicycle',Yoga:'fa-spa',Renang:'fa-water',Lainnya:'fa-star'};
+  const mapColor={Lari:'emerald',Gym:'amber',Sepeda:'violet',Yoga:'teal',Renang:'blue',Lainnya:'slate'};
+  txs.unshift({id:Date.now(),title,cat:selectedSport,duration,cal,distance,mood,time:'Baru saja',icon:mapIcon[selectedSport]||'fa-star',color:mapColor[selectedSport]||'slate'});
+  document.getElementById('txTitle').value=''; document.getElementById('txDuration').value=''; document.getElementById('txCal').value=''; document.getElementById('txDistance').value='';
+  closeAdd(); save(); renderTx(); updateTotals(); renderTargets(); toast('Kegiatan dicatat ✓');
+}
+function updateTotals(){
+  let totalCal=txs.reduce((s,t)=>s+t.cal,0);
+  let totalDur=txs.reduce((s,t)=>s+t.duration,0);
+  let totalDist=txs.filter(t=>t.cat==='Lari'||t.cat==='Sepeda').reduce((s,t)=>s+(t.distance||0),0);
+  let sets=txs.filter(t=>t.cat==='Gym').length*4;
+  document.getElementById('statWorkout').textContent=txs.length+'x';
+  document.getElementById('statCal').textContent=fmt(totalCal);
+  let h=Math.floor(totalDur/60), m=totalDur%60;
+  document.getElementById('statDur').textContent=(h?h+'j ':'')+m+'m';
+  document.getElementById('statDistance').textContent=totalDist.toFixed(1)+' km';
+  document.getElementById('statSets').textContent=(sets||txs.length*2)+' set';
+  // naive streak
+  document.getElementById('streakVal').textContent=Math.min(9, Math.max(3, Math.floor(txs.length/1.2)));
+}
+function renderTargets(){
+  document.getElementById('targetList').innerHTML=targets.map((b,i)=>{
+    const pct=Math.min(100,Math.round(b.done/b.limit*100));
+    const over=b.done>=b.limit;
+    return `<div class="bg-white border ${over?'border-emerald-200 bg-emerald-50/40':'border-slate-100'} rounded-2xl p-3">
+      <div class="flex justify-between text-xs font-semibold"><span class="text-slate-600"><i class="fa-solid ${b.icon} mr-1" style="color:${b.c}"></i> ${b.cat}</span><span class="${over?'text-emerald-600':'text-slate-900'}">${b.done} / ${b.limit} ${b.unit}${over?' • tercapai!':''}</span></div>
+      <button onclick="editTarget(${i})" class="mt-1.5 w-full text-left"><div class="h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-full rounded-full" style="width:${pct}%; background:${b.c}"></div></div></button>
+      <div class="mt-1 flex justify-between text-[11px] font-bold text-slate-400"><span>${pct}%</span><button onclick="editTarget(${i})" class="text-emerald-600">edit →</button></div>
+    </div>`;
+  }).join('');
+}
+function editTarget(i){ openTarget(i); }
+function openTarget(focusIdx=null){
+  document.getElementById('targetModal').classList.remove('hidden');
+  document.getElementById('targetForm').innerHTML=targets.map((b,i)=>`
+    <div class="border border-slate-200 rounded-2xl p-3 ${focusIdx===i?'ring-2 ring-emerald-400':''}">
+      <div class="font-bold text-sm">${b.cat} (${b.unit})</div>
+      <div class="mt-2 grid grid-cols-2 gap-2">
+        <label class="text-xs font-bold text-slate-500">Tercapai<input data-i="${i}" data-k="done" type="number" value="${b.done}" step="0.1" class="mt-1 w-full px-3 py-2 rounded-xl border border-slate-200 outline-none"></label>
+        <label class="text-xs font-bold text-slate-500">Target<input data-i="${i}" data-k="limit" type="number" value="${b.limit}" step="0.1" class="mt-1 w-full px-3 py-2 rounded-xl border border-slate-200 outline-none"></label>
+      </div>
+    </div>`).join('');
+  document.querySelectorAll('#targetForm input[data-i]').forEach(inp=> inp.addEventListener('input', e=>{ const i=+e.target.dataset.i; const k=e.target.dataset.k; targets[i][k]=parseFloat(e.target.value)||0; save(); renderTargets(); }));
+}
+function closeTarget(){ document.getElementById('targetModal').classList.add('hidden'); }
+function renderGoals(){
+  document.getElementById('goalList').innerHTML=goals.map((g,i)=>{
+    const pct=Math.min(100,Math.round(g.saved/g.target*100));
+    return `<div class="bg-gradient-to-br ${g.grad} rounded-2xl p-4 text-white relative overflow-hidden">
+      <div class="absolute -right-6 -top-6 w-20 h-20 bg-white/15 rounded-full blur-xl"></div>
+      <div class="relative flex justify-between items-start">
+        <div class="flex gap-3"><div class="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center"><i class="fa-solid ${g.icon} text-sm"></i></div><div><div class="font-black text-sm">${g.title}</div><div class="text-xs opacity-80">${g.saved} / ${g.target} ${g.unit}</div></div></div>
+        <button onclick="delGoal(${i})" class="w-7 h-7 rounded-full bg-white/15 flex items-center justify-center hover:bg-white/25"><i class="fa-solid fa-xmark text-xs"></i></button>
+      </div>
+      <div class="relative mt-3 h-2 bg-white/25 rounded-full overflow-hidden"><div class="h-full bg-white rounded-full" style="width:${pct}%"></div></div>
+      <div class="relative mt-1 flex justify-between text-xs font-bold"><span class="opacity-90">${pct}%</span><button onclick="addToGoal(${i})" class="bg-white text-slate-900 px-3 py-1 rounded-full text-xs font-black">+ Progress</button></div>
+    </div>`;
+  }).join('');
+}
+function addGoal(){
+  const t=document.getElementById('goalTitle').value.trim();
+  const tar=parseFloat(document.getElementById('goalTarget').value);
+  const unit=document.getElementById('goalUnit').value.trim()||'unit';
+  const saved=parseFloat(document.getElementById('goalSaved').value)||0;
+  if(!t||!tar) return toast('Isi nama & target');
+  goals.unshift({title:t,saved,target:tar,unit,icon:'fa-bullseye',grad:'from-slate-900 to-slate-700'});
+  document.getElementById('goalTitle').value=''; document.getElementById('goalTarget').value=''; document.getElementById('goalUnit').value=''; document.getElementById('goalSaved').value='';
+  closeGoal(); save(); renderGoals(); toast('Goal ditambahkan ✓');
+}
+function delGoal(i){ goals.splice(i,1); save(); renderGoals(); toast('Goal dihapus'); }
+function addToGoal(i){ const v=prompt('Tambah progress berapa?', '1'); if(!v) return; const n=parseFloat(v); if(!n) return; goals[i].saved += n; save(); renderGoals(); toast('Progress ditambah ✓'); }
+function openGoal(){ document.getElementById('goalModal').classList.remove('hidden'); }
+function closeGoal(){ document.getElementById('goalModal').classList.add('hidden'); }
+
+function renderPlans(){
+  const order={Senin:1,Selasa:2,Rabu:3,Kamis:4,Jumat:5,Sabtu:6,Minggu:7};
+  let sorted=[...plans].sort((a,b)=>(order[a.day]||9)-(order[b.day]||9));
+  document.getElementById('planList').innerHTML=sorted.map((p,i)=>{
+    const idx=plans.indexOf(p);
+    return `<div class="bg-white border border-slate-100 rounded-2xl p-4 flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center text-xs"><i class="fa-solid ${catIcon(p.cat)}"></i></div>
+      <div class="flex-1"><div class="font-bold text-sm">${p.title}</div><div class="text-xs text-slate-400">${p.day} • ${p.time} • ${p.cat}</div></div>
+      <button onclick="delPlan(${idx})" class="w-8 h-8 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-400 hover:text-rose-600"><i class="fa-solid fa-trash text-xs"></i></button>
+    </div>`;
+  }).join('');
+}
+function catIcon(c){ return {Lari:'fa-person-running',Gym:'fa-dumbbell',Sepeda:'fa-bicycle',Yoga:'fa-spa',Renang:'fa-water'}[c]||'fa-star'; }
+function openPlan(){ document.getElementById('planAddModal').classList.remove('hidden'); }
+function closePlan(){ document.getElementById('planAddModal').classList.add('hidden'); }
+function addPlan(){ const t=document.getElementById('planTitle').value.trim(); const d=document.getElementById('planDay').value; const tm=document.getElementById('planTime').value; const c=document.getElementById('planCat').value; if(!t) return toast('Isi kegiatan'); plans.push({title:t,day:d,time:tm,cat:c}); document.getElementById('planTitle').value=''; closePlan(); save(); renderPlans(); toast('Jadwal ditambahkan ✓'); }
+function delPlan(i){ plans.splice(i,1); save(); renderPlans(); toast('Jadwal dihapus'); }
+
+let timerSec=0, timerInt=null, timerRunning=false;
+function startTimer(){ document.getElementById('timerModal').classList.remove('hidden'); }
+function closeTimer(){ document.getElementById('timerModal').classList.add('hidden'); }
+function timerStart(){ if(timerRunning) return; timerRunning=true; document.getElementById('tStart').textContent='Jalan…'; timerInt=setInterval(()=>{ timerSec++; updTimer(); },1000); }
+function timerPause(){ timerRunning=false; clearInterval(timerInt); document.getElementById('tStart').textContent='Lanjut'; toast('Timer dijeda'); }
+function timerReset(){ timerRunning=false; clearInterval(timerInt); timerSec=0; updTimer(); document.getElementById('tStart').textContent='Mulai'; }
+function timerSave(){ const mins=Math.max(1, Math.round(timerSec/60)); document.getElementById('txDuration').value=mins; document.getElementById('txCal').value=Math.round(mins*9); closeTimer(); openAdd(); toast('Durasi '+mins+' menit dipakai ✓'); }
+function updTimer(){ const m=String(Math.floor(timerSec/60)).padStart(2,'0'), s=String(timerSec%60).padStart(2,'0'); document.getElementById('timerDisplay').textContent=m+':'+s; document.getElementById('timerMini').textContent=m+':'+s; }
+
+function openAdd(){ document.getElementById('addModal').classList.remove('hidden'); }
+function closeAdd(){ document.getElementById('addModal').classList.add('hidden'); }
+function openNotif(){ document.getElementById('notifDrawer').classList.remove('hidden'); }
+function closeNotif(){ document.getElementById('notifDrawer').classList.add('hidden'); }
+function switchView(v){
+  ['home','stat','plan','profile'].forEach(x=> document.getElementById('view-'+x).classList.toggle('hidden', x!==v));
+  document.querySelectorAll('.nav').forEach(b=>{ b.classList.toggle('text-emerald-600', b.dataset.nav===v); b.classList.toggle('text-slate-400', b.dataset.nav!==v); });
+  if(v==='stat') renderStat();
+  if(v==='plan') renderPlans();
+}
+function renderStat(){
+  const sets={minggu:[32,44,18,54,38,62,28],bulan:[48,62,55,42,70,38],tahun:[30,55,42,68,52,40,60,48,35,58,62,45]};
+  const vals=sets[statRange];
+  document.getElementById('statBars').innerHTML=vals.map((h,i)=>`<button onclick="toast('Bar ${i+1}: ${h} menit')" class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-slate-900 rounded-t-lg hover:bg-emerald-600" style="height:${h}px"></div><span class="text-[10px] font-bold text-slate-400">${i+1}</span></button>`).join('');
+}
+function exportCSV(){
+  let csv='Judul,Kategori,Durasi, Kalori,Jarak,Waktu\n'+txs.map(t=>`"${t.title}",${t.cat},${t.duration},${t.cal},${t.distance||0},${t.time}`).join('\n');
+  let blob=new Blob([csv],{type:'text/csv'}), url=URL.createObjectURL(blob), a=document.createElement('a'); a.href=url; a.download='aktifku.csv'; a.click(); toast('CSV didownload (demo)');
+}
+function clearData(){ if(!confirm('Reset semua data demo ke awal?')) return; localStorage.removeItem(LS+'_tx'); localStorage.removeItem(LS+'_targets'); localStorage.removeItem(LS+'_goals'); localStorage.removeItem(LS+'_plans'); location.reload(); }
+function tick(){ const d=new Date(); document.getElementById('clock').textContent=d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}); }
+tick(); setInterval(tick,60000);
+renderChart(); renderTx(); renderTargets(); renderGoals(); renderPlans(); updateTotals();
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeAdd(); closeTimer(); closeGoal(); closeTarget(); closePlan(); closeNotif(); }});
+</script>
+<p class="text-center text-xs text-slate-400 pb-8 max-w-[400px] mx-auto px-4">Prototype interaktif — semua tombol hidup, data di localStorage. Buka di HP untuk rasa Android penuh.</p>
+</body>
+</html>
