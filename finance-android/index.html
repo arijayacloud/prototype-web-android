@@ -3,164 +3,349 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Keuanganku — Manajemen Keuangan Android</title>
+<title>Keuanganku — Manajemen Keuangan Android (Interactive)</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
-  *{font-family:Inter,sans-serif}
-  .no-scrollbar::-webkit-scrollbar{display:none}
-  .no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
+*{font-family:Inter,sans-serif}
+.no-scrollbar::-webkit-scrollbar{display:none}
+.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
+.shine{position:relative;overflow:hidden}
+.shine:after{content:"";position:absolute;top:-50%;left:-30%;width:60%;height:200%;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.22) 50%,transparent 70%);transform:rotate(15deg) translateX(-80%);animation:shine 3.2s infinite}
+@keyframes shine{0%{transform:rotate(15deg) translateX(-80%)} 60%,100%{transform:rotate(15deg) translateX(220%)}}
+.range{ -webkit-appearance:none; appearance:none; height:6px; border-radius:999px; background:#e2e8f0 }
+.range::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; height:18px; border-radius:999px; background:#2563eb; border:3px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,.2) }
 </style>
 </head>
 <body class="bg-[#EEF2F7] min-h-screen flex flex-col items-center">
-<!-- top bar desktop -->
+<!-- top bar -->
 <div class="w-full bg-white border-b border-slate-200 sticky top-0 z-30">
-  <div class="max-w-[440px] mx-auto px-4 h-14 flex items-center justify-between">
+  <div class="max-w-[1120px] mx-auto px-4 h-14 flex items-center justify-between">
     <a href="../index.html" class="flex items-center gap-2 font-bold text-slate-700 hover:text-blue-600"><i class="fa-solid fa-arrow-left"></i> Kembali</a>
-    <span class="text-xs font-bold tracking-widest text-slate-400">PROTOTYPE ANDROID • HTML</span>
-    <a href="https://github.com/arijayacloud/prototype-web-android/tree/main/finance-android" target="_blank" rel="noopener" class="text-slate-400 hover:text-slate-700"><i class="fa-brands fa-github"></i></a>
+    <span class="hidden md:inline text-xs font-bold tracking-widest text-slate-400">KEUANGANKU • INTERACTIVE PROTOTYPE • FRONTEND ONLY</span>
+    <span class="md:hidden text-xs font-bold tracking-widest text-slate-400">PROTOTYPE ANDROID</span>
+    <div class="flex items-center gap-2">
+      <button onclick="toggleTheme()" class="w-8 h-8 rounded-full border border-slate-200 bg-white flex items-center justify-center text-slate-600 hover:bg-slate-50" title="Try dark/light"><i class="fa-solid fa-circle-half-stroke text-xs"></i></button>
+      <a href="https://github.com/arijayacloud/prototype-web-android/tree/main/finance-android" target="_blank" class="text-slate-400 hover:text-slate-700"><i class="fa-brands fa-github"></i></a>
+    </div>
   </div>
 </div>
 
+<div class="w-full max-w-[1120px] mx-auto px-4 mt-6 mb-10 flex flex-col lg:flex-row gap-6 items-start justify-center">
 <!-- phone frame -->
-<div class="w-full max-w-[400px] mx-auto mt-6 mb-10">
-<div class="bg-white rounded-[36px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] overflow-hidden border-[8px] border-slate-900">
-
+<div class="w-full max-w-[400px] mx-auto lg:mx-0 shrink-0">
+<div id="phone" class="bg-white rounded-[36px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] overflow-hidden border-[8px] border-slate-900 flex flex-col" style="min-height:760px">
 <!-- status bar -->
-<div class="h-7 bg-slate-900 flex items-center justify-between px-6 text-white text-[11px] font-semibold">
+<div class="h-7 bg-slate-900 flex items-center justify-between px-6 text-white text-[11px] font-semibold shrink-0">
   <span id="clock">09:41</span>
   <div class="flex items-center gap-1.5"><i class="fa-solid fa-signal text-[10px]"></i><i class="fa-solid fa-wifi text-[10px]"></i><i class="fa-solid fa-battery-three-quarters"></i></div>
 </div>
 
-<!-- app header -->
-<div class="bg-gradient-to-br from-blue-600 to-cyan-500 px-6 pt-5 pb-8 text-white relative overflow-hidden">
-  <div class="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
-  <div class="relative">
+<!-- VIEW: HOME -->
+<div id="view-home" class="flex-1 overflow-y-auto no-scrollbar">
+  <!-- header -->
+  <div class="bg-gradient-to-br from-blue-600 to-cyan-500 px-6 pt-5 pb-8 text-white relative overflow-hidden">
+    <div class="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
+    <div class="relative">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <img src="https://i.pravatar.cc/100?img=12" class="w-9 h-9 rounded-full border-2 border-white/40">
+          <div>
+            <div class="text-[11px] tracking-widest opacity-70 font-semibold">SELAMAT PAGI</div>
+            <div class="font-bold text-sm">Rian — Keuanganku</div>
+          </div>
+        </div>
+        <button onclick="openNotif()" class="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center backdrop-blur relative"><i class="fa-regular fa-bell"></i><span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-rose-500 rounded-full border-2 border-blue-600"></span></button>
+      </div>
+      <div class="mt-6 bg-white rounded-[20px] p-5 text-slate-900 shadow-lg shine">
+        <div class="flex items-center justify-between">
+          <div class="text-xs font-bold tracking-widest text-slate-400">TOTAL SALDO</div>
+          <button onclick="toggleBalance()" class="w-7 h-7 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-slate-100"><i id="eyeIcon" class="fa-regular fa-eye text-xs"></i></button>
+        </div>
+        <div id="balanceDisplay" class="font-black text-[28px] tracking-tight mt-1">Rp 12.450.000</div>
+        <div id="balanceHint" class="text-[11px] text-slate-400 -mt-1 hidden">Tap mata untuk tampilkan</div>
+        <div class="flex gap-3 mt-3">
+          <button onclick="filterTx('income')" class="flex-1 flex items-center gap-2 bg-emerald-50 rounded-xl px-3 py-2 border border-emerald-100 hover:bg-emerald-100 text-left">
+            <div class="w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs"><i class="fa-solid fa-arrow-down"></i></div>
+            <div><div class="text-[10px] font-bold text-emerald-600 tracking-widest">PEMASUKAN</div><div id="incomeDisplay" class="font-bold text-sm text-emerald-700">Rp 8.200.000</div></div>
+          </button>
+          <button onclick="filterTx('expense')" class="flex-1 flex items-center gap-2 bg-rose-50 rounded-xl px-3 py-2 border border-rose-100 hover:bg-rose-100 text-left">
+            <div class="w-7 h-7 rounded-full bg-rose-500 text-white flex items-center justify-center text-xs"><i class="fa-solid fa-arrow-up"></i></div>
+            <div><div class="text-[10px] font-bold text-rose-600 tracking-widest">PENGELUARAN</div><div id="expenseDisplay" class="font-bold text-sm text-rose-700">Rp 3.750.000</div></div>
+          </button>
+        </div>
+        <!-- mini period -->
+        <div class="mt-3 flex gap-1.5">
+          <button onclick="setPeriod('minggu')" id="p-minggu" class="px-3 py-1.5 rounded-full bg-slate-900 text-white text-xs font-bold">Minggu</button>
+          <button onclick="setPeriod('bulan')" id="p-bulan" class="px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-xs font-bold">Bulan</button>
+          <button onclick="setPeriod('tahun')" id="p-tahun" class="px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-xs font-bold">Tahun</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- quick actions -->
+  <div class="px-4 -mt-3 relative z-10">
+    <div class="bg-slate-50 rounded-2xl p-3 flex justify-around border border-slate-100">
+      <button onclick="openAdd()" class="flex flex-col items-center gap-1.5">
+        <div class="w-11 h-11 rounded-2xl bg-blue-600 text-white flex items-center justify-center shadow-md"><i class="fa-solid fa-plus"></i></div>
+        <span class="text-[11px] font-bold text-slate-600">Tambah</span>
+      </button>
+      <button onclick="openTransfer()" class="flex flex-col items-center gap-1.5">
+        <div class="w-11 h-11 rounded-2xl bg-white border border-slate-200 flex items-center justify-center"><i class="fa-solid fa-arrow-right-arrow-left text-slate-600"></i></div>
+        <span class="text-[11px] font-bold text-slate-600">Transfer</span>
+      </button>
+      <button onclick="switchView('stat')" class="flex flex-col items-center gap-1.5">
+        <div class="w-11 h-11 rounded-2xl bg-white border border-slate-200 flex items-center justify-center"><i class="fa-solid fa-chart-simple text-slate-600"></i></div>
+        <span class="text-[11px] font-bold text-slate-600">Laporan</span>
+      </button>
+      <button onclick="switchView('wallet')" class="flex flex-col items-center gap-1.5">
+        <div class="w-11 h-11 rounded-2xl bg-white border border-slate-200 flex items-center justify-center"><i class="fa-solid fa-wallet text-slate-600"></i></div>
+        <span class="text-[11px] font-bold text-slate-600">Dompet</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- promo carousel (pajangan) -->
+  <div class="px-4 mt-4">
+    <div class="flex gap-2 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-1">
+      <div class="snap-start shrink-0 w-[260px] bg-gradient-to-br from-violet-600 to-indigo-600 rounded-2xl p-4 text-white flex flex-col justify-between">
+        <div class="text-xs font-bold tracking-widest opacity-70">PAJANGAN • PROMO</div>
+        <div class="font-black leading-tight">Cashback 30%<br>Top-up E-Wallet</div>
+        <button onclick="toast('Promo diklaim! (demo)')" class="mt-3 bg-white text-violet-700 text-xs font-black px-3 py-2 rounded-full w-fit">Klaim →</button>
+      </div>
+      <div class="snap-start shrink-0 w-[260px] bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl p-4 text-white flex flex-col justify-between">
+        <div class="text-xs font-bold tracking-widest opacity-70">PAJANGAN • GOALS</div>
+        <div class="font-black leading-tight">3 Goals aktif<br>72% tercapai avg</div>
+        <button onclick="switchView('home'); document.getElementById('goals').scrollIntoView({behavior:'smooth',block:'start'})" class="mt-3 bg-white text-emerald-700 text-xs font-black px-3 py-2 rounded-full w-fit">Lihat goals →</button>
+      </div>
+      <div class="snap-start shrink-0 w-[260px] bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl p-4 text-white flex flex-col justify-between">
+        <div class="text-xs font-bold tracking-widest opacity-70">PAJANGAN • INSIGHT</div>
+        <div class="font-black leading-tight">Belanja naik 18%<br>minggu ini</div>
+        <button onclick="switchView('stat')" class="mt-3 bg-white text-orange-700 text-xs font-black px-3 py-2 rounded-full w-fit">Buka laporan →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- chart -->
+  <div class="px-6 mt-5">
     <div class="flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <img src="https://i.pravatar.cc/100?img=12" class="w-9 h-9 rounded-full border-2 border-white/40">
-        <div>
-          <div class="text-[11px] tracking-widest opacity-70 font-semibold">SELAMAT PAGI</div>
-          <div class="font-bold text-sm">Rian — Keuanganku</div>
-        </div>
+      <h3 class="font-bold text-slate-900">Pengeluaran Minggu Ini</h3>
+      <span id="periodLabel" class="text-xs font-semibold text-slate-400">tap bar untuk detail</span>
+    </div>
+    <div id="chart" class="mt-3 flex items-end gap-2 h-20"></div>
+    <div id="chartTip" class="mt-2 text-xs font-semibold text-blue-600 min-h-[16px]"></div>
+  </div>
+
+  <!-- search + filter chips -->
+  <div class="px-6 mt-5">
+    <div class="flex items-center justify-between">
+      <h3 class="font-bold text-slate-900">Transaksi Terbaru</h3>
+      <button onclick="toast('Lihat semua — filter di bawah (demo)')" class="text-xs font-bold text-blue-600">Lihat semua</button>
+    </div>
+    <div class="mt-3 flex gap-2">
+      <div class="flex-1 relative">
+        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+        <input id="search" oninput="renderTx()" placeholder="Cari transaksi…" class="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-blue-400">
       </div>
-      <button class="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center backdrop-blur"><i class="fa-regular fa-bell"></i></button>
+      <button onclick="openAdd()" class="px-4 rounded-xl bg-slate-900 text-white text-xs font-bold whitespace-nowrap">+ Baru</button>
     </div>
-    <div class="mt-6 bg-white rounded-[20px] p-5 text-slate-900 shadow-lg">
-      <div class="text-xs font-bold tracking-widest text-slate-400">TOTAL SALDO</div>
-      <div id="balanceDisplay" class="font-black text-[28px] tracking-tight mt-1">Rp 12.450.000</div>
-      <div class="flex gap-3 mt-3">
-        <div class="flex-1 flex items-center gap-2 bg-emerald-50 rounded-xl px-3 py-2">
-          <div class="w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs"><i class="fa-solid fa-arrow-down"></i></div>
-          <div><div class="text-[10px] font-bold text-emerald-600 tracking-widest">PEMASUKAN</div><div id="incomeDisplay" class="font-bold text-sm text-emerald-700">Rp 8.200.000</div></div>
-        </div>
-        <div class="flex-1 flex items-center gap-2 bg-rose-50 rounded-xl px-3 py-2">
-          <div class="w-7 h-7 rounded-full bg-rose-500 text-white flex items-center justify-center text-xs"><i class="fa-solid fa-arrow-up"></i></div>
-          <div><div class="text-[10px] font-bold text-rose-600 tracking-widest">PENGELUARAN</div><div id="expenseDisplay" class="font-bold text-sm text-rose-700">Rp 3.750.000</div></div>
-        </div>
+    <div class="mt-2 flex gap-1.5 flex-wrap">
+      <button onclick="setCat('all')" data-cat="all" class="chip px-3 py-1.5 rounded-full bg-slate-900 text-white text-xs font-bold">Semua</button>
+      <button onclick="setCat('Makan')" data-cat="Makan" class="chip px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-xs font-bold">Makan</button>
+      <button onclick="setCat('Transport')" data-cat="Transport" class="chip px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-xs font-bold">Transport</button>
+      <button onclick="setCat('Belanja')" data-cat="Belanja" class="chip px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-xs font-bold">Belanja</button>
+      <button onclick="setCat('Pemasukan')" data-cat="Pemasukan" class="chip px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-xs font-bold">Pemasukan</button>
+    </div>
+    <div id="txList" class="mt-3 space-y-3"></div>
+  </div>
+
+  <!-- budgets -->
+  <div class="px-6 mt-6">
+    <div class="flex items-center justify-between">
+      <h3 class="font-bold text-slate-900">Anggaran Bulan Ini</h3>
+      <button onclick="openBudget()" class="text-xs font-bold text-blue-600">Atur</button>
+    </div>
+    <div id="budgetList" class="mt-3 space-y-3"></div>
+  </div>
+
+  <!-- goals pajangan -->
+  <div id="goals" class="px-6 mt-6">
+    <div class="flex items-center justify-between">
+      <h3 class="font-bold text-slate-900">Pajangan Goals</h3>
+      <button onclick="openGoal()" class="text-xs font-bold text-blue-600">+ Goal</button>
+    </div>
+    <div id="goalList" class="mt-3 grid grid-cols-1 gap-3"></div>
+  </div>
+
+  <!-- tagihan pajangan -->
+  <div class="px-6 mt-6 pb-6">
+    <h3 class="font-bold text-slate-900">Pajangan Tagihan & Langganan</h3>
+    <div class="mt-3 grid grid-cols-2 gap-3">
+      <button onclick="toast('Bayar Listrik — simulasi sukses')" class="text-left bg-gradient-to-br from-slate-900 to-slate-700 rounded-2xl p-4 text-white">
+        <div class="w-8 h-8 rounded-xl bg-white/15 flex items-center justify-center"><i class="fa-solid fa-bolt text-xs"></i></div>
+        <div class="font-bold text-sm mt-2">Listrik PLN</div>
+        <div class="text-xs opacity-70">Jatuh tempo 3 hari</div>
+        <div class="text-xs font-black mt-1">Rp 320.000</div>
+      </button>
+      <button onclick="toast('Bayar Netflix — simulasi sukses')" class="text-left bg-white border border-slate-200 rounded-2xl p-4">
+        <div class="w-8 h-8 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center"><i class="fa-brands fa-youtube text-xs"></i></div>
+        <div class="font-bold text-sm mt-2 text-slate-900">Netflix</div>
+        <div class="text-xs text-slate-400">Bulanan • 12 Feb</div>
+        <div class="text-xs font-black mt-1 text-slate-900">Rp 65.000</div>
+      </button>
+      <button onclick="toast('Bayar Spotify — simulasi sukses')" class="text-left bg-white border border-slate-200 rounded-2xl p-4">
+        <div class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center"><i class="fa-brands fa-spotify text-xs"></i></div>
+        <div class="font-bold text-sm mt-2 text-slate-900">Spotify</div>
+        <div class="text-xs text-slate-400">Family • 20 Feb</div>
+        <div class="text-xs font-black mt-1 text-slate-900">Rp 86.000</div>
+      </button>
+      <button onclick="openTransfer()" class="text-left bg-blue-50 border border-blue-100 rounded-2xl p-4 hover:bg-blue-100">
+        <div class="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center"><i class="fa-solid fa-plus text-xs"></i></div>
+        <div class="font-bold text-sm mt-2 text-blue-900">Tambah tagihan</div>
+        <div class="text-xs text-blue-700">Kustom pajangan</div>
+        <div class="text-xs font-bold mt-1 text-blue-600">Atur →</div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW: STAT -->
+<div id="view-stat" class="hidden flex-1 overflow-y-auto no-scrollbar p-6">
+  <h2 class="font-black text-xl text-slate-900">Statistik</h2>
+  <p class="text-xs text-slate-500">Tap donut & bar — semua interaktif tanpa backend.</p>
+  <div class="mt-4 flex gap-2">
+    <button onclick="setStatRange('minggu')" id="sr-minggu" class="px-4 py-2 rounded-full bg-slate-900 text-white text-xs font-bold">Minggu</button>
+    <button onclick="setStatRange('bulan')" id="sr-bulan" class="px-4 py-2 rounded-full bg-white border text-slate-600 text-xs font-bold">Bulan</button>
+    <button onclick="setStatRange('tahun')" id="sr-tahun" class="px-4 py-2 rounded-full bg-white border text-slate-600 text-xs font-bold">Tahun</button>
+  </div>
+  <div class="mt-4 bg-slate-50 border border-slate-100 rounded-2xl p-4 flex items-center gap-4">
+    <div class="relative w-28 h-28 shrink-0">
+      <svg viewBox="0 0 42 42" class="w-28 h-28 -rotate-90">
+        <circle cx="21" cy="21" r="15.9" fill="transparent" stroke="#e2e8f0" stroke-width="5"/>
+        <circle id="donut1" cx="21" cy="21" r="15.9" fill="transparent" stroke="#f59e0b" stroke-width="5" stroke-dasharray="40 60" stroke-linecap="round" class="cursor-pointer" onclick="toast('Makan 40% — Rp 1.2jt')"/>
+        <circle id="donut2" cx="21" cy="21" r="15.9" fill="transparent" stroke="#3b82f6" stroke-width="5" stroke-dasharray="22 78" stroke-dashoffset="-40" stroke-linecap="round" class="cursor-pointer" onclick="toast('Transport 22% — Rp 660rb')"/>
+        <circle id="donut3" cx="21" cy="21" r="15.9" fill="transparent" stroke="#a78bfa" stroke-width="5" stroke-dasharray="18 82" stroke-dashoffset="-62" stroke-linecap="round" class="cursor-pointer" onclick="toast('Belanja 18% — Rp 540rb')"/>
+      </svg>
+      <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+        <div class="text-[11px] font-bold tracking-widest text-slate-400">TOTAL</div>
+        <div class="font-black text-sm text-slate-900">Rp 3.75jt</div>
       </div>
     </div>
-  </div>
-</div>
-
-<!-- quick actions -->
-<div class="px-4 -mt-3 relative z-10">
-  <div class="bg-slate-50 rounded-2xl p-3 flex justify-around border border-slate-100">
-    <button onclick="openAdd()" class="flex flex-col items-center gap-1.5">
-      <div class="w-11 h-11 rounded-2xl bg-blue-600 text-white flex items-center justify-center shadow-md"><i class="fa-solid fa-plus"></i></div>
-      <span class="text-[11px] font-bold text-slate-600">Tambah</span>
-    </button>
-    <button class="flex flex-col items-center gap-1.5 opacity-70">
-      <div class="w-11 h-11 rounded-2xl bg-white border border-slate-200 flex items-center justify-center"><i class="fa-solid fa-arrow-right-arrow-left text-slate-600"></i></div>
-      <span class="text-[11px] font-bold text-slate-600">Transfer</span>
-    </button>
-    <button class="flex flex-col items-center gap-1.5 opacity-70">
-      <div class="w-11 h-11 rounded-2xl bg-white border border-slate-200 flex items-center justify-center"><i class="fa-solid fa-chart-simple text-slate-600"></i></div>
-      <span class="text-[11px] font-bold text-slate-600">Laporan</span>
-    </button>
-    <button class="flex flex-col items-center gap-1.5 opacity-70">
-      <div class="w-11 h-11 rounded-2xl bg-white border border-slate-200 flex items-center justify-center"><i class="fa-solid fa-wallet text-slate-600"></i></div>
-      <span class="text-[11px] font-bold text-slate-600">Dompet</span>
-    </button>
-  </div>
-</div>
-
-<!-- chart mini -->
-<div class="px-6 mt-6">
-  <div class="flex items-center justify-between">
-    <h3 class="font-bold text-slate-900">Pengeluaran Minggu Ini</h3>
-    <span class="text-xs font-semibold text-slate-400">7 hari</span>
-  </div>
-  <div class="mt-3 flex items-end gap-2 h-20">
-    <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-blue-100 rounded-t-lg" style="height:28px"></div><span class="text-[10px] font-bold text-slate-400">Sen</span></div>
-    <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-blue-200 rounded-t-lg" style="height:44px"></div><span class="text-[10px] font-bold text-slate-400">Sel</span></div>
-    <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-blue-600 rounded-t-lg" style="height:68px"></div><span class="text-[10px] font-bold text-blue-600">Rab</span></div>
-    <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-blue-200 rounded-t-lg" style="height:36px"></div><span class="text-[10px] font-bold text-slate-400">Kam</span></div>
-    <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-blue-100 rounded-t-lg" style="height:52px"></div><span class="text-[10px] font-bold text-slate-400">Jum</span></div>
-    <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-slate-200 rounded-t-lg" style="height:20px"></div><span class="text-[10px] font-bold text-slate-400">Sab</span></div>
-    <div class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-slate-200 rounded-t-lg" style="height:32px"></div><span class="text-[10px] font-bold text-slate-400">Min</span></div>
-  </div>
-</div>
-
-<!-- transactions -->
-<div class="px-6 mt-6">
-  <div class="flex items-center justify-between">
-    <h3 class="font-bold text-slate-900">Transaksi Terbaru</h3>
-    <button class="text-xs font-bold text-blue-600">Lihat semua</button>
-  </div>
-  <div id="txList" class="mt-3 space-y-3">
-    <!-- items injected -->
-  </div>
-</div>
-
-<!-- budgets -->
-<div class="px-6 mt-6 pb-6">
-  <h3 class="font-bold text-slate-900">Anggaran Bulan Ini</h3>
-  <div class="mt-3 space-y-3">
-    <div>
-      <div class="flex justify-between text-xs font-semibold"><span class="text-slate-600"><i class="fa-solid fa-utensils mr-1 text-orange-400"></i> Makan & Minum</span><span class="text-slate-900">Rp 1.2jt / Rp 2jt</span></div>
-      <div class="mt-1.5 h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-orange-400 rounded-full" style="width:60%"></div></div>
-    </div>
-    <div>
-      <div class="flex justify-between text-xs font-semibold"><span class="text-slate-600"><i class="fa-solid fa-bus mr-1 text-blue-400"></i> Transport</span><span class="text-slate-900">Rp 450rb / Rp 800rb</span></div>
-      <div class="mt-1.5 h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-blue-400 rounded-full" style="width:56%"></div></div>
-    </div>
-    <div>
-      <div class="flex justify-between text-xs font-semibold"><span class="text-slate-600"><i class="fa-solid fa-bag-shopping mr-1 text-violet-400"></i> Belanja</span><span class="text-slate-900">Rp 1.8jt / Rp 1.5jt</span></div>
-      <div class="mt-1.5 h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-rose-400 rounded-full" style="width:100%"></div></div>
+    <div class="flex-1 space-y-2 text-xs font-bold">
+      <div class="flex justify-between"><span class="text-slate-500"><span class="inline-block w-2 h-2 rounded-full bg-amber-400"></span> Makan</span><span>40%</span></div>
+      <div class="flex justify-between"><span class="text-slate-500"><span class="inline-block w-2 h-2 rounded-full bg-blue-400"></span> Transport</span><span>22%</span></div>
+      <div class="flex justify-between"><span class="text-slate-500"><span class="inline-block w-2 h-2 rounded-full bg-violet-400"></span> Belanja</span><span>18%</span></div>
+      <div class="flex justify-between"><span class="text-slate-500"><span class="inline-block w-2 h-2 rounded-full bg-slate-300"></span> Lainnya</span><span>20%</span></div>
     </div>
   </div>
+  <div class="mt-4 bg-white border border-slate-100 rounded-2xl p-4">
+    <div class="font-bold text-sm text-slate-900">Arus Kas</div>
+    <div id="statBars" class="mt-3 flex items-end gap-2 h-24"></div>
+    <div id="statTip" class="mt-2 text-xs font-semibold text-slate-500 min-h-[16px]"></div>
+  </div>
+  <button onclick="switchView('home')" class="mt-4 w-full py-3 rounded-xl bg-slate-900 text-white font-bold text-sm">Kembali ke Beranda</button>
+</div>
+
+<!-- VIEW: WALLET -->
+<div id="view-wallet" class="hidden flex-1 overflow-y-auto no-scrollbar p-6">
+  <h2 class="font-black text-xl text-slate-900">Dompet</h2>
+  <p class="text-xs text-slate-500">Tap kartu untuk geser. Data lokal saja.</p>
+  <div id="walletList" class="mt-4 space-y-3"></div>
+  <button onclick="openWallet()" class="mt-3 w-full py-3 rounded-2xl border-2 border-dashed border-slate-200 font-bold text-sm text-slate-600 hover:bg-slate-50">+ Tambah dompet/kartu (pajangan)</button>
+  <button onclick="switchView('home')" class="mt-4 w-full py-3 rounded-xl bg-slate-900 text-white font-bold text-sm">Kembali</button>
+</div>
+
+<!-- VIEW: PROFILE -->
+<div id="view-profile" class="hidden flex-1 overflow-y-auto no-scrollbar p-6">
+  <h2 class="font-black text-xl text-slate-900">Profil</h2>
+  <div class="mt-4 bg-gradient-to-br from-blue-600 to-cyan-500 rounded-2xl p-5 text-white flex items-center gap-3">
+    <img src="https://i.pravatar.cc/100?img=12" class="w-12 h-12 rounded-full border-2 border-white/40">
+    <div><div class="font-black">Rian Saputra</div><div class="text-xs opacity-80">rian@email.com • Keuanganku Pro</div></div>
+    <button onclick="toast('Edit profil — coming soon (demo)')" class="ml-auto w-8 h-8 rounded-full bg-white/15 flex items-center justify-center"><i class="fa-solid fa-pen text-xs"></i></button>
+  </div>
+  <div class="mt-4 bg-white border border-slate-100 rounded-2xl divide-y">
+    <button onclick="toast('Ekspor CSV — simulasi download')" class="w-full text-left px-4 py-3 flex justify-between items-center"><span class="font-bold text-sm">Ekspor data (CSV)</span><i class="fa-solid fa-download text-slate-400 text-xs"></i></button>
+    <button onclick="clearData()" class="w-full text-left px-4 py-3 flex justify-between items-center"><span class="font-bold text-sm">Reset demo data</span><i class="fa-solid fa-rotate text-slate-400 text-xs"></i></button>
+    <button onclick="toast('Pengaturan notifikasi (demo)')" class="w-full text-left px-4 py-3 flex justify-between items-center"><span class="font-bold text-sm">Notifikasi & pengingat</span><i class="fa-solid fa-bell text-slate-400 text-xs"></i></button>
+  </div>
+  <button onclick="switchView('home')" class="mt-4 w-full py-3 rounded-xl bg-slate-900 text-white font-bold text-sm">Kembali</button>
 </div>
 
 <!-- bottom nav -->
-<div class="sticky bottom-0 bg-white border-t border-slate-100 px-2 py-2 flex justify-around">
-  <button class="flex flex-col items-center gap-1 text-blue-600"><i class="fa-solid fa-house"></i><span class="text-[10px] font-bold">Beranda</span></button>
-  <button class="flex flex-col items-center gap-1 text-slate-400"><i class="fa-solid fa-chart-pie"></i><span class="text-[10px] font-bold">Statistik</span></button>
+<div class="sticky bottom-0 bg-white border-t border-slate-100 px-2 py-2 flex justify-around shrink-0">
+  <button onclick="switchView('home')" data-nav="home" class="nav flex flex-col items-center gap-1 text-blue-600"><i class="fa-solid fa-house"></i><span class="text-[10px] font-bold">Beranda</span></button>
+  <button onclick="switchView('stat')" data-nav="stat" class="nav flex flex-col items-center gap-1 text-slate-400"><i class="fa-solid fa-chart-pie"></i><span class="text-[10px] font-bold">Statistik</span></button>
   <div class="w-10"></div>
-  <button class="flex flex-col items-center gap-1 text-slate-400"><i class="fa-solid fa-wallet"></i><span class="text-[10px] font-bold">Dompet</span></button>
-  <button class="flex flex-col items-center gap-1 text-slate-400"><i class="fa-regular fa-user"></i><span class="text-[10px] font-bold">Profil</span></button>
+  <button onclick="switchView('wallet')" data-nav="wallet" class="nav flex flex-col items-center gap-1 text-slate-400"><i class="fa-solid fa-wallet"></i><span class="text-[10px] font-bold">Dompet</span></button>
+  <button onclick="switchView('profile')" data-nav="profile" class="nav flex flex-col items-center gap-1 text-slate-400"><i class="fa-regular fa-user"></i><span class="text-[10px] font-bold">Profil</span></button>
+</div>
+</div>
+<button onclick="openAdd()" class="fixed bottom-6 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full bg-slate-900 text-white shadow-xl flex items-center justify-center text-xl hover:bg-black transition z-20" style="margin-left:-160px"><i class="fa-solid fa-plus"></i></button>
+<p class="text-center text-xs text-slate-400 mt-3">FAB & bottom nav semua hidup — tap, swipe, filter, edit. Data di localStorage, tanpa backend.</p>
+</div>
+
+<!-- DESKTOP PAJANGAN (outside phone) -->
+<div class="hidden lg:block flex-1 min-w-[420px]">
+  <h2 class="font-black text-2xl text-slate-900">Pajangan Interaktif</h2>
+  <p class="text-sm text-slate-500 mt-1">Semua komponen di HP kiri bisa di-tap. Pajangan kanan cuma ringkasan fitur untuk reviewer desktop.</p>
+  <div class="mt-5 grid grid-cols-2 gap-3">
+    <div class="bg-white rounded-2xl border border-slate-200 p-4">
+      <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center"><i class="fa-solid fa-mobile-screen"></i></div>
+      <div class="font-bold mt-2">4 Views hidup</div>
+      <div class="text-xs text-slate-500">Beranda • Statistik donut • Dompet geser • Profil. Bottom nav + FAB aktif.</div>
+      <button onclick="document.getElementById('phone').scrollIntoView({behavior:'smooth'})" class="mt-3 text-xs font-bold text-blue-600">Coba di HP →</button>
+    </div>
+    <div class="bg-white rounded-2xl border border-slate-200 p-4">
+      <div class="w-9 h-9 rounded-xl bg-emerald-500 text-white flex items-center justify-center"><i class="fa-solid fa-list"></i></div>
+      <div class="font-bold mt-2">Search + Chips + Swipe</div>
+      <div class="text-xs text-slate-500">Filter Semua/Makan/Transport, cari, tap item, hapus — live tanpa reload.</div>
+      <div class="mt-3 flex gap-1"><span class="px-2 py-1 bg-slate-900 text-white rounded-full text-[11px] font-bold">Makan</span><span class="px-2 py-1 bg-slate-100 rounded-full text-[11px] font-bold">Transport</span></div>
+    </div>
+    <div class="bg-white rounded-2xl border border-slate-200 p-4">
+      <div class="w-9 h-9 rounded-xl bg-violet-600 text-white flex items-center justify-center"><i class="fa-solid fa-chart-column"></i></div>
+      <div class="font-bold mt-2">Chart tap-to-detail</div>
+      <div class="text-xs text-slate-500">Bar minggu/bulan/tahun bisa di-tap → tooltip angka. Donut juga.</div>
+      <div class="mt-3 h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-full bg-violet-500" style="width:68%"></div></div>
+    </div>
+    <div class="bg-white rounded-2xl border border-slate-200 p-4">
+      <div class="w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center"><i class="fa-solid fa-bullseye"></i></div>
+      <div class="font-bold mt-2">Goals & Tagihan</div>
+      <div class="text-xs text-slate-500">Pajangan goals progress + tagihan — tambah/edit/hapus, persist localStorage.</div>
+      <button onclick="openGoal()" class="mt-3 text-xs font-bold text-amber-600">+ Tambah goal →</button>
+    </div>
+  </div>
+  <div class="mt-3 bg-slate-900 rounded-2xl p-4 text-white flex items-center gap-3">
+    <i class="fa-solid fa-lightbulb text-amber-300"></i>
+    <div class="text-sm"><span class="font-bold">Tips reviewer:</span> coba toggle mata saldo, geser kartu dompet, ubah periode Minggu→Bulan, tap budget bar.</div>
+  </div>
 </div>
 </div>
 
-<!-- FAB -->
-<button onclick="openAdd()" class="fixed bottom-6 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full bg-slate-900 text-white shadow-xl flex items-center justify-center text-xl hover:bg-black transition"><i class="fa-solid fa-plus"></i></button>
-</div>
-
-<!-- add modal -->
+<!-- MODALS -->
 <div id="addModal" class="fixed inset-0 z-50 hidden">
   <div onclick="closeAdd()" class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"></div>
-  <div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-[28px] max-w-[400px] mx-auto p-6 shadow-2xl">
+  <div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-[28px] max-w-[400px] mx-auto p-6 shadow-2xl max-h-[86vh] overflow-y-auto no-scrollbar">
     <div class="w-10 h-1.5 bg-slate-200 rounded-full mx-auto mb-5"></div>
     <h3 class="font-black text-lg">Tambah Transaksi</h3>
-    <p class="text-sm text-slate-500">Simulasi lokal — data tidak dikirim kemana-mana.</p>
-    <div class="mt-5 space-y-3">
+    <p class="text-sm text-slate-500">Pilih tipe, kategori, dompet. Simulasi lokal.</p>
+    <div class="mt-4 space-y-3">
       <div class="grid grid-cols-2 gap-2">
-        <button id="btnIncome" onclick="setType('income')" class="py-3 rounded-xl bg-emerald-500 text-white font-bold">Pemasukan</button>
-        <button id="btnExpense" onclick="setType('expense')" class="py-3 rounded-xl bg-white border border-slate-200 font-bold text-slate-600">Pengeluaran</button>
+        <button id="btnIncome" onclick="setType('income')" class="py-3 rounded-xl bg-white border border-slate-200 font-bold text-slate-600">Pemasukan</button>
+        <button id="btnExpense" onclick="setType('expense')" class="py-3 rounded-xl bg-rose-500 text-white font-bold">Pengeluaran</button>
       </div>
       <input id="txTitle" placeholder="Judul (cth: Gaji, Kopi, Bensin)" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-blue-400">
       <input id="txAmount" type="number" placeholder="Nominal (cth: 50000)" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-blue-400">
+      <select id="txCat" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-blue-400 bg-white text-sm">
+        <option value="Makan">Makan & Minum</option>
+        <option value="Transport">Transport</option>
+        <option value="Belanja">Belanja</option>
+        <option value="Tagihan">Tagihan</option>
+        <option value="Pemasukan">Pemasukan</option>
+        <option value="Lainnya">Lainnya</option>
+      </select>
+      <select id="txWallet" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none bg-white text-sm"><option>BCA Utama</option><option>E-Wallet OVO</option><option>Tunai</option></select>
       <div class="grid grid-cols-2 gap-2">
         <button onclick="closeAdd()" class="py-3 rounded-xl border border-slate-200 font-bold">Batal</button>
         <button onclick="addTx()" class="py-3 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700">Simpan</button>
@@ -169,57 +354,277 @@
   </div>
 </div>
 
+<div id="transferModal" class="fixed inset-0 z-50 hidden">
+  <div onclick="closeTransfer()" class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"></div>
+  <div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-[28px] max-w-[400px] mx-auto p-6 shadow-2xl">
+    <div class="w-10 h-1.5 bg-slate-200 rounded-full mx-auto mb-5"></div>
+    <h3 class="font-black text-lg">Transfer Antar Dompet</h3>
+    <p class="text-sm text-slate-500">Pajangan interaktif — saldo tidak benar-benar pindah bank.</p>
+    <div class="mt-4 space-y-3">
+      <div class="grid grid-cols-2 gap-2">
+        <select id="trFrom" class="px-3 py-3 rounded-xl border border-slate-200 bg-white text-sm"><option>BCA Utama</option><option>E-Wallet OVO</option><option>Tunai</option></select>
+        <select id="trTo" class="px-3 py-3 rounded-xl border border-slate-200 bg-white text-sm"><option>E-Wallet OVO</option><option>BCA Utama</option><option>Tunai</option></select>
+      </div>
+      <input id="trAmount" type="number" placeholder="Nominal transfer" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-blue-400">
+      <div class="grid grid-cols-2 gap-2">
+        <button onclick="closeTransfer()" class="py-3 rounded-xl border border-slate-200 font-bold">Batal</button>
+        <button onclick="doTransfer()" class="py-3 rounded-xl bg-slate-900 text-white font-bold">Transfer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="goalModal" class="fixed inset-0 z-50 hidden">
+  <div onclick="closeGoal()" class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"></div>
+  <div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-[28px] max-w-[400px] mx-auto p-6 shadow-2xl">
+    <div class="w-10 h-1.5 bg-slate-200 rounded-full mx-auto mb-5"></div>
+    <h3 class="font-black text-lg">Tambah Goal</h3>
+    <div class="mt-4 space-y-3">
+      <input id="goalTitle" placeholder="Nama goal (cth: Liburan Bali)" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-blue-400">
+      <input id="goalTarget" type="number" placeholder="Target (cth: 5000000)" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-blue-400">
+      <input id="goalSaved" type="number" placeholder="Terkumpul sekarang (cth: 1200000)" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-blue-400">
+      <div class="grid grid-cols-2 gap-2">
+        <button onclick="closeGoal()" class="py-3 rounded-xl border border-slate-200 font-bold">Batal</button>
+        <button onclick="addGoal()" class="py-3 rounded-xl bg-violet-600 text-white font-bold">Simpan Goal</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="budgetModal" class="fixed inset-0 z-50 hidden">
+  <div onclick="closeBudget()" class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"></div>
+  <div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-[28px] max-w-[400px] mx-auto p-6 shadow-2xl">
+    <div class="w-10 h-1.5 bg-slate-200 rounded-full mx-auto mb-5"></div>
+    <h3 class="font-black text-lg">Atur Anggaran</h3>
+    <div id="budgetForm" class="mt-4 space-y-3"></div>
+    <button onclick="closeBudget()" class="mt-4 w-full py-3 rounded-xl bg-slate-900 text-white font-bold">Selesai</button>
+  </div>
+</div>
+
+<div id="walletModal" class="fixed inset-0 z-50 hidden">
+  <div onclick="closeWallet()" class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"></div>
+  <div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-[28px] max-w-[400px] mx-auto p-6 shadow-2xl">
+    <div class="w-10 h-1.5 bg-slate-200 rounded-full mx-auto mb-5"></div>
+    <h3 class="font-black text-lg">Tambah Dompet</h3>
+    <div class="mt-4 space-y-3">
+      <input id="wName" placeholder="Nama dompet (cth: BNI, Dana)" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-blue-400">
+      <input id="wBalance" type="number" placeholder="Saldo awal" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:border-blue-400">
+      <div class="grid grid-cols-2 gap-2">
+        <button onclick="closeWallet()" class="py-3 rounded-xl border border-slate-200 font-bold">Batal</button>
+        <button onclick="addWallet()" class="py-3 rounded-xl bg-blue-600 text-white font-bold">Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="notifDrawer" class="fixed inset-0 z-50 hidden">
+  <div onclick="closeNotif()" class="absolute inset-0 bg-slate-900/40"></div>
+  <div class="absolute top-0 right-0 bottom-0 w-[360px] max-w-[88vw] bg-white shadow-2xl overflow-y-auto">
+    <div class="sticky top-0 bg-white border-b p-4 flex justify-between items-center"><h3 class="font-black">Notifikasi</h3><button onclick="closeNotif()" class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center"><i class="fa-solid fa-xmark text-xs"></i></button></div>
+    <div class="p-4 space-y-3">
+      <div class="bg-amber-50 border border-amber-100 rounded-2xl p-3"><div class="font-bold text-sm">Anggaran Belanja melebihi 20%!</div><div class="text-xs text-amber-700">Rp 1.8jt / Rp 1.5jt — coba kurangi minggu ini.</div></div>
+      <div class="bg-blue-50 border border-blue-100 rounded-2xl p-3"><div class="font-bold text-sm">Tagihan Listrik 3 hari lagi</div><div class="text-xs text-blue-700">Rp 320.000 • auto-debit BCA.</div></div>
+      <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-3"><div class="font-bold text-sm">Goal Liburan 56% tercapai</div><div class="text-xs text-emerald-700">Rp 2.8jt / Rp 5jt — semangat!</div></div>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-sm font-semibold px-4 py-2.5 rounded-full shadow-xl hidden z-50"></div>
+
 <script>
+let showBalance=true;
 let txType='expense';
-let txs=[
-  {title:'Gaji Bulanan',cat:'Pemasukan',amount:6500000,type:'income',icon:'fa-briefcase',color:'emerald',time:'Hari ini'},
-  {title:'Kopi & Sarapan',cat:'Makan',amount:-45000,type:'expense',icon:'fa-mug-hot',color:'orange',time:'Hari ini'},
-  {title:'Bensin Motor',cat:'Transport',amount:-80000,type:'expense',icon:'fa-gas-pump',color:'blue',time:'Kemarin'},
-  {title:'Top-up E-Wallet',cat:'Dompet',amount:-200000,type:'expense',icon:'fa-wallet',color:'violet',time:'Kemarin'},
-  {title:'Freelance Design',cat:'Pemasukan',amount:1200000,type:'income',icon:'fa-pen-nib',color:'emerald',time:'2 hari lalu'},
+let catFilter='all';
+let period='minggu';
+let statRange='minggu';
+const LS_KEY='keuanganku_v2';
+let txs = JSON.parse(localStorage.getItem(LS_KEY+'_tx')||'null') || [
+  {id:1,title:'Gaji Bulanan',cat:'Pemasukan',amount:6500000,type:'income',icon:'fa-briefcase',color:'emerald',time:'Hari ini',wallet:'BCA Utama'},
+  {id:2,title:'Kopi & Sarapan',cat:'Makan',amount:-45000,type:'expense',icon:'fa-mug-hot',color:'orange',time:'Hari ini',wallet:'E-Wallet OVO'},
+  {id:3,title:'Bensin Motor',cat:'Transport',amount:-80000,type:'expense',icon:'fa-gas-pump',color:'blue',time:'Kemarin',wallet:'Tunai'},
+  {id:4,title:'Top-up E-Wallet',cat:'Lainnya',amount:-200000,type:'expense',icon:'fa-wallet',color:'violet',time:'Kemarin',wallet:'BCA Utama'},
+  {id:5,title:'Freelance Design',cat:'Pemasukan',amount:1200000,type:'income',icon:'fa-pen-nib',color:'emerald',time:'2 hari lalu',wallet:'BCA Utama'},
+  {id:6,title:'Belanja Bulanan',cat:'Belanja',amount:-540000,type:'expense',icon:'fa-bag-shopping',color:'violet',time:'2 hari lalu',wallet:'BCA Utama'},
+  {id:7,title:'Nasi Goreng & Es Teh',cat:'Makan',amount:-35000,type:'expense',icon:'fa-utensils',color:'orange',time:'3 hari lalu',wallet:'Tunai'},
 ];
-function fmt(n){ return 'Rp ' + Math.abs(n).toLocaleString('id-ID'); }
-function render(){
-  const el=document.getElementById('txList');
-  el.innerHTML=txs.map(t=>`
-    <div class="flex items-center gap-3 bg-slate-50 rounded-2xl px-4 py-3 border border-slate-100">
-      <div class="w-10 h-10 rounded-xl bg-${t.color}-100 text-${t.color}-600 flex items-center justify-center"><i class="fa-solid ${t.icon} text-sm"></i></div>
+let budgets = JSON.parse(localStorage.getItem(LS_KEY+'_budgets')||'null') || [
+  {cat:'Makan & Minum',icon:'fa-utensils',c:'#fb923c',spent:1200000,limit:2000000},
+  {cat:'Transport',icon:'fa-bus',c:'#60a5fa',spent:450000,limit:800000},
+  {cat:'Belanja',icon:'fa-bag-shopping',c:'#f43f5e',spent:1800000,limit:1500000},
+];
+let goals = JSON.parse(localStorage.getItem(LS_KEY+'_goals')||'null') || [
+  {title:'Dana Darurat',saved:4200000,target:6000000,icon:'fa-shield-halved',grad:'from-emerald-500 to-teal-600'},
+  {title:'Liburan Bali',saved:2800000,target:5000000,icon:'fa-plane',grad:'from-blue-500 to-cyan-500'},
+  {title:'Laptop Baru',saved:1500000,target:12000000,icon:'fa-laptop',grad:'from-violet-500 to-purple-600'},
+];
+let wallets = JSON.parse(localStorage.getItem(LS_KEY+'_wallets')||'null') || [
+  {name:'BCA Utama',balance:8900000,grad:'from-slate-900 to-slate-700',icon:'fa-building-columns'},
+  {name:'E-Wallet OVO',balance:1250000,grad:'from-violet-600 to-indigo-600',icon:'fa-wallet'},
+  {name:'Tunai',balance:2300000,grad:'from-amber-500 to-orange-600',icon:'fa-money-bill-wave'},
+];
+function save(){ localStorage.setItem(LS_KEY+'_tx',JSON.stringify(txs)); localStorage.setItem(LS_KEY+'_budgets',JSON.stringify(budgets)); localStorage.setItem(LS_KEY+'_goals',JSON.stringify(goals)); localStorage.setItem(LS_KEY+'_wallets',JSON.stringify(wallets));}
+function fmt(n){ return 'Rp ' + Math.abs(n).toLocaleString('id-ID');}
+function toast(m){ const t=document.getElementById('toast'); t.textContent=m; t.classList.remove('hidden'); setTimeout(()=>t.classList.add('hidden'),2200); }
+function toggleBalance(){ showBalance=!showBalance; document.getElementById('balanceDisplay').textContent=showBalance?'Rp 12.450.000':'••••••••'; document.getElementById('eyeIcon').className=showBalance?'fa-regular fa-eye text-xs':'fa-regular fa-eye-slash text-xs'; document.getElementById('balanceHint').classList.toggle('hidden',showBalance); }
+function setType(t){ txType=t; document.getElementById('btnIncome').className=t==='income'?'py-3 rounded-xl bg-emerald-500 text-white font-bold':'py-3 rounded-xl bg-white border border-slate-200 font-bold text-slate-600'; document.getElementById('btnExpense').className=t==='expense'?'py-3 rounded-xl bg-rose-500 text-white font-bold':'py-3 rounded-xl bg-white border border-slate-200 font-bold text-slate-600'; document.getElementById('txCat').value=t==='income'?'Pemasukan':'Makan'; }
+function setCat(c){ catFilter=c; document.querySelectorAll('.chip').forEach(b=>{ b.className = b.dataset.cat===c?'chip px-3 py-1.5 rounded-full bg-slate-900 text-white text-xs font-bold':'chip px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-xs font-bold'; }); renderTx(); }
+function filterTx(type){ setCat(type==='income'?'Pemasukan':'all'); if(type==='expense') toast('Filter: semua pengeluaran'); else toast('Filter: pemasukan'); }
+function setPeriod(p){ period=p; ['minggu','bulan','tahun'].forEach(x=>{ document.getElementById('p-'+x).className = x===p?'px-3 py-1.5 rounded-full bg-slate-900 text-white text-xs font-bold':'px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-xs font-bold';}); renderChart(); }
+function setStatRange(r){ statRange=r; ['minggu','bulan','tahun'].forEach(x=>{ document.getElementById('sr-'+x).className = x===r?'px-4 py-2 rounded-full bg-slate-900 text-white text-xs font-bold':'px-4 py-2 rounded-full bg-white border text-slate-600 text-xs font-bold';}); renderStat(); }
+
+function renderChart(){
+  const sets={minggu:[28,44,68,36,52,20,32],bulan:[62,48,55,70,38,44],tahun:[30,55,42,68,52,40,60,48,35,58,62,45]};
+  const labels={minggu:['Sen','Sel','Rab','Kam','Jum','Sab','Min'],bulan:['M1','M2','M3','M4','M5','M6'],tahun:['J','F','M','A','M','J','J','A','S','O','N','D']};
+  const vals=sets[period]; const labs=labels[period];
+  document.getElementById('chart').innerHTML=vals.map((h,i)=>`<button onclick="tipChart(${i},${h})" class="flex-1 flex flex-col items-center gap-1"><div class="w-full ${i===2?'bg-blue-600':'bg-blue-200'} rounded-t-lg hover:bg-blue-400 transition" style="height:${h}px"></div><span class="text-[10px] font-bold ${i===2?'text-blue-600':'text-slate-400'}">${labs[i]}</span></button>`).join('');
+}
+function tipChart(i,h){ const names={minggu:['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','Minggu'],bulan:['Minggu 1','Minggu 2','Minggu 3','Minggu 4','Minggu 5','Minggu 6'],tahun:['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des']}; const n=names[period][i]; document.getElementById('chartTip').textContent = `${n} — Rp ${(h*12000).toLocaleString('id-ID')} (tap lagi untuk detail)`; toast(`${n}: Rp ${(h*12000).toLocaleString('id-ID')}`); }
+function renderTx(){
+  const q=(document.getElementById('search')?.value||'').toLowerCase();
+  let list=txs.filter(t=> (catFilter==='all'||t.cat===catFilter) && (!q || t.title.toLowerCase().includes(q) || t.cat.toLowerCase().includes(q)));
+  if(!list.length) document.getElementById('txList').innerHTML=`<div class="text-center text-sm text-slate-400 py-6">Tidak ada transaksi untuk filter ini.</div>`;
+  else document.getElementById('txList').innerHTML=list.slice(0,20).map(t=>`
+    <div onclick="toast('${t.title} • ${fmt(t.amount)}')" class="flex items-center gap-3 bg-slate-50 rounded-2xl px-4 py-3 border border-slate-100 hover:bg-white hover:shadow-sm cursor-pointer group">
+      <div class="w-10 h-10 rounded-xl bg-${t.color}-100 text-${t.color}-600 flex items-center justify-center shrink-0"><i class="fa-solid ${t.icon} text-sm"></i></div>
       <div class="flex-1 min-w-0">
         <div class="font-bold text-sm text-slate-900 truncate">${t.title}</div>
-        <div class="text-xs text-slate-400">${t.cat} • ${t.time}</div>
+        <div class="text-xs text-slate-400">${t.cat} • ${t.time} • ${t.wallet||''}</div>
       </div>
       <div class="font-black text-sm ${t.type==='income'?'text-emerald-600':'text-slate-900'}">${t.type==='income'?'+':''} ${fmt(t.amount)}</div>
-    </div>
-  `).join('');
-  // update balance mock
-  let bal=12450000, inc=8200000, exp=3750000;
-  txs.slice(0,5).forEach(t=>{ if(t.type==='income') inc+=0; });
-  document.getElementById('balanceDisplay').textContent='Rp ' + bal.toLocaleString('id-ID');
+      <button onclick="event.stopPropagation(); delTx(${t.id})" class="hidden group-hover:flex w-7 h-7 rounded-full bg-white border border-slate-200 items-center justify-center text-slate-400 hover:text-rose-600"><i class="fa-solid fa-trash text-[11px]"></i></button>
+    </div>`).join('');
 }
-function openAdd(){ document.getElementById('addModal').classList.remove('hidden'); }
-function closeAdd(){ document.getElementById('addModal').classList.add('hidden'); }
-function setType(t){
-  txType=t;
-  document.getElementById('btnIncome').className = t==='income' ? 'py-3 rounded-xl bg-emerald-500 text-white font-bold' : 'py-3 rounded-xl bg-white border border-slate-200 font-bold text-slate-600';
-  document.getElementById('btnExpense').className = t==='expense' ? 'py-3 rounded-xl bg-rose-500 text-white font-bold' : 'py-3 rounded-xl bg-white border border-slate-200 font-bold text-slate-600';
-}
+function delTx(id){ txs=txs.filter(t=>t.id!==id); save(); renderTx(); toast('Transaksi dihapus (lokal)'); updateTotals(); }
 function addTx(){
   const title=document.getElementById('txTitle').value.trim();
   const amount=parseInt(document.getElementById('txAmount').value,10);
-  if(!title || !amount) return alert('Isi judul dan nominal');
-  const sign = txType==='expense' ? -1 : 1;
-  txs.unshift({title, cat: txType==='income'?'Pemasukan':'Pengeluaran', amount: sign*Math.abs(amount), type:txType, icon: txType==='income'?'fa-arrow-down':'fa-arrow-up', color: txType==='income'?'emerald':'rose', time:'Baru saja'});
+  const cat=document.getElementById('txCat').value;
+  const wallet=document.getElementById('txWallet').value;
+  if(!title || !amount) return toast('Isi judul & nominal dulu');
+  const sign=txType==='expense'?-1:1;
+  const iconMap={Makan:'fa-utensils',Transport:'fa-bus',Belanja:'fa-bag-shopping',Tagihan:'fa-file-invoice',Pemasukan:'fa-arrow-down',Lainnya:'fa-ellipsis'};
+  const colorMap={Makan:'orange',Transport:'blue',Belanja:'violet',Tagihan:'amber',Pemasukan:'emerald',Lainnya:'slate'};
+  txs.unshift({id:Date.now(),title,cat,amount:sign*Math.abs(amount),type:txType,icon:iconMap[cat]||'fa-circle',color:colorMap[cat]||'slate',time:'Baru saja',wallet});
   document.getElementById('txTitle').value=''; document.getElementById('txAmount').value='';
-  closeAdd(); render();
+  closeAdd(); save(); renderTx(); updateTotals(); toast('Transaksi ditambahkan ✓');
 }
-function tick(){
-  const d=new Date();
-  document.getElementById('clock').textContent = d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+function updateTotals(){
+  let inc=txs.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
+  let exp=Math.abs(txs.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0));
+  document.getElementById('incomeDisplay').textContent='Rp '+inc.toLocaleString('id-ID');
+  document.getElementById('expenseDisplay').textContent='Rp '+exp.toLocaleString('id-ID');
 }
-tick(); setInterval(tick, 60000);
-render();
-document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeAdd(); });
+function renderBudgets(){
+  document.getElementById('budgetList').innerHTML=budgets.map((b,i)=>{
+    const pct=Math.min(100,Math.round(b.spent/b.limit*100));
+    const over=b.spent>b.limit;
+    return `<div class="bg-white border ${over?'border-rose-200 bg-rose-50/40':'border-slate-100'} rounded-2xl p-3">
+      <div class="flex justify-between text-xs font-semibold"><span class="text-slate-600"><i class="fa-solid ${b.icon} mr-1" style="color:${b.c}"></i> ${b.cat}</span><span class="${over?'text-rose-600':'text-slate-900'}">${fmt(b.spent)} / ${fmt(b.limit)}${over?' • over!':''}</span></div>
+      <button onclick="editBudget(${i})" class="mt-1.5 w-full text-left"><div class="h-2 bg-slate-100 rounded-full overflow-hidden"><div class="h-full rounded-full" style="width:${pct}%; background:${b.c}"></div></div></button>
+      <div class="mt-1 flex justify-between text-[11px] font-bold text-slate-400"><span>${pct}% terpakai</span><button onclick="editBudget(${i})" class="text-blue-600">edit →</button></div>
+    </div>`;
+  }).join('');
+}
+function editBudget(i){ openBudget(i); }
+function openBudget(focusIdx=null){
+  document.getElementById('budgetModal').classList.remove('hidden');
+  document.getElementById('budgetForm').innerHTML=budgets.map((b,i)=>`
+    <div class="border border-slate-200 rounded-2xl p-3 ${focusIdx===i?'ring-2 ring-blue-400':''}">
+      <div class="font-bold text-sm">${b.cat}</div>
+      <div class="mt-2 grid grid-cols-2 gap-2">
+        <label class="text-xs font-bold text-slate-500">Terpakai<input data-i="${i}" data-k="spent" type="number" value="${b.spent}" class="mt-1 w-full px-3 py-2 rounded-xl border border-slate-200 outline-none"></label>
+        <label class="text-xs font-bold text-slate-500">Batas<input data-i="${i}" data-k="limit" type="number" value="${b.limit}" class="mt-1 w-full px-3 py-2 rounded-xl border border-slate-200 outline-none"></label>
+      </div>
+      <input type="range" min="0" max="${b.limit*1.5|0}" value="${b.spent}" class="range w-full mt-3" oninput="this.previousElementSibling.previousElementSibling.querySelector('[data-k=spent]').value=this.value; liveBudget(${i},this.value)">
+    </div>`).join('');
+  document.querySelectorAll('#budgetForm input[data-i]').forEach(inp=> inp.addEventListener('input', e=>{ const i=+e.target.dataset.i; const k=e.target.dataset.k; budgets[i][k]=parseInt(e.target.value,10)||0; save(); renderBudgets(); }));
+}
+function liveBudget(i,val){ budgets[i].spent=parseInt(val,10)||0; save(); renderBudgets(); }
+function closeBudget(){ document.getElementById('budgetModal').classList.add('hidden'); }
+
+function renderGoals(){
+  document.getElementById('goalList').innerHTML=goals.map((g,i)=>{
+    const pct=Math.min(100,Math.round(g.saved/g.target*100));
+    return `<div class="bg-gradient-to-br ${g.grad} rounded-2xl p-4 text-white relative overflow-hidden">
+      <div class="absolute -right-6 -top-6 w-20 h-20 bg-white/15 rounded-full blur-xl"></div>
+      <div class="relative flex justify-between items-start">
+        <div class="flex gap-3"><div class="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center"><i class="fa-solid ${g.icon} text-sm"></i></div><div><div class="font-black text-sm">${g.title}</div><div class="text-xs opacity-80">${fmt(g.saved)} / ${fmt(g.target)}</div></div></div>
+        <button onclick="delGoal(${i})" class="w-7 h-7 rounded-full bg-white/15 flex items-center justify-center hover:bg-white/25"><i class="fa-solid fa-xmark text-xs"></i></button>
+      </div>
+      <div class="relative mt-3 h-2 bg-white/25 rounded-full overflow-hidden"><div class="h-full bg-white rounded-full" style="width:${pct}%"></div></div>
+      <div class="relative mt-1 flex justify-between text-xs font-bold"><span class="opacity-90">${pct}%</span><button onclick="addToGoal(${i})" class="bg-white text-slate-900 px-3 py-1 rounded-full text-xs font-black">+ Tambah</button></div>
+    </div>`;
+  }).join('');
+}
+function addGoal(){
+  const t=document.getElementById('goalTitle').value.trim();
+  const tar=parseInt(document.getElementById('goalTarget').value,10);
+  const saved=parseInt(document.getElementById('goalSaved').value,10)||0;
+  if(!t||!tar) return toast('Isi nama & target');
+  goals.unshift({title:t,saved,target:tar,icon:'fa-bullseye',grad:'from-slate-900 to-slate-700'});
+  document.getElementById('goalTitle').value=''; document.getElementById('goalTarget').value=''; document.getElementById('goalSaved').value='';
+  closeGoal(); save(); renderGoals(); toast('Goal ditambahkan ✓');
+}
+function delGoal(i){ goals.splice(i,1); save(); renderGoals(); toast('Goal dihapus'); }
+function addToGoal(i){ const v=prompt('Tambah berapa? (cth: 200000)', '200000'); if(!v) return; const n=parseInt(v,10); if(!n) return; goals[i].saved += n; save(); renderGoals(); toast('Saldo goal ditambah ✓'); }
+function openGoal(){ document.getElementById('goalModal').classList.remove('hidden'); }
+function closeGoal(){ document.getElementById('goalModal').classList.add('hidden'); }
+
+function renderWallets(){
+  document.getElementById('walletList').innerHTML=wallets.map((w,i)=>`
+    <div class="bg-gradient-to-br ${w.grad} rounded-2xl p-4 text-white relative overflow-hidden">
+      <div class="absolute -right-8 -top-8 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
+      <div class="relative flex justify-between items-start">
+        <div><div class="text-[11px] tracking-widest opacity-70 font-bold">${w.name.toUpperCase()}</div><div class="font-black text-lg mt-1">${fmt(w.balance)}</div><div class="text-xs opacity-70 mt-1"><i class="fa-solid ${w.icon} mr-1"></i> Tap untuk detail</div></div>
+        <button onclick="delWallet(${i})" class="w-7 h-7 rounded-full bg-white/15 flex items-center justify-center"><i class="fa-solid fa-trash text-xs"></i></button>
+      </div>
+      <div class="relative mt-3 flex gap-2">
+        <button onclick="toast('Riwayat ${w.name} — demo')" class="flex-1 py-2 rounded-xl bg-white text-slate-900 text-xs font-bold">Riwayat</button>
+        <button onclick="openTransfer()" class="flex-1 py-2 rounded-xl bg-white/15 text-white text-xs font-bold border border-white/20">Transfer</button>
+      </div>
+    </div>`).join('');
+}
+function openWallet(){ document.getElementById('walletModal').classList.remove('hidden'); }
+function closeWallet(){ document.getElementById('walletModal').classList.add('hidden'); }
+function addWallet(){ const n=document.getElementById('wName').value.trim(); const b=parseInt(document.getElementById('wBalance').value,10)||0; if(!n) return toast('Isi nama dompet'); wallets.push({name:n,balance:b,grad:'from-slate-800 to-slate-600',icon:'fa-wallet'}); document.getElementById('wName').value=''; document.getElementById('wBalance').value=''; closeWallet(); save(); renderWallets(); toast('Dompet ditambahkan ✓'); }
+function delWallet(i){ wallets.splice(i,1); save(); renderWallets(); toast('Dompet dihapus'); }
+function doTransfer(){
+  const a=parseInt(document.getElementById('trAmount').value,10);
+  const f=document.getElementById('trFrom').value; const t=document.getElementById('trTo').value;
+  if(!a||f===t) return toast('Isi nominal & bedakan asal/tujuan');
+  const wf=wallets.find(w=>w.name===f), wt=wallets.find(w=>w.name===t);
+  if(!wf||!wt) return toast('Dompet tidak ditemukan — tambah dulu');
+  if(wf.balance<a) return toast('Saldo tidak cukup (demo tetap lanjut)');
+  wf.balance-=a; wt.balance+=a; save(); renderWallets(); closeTransfer(); toast(`Transfer ${fmt(a)} ${f} → ${t} ✓`);
+  txs.unshift({id:Date.now(),title:`Transfer ${f} → ${t}`,cat:'Lainnya',amount:-a,type:'expense',icon:'fa-arrow-right-arrow-left',color:'blue',time:'Baru saja',wallet:f});
+  save(); renderTx(); updateTotals();
+}
+
+function openAdd(){ document.getElementById('addModal').classList.remove('hidden'); }
+function closeAdd(){ document.getElementById('addModal').classList.add('hidden'); }
+function openTransfer(){ document.getElementById('transferModal').classList.remove('hidden'); }
+function closeTransfer(){ document.getElementById('transferModal').classList.add('hidden'); }
+function openNotif(){ document.getElementById('notifDrawer').classList.remove('hidden'); }
+function closeNotif(){ document.getElementById('notifDrawer').classList.add('hidden'); }
+function switchView(v){
+  ['home','stat','wallet','profile'].forEach(x=> document.getElementById('view-'+x).classList.toggle('hidden', x!==v));
+  document.querySelectorAll('.nav').forEach(b=>{ b.classList.toggle('text-blue-600', b.dataset.nav===v); b.classList.toggle('text-slate-400', b.dataset.nav!==v); });
+  if(v==='stat') renderStat();
+  if(v==='wallet') renderWallets();
+}
+function renderStat(){
+  const sets={minggu:[28,44,68,36,52,20,32],bulan:[48,62,55,42,70,38],tahun:[30,55,42,68,52,40,60,48,35,58,62,45]};
+  const vals=sets[statRange];
+  document.getElementById('statBars').innerHTML=vals.map((h,i)=>`<button onclick="toast('Bar ${i+1}: Rp ${(h*15000).toLocaleString('id-ID')}')" class="flex-1 flex flex-col items-center gap-1"><div class="w-full bg-slate-900 rounded-t-lg hover:bg-blue-600" style="height:${h}px"></div><span class="text-[10px] font-bold text-slate-400">${i+1}</span></button>`).join('');
+  document.getElementById('statTip').textContent='Tap bar untuk lihat nilai.';
+}
+function toggleTheme(){ document.body.classList.toggle('bg-[#0f172a]'); toast('Tema toggle (demo)'); }
+function clearData(){ if(!confirm('Reset semua data demo ke awal?')) return; localStorage.removeItem(LS_KEY+'_tx'); localStorage.removeItem(LS_KEY+'_budgets'); localStorage.removeItem(LS_KEY+'_goals'); localStorage.removeItem(LS_KEY+'_wallets'); location.reload(); }
+function tick(){ const d=new Date(); document.getElementById('clock').textContent=d.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}); }
+tick(); setInterval(tick,60000);
+renderChart(); renderTx(); renderBudgets(); renderGoals(); renderWallets(); updateTotals();
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeAdd(); closeTransfer(); closeGoal(); closeBudget(); closeWallet(); closeNotif(); }});
 </script>
-<p class="text-center text-xs text-slate-400 pb-8 max-w-[400px] mx-auto px-4">Prototype statis — buka di HP untuk rasa Android beneran. Data simulasi, tidak butuh backend.</p>
+<p class="text-center text-xs text-slate-400 pb-8 max-w-[400px] mx-auto px-4">Prototype interaktif — semua tombol hidup, data di localStorage. Buka di HP untuk rasa Android penuh.</p>
 </body>
 </html>
