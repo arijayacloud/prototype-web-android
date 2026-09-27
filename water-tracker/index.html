@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AquaTrack — Hitung Minum Air Putih Harian</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>*{font-family:Inter,sans-serif}.font-display{font-family:'Plus Jakarta Sans',sans-serif}.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}.wave{animation:wave 3s ease-in-out infinite}@keyframes wave{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}</style>
+</head>
+<body class="bg-[#F0F9FF] min-h-screen flex flex-col items-center">
+<div class="w-full bg-white border-b border-slate-200 sticky top-0 z-30">
+  <div class="max-w-[960px] mx-auto px-4 h-14 flex items-center justify-between">
+    <a href="../index.html" class="flex items-center gap-2 font-bold text-slate-700 hover:text-sky-600"><i class="fa-solid fa-arrow-left"></i> Kembali</a>
+    <span class="hidden md:inline text-xs font-bold tracking-widest text-slate-400">AQUATRACK • WATER TRACKER • LOCALSTORAGE</span>
+    <span class="md:hidden text-xs font-bold tracking-widest text-slate-400">AQUA TRACKER</span>
+    <a href="https://github.com/arijayacloud/prototype-web-android/tree/main/water-tracker" target="_blank" class="text-slate-400 hover:text-slate-700"><i class="fa-brands fa-github"></i></a>
+  </div>
+</div>
+
+<div class="w-full max-w-[960px] mx-auto px-4 mt-6 mb-10 flex flex-col lg:flex-row gap-6 items-start justify-center">
+<div class="w-full max-w-[400px] mx-auto lg:mx-0 shrink-0 relative">
+<div id="phone" class="bg-white rounded-[36px] shadow-[0_20px_60px_rgba(0,0,0,.12)] overflow-hidden border-[8px] border-slate-900 flex flex-col" style="min-height:760px">
+<div class="h-7 bg-slate-900 flex items-center justify-between px-6 text-white text-[11px] font-semibold shrink-0"><span id="clock">09:41</span><div class="flex gap-1.5"><i class="fa-solid fa-signal text-[10px]"></i><i class="fa-solid fa-wifi text-[10px]"></i><i class="fa-solid fa-battery-three-quarters"></i></div></div>
+
+<div id="view-home" class="flex-1 overflow-y-auto no-scrollbar">
+  <div class="bg-gradient-to-br from-sky-500 via-blue-500 to-cyan-500 px-6 pt-5 pb-6 text-white relative overflow-hidden">
+    <div class="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
+    <div class="relative">
+      <div class="flex justify-between items-center">
+        <div class="flex gap-3 items-center"><img src="https://i.pravatar.cc/100?img=12" class="w-9 h-9 rounded-full border-2 border-white/40"><div><div class="text-[11px] tracking-widest opacity-70 font-semibold">HIDRASI HARI INI</div><div class="font-bold text-sm">Hai, Rian 💧</div></div></div>
+        <button onclick="openSetting()" class="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center"><i class="fa-solid fa-sliders"></i></button>
+      </div>
+      <div class="mt-5 bg-white rounded-[24px] p-5 text-slate-900 shadow-lg">
+        <div class="text-xs font-bold tracking-widest text-slate-400">TARGET HARIAN</div>
+        <div class="flex items-baseline gap-2 mt-1"><span id="curMl" class="font-black text-[32px] leading-none">0</span><span class="font-bold text-slate-400">/ <span id="targetMl">2000</span> ml</span><span id="pct" class="ml-auto px-2.5 py-1 rounded-full bg-sky-100 text-sky-700 text-xs font-black">0%</span></div>
+        <div class="mt-3 h-3 bg-slate-100 rounded-full overflow-hidden"><div id="bar" class="h-full bg-gradient-to-r from-sky-500 to-cyan-400 rounded-full transition-all" style="width:0%"></div></div>
+        <div class="mt-2 flex justify-between text-xs font-semibold text-slate-500"><span id="remain">Sisa 2000 ml</span><span id="glasses">0 gelas</span></div>
+        <div class="mt-3 flex gap-1.5">
+          <button onclick="setTarget(1500)" id="t-1500" class="px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-xs font-bold">1.5L</button>
+          <button onclick="setTarget(2000)" id="t-2000" class="px-3 py-1.5 rounded-full bg-slate-900 text-white text-xs font-bold">2.0L</button>
+          <button onclick="setTarget(2500)" id="t-2500" class="px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-xs font-bold">2.5L</button>
+          <button onclick="setTarget(3000)" id="t-3000" class="px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-xs font-bold">3.0L</button>
+          <span id="streak" class="ml-auto text-xs font-black text-orange-600"><i class="fa-solid fa-fire mr-1"></i>0 hari streak</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="px-4 -mt-2 relative z-10">
+    <div class="bg-sky-50 rounded-2xl p-3 border border-sky-100 flex items-center gap-3">
+      <div class="w-16 h-24 bg-white rounded-[14px] border-2 border-sky-200 overflow-hidden relative flex items-end">
+        <div id="bottle" class="w-full bg-gradient-to-t from-sky-500 to-cyan-300 transition-all wave" style="height:6%"></div>
+        <div class="absolute inset-0 flex items-center justify-center"><span id="bottlePct" class="text-[11px] font-black text-slate-700 bg-white/80 px-1.5 py-0.5 rounded-full">0%</span></div>
+      </div>
+      <div class="flex-1">
+        <div class="font-black text-sm">Botol Virtual</div>
+        <div class="text-xs text-slate-500">Tap + cepat di bawah — animasi naik.</div>
+        <div class="mt-2 grid grid-cols-3 gap-1.5">
+          <button onclick="addWater(200)" class="py-2 rounded-xl bg-sky-600 text-white text-xs font-black hover:bg-sky-700"><i class="fa-solid fa-plus mr-1"></i>200 ml</button>
+          <button onclick="addWater(330)" class="py-2 rounded-xl bg-white border border-sky-200 text-sky-700 text-xs font-bold">330 ml</button>
+          <button onclick="addWater(500)" class="py-2 rounded-xl bg-white border border-sky-200 text-sky-700 text-xs font-bold">500 ml</button>
+        </div>
+        <div class="mt-2 flex gap-1.5">
+          <button onclick="addWater(150)" class="flex-1 py-2 rounded-xl border border-slate-200 bg-white text-xs font-bold">+150</button>
+          <button onclick="addWater(600)" class="flex-1 py-2 rounded-xl border border-slate-200 bg-white text-xs font-bold">+600</button>
+          <button onclick="undo()" class="px-3 py-2 rounded-xl border border-slate-200 bg-white text-xs font-bold" title="Undo"><i class="fa-solid fa-rotate-left"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="px-6 mt-5">
+    <div class="flex justify-between items-center"><h3 class="font-bold">Cepat Tambah</h3><button onclick="openCustom()" class="text-xs font-bold text-sky-600">Custom</button></div>
+    <div class="mt-2 grid grid-cols-4 gap-2">
+      <button onclick="addWater(120)" class="bg-white border border-slate-200 rounded-2xl p-3 flex flex-col items-center gap-1"><i class="fa-solid fa-mug-hot text-amber-600"></i><span class="text-xs font-bold">120</span><span class="text-[10px] text-slate-400">ml</span></button>
+      <button onclick="addWater(200)" class="bg-white border border-slate-200 rounded-2xl p-3 flex flex-col items-center gap-1"><i class="fa-solid fa-glass-water text-sky-600"></i><span class="text-xs font-bold">200</span><span class="text-[10px] text-slate-400">ml</span></button>
+      <button onclick="addWater(330)" class="bg-white border border-slate-200 rounded-2xl p-3 flex flex-col items-center gap-1"><i class="fa-solid fa-bottle-water text-blue-600"></i><span class="text-xs font-bold">330</span><span class="text-[10px] text-slate-400">ml</span></button>
+      <button onclick="addWater(500)" class="bg-white border border-slate-200 rounded-2xl p-3 flex flex-col items-center gap-1"><i class="fa-solid fa-bottle-droplet text-cyan-600"></i><span class="text-xs font-bold">500</span><span class="text-[10px] text-slate-400">ml</span></button>
+    </div>
+  </div>
+
+  <div class="px-6 mt-5">
+    <div class="flex justify-between items-center"><h3 class="font-bold">Minum Hari Ini</h3><span id="todayCount" class="text-xs font-bold text-slate-400">0x</span></div>
+    <div id="todayList" class="mt-3 space-y-2"></div>
+  </div>
+
+  <div class="px-6 mt-5">
+    <h3 class="font-bold">7 Hari Terakhir</h3>
+    <div id="weekBars" class="mt-3 flex items-end gap-1.5 h-20"></div>
+    <div id="weekTip" class="mt-1 text-xs font-semibold text-sky-600 min-h-[14px]"></div>
+  </div>
+
+  <div class="px-6 mt-5 pb-6">
+    <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3 flex gap-3">
+      <div class="w-8 h-8 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0"><i class="fa-solid fa-bell text-xs"></i></div>
+      <div class="flex-1"><div class="font-bold text-sm text-amber-900">Pengingat</div><div class="text-xs text-amber-800">Minum tiap 2 jam — aktif <span id="remindStatus">ON</span></div></div>
+      <button onclick="toggleReminder()" id="remindBtn" class="px-3 py-1.5 rounded-full bg-slate-900 text-white text-xs font-bold">Matikan</button>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW: STAT -->
+<div id="view-stat" class="hidden flex-1 overflow-y-auto no-scrollbar p-6">
+  <h2 class="font-black text-xl">Statistik</h2>
+  <div class="mt-3 grid grid-cols-3 gap-2 text-center">
+    <div class="bg-sky-50 border border-sky-100 rounded-2xl p-3"><div class="text-[11px] font-bold text-slate-400">RATA-RATA</div><div id="avgMl" class="font-black">0 ml</div></div>
+    <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-3"><div class="text-[11px] font-bold text-slate-400">TERBAIK</div><div id="bestMl" class="font-black">0 ml</div></div>
+    <div class="bg-amber-50 border border-amber-100 rounded-2xl p-3"><div class="text-[11px] font-bold text-slate-400">STREAK</div><div id="streakBig" class="font-black">0 hari</div></div>
+  </div>
+  <div class="mt-4 bg-white border border-slate-200 rounded-2xl p-4">
+    <div class="font-bold text-sm">Riwayat 14 Hari</div>
+    <div id="historyList" class="mt-3 space-y-2 max-h-[320px] overflow-y-auto no-scrollbar text-sm"></div>
+  </div>
+  <div class="mt-3 flex gap-2"><button onclick="exportCSV()" class="flex-1 py-2.5 rounded-xl border border-slate-200 bg-white font-bold text-sm">Export CSV</button><button onclick="clearAll()" class="flex-1 py-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 font-bold text-sm">Reset</button></div>
+  <button onclick="switchView('home')" class="mt-3 w-full py-3 rounded-xl bg-slate-900 text-white font-bold">Kembali</button>
+</div>
+
+<div class="sticky bottom-0 bg-white border-t border-slate-100 px-2 py-2 flex justify-around shrink-0">
+  <button onclick="switchView('home')" data-nav="home" class="nav flex flex-col items-center gap-1 text-sky-600"><i class="fa-solid fa-droplet"></i><span class="text-[10px] font-bold">Hari Ini</span></button>
+  <button onclick="switchView('stat')" data-nav="stat" class="nav flex flex-col items-center gap-1 text-slate-400"><i class="fa-solid fa-chart-simple"></i><span class="text-[10px] font-bold">Statistik</span></button>
+  <div class="w-10"></div>
+  <button onclick="openSetting()" class="nav flex flex-col items-center gap-1 text-slate-400"><i class="fa-solid fa-gear"></i><span class="text-[10px] font-bold">Atur</span></button>
+  <button onclick="share()" class="nav flex flex-col items-center gap-1 text-slate-400"><i class="fa-solid fa-share-nodes"></i><span class="text-[10px] font-bold">Bagikan</span></button>
+</div>
+</div>
+<button onclick="addWater(250)" class="absolute bottom-6 right-6 w-14 h-14 rounded-full bg-sky-600 text-white shadow-xl flex items-center justify-center text-xl hover:bg-sky-700 z-20"><i class="fa-solid fa-plus"></i></button></div>
+<p class="text-center text-xs text-slate-400 mt-3">Semua hitung lokal — target, gelas, streak, pengingat. Tanpa login.</p>
+</div>
+
+<div class="hidden lg:block flex-1 min-w-[420px]">
+  <h2 class="font-display font-extrabold text-2xl">AquaTrack — Air Putih Harian</h2>
+  <p class="text-sm text-slate-500 mt-1">Hitung minum harian: target, progress, botol virtual, streak & pengingat. Semua interaktif localStorage.</p>
+  <div class="mt-5 grid grid-cols-2 gap-3">
+    <div class="bg-white rounded-2xl border p-4"><div class="w-9 h-9 rounded-xl bg-sky-600 text-white flex items-center justify-center"><i class="fa-solid fa-droplet"></i></div><div class="font-bold mt-2">Botol + Progress</div><div class="text-xs text-slate-500">Visual naik tiap tambah, bar & persen live.</div></div>
+    <div class="bg-white rounded-2xl border p-4"><div class="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center"><i class="fa-solid fa-fire"></i></div><div class="font-bold mt-2">Streak & History</div><div class="text-xs text-slate-500">Streak harian, 7 hari bar, riwayat 14 hari.</div></div>
+    <div class="bg-white rounded-2xl border p-4"><div class="w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center"><i class="fa-solid fa-bell"></i></div><div class="font-bold mt-2">Pengingat</div><div class="text-xs text-slate-500">Toggle pengingat 2 jam (toast demo).</div></div>
+    <div class="bg-white rounded-2xl border p-4"><div class="w-9 h-9 rounded-xl bg-violet-600 text-white flex items-center justify-center"><i class="fa-solid fa-sliders"></i></div><div class="font-bold mt-2">Target Custom</div><div class="text-xs text-slate-500">Atur 1.5–3L atau angka bebas ml.</div></div>
+  </div>
+</div>
+</div>
+
+<div id="settingModal" class="fixed inset-0 z-50 hidden"><div onclick="closeSetting()" class="absolute inset-0 bg-slate-900/50"></div><div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-[28px] max-w-[400px] mx-auto p-6"><div class="w-10 h-1.5 bg-slate-200 rounded-full mx-auto mb-5"></div><h3 class="font-black text-lg">Atur Target</h3><div class="mt-4 space-y-3"><div class="grid grid-cols-4 gap-2"><button onclick="setTarget(1500)" class="py-2 rounded-xl border font-bold text-sm">1.5L</button><button onclick="setTarget(2000)" class="py-2 rounded-xl border font-bold text-sm bg-slate-900 text-white">2.0L</button><button onclick="setTarget(2500)" class="py-2 rounded-xl border font-bold text-sm">2.5L</button><button onclick="setTarget(3000)" class="py-2 rounded-xl border font-bold text-sm">3.0L</button></div><div class="flex gap-2"><input id="customTarget" type="number" placeholder="Custom ml (1000-4000)" class="flex-1 px-4 py-3 rounded-xl border"><button onclick="applyCustom()" class="px-5 py-3 rounded-xl bg-sky-600 text-white font-bold">Atur</button></div><div class="grid grid-cols-2 gap-2"><button onclick="closeSetting()" class="py-3 rounded-xl border font-bold">Tutup</button><button onclick="resetToday()" class="py-3 rounded-xl bg-amber-500 text-white font-bold">Reset Hari Ini</button></div></div></div></div>
+<div id="customModal" class="fixed inset-0 z-50 hidden"><div onclick="closeCustom()" class="absolute inset-0 bg-slate-900/50"></div><div class="absolute bottom-0 left-0 right-0 bg-white rounded-t-[28px] max-w-[400px] mx-auto p-6"><div class="w-10 h-1.5 bg-slate-200 rounded-full mx-auto mb-5"></div><h3 class="font-black">Custom Minum</h3><div class="mt-3 flex gap-2"><input id="customMl" type="number" placeholder="ml (50-1000)" class="flex-1 px-4 py-3 rounded-xl border"><button onclick="doCustom()" class="px-6 py-3 rounded-xl bg-sky-600 text-white font-bold">Tambah</button></div><button onclick="closeCustom()" class="mt-3 w-full py-3 rounded-xl border font-bold">Batal</button></div></div>
+<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-sm font-semibold px-4 py-2.5 rounded-full shadow-xl hidden z-50"></div>
+
+<script>
+const LS='aquatrack_v1';
+function todayKey(){ return new Date().toISOString().slice(0,10); }
+let target=parseInt(localStorage.getItem(LS+'_target')||'2000',10);
+let logs=JSON.parse(localStorage.getItem(LS+'_logs')||'null') || {}; // key -> {total, entries: [{at, ml}]}
+let reminderOn = localStorage.getItem(LS+'_rem')!=='0';
+let streakVal = parseInt(localStorage.getItem(LS+'_streak')||'0',10);
+let lastDate = localStorage.getItem(LS+'_last')||'';
+function save(){ localStorage.setItem(LS+'_target', String(target)); localStorage.setItem(LS+'_logs', JSON.stringify(logs)); localStorage.setItem(LS+'_rem', reminderOn?'1':'0'); localStorage.setItem(LS+'_streak', String(streakVal)); localStorage.setItem(LS+'_last', lastDate); }
+function toast(m){ const t=document.getElementById('toast'); t.textContent=m; t.classList.remove('hidden'); setTimeout(()=>t.classList.add('hidden'),2200); }
+function getToday(){ const k=todayKey(); if(!logs[k]) logs[k]={total:0, entries:[]}; return logs[k]; }
+function setTarget(v){ target=v; save(); render(); toast('Target '+v+' ml'); closeSetting(); }
+function applyCustom(){ const v=parseInt(document.getElementById('customTarget').value,10); if(!v||v<800||v>5000) return toast('Isi 800-5000 ml'); setTarget(v); }
+function addWater(ml){
+  const t=getToday(); t.total+=ml; t.entries.unshift({at:Date.now(), ml});
+  // streak logic: if first drink today and lastDate was yesterday -> ++, else if new day gap >1 -> reset to 1
+  const k=todayKey();
+  if(lastDate!==k){
+    const prev=new Date(lastDate), cur=new Date(k);
+    const diff = lastDate ? Math.round((cur-prev)/86400000) : 99;
+    if(diff===1) streakVal++; else if(diff>1 || streakVal===0) streakVal=1;
+    lastDate=k;
+  }
+  save(); render();
+  if(t.total>=target) toast('🎉 Target tercapai! '+t.total+' ml');
+  else toast('+'+ml+' ml — total '+t.total+' ml');
+  if(navigator.vibrate) navigator.vibrate(30);
+}
+function undo(){ const k=todayKey(); const t=logs[k]; if(!t||!t.entries.length) return toast('Belum ada'); const e=t.entries.shift(); t.total=Math.max(0,t.total-e.ml); save(); render(); toast('Undo -'+e.ml+' ml'); }
+function doCustom(){ const v=parseInt(document.getElementById('customMl').value,10); if(!v||v<30||v>2000) return toast('Isi 30-2000 ml'); closeCustom(); addWater(v); }
+function resetToday(){ if(!confirm('Reset hari ini?')) return; logs[todayKey()]={total:0, entries:[]}; save(); render(); toast('Hari ini direset'); }
+function clearAll(){ if(!confirm('Hapus semua riwayat?')) return; logs={}; streakVal=0; lastDate=''; save(); render(); toast('Semua direset'); }
+function toggleReminder(){ reminderOn=!reminderOn; save(); render(); toast('Pengingat '+(reminderOn?'ON':'OFF')); if(reminderOn) scheduleRem(); else clearInterval(remInt); }
+let remInt=null;
+function scheduleRem(){ clearInterval(remInt); if(!reminderOn) return; remInt=setInterval(()=> toast('💧 Waktunya minum! +200 ml?'), 1000*60*60*2); }
+function share(){ const t=getToday(); const txt=`AquaTrack hari ini: ${t.total}/${target} ml (${Math.round(t.total/target*100)}%) — ${t.entries.length} gelas 💧`; if(navigator.share) navigator.share({title:'AquaTrack', text:txt}).catch(()=>{}); else { navigator.clipboard.writeText(txt).then(()=>toast('Disalin: '+txt)); } }
+function openSetting(){ document.getElementById('settingModal').classList.remove('hidden'); }
+function closeSetting(){ document.getElementById('settingModal').classList.add('hidden'); }
+function openCustom(){ document.getElementById('customModal').classList.remove('hidden'); }
+function closeCustom(){ document.getElementById('customModal').classList.add('hidden'); }
+function switchView(v){ ['home','stat'].forEach(x=> document.getElementById('view-'+x).classList.toggle('hidden', x!==v)); document.querySelectorAll('.nav').forEach(b=>{ const on=b.dataset.nav===v; b.classList.toggle('text-sky-600', on); b.classList.toggle('text-slate-400', !on); }); if(v==='stat') renderStat(); }
+function exportCSV(){ let rows='Tanggal,Total ml,Jumlah minum\n'+Object.keys(logs).sort().map(k=> `${k},${logs[k].total},${logs[k].entries.length}`).join('\n'); let b=new Blob([rows],{type:'text/csv'}), u=URL.createObjectURL(b), a=document.createElement('a'); a.href=u; a.download='aquatrack.csv'; a.click(); toast('CSV didownload'); }
+function render(){
+  const t=getToday(); const pct=Math.min(100, Math.round(t.total/target*100));
+  document.getElementById('curMl').textContent=t.total.toLocaleString('id-ID');
+  document.getElementById('targetMl').textContent=target.toLocaleString('id-ID');
+  document.getElementById('pct').textContent=pct+'%';
+  document.getElementById('bar').style.width=pct+'%';
+  document.getElementById('remain').textContent = t.total>=target ? '🎉 Tercapai!' : 'Sisa '+(target-t.total)+' ml';
+  document.getElementById('glasses').textContent=t.entries.length+' gelas';
+  document.getElementById('streak').innerHTML='<i class="fa-solid fa-fire mr-1"></i>'+streakVal+' hari streak';
+  document.getElementById('bottle').style.height=Math.max(6, pct)+'%';
+  document.getElementById('bottlePct').textContent=pct+'%';
+  document.getElementById('remindStatus').textContent=reminderOn?'ON':'OFF';
+  document.getElementById('remindBtn').textContent=reminderOn?'Matikan':'Nyalakan';
+  document.getElementById('remindBtn').className=reminderOn?'px-3 py-1.5 rounded-full bg-slate-900 text-white text-xs font-bold':'px-3 py-1.5 rounded-full bg-sky-600 text-white text-xs font-bold';
+  ;['1500','2000','2500','3000'].forEach(v=>{ const el=document.getElementById('t-'+v); if(el) el.className = String(target)===v ? 'px-3 py-1.5 rounded-full bg-slate-900 text-white text-xs font-bold' : 'px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-xs font-bold'; });
+  document.getElementById('todayCount').textContent=t.entries.length+'x';
+  document.getElementById('todayList').innerHTML = t.entries.length ? t.entries.slice(0,20).map(e=> `<div class="flex justify-between items-center bg-slate-50 rounded-xl px-3 py-2.5 border"><div><div class="font-bold text-sm">+${e.ml} ml</div><div class="text-xs text-slate-400">${new Date(e.at).toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})}</div></div><button onclick="undoOne(${e.at})" class="w-7 h-7 rounded-full bg-white border flex items-center justify-center text-slate-400"><i class="fa-solid fa-xmark text-xs"></i></button></div>`).join('') : `<div class="text-center text-sm text-slate-400 py-6">Belum minum hari ini — tap +200 ml di atas.</div>`;
+  // week bars: last 7 days
+  let days=[]; for(let i=6;i>=0;i--){ const d=new Date(); d.setDate(d.getDate()-i); const k=d.toISOString().slice(0,10); days.push({k, label:d.toLocaleDateString('id-ID',{weekday:'short'}), total:(logs[k]?.total||0)}); }
+  const max=Math.max(200, ...days.map(d=>d.total), target);
+  document.getElementById('weekBars').innerHTML=days.map(d=> `<button onclick="tipWeek('${d.k}',${d.total})" class="flex-1 flex flex-col items-center gap-1"><div class="w-full ${d.k===todayKey()?'bg-sky-600':'bg-sky-200'} rounded-t-lg" style="height:${Math.max(6, Math.round(d.total/max*64))}px"></div><span class="text-[10px] font-bold ${d.k===todayKey()?'text-sky-600':'text-slate-400'}">${d.label.slice(0,3)}</span></button>`).join('');
+  if(typeof renderStat==='function' && !document.getElementById('view-stat').classList.contains('hidden')) renderStat();
+}
+function undoOne(at){ const k=todayKey(); const t=logs[k]; const idx=t.entries.findIndex(e=>e.at===at); if(idx>=0){ const e=t.entries.splice(idx,1)[0]; t.total=Math.max(0,t.total-e.ml); save(); render(); toast('Hapus '+e.ml+' ml'); } }
+function tipWeek(k,total){ document.getElementById('weekTip').textContent=k+' — '+total+' ml'+(total>=target?' ✓ target':'' ); toast(k+': '+total+' ml'); }
+function renderStat(){
+  const keys=Object.keys(logs).sort();
+  const vals=keys.map(k=>logs[k].total);
+  const avg= vals.length? Math.round(vals.reduce((a,b)=>a+b,0)/vals.length):0;
+  const best= vals.length? Math.max(...vals):0;
+  document.getElementById('avgMl').textContent=avg.toLocaleString('id-ID')+' ml';
+  document.getElementById('bestMl').textContent=best.toLocaleString('id-ID')+' ml';
+  document.getElementById('streakBig').textContent=streakVal+' hari';
+  // 14 days history
+  let days=[]; for(let i=13;i>=0;i--){ const d=new Date(); d.setDate(d.getDate()-i); const k=d.toISOString().slice(0,10); days.push({k,total:logs[k]?.total||0, n:logs[k]?.entries.length||0}); }
+  document.getElementById('historyList').innerHTML=days.map(d=> `<div class="flex justify-between items-center bg-slate-50 rounded-xl px-3 py-2 border"><div><div class="font-bold text-xs">${d.k} ${d.k===todayKey()?'(hari ini)':''}</div><div class="text-xs ${d.total>=target?'text-emerald-600 font-bold':'text-slate-500'}">${d.total} ml • ${d.n} gelas ${d.total>=target?'✓':''}</div></div><div class="w-16 h-2 bg-slate-200 rounded-full overflow-hidden"><div class="h-full bg-sky-500" style="width:${Math.min(100, Math.round(d.total/target*100))}%"></div></div></div>`).join('');
+}
+function tick(){ const el=document.getElementById('clock'); if(el) el.textContent=new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}); }
+tick(); setInterval(tick,60000);
+render(); renderStat(); if(reminderOn) scheduleRem();
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closeSetting(); closeCustom(); }});
+</script>
+</body>
+</html>
