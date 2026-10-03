@@ -32,7 +32,7 @@
 <div class="w-full max-w-[1140px] mx-auto px-3 md:px-4 mt-4 md:mt-6 mb-10 flex flex-col lg:flex-row gap-6 items-start justify-center">
 <!-- phone -->
 <div class="w-full max-w-[410px] mx-auto lg:mx-0 shrink-0">
-<div id="phone" class="bg-white rounded-[36px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] overflow-hidden border-[8px] border-slate-900 flex flex-col" style="min-height:780px; background:#FFFBF5">
+<div id="phone" class="bg-white rounded-[36px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] overflow-hidden border-[8px] border-slate-900 flex flex-col relative" style="min-height:780px; background:#FFFBF5">
   <!-- status bar -->
   <div class="h-7 bg-slate-900 flex items-center justify-between px-6 text-white text-[11px] font-semibold shrink-0">
     <span id="clock">09:41</span>
@@ -56,7 +56,7 @@
   </div>
 
   <!-- VIEWS -->
-  <div class="flex-1 overflow-y-auto no-scrollbar relative" style="padding-bottom:72px">
+  <div class="flex-1 overflow-y-auto no-scrollbar relative">
 
     <!-- BERANDA -->
     <div id="view-beranda" class="p-4 space-y-4">
@@ -259,8 +259,8 @@
 
   </div>
 
-  <!-- bottom nav -->
-  <nav class="absolute bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-1 py-1.5 flex justify-around">
+  <!-- bottom nav — sticky ke frame HP -->
+  <nav class="shrink-0 bg-white border-t border-slate-200 px-1 py-1.5 flex justify-around z-10">
     <button onclick="switchTab('beranda')" data-tab="beranda" class="tab-btn flex flex-col items-center gap-0.5 px-2 py-1 rounded-2xl"><i class="fa-solid fa-house text-[16px]"></i><span class="text-[10px] font-bold">Beranda</span></button>
     <button onclick="switchTab('kmc')" data-tab="kmc" class="tab-btn flex flex-col items-center gap-0.5 px-2 py-1 rounded-2xl"><i class="fa-solid fa-person-breastfeeding text-[16px]"></i><span class="text-[10px] font-bold">KMC & ASI</span></button>
     <button onclick="switchTab('tumbuh')" data-tab="tumbuh" class="tab-btn flex flex-col items-center gap-0.5 px-2 py-1 rounded-2xl"><i class="fa-solid fa-chart-line text-[16px]"></i><span class="text-[10px] font-bold">Tumbuh</span></button>
