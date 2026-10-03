@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Bersama, Tumbuh Lebih Kuat — Parent App BBLR/Prematur</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],display:['Plus Jakarta Sans','sans-serif']},colors:{cream:'#FFF7ED',peach:'#FFEDD5',tealish:'#0F766E'}}}}</script>
+<style>
+*{font-family:Inter,sans-serif}
+.no-scrollbar::-webkit-scrollbar{display:none}
+.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
+.range{ -webkit-appearance:none; appearance:none; height:6px; border-radius:999px; background:#E2E8F0 }
+.range::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; height:18px; border-radius:999px; background:#0F766E; border:3px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,.2) }
+</style>
+</head>
+<body class="bg-[#F8FAFC] min-h-screen flex flex-col items-center">
+<!-- top bar desktop -->
+<div class="w-full bg-white border-b border-slate-200 sticky top-0 z-30">
+  <div class="max-w-[1140px] mx-auto px-4 h-[56px] flex items-center justify-between">
+    <a href="../index.html" class="flex items-center gap-2 text-slate-600 font-bold hover:text-teal-700 text-sm"><i class="fa-solid fa-arrow-left"></i> Kembali ke Portfolio</a>
+    <span class="hidden md:inline text-[11px] font-bold tracking-widest text-slate-400">BERSAMA, TUMBUH LEBIH KUAT • PARENT-FACING APP • PROTOTYPE OFFLINE</span>
+    <div class="flex items-center gap-2">
+      <span class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-xs font-bold"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Offline • localStorage</span>
+      <button onclick="openProfil()" class="w-8 h-8 rounded-full bg-gradient-to-br from-orange-400 to-amber-300 flex items-center justify-center text-white"><i class="fa-solid fa-baby text-xs"></i></button>
+    </div>
+  </div>
+</div>
+
+<div class="w-full max-w-[1140px] mx-auto px-3 md:px-4 mt-4 md:mt-6 mb-10 flex flex-col lg:flex-row gap-6 items-start justify-center">
+<!-- phone -->
+<div class="w-full max-w-[410px] mx-auto lg:mx-0 shrink-0">
+<div id="phone" class="bg-white rounded-[36px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] overflow-hidden border-[8px] border-slate-900 flex flex-col" style="min-height:780px; background:#FFFBF5">
+  <!-- status bar -->
+  <div class="h-7 bg-slate-900 flex items-center justify-between px-6 text-white text-[11px] font-semibold shrink-0">
+    <span id="clock">09:41</span>
+    <div class="flex items-center gap-1.5"><i class="fa-solid fa-signal text-[10px]"></i><i class="fa-solid fa-wifi text-[10px]"></i><i class="fa-solid fa-battery-three-quarters"></i></div>
+  </div>
+  <!-- app header -->
+  <div class="px-5 pt-4 pb-3 bg-gradient-to-br from-[#FFF7ED] to-[#FFEDD5] border-b border-orange-100">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-teal-600 to-emerald-500 flex items-center justify-center text-white shadow"><i class="fa-solid fa-hand-holding-heart"></i></div>
+        <div>
+          <div class="font-display font-extrabold text-[15px] leading-none text-slate-900">Bersama, Tumbuh Lebih Kuat</div>
+          <div class="text-[11px] font-semibold text-slate-500 leading-tight">Parent App • BBLR & Prematur</div>
+        </div>
+      </div>
+      <button onclick="openProfil()" class="w-9 h-9 rounded-full bg-white border border-orange-200 flex items-center justify-center text-orange-600"><i class="fa-regular fa-user text-sm"></i></button>
+    </div>
+    <div id="bayiHeader" class="mt-3 flex items-center gap-3 p-3 rounded-2xl bg-white border border-orange-100 shadow-sm">
+      <!-- filled by JS -->
+    </div>
+  </div>
+
+  <!-- VIEWS -->
+  <div class="flex-1 overflow-y-auto no-scrollbar relative" style="padding-bottom:72px">
+
+    <!-- BERANDA -->
+    <div id="view-beranda" class="p-4 space-y-4">
+      <div class="rounded-[20px] bg-gradient-to-br from-teal-600 to-emerald-500 p-4 text-white relative overflow-hidden">
+        <div class="absolute -top-8 -right-8 w-32 h-32 bg-white/10 rounded-full blur-xl"></div>
+        <div class="relative">
+          <div class="text-xs font-bold tracking-widest text-white/70">TAGLINE</div>
+          <div class="font-display font-extrabold text-[15px] leading-5 mt-1">Informasi, pemantauan, dan dukungan untuk tumbuh kembang si kecil secara optimal di rumah.</div>
+          <div class="mt-3 grid grid-cols-3 gap-2 text-center">
+            <div class="bg-white/15 backdrop-blur rounded-2xl p-2.5"><div class="text-[11px] font-bold text-white/80">KMC HARI INI</div><div id="homeKmc" class="font-black text-sm mt-0.5">0j 0m</div><div class="text-[10px] text-white/70">target 8 jam</div></div>
+            <div class="bg-white rounded-2xl p-2.5 text-slate-900"><div class="text-[11px] font-bold text-slate-400">BERAT</div><div id="homeBerat" class="font-black text-sm mt-0.5">—</div><div id="homeBeratDelta" class="text-[10px] text-emerald-600 font-bold"></div></div>
+            <div id="homeRiskCard" class="bg-white/15 backdrop-blur rounded-2xl p-2.5"><div class="text-[11px] font-bold text-white/80">RISIKO HARI INI</div><div id="homeRisk" class="font-black text-sm mt-0.5">Aman</div><div class="text-[10px] text-white/70">cek tanda bahaya</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <button onclick="switchTab('kmc')" class="text-left p-4 rounded-[20px] bg-white border border-slate-200 shadow-sm hover:border-orange-200">
+          <div class="w-10 h-10 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center"><i class="fa-solid fa-person-breastfeeding"></i></div>
+          <div class="font-extrabold text-sm mt-3 leading-tight">KMC & Menyusui</div>
+          <div class="text-xs text-slate-500 mt-1">Tracker durasi & jadwal ASI</div>
+          <div id="homeKmcHint" class="text-xs font-bold text-orange-600 mt-2">0 sesi hari ini →</div>
+        </button>
+        <button onclick="switchTab('tumbuh')" class="text-left p-4 rounded-[20px] bg-white border border-slate-200 shadow-sm hover:border-emerald-200">
+          <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center"><i class="fa-solid fa-weight-scale"></i></div>
+          <div class="font-extrabold text-sm mt-3 leading-tight">Kalkulator Tumbuh</div>
+          <div class="text-xs text-slate-500 mt-1">Berat & kurva Fenton</div>
+          <div id="homeTumbuhHint" class="text-xs font-bold text-emerald-600 mt-2">Isi timbang harian →</div>
+        </button>
+        <button onclick="switchTab('bahaya')" class="text-left p-4 rounded-[20px] bg-white border border-slate-200 shadow-sm hover:border-rose-200">
+          <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center"><i class="fa-solid fa-triangle-exclamation"></i></div>
+          <div class="font-extrabold text-sm mt-3 leading-tight">Tanda Bahaya</div>
+          <div class="text-xs text-slate-500 mt-1">Checklist harian</div>
+          <div id="homeBahayaHint" class="text-xs font-bold text-rose-600 mt-2">Belum cek hari ini →</div>
+        </button>
+        <button onclick="switchTab('edukasi')" class="text-left p-4 rounded-[20px] bg-white border border-slate-200 shadow-sm hover:border-blue-200">
+          <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center"><i class="fa-solid fa-circle-play"></i></div>
+          <div class="font-extrabold text-sm mt-3 leading-tight">Edukasi Visual</div>
+          <div class="text-xs text-slate-500 mt-1">Video & audio interaktif</div>
+          <div class="text-xs font-bold text-blue-600 mt-2"><span id="homeEduProgress">0/6</span> selesai →</div>
+        </button>
+      </div>
+
+      <div class="p-4 rounded-[20px] bg-amber-50 border border-amber-200">
+        <div class="flex items-center gap-2 text-amber-700 font-extrabold text-sm"><i class="fa-solid fa-lightbulb"></i> Pengingat hari ini</div>
+        <ul id="homeReminders" class="mt-2 space-y-1.5 text-sm text-amber-900 list-disc pl-5"></ul>
+      </div>
+
+      <div class="flex gap-2">
+        <button onclick="exportData()" class="flex-1 py-2.5 rounded-full border border-slate-200 bg-white font-bold text-sm"><i class="fa-solid fa-download mr-1"></i> Export</button>
+        <label class="flex-1 py-2.5 rounded-full border border-slate-200 bg-white font-bold text-sm text-center cursor-pointer"><i class="fa-solid fa-upload mr-1"></i> Import<input type="file" accept=".json" class="hidden" onchange="importData(event)"></label>
+      </div>
+    </div>
+
+    <!-- KMC & ASI -->
+    <div id="view-kmc" class="hidden p-4 space-y-4">
+      <div class="flex items-center justify-between">
+        <h2 class="font-display font-extrabold text-[16px]">KMC & Menyusui</h2>
+        <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-orange-100 text-orange-700 border border-orange-200">Tracker Harian</span>
+      </div>
+      <!-- KMC today card -->
+      <div class="p-4 rounded-[20px] bg-gradient-to-br from-orange-500 to-amber-400 text-white">
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="text-xs font-bold tracking-widest text-white/80">KMC HARI INI</div>
+            <div id="kmcToday" class="font-black text-[26px] leading-none mt-1">0 jam 0 menit</div>
+            <div id="kmcSessions" class="text-xs font-semibold text-white/80 mt-1">0 sesi</div>
+          </div>
+          <div class="w-[86px] h-[86px] rounded-full bg-white flex items-center justify-center relative">
+            <svg width="86" height="86" class="absolute inset-0"><circle cx="43" cy="43" r="36" stroke="#FFE4B5" stroke-width="8" fill="none"/><circle id="kmcRing" cx="43" cy="43" r="36" stroke="#0F766E" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="226" stroke-dashoffset="226" transform="rotate(-90 43 43)"/></svg>
+            <div class="text-center"><div id="kmcPct" class="font-black text-teal-700 text-sm">0%</div><div class="text-[10px] font-bold text-slate-500">dari 8 jam</div></div>
+          </div>
+        </div>
+        <div class="mt-3 h-2 bg-white/30 rounded-full overflow-hidden"><div id="kmcBar" class="h-full bg-white rounded-full" style="width:0%"></div></div>
+      </div>
+
+      <div class="flex gap-2">
+        <button onclick="openKmcModal()" class="flex-1 py-3 rounded-full bg-slate-900 text-white font-bold text-sm"><i class="fa-solid fa-plus mr-1"></i> Catat KMC</button>
+        <button onclick="openAsiModal()" class="flex-1 py-3 rounded-full bg-white border border-slate-200 font-bold text-sm"><i class="fa-solid fa-droplet mr-1 text-pink-500"></i> Catat Menyusui</button>
+      </div>
+
+      <div class="grid grid-cols-3 gap-2">
+        <div class="p-3 rounded-2xl bg-white border border-slate-200 text-center"><div class="text-[11px] font-bold text-slate-400">ASI HARI INI</div><div id="asiToday" class="font-black text-sm mt-1">0x</div><div id="asiMlToday" class="text-xs text-slate-500">0 ml</div></div>
+        <div class="p-3 rounded-2xl bg-white border border-slate-200 text-center"><div class="text-[11px] font-bold text-slate-400">JALUR NUTRISI</div><div id="nutrisiLabel" class="font-black text-sm mt-1">ASI Eksklusif</div><button onclick="openNutrisi()" class="text-xs font-bold text-teal-600 mt-0.5">ubah</button></div>
+        <div class="p-3 rounded-2xl bg-white border border-slate-200 text-center"><div class="text-[11px] font-bold text-slate-400">TERAKHIR</div><div id="lastAsi" class="font-bold text-xs mt-1 leading-tight">—</div></div>
+      </div>
+
+      <div>
+        <div class="flex items-center justify-between"><h3 class="font-extrabold text-sm">Riwayat KMC</h3><input id="kmcDate" type="date" onchange="renderKmc()" class="px-2.5 py-1.5 rounded-full border border-slate-200 text-xs"></div>
+        <div id="listKmc" class="mt-2 space-y-2"></div>
+      </div>
+      <div>
+        <div class="flex items-center justify-between"><h3 class="font-extrabold text-sm">Jadwal Menyusui</h3><button onclick="openAsiModal()" class="text-xs font-bold px-3 py-1 rounded-full bg-pink-50 border border-pink-200 text-pink-700">+ Tambah</button></div>
+        <div id="listAsi" class="mt-2 space-y-2"></div>
+      </div>
+    </div>
+
+    <!-- TUMBUH -->
+    <div id="view-tumbuh" class="hidden p-4 space-y-4">
+      <div class="flex items-center justify-between">
+        <h2 class="font-display font-extrabold text-[16px]">Kalkulator Tumbuh</h2>
+        <button onclick="openTimbangModal()" class="px-3 py-1.5 rounded-full bg-emerald-600 text-white text-xs font-bold"><i class="fa-solid fa-plus mr-1"></i> Timbang</button>
+      </div>
+      <div class="p-4 rounded-[20px] bg-white border border-slate-200">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <div class="text-xs font-bold tracking-widest text-slate-400">BERAT BADAN SAAT INI</div>
+            <div id="beratNow" class="font-black text-[24px] mt-1">—</div>
+            <div id="beratDelta" class="text-xs font-bold"></div>
+            <div id="beratDate" class="text-xs text-slate-500 mt-1"></div>
+          </div>
+          <span id="beratBadge" class="px-2.5 py-1 rounded-full text-xs font-bold border">—</span>
+        </div>
+        <div class="mt-3 grid grid-cols-3 gap-2 text-center">
+          <div class="p-2.5 rounded-2xl bg-slate-50 border border-slate-200"><div class="text-[11px] font-bold text-slate-400">PANJANG</div><div id="panjangNow" class="font-black text-sm">—</div></div>
+          <div class="p-2.5 rounded-2xl bg-slate-50 border border-slate-200"><div class="text-[11px] font-bold text-slate-400">LINGKAR KEPALA</div><div id="lkNow" class="font-black text-sm">—</div></div>
+          <div class="p-2.5 rounded-2xl bg-amber-50 border border-amber-200"><div class="text-[11px] font-bold text-amber-700">BB LAHIR</div><div id="bbLahirNow" class="font-black text-sm">—</div></div>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-[20px] bg-white border border-slate-200">
+        <div class="flex items-center justify-between"><h3 class="font-extrabold text-sm">Kurva Pertumbuhan (Fenton)</h3><span class="text-[11px] font-bold px-2 py-1 rounded-full bg-slate-900 text-white">7 hari</span></div>
+        <div class="mt-3 rounded-2xl bg-[#FFFBF5] border border-orange-100 p-2">
+          <canvas id="growthChart" width="360" height="170" class="w-full"></canvas>
+        </div>
+        <div class="mt-2 flex items-center gap-3 text-[11px] font-bold text-slate-500"><span class="flex items-center gap-1"><span class="w-3 h-[3px] bg-emerald-500 rounded-full"></span> Berat bayi</span><span class="flex items-center gap-1"><span class="w-3 h-[3px] bg-slate-300 rounded-full border border-dashed"></span> Referensi Fenton (ilustratif)</span></div>
+        <p class="text-[11px] text-slate-500 mt-2 leading-4">Kurva Fenton untuk prematur. Garis putus-putus hanya ilustratif — konsultasikan dengan tenaga kesehatan untuk interpretasi.</p>
+      </div>
+
+      <div class="flex gap-2">
+        <input id="searchTumbuh" oninput="renderTumbuh()" placeholder="Cari tanggal..." class="flex-1 px-3 py-2 rounded-full border border-slate-200 text-sm">
+        <button onclick="exportTumbuhCSV()" class="px-3 py-2 rounded-full border border-slate-200 bg-white text-xs font-bold"><i class="fa-solid fa-file-csv mr-1"></i> CSV</button>
+      </div>
+      <div id="listTumbuh" class="space-y-2"></div>
+    </div>
+
+    <!-- TANDA BAHAYA -->
+    <div id="view-bahaya" class="hidden p-4 space-y-4">
+      <div class="flex items-center justify-between">
+        <h2 class="font-display font-extrabold text-[16px]">Deteksi Tanda Bahaya</h2>
+        <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-700">Checklist Harian</span>
+      </div>
+      <div id="riskBanner" class="p-4 rounded-[20px] border">
+        <!-- filled -->
+      </div>
+      <div class="p-4 rounded-[20px] bg-white border border-slate-200">
+        <div class="flex items-center justify-between">
+          <h3 class="font-extrabold text-sm">Cek Hari Ini</h3>
+          <input id="bahayaDate" type="date" onchange="loadBahayaForDate()" class="px-2.5 py-1.5 rounded-full border border-slate-200 text-xs">
+        </div>
+        <div class="mt-1 text-xs text-slate-500">Centang jika YA — suhu <36.5°C = hipotermia.</div>
+        <div id="checklist" class="mt-3 space-y-2"></div>
+        <div class="mt-3 grid grid-cols-2 gap-2">
+          <div><label class="text-xs font-bold">Suhu (°C)</label><input id="suhuInput" type="number" step="0.1" placeholder="36.8" oninput="evaluateRisk()" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"></div>
+          <div><label class="text-xs font-bold">Catatan</label><input id="bahayaCatatan" placeholder="mis. rewel" oninput="evaluateRisk()" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"></div>
+        </div>
+        <button onclick="saveBahaya()" class="mt-3 w-full py-3 rounded-full bg-rose-600 text-white font-bold text-sm hover:bg-rose-700">Simpan & Nilai Risiko</button>
+        <p class="text-[11px] text-slate-500 mt-2 text-center">Jika risiko Tinggi/Sedang → segera hubungi bidan/RS. Prototype tidak menggantikan diagnosis nakes.</p>
+      </div>
+      <div>
+        <h3 class="font-extrabold text-sm">Riwayat Cek</h3>
+        <div id="listBahaya" class="mt-2 space-y-2"></div>
+      </div>
+    </div>
+
+    <!-- EDUKASI -->
+    <div id="view-edukasi" class="hidden p-4 space-y-4">
+      <div class="flex items-center justify-between">
+        <h2 class="font-display font-extrabold text-[16px]">Modul Edukasi Visual</h2>
+        <span id="eduCounter" class="text-xs font-bold px-2.5 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700">0/6</span>
+      </div>
+      <div class="p-3 rounded-2xl bg-blue-50 border border-blue-200 flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center"><i class="fa-solid fa-graduation-cap text-sm"></i></div>
+        <div class="flex-1"><div class="font-bold text-sm text-blue-900">Belajar 5–10 menit / hari</div><div class="text-xs text-blue-700">Video interaktif + audio — bisa diputar ulang.</div></div>
+      </div>
+      <div class="flex gap-2 overflow-auto no-scrollbar pb-1">
+        <button onclick="filterEdu('semua')" data-edu-filter="semua" class="edu-filter px-3 py-1.5 rounded-full bg-slate-900 text-white text-xs font-bold whitespace-nowrap">Semua</button>
+        <button onclick="filterEdu('KMC')" data-edu-filter="KMC" class="edu-filter px-3 py-1.5 rounded-full bg-white border border-slate-200 text-xs font-bold whitespace-nowrap">KMC</button>
+        <button onclick="filterEdu('ASI')" data-edu-filter="ASI" class="edu-filter px-3 py-1.5 rounded-full bg-white border border-slate-200 text-xs font-bold whitespace-nowrap">ASI</button>
+        <button onclick="filterEdu('Perawatan')" data-edu-filter="Perawatan" class="edu-filter px-3 py-1.5 rounded-full bg-white border border-slate-200 text-xs font-bold whitespace-nowrap">Perawatan</button>
+      </div>
+      <div id="listEdu" class="space-y-3"></div>
+      <div id="eduPlayer" class="hidden p-4 rounded-[20px] bg-slate-900 text-white">
+        <div class="flex items-center justify-between"><div id="eduPlayerTitle" class="font-bold text-sm">—</div><button onclick="closeEduPlayer()" class="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center"><i class="fa-solid fa-xmark text-xs"></i></button></div>
+        <div class="mt-3 rounded-2xl overflow-hidden bg-black aspect-video flex items-center justify-center relative">
+          <video id="eduVideo" class="w-full h-full hidden" controls playsinline></video>
+          <div id="eduVideoPlaceholder" class="text-center p-6">
+            <div class="w-12 h-12 rounded-full bg-white/15 flex items-center justify-center mx-auto"><i class="fa-solid fa-play"></i></div>
+            <div class="text-sm font-bold mt-2">Pratinjau Video</div>
+            <div class="text-xs text-white/70 mt-1">Prototype: video ilustratif (placeholder). Di produksi, ganti dengan file nyata.</div>
+          </div>
+        </div>
+        <div class="mt-3 flex items-center gap-2">
+          <button id="eduPlayBtn" onclick="toggleEduAudio()" class="flex-1 py-2.5 rounded-full bg-white text-slate-900 font-bold text-sm"><i class="fa-solid fa-headphones mr-1"></i> Putar Audio</button>
+          <button onclick="markEduDone()" class="px-4 py-2.5 rounded-full bg-emerald-500 text-white font-bold text-sm">Tandai Selesai</button>
+        </div>
+        <audio id="eduAudio" class="hidden"></audio>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- bottom nav -->
+  <nav class="absolute bottom-0 left-0 right-0 bg-white border-t border-slate-200 px-1 py-1.5 flex justify-around">
+    <button onclick="switchTab('beranda')" data-tab="beranda" class="tab-btn flex flex-col items-center gap-0.5 px-2 py-1 rounded-2xl"><i class="fa-solid fa-house text-[16px]"></i><span class="text-[10px] font-bold">Beranda</span></button>
+    <button onclick="switchTab('kmc')" data-tab="kmc" class="tab-btn flex flex-col items-center gap-0.5 px-2 py-1 rounded-2xl"><i class="fa-solid fa-person-breastfeeding text-[16px]"></i><span class="text-[10px] font-bold">KMC & ASI</span></button>
+    <button onclick="switchTab('tumbuh')" data-tab="tumbuh" class="tab-btn flex flex-col items-center gap-0.5 px-2 py-1 rounded-2xl"><i class="fa-solid fa-chart-line text-[16px]"></i><span class="text-[10px] font-bold">Tumbuh</span></button>
+    <button onclick="switchTab('bahaya')" data-tab="bahaya" class="tab-btn flex flex-col items-center gap-0.5 px-2 py-1 rounded-2xl"><i class="fa-solid fa-shield-heart text-[16px]"></i><span class="text-[10px] font-bold">Bahaya</span></button>
+    <button onclick="switchTab('edukasi')" data-tab="edukasi" class="tab-btn flex flex-col items-center gap-0.5 px-2 py-1 rounded-2xl"><i class="fa-solid fa-book-open text-[16px]"></i><span class="text-[10px] font-bold">Edukasi</span></button>
+  </nav>
+</div>
+<p class="text-center text-[11px] text-slate-400 mt-3 px-4">Prototype frontend only — data tersimpan di browser (localStorage). Bukan alat diagnostik medis.</p>
+</div>
+
+<!-- side desktop info -->
+<div class="hidden lg:block flex-1 max-w-[560px]">
+  <div class="bg-white rounded-[20px] border border-slate-200 p-5 sticky top-[72px]">
+    <div class="text-xs font-bold tracking-widest text-teal-600">TENTANG PROTOTYPE</div>
+    <h3 class="font-display font-extrabold text-lg mt-1">Empowering home-based monitoring</h3>
+    <p class="text-sm text-slate-600 leading-6 mt-2">Replika 4 fitur dari infografis: <b>KMC & Breastfeeding Tracker</b>, <b>Growth Calculator (Fenton)</b>, <b>Early Danger Sign Detection</b>, dan <b>Visual Education Module</b>. Semua interaktif & mobile friendly.</p>
+    <div class="mt-4 grid grid-cols-2 gap-2 text-xs">
+      <div class="p-3 rounded-2xl bg-orange-50 border border-orange-200"><div class="font-bold text-orange-700">KMC Hari Ini</div><div class="text-slate-600 mt-1">Durasi & sesi, progress 8 jam, jadwal ASI.</div></div>
+      <div class="p-3 rounded-2xl bg-emerald-50 border border-emerald-200"><div class="font-bold text-emerald-700">Berat Badan</div><div class="text-slate-600 mt-1">Input harian + kurva + delta ▲.</div></div>
+      <div class="p-3 rounded-2xl bg-rose-50 border border-rose-200"><div class="font-bold text-rose-700">Tanda Bahaya</div><div class="text-slate-600 mt-1">Checklist + alert risiko.</div></div>
+      <div class="p-3 rounded-2xl bg-blue-50 border border-blue-200"><div class="font-bold text-blue-700">Edukasi</div><div class="text-slate-600 mt-1">Video/audio 3:45, 4:20, dll.</div></div>
+    </div>
+    <div class="mt-4 p-4 rounded-2xl bg-slate-900 text-white">
+      <div class="font-bold text-sm">Cara coba:</div>
+      <ol class="text-sm text-slate-300 list-decimal pl-5 mt-1 space-y-1"><li>Atur profil bayi (nama, BB lahir, gestasi)</li><li>Catat KMC & menyusui → lihat Beranda</li><li>Isi timbang → lihat kurva Fenton</li><li>Cek tanda bahaya → lihat alert</li><li>Putar edukasi → tandai selesai</li></ol>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- dialogs -->
+<dialog id="dlgProfil" class="rounded-[20px] p-0 w-[min(520px,96vw)] backdrop:bg-slate-900/50">
+  <form method="dialog" class="p-5">
+    <div class="flex items-center justify-between"><h3 class="font-black">Profil Bayi</h3><button type="button" onclick="dlgProfil.close()" class="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="mt-4 grid grid-cols-2 gap-3">
+      <div class="col-span-2"><label class="text-xs font-bold">Nama panggilan</label><input id="pNama" placeholder="Si Kecil" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"></div>
+      <div><label class="text-xs font-bold">Tgl lahir</label><input id="pTgl" type="date" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"></div>
+      <div><label class="text-xs font-bold">Usia gestasi (minggu)</label><input id="pGestasi" type="number" min="24" max="42" placeholder="34" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"></div>
+      <div><label class="text-xs font-bold">BB lahir (gram)</label><input id="pBb" type="number" min="500" max="6000" placeholder="1850" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"></div>
+      <div><label class="text-xs font-bold">Jenis kelamin</label><select id="pJk" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white"><option value="L">Laki-laki</option><option value="P">Perempuan</option></select></div>
+      <div class="col-span-2"><label class="text-xs font-bold">RS / Bidan pendamping</label><input id="pRs" placeholder="RS Harapan — 0812xxxx" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"></div>
+    </div>
+    <div class="mt-5 flex gap-2 justify-end"><button type="button" onclick="dlgProfil.close()" class="px-4 py-2.5 rounded-full border border-slate-200 font-bold text-sm">Batal</button><button type="button" onclick="saveProfil()" class="px-5 py-2.5 rounded-full bg-teal-600 text-white font-bold text-sm">Simpan</button></div>
+  </form>
+</dialog>
+
+<dialog id="dlgKmc" class="rounded-[20px] p-0 w-[min(520px,96vw)] backdrop:bg-slate-900/50">
+  <form method="dialog" class="p-5">
+    <div class="flex items-center justify-between"><h3 class="font-black">Catat KMC</h3><button type="button" onclick="dlgKmc.close()" class="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="mt-4 space-y-3">
+      <div><label class="text-xs font-bold">Tanggal</label><input id="kmcTgl" type="date" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"></div>
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="text-xs font-bold">Mulai</label><input id="kmcStart" type="time" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"></div>
+        <div><label class="text-xs font-bold">Selesai</label><input id="kmcEnd" type="time" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"></div>
+      </div>
+      <div><label class="text-xs font-bold">Catatan posisi</label><select id="kmcPosisi" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white"><option>Posisi tegak dada-ke-dada, kepala miring</option><option>Kontak kulit, topi & selimut</option><option>Perlu bantuan</option></select></div>
+      <div><label class="text-xs font-bold">Catatan</label><input id="kmcCat" placeholder="Bayi hangat, tidur nyenyak" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"></div>
+    </div>
+    <div class="mt-5 flex gap-2 justify-end"><button type="button" onclick="dlgKmc.close()" class="px-4 py-2.5 rounded-full border border-slate-200 font-bold text-sm">Batal</button><button type="button" onclick="saveKmc()" class="px-5 py-2.5 rounded-full bg-orange-500 text-white font-bold text-sm">Simpan KMC</button></div>
+  </form>
+</dialog>
+
+<dialog id="dlgAsi" class="rounded-[20px] p-0 w-[min(520px,96vw)] backdrop:bg-slate-900/50">
+  <form method="dialog" class="p-5">
+    <div class="flex items-center justify-between"><h3 class="font-black">Catat Menyusui</h3><button type="button" onclick="dlgAsi.close()" class="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="mt-4 space-y-3">
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="text-xs font-bold">Tanggal</label><input id="asiTgl" type="date" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"></div>
+        <div><label class="text-xs font-bold">Jam</label><input id="asiJam" type="time" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"></div>
+      </div>
+      <div><label class="text-xs font-bold">Jenis</label><select id="asiJenis" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white"><option>ASI langsung</option><option>ASI perah (botol)</option><option>ASI perah (cup/spoon)</option><option>Formula (jika dianjurkan nakes)</option></select></div>
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="text-xs font-bold">Durasi / Volume</label><input id="asiVol" placeholder="20 ml / 15 menit" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"></div>
+        <div><label class="text-xs font-bold">Respon bayi</label><select id="asiRespon" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white"><option>Menyusu kuat</option><option>Mengantuk</option><option>Menolak</option><option>Muntah</option></select></div>
+      </div>
+    </div>
+    <div class="mt-5 flex gap-2 justify-end"><button type="button" onclick="dlgAsi.close()" class="px-4 py-2.5 rounded-full border border-slate-200 font-bold text-sm">Batal</button><button type="button" onclick="saveAsi()" class="px-5 py-2.5 rounded-full bg-pink-500 text-white font-bold text-sm">Simpan</button></div>
+  </form>
+</dialog>
+
+<dialog id="dlgTimbang" class="rounded-[20px] p-0 w-[min(520px,96vw)] backdrop:bg-slate-900/50">
+  <form method="dialog" class="p-5">
+    <div class="flex items-center justify-between"><h3 class="font-black">Input Timbang Harian</h3><button type="button" onclick="dlgTimbang.close()" class="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="mt-4 space-y-3">
+      <div><label class="text-xs font-bold">Tanggal</label><input id="tTgl" type="date" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"></div>
+      <div class="grid grid-cols-3 gap-3">
+        <div><label class="text-xs font-bold">Berat (gram) *</label><input id="tBerat" type="number" min="500" max="8000" placeholder="1850" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"></div>
+        <div><label class="text-xs font-bold">Panjang (cm)</label><input id="tPjg" type="number" step="0.1" placeholder="42.5" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"></div>
+        <div><label class="text-xs font-bold">Lingkar kepala (cm)</label><input id="tLk" type="number" step="0.1" placeholder="30.0" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"></div>
+      </div>
+      <div><label class="text-xs font-bold">Catatan</label><input id="tCat" placeholder="Timbang jam 08:00, setelah menyusu" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"></div>
+    </div>
+    <input type="hidden" id="tId">
+    <div class="mt-5 flex gap-2 justify-end"><button type="button" onclick="dlgTimbang.close()" class="px-4 py-2.5 rounded-full border border-slate-200 font-bold text-sm">Batal</button><button type="button" onclick="saveTimbang()" class="px-5 py-2.5 rounded-full bg-emerald-600 text-white font-bold text-sm">Simpan</button></div>
+  </form>
+</dialog>
+
+<dialog id="dlgNutrisi" class="rounded-[20px] p-0 w-[min(420px,96vw)] backdrop:bg-slate-900/50">
+  <div class="p-5">
+    <h3 class="font-black">Jalur Nutrisi</h3>
+    <p class="text-xs text-slate-500 mt-1">Pilih sesuai anjuran nakes.</p>
+    <div class="mt-3 space-y-2" id="nutrisiOptions"></div>
+    <div class="mt-4 flex justify-end"><button onclick="dlgNutrisi.close()" class="px-4 py-2 rounded-full border border-slate-200 font-bold text-sm">Tutup</button></div>
+  </div>
+</dialog>
+
+<div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 hidden px-4 py-3 rounded-2xl bg-slate-900 text-white text-sm font-semibold shadow-xl">—</div>
+
+<script>
+const LS_KEY='tumbuhkuat_v2';
+const $=s=>document.querySelector(s);
+let eduFilter='semua';
+let currentEduId=null;
+
+function seed(){
+  return {
+    profil:{nama:'Si Kecil', tgl:'2026-03-10', gestasi:34, bbLahir:1850, jk:'L', rs:'Bidan Desa — 0812-xxxx-xxxx'},
+    nutrisi:'ASI Eksklusif',
+    kmc:[
+      {id:uid(), date:todayStr(), start:'08:00', end:'09:30', minutes:90, posisi:'Posisi tegak dada-ke-dada, kepala miring', cat:'Hangat, tidur'},
+      {id:uid(), date:todayStr(), start:'13:00', end:'14:00', minutes:60, posisi:'Kontak kulit, topi & selimut', cat:'Rewel awal, lalu tenang'}
+    ],
+    asi:[
+      {id:uid(), date:todayStr(), jam:'07:30', jenis:'ASI langsung', vol:'15 menit', respon:'Menyusu kuat'},
+      {id:uid(), date:todayStr(), jam:'10:00', jenis:'ASI perah (cup/spoon)', vol:'25 ml', respon:'Menyusu kuat'},
+      {id:uid(), date:todayStr(), jam:'12:30', jenis:'ASI langsung', vol:'12 menit', respon:'Mengantuk'}
+    ],
+    tumbuh:[
+      {id:uid(), date:daysAgo(3), berat:1720, pjg:42.0, lk:29.5, cat:''},
+      {id:uid(), date:daysAgo(2), berat:1770, pjg:42.2, lk:29.7, cat:''},
+      {id:uid(), date:daysAgo(1), berat:1805, pjg:42.5, lk:29.8, cat:''},
+      {id:uid(), date:todayStr(), berat:1850, pjg:42.6, lk:30.0, cat:'Timbang pagi'}
+    ],
+    bahaya:[
+      // empty initially, will be filled via checklist
+    ],
+    eduDone:{}
+  };
+}
+function uid(){return Math.random().toString(36).slice(2,9)}
+function todayStr(){return new Date().toISOString().slice(0,10)}
+function daysAgo(n){const d=new Date(); d.setDate(d.getDate()-n); return d.toISOString().slice(0,10)}
+function load(){
+  try{const r=localStorage.getItem(LS_KEY); if(!r) return seed(); const j=JSON.parse(r); if(!j.profil) return seed(); return j;}catch(e){return seed()}
+}
+let state=load();
+function save(){localStorage.setItem(LS_KEY, JSON.stringify(state))}
+function toast(m){const t=$('#toast'); t.textContent=m; t.classList.remove('hidden'); setTimeout(()=>t.classList.add('hidden'),2200)}
+function fmtBerat(g){return Number(g).toLocaleString('id-ID')+' g'}
+function fmtDur(min){const h=Math.floor(min/60), m=min%60; return (h? h+' jam ':'')+m+' menit';}
+
+const EDU=[
+  {id:'kmc1', kat:'KMC', judul:'Posisi KMC yang Benar', dur:'3:45', desc:'Langkah dada-ke-dada, kepala miring, jalan napas bebas.', thumb:'https://images.unsplash.com/photo-1555252333-9f8e92e65df9?w=600&q=80', video:'', audio:''},
+  {id:'asi1', kat:'ASI', judul:'Manajemen ASI Perah', dur:'4:10', desc:'Cara perah, simpan, dan beri dengan cup/spoon.', thumb:'https://images.unsplash.com/photo-1511948374796-056e5d2891d2?w=600&q=80', video:'', audio:''},
+  {id:'rawat1', kat:'Perawatan', judul:'Perawatan Tali Pusat', dur:'4:20', desc:'Bersihkan, jaga kering, tanda infeksi.', thumb:'https://images.unsplash.com/photo-1522771930-78848d9293e4?w=600&q=80', video:'', audio:''},
+  {id:'kmc2', kat:'KMC', judul:'KMC Seharian di Rumah', dur:'3:20', desc:'Jadwal 8 jam, gantian dengan ayah/keluarga.', thumb:'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=600&q=80', video:'', audio:''},
+  {id:'bahaya1', kat:'Perawatan', judul:'Kenali Tanda Bahaya', dur:'5:00', desc:'Kuning, sesak, hipotermia — kapan ke RS.', thumb:'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&q=80', video:'', audio:''},
+  {id:'asi2', kat:'ASI', judul:'Menyusui Bayi Kecil', dur:'3:55', desc:'Pelekatan, frekuensi 8–12x/hari, tanda cukup ASI.', thumb:'https://images.unsplash.com/photo-1492725764893-90b379c2b6e7?w=600&q=80', video:'', audio:''},
+];
+
+const CHECKS=[
+  {key:'kuning', label:'Kuning (jaundice) — kulit/mata kuning', hint:'Terutama hari 2–7'},
+  {key:'sesak', label:'Sesak napas / napas cepat / tarikan dinding dada', hint:'Hitung napas >60x/menit'},
+  {key:'hipo', label:'Hipotermia — teraba dingin / suhu <36.5°C', hint:'Cek suhu aksila'},
+  {key:'letargi', label:'Letargi / tidak bergerak / lemas', hint:'Bangunkan, respon?'},
+  {key:'lemah', label:'Menyusu lemah / menolak menyusu', hint:'Bandingkan dengan biasa'},
+  {key:'muntah', label:'Muntah terus / kembung / diare berdarah', hint:''},
+  {key:'kejang', label:'Kejang / kaku', hint:'Darurat'},
+  {key:'demam', label:'Demam ≥37.5°C', hint:'Ukur suhu'},
+];
+
+function renderAll(){
+  renderHeader();
+  renderBeranda();
+  renderKmc();
+  renderTumbuh();
+  renderBahaya();
+  renderEdu();
+  updateClock();
+  switchTab('beranda');
+}
+function renderHeader(){
+  const p=state.profil;
+  const usiaHari = Math.max(0, Math.round((new Date() - new Date(p.tgl))/(86400000)));
+  const koreksiMinggu = Math.max(0, p.gestasi + usiaHari/7 - 40); // simple
+  $('#bayiHeader').innerHTML=`
+    <img src="https://i.pravatar.cc/100?img=${p.jk==='P'? 32 : 15}" class="w-10 h-10 rounded-full border-2 border-orange-200">
+    <div class="flex-1 min-w-0">
+      <div class="font-extrabold text-sm leading-none truncate">${p.nama} • ${p.jk==='P'?'Perempuan':'Laki-laki'} • ${p.gestasi} minggu</div>
+      <div class="text-xs text-slate-600">Lahir ${p.tgl} • BB ${fmtBerat(p.bbLahir)} • Usia ${usiaHari} hari</div>
+    </div>
+    <button onclick="openProfil()" class="px-2.5 py-1.5 rounded-full bg-slate-900 text-white text-xs font-bold">Ubah</button>
+  `;
+  $('#bbLahirNow').textContent=fmtBerat(p.bbLahir);
+}
+
+function switchTab(id){
+  const map={beranda:'view-beranda', kmc:'view-kmc', tumbuh:'view-tumbuh', bahaya:'view-bahaya', edukasi:'view-edukasi'};
+  Object.values(map).forEach(v=> document.getElementById(v)?.classList.add('hidden'));
+  document.getElementById(map[id])?.classList.remove('hidden');
+  document.querySelectorAll('.tab-btn').forEach(b=>{
+    const on=b.dataset.tab===id;
+    b.classList.toggle('bg-teal-600', on);
+    b.classList.toggle('text-white', on);
+    b.classList.toggle('text-slate-500', !on);
+    b.classList.toggle('bg-teal-50', on);
+  });
+  if(id==='beranda') renderBeranda();
+  if(id==='kmc') renderKmc();
+  if(id==='tumbuh') {renderTumbuh(); setTimeout(drawChart,80);}
+  if(id==='bahaya') renderBahaya();
+  if(id==='edukasi') renderEdu();
+  // scroll top inside phone
+  const ph=$('#phone'); const view=document.getElementById(map[id]); if(view) ph.querySelector('.overflow-y-auto')?.scrollTo({top:0, behavior:'smooth'});
+}
+function updateClock(){ const el=$('#clock'); if(el) el.textContent=new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}); setTimeout(updateClock,30000); }
+
+// BERANDA
+function renderBeranda(){
+  const today=todayStr();
+  const kmcToday=state.kmc.filter(k=>k.date===today).reduce((s,k)=>s+k.minutes,0);
+  const kmcCount=state.kmc.filter(k=>k.date===today).length;
+  const pct=Math.min(100, Math.round(kmcToday/480*100));
+  $('#homeKmc').textContent= fmtDur(kmcToday);
+  $('#homeKmcHint').textContent= kmcCount? kmcCount+' sesi hari ini →' : 'Belum ada sesi →';
+  // berat
+  const sorted=[...state.tumbuh].sort((a,b)=>a.date.localeCompare(b.date));
+  const last=sorted[sorted.length-1];
+  const prev=sorted[sorted.length-2];
+  if(last){
+    $('#homeBerat').textContent=fmtBerat(last.berat);
+    if(prev) { const d=last.berat-prev.berat; $('#homeBeratDelta').textContent=(d>=0?'▲':'▼')+Math.abs(d)+' g'; $('#homeBeratDelta').className='text-[10px] font-bold '+(d>=0?'text-emerald-600':'text-rose-600'); }
+  }
+  // risk
+  const todayBahaya=state.bahaya.find(b=>b.date===today);
+  const risk=todayBahaya? todayBahaya.risk : null;
+  const riskEl=$('#homeRisk'); const card=$('#homeRiskCard');
+  if(!todayBahaya){ riskEl.textContent='Belum cek'; card.className='bg-amber-400 rounded-2xl p-2.5 text-white';}
+  else if(risk==='Tinggi'){ riskEl.textContent='Tinggi'; card.className='bg-rose-600 rounded-2xl p-2.5 text-white';}
+  else if(risk==='Sedang'){ riskEl.textContent='Sedang'; card.className='bg-amber-500 rounded-2xl p-2.5 text-white';}
+  else { riskEl.textContent='Aman'; card.className='bg-white/15 backdrop-blur rounded-2xl p-2.5';}
+  // edukasi
+  const done=Object.values(state.eduDone).filter(Boolean).length;
+  $('#homeEduProgress').textContent=done+'/6';
+  // reminders
+  const ul=$('#homeReminders'); ul.innerHTML='';
+  const tips=[];
+  if(kmcToday<120) tips.push('Kejar KMC — aim 8 jam/hari, gantian dengan keluarga.');
+  else if(kmcToday<480) tips.push('KMC sudah '+fmtDur(kmcToday)+' — lanjutkan hingga 8 jam.');
+  else tips.push('KMC hari ini tercapai 8 jam — pertahankan!');
+  if(kmcCount<3) tips.push('Menyusui 8–12x/hari, per 2–3 jam.');
+  if(!todayBahaya) tips.push('Jangan lupa checklist tanda bahaya harian.');
+  else if(risk!=='Aman') tips.push('Risiko '+risk+' — hubungi nakes segera.');
+  if(sorted.length && last && prev && last.berat<prev.berat) tips.push('Berat turun '+ (prev.berat-last.berat)+' g — pantau & konsultasi nakes.');
+  tips.slice(0,3).forEach(t=>{const li=document.createElement('li'); li.textContent=t; ul.appendChild(li);});
+}
+
+// KMC
+function renderKmc(){
+  const today=todayStr();
+  if(!$('#kmcDate').value) $('#kmcDate').value=today;
+  const filterDate=$('#kmcDate').value || today;
+  const kmcToday=state.kmc.filter(k=>k.date===today).reduce((s,k)=>s+k.minutes,0);
+  const countToday=state.kmc.filter(k=>k.date===today).length;
+  $('#kmcToday').textContent=fmtDur(kmcToday);
+  $('#kmcSessions').textContent=countToday+' sesi • target 8 jam';
+  const pct=Math.min(100, Math.round(kmcToday/480*100));
+  $('#kmcPct').textContent=pct+'%';
+  $('#kmcBar').style.width=pct+'%';
+  const circ=2*Math.PI*36; const off=circ - circ*pct/100;
+  $('#kmcRing').style.strokeDashoffset=off;
+  // asi today
+  const asiToday=state.asi.filter(a=>a.date===today);
+  $('#asiToday').textContent=asiToday.length+'x';
+  // extract ml
+  let ml=0; asiToday.forEach(a=>{const m=a.vol.match(/(\d+)\s*ml/i); if(m) ml+=Number(m[1]);});
+  $('#asiMlToday').textContent= ml? ml+' ml' : '—';
+  $('#nutrisiLabel').textContent=state.nutrisi;
+  const last= [...state.asi].sort((a,b)=> (a.date+a.jam).localeCompare(b.date+b.jam)).pop();
+  $('#lastAsi').textContent= last? last.jam+' • '+last.jenis : '—';
+  // lists
+  const listK=$('#listKmc'); listK.innerHTML='';
+  const kmcFiltered=state.kmc.filter(k=>k.date===filterDate).sort((a,b)=>a.start.localeCompare(b.start));
+  if(!kmcFiltered.length) listK.innerHTML='<div class="text-sm text-slate-500 text-center py-3 border border-dashed border-slate-200 rounded-2xl">Belum ada KMC di tanggal ini</div>';
+  kmcFiltered.forEach(k=>{
+    const div=document.createElement('div');
+    div.className='p-3 rounded-2xl bg-white border border-slate-200 flex items-center justify-between gap-3';
+    div.innerHTML=`<div><div class="font-bold text-sm">${k.start}–${k.end} • ${fmtDur(k.minutes)}</div><div class="text-xs text-slate-500">${k.posisi}</div><div class="text-xs text-slate-400">${k.cat||''}</div></div><button onclick="hapusKmc('${k.id}')" class="w-8 h-8 rounded-lg bg-rose-50 border border-rose-200 text-rose-600"><i class="fa-solid fa-trash text-xs"></i></button>`;
+    listK.appendChild(div);
+  });
+  const listA=$('#listAsi'); listA.innerHTML='';
+  const asiFiltered=state.asi.filter(a=>a.date===filterDate).sort((a,b)=>a.jam.localeCompare(b.jam));
+  if(!asiFiltered.length) listA.innerHTML='<div class="text-sm text-slate-500 text-center py-3 border border-dashed border-slate-200 rounded-2xl">Belum ada catatan menyusui</div>';
+  asiFiltered.forEach(a=>{
+    const div=document.createElement('div');
+    div.className='p-3 rounded-2xl bg-white border border-slate-200 flex items-center justify-between gap-3';
+    div.innerHTML=`<div><div class="font-bold text-sm">${a.jam} • ${a.jenis}</div><div class="text-xs text-slate-600">${a.vol} • ${a.respon}</div></div><button onclick="hapusAsi('${a.id}')" class="w-8 h-8 rounded-lg bg-rose-50 border border-rose-200 text-rose-600"><i class="fa-solid fa-trash text-xs"></i></button>`;
+    listA.appendChild(div);
+  });
+}
+function openKmcModal(){ $('#kmcTgl').value=todayStr(); $('#kmcStart').value='08:00'; $('#kmcEnd').value='09:30'; $('#kmcPosisi').value='Posisi tegak dada-ke-dada, kepala miring'; $('#kmcCat').value=''; dlgKmc.showModal(); }
+function saveKmc(){
+  const date=$('#kmcTgl').value||todayStr();
+  const s=$('#kmcStart').value||'08:00';
+  const e=$('#kmcEnd').value||'09:00';
+  const [sh,sm]=s.split(':').map(Number); const [eh,em]=e.split(':').map(Number);
+  let mins=(eh*60+em)-(sh*60+sm); if(mins<=0) mins+=24*60;
+  if(mins> 16*60) return toast('Durasi terlalu panjang');
+  state.kmc.push({id:uid(), date, start:s, end:e, minutes:mins, posisi:$('#kmcPosisi').value, cat:$('#kmcCat').value.trim()});
+  save(); dlgKmc.close(); renderKmc(); renderBeranda(); toast('KMC '+fmtDur(mins)+' dicatat');
+}
+function hapusKmc(id){ if(!confirm('Hapus sesi KMC ini?')) return; state.kmc=state.kmc.filter(k=>k.id!==id); save(); renderKmc(); renderBeranda(); }
+function openAsiModal(){ $('#asiTgl').value=todayStr(); $('#asiJam').value=new Date().toTimeString().slice(0,5); $('#asiVol').value=''; dlgAsi.showModal(); }
+function saveAsi(){
+  const date=$('#asiTgl').value||todayStr();
+  const jam=$('#asiJam').value||'08:00';
+  const jenis=$('#asiJenis').value;
+  const vol=$('#asiVol').value.trim()||'—';
+  const respon=$('#asiRespon').value;
+  if(!jam) return toast('Jam wajib');
+  state.asi.push({id:uid(), date, jam, jenis, vol, respon});
+  state.asi.sort((a,b)=> (a.date+a.jam).localeCompare(b.date+b.jam));
+  save(); dlgAsi.close(); renderKmc(); renderBeranda(); toast('Menyusui dicatat');
+}
+function hapusAsi(id){ if(!confirm('Hapus catatan ini?')) return; state.asi=state.asi.filter(a=>a.id!==id); save(); renderKmc(); renderBeranda(); }
+function openNutrisi(){
+  const opts=['ASI Eksklusif','ASI + ASI Perah','ASI Perah Dominan','Campur (ASI + Formula sesuai anjuran)'];
+  const c=$('#nutrisiOptions'); c.innerHTML='';
+  opts.forEach(o=>{
+    const b=document.createElement('button');
+    b.className='w-full text-left px-4 py-3 rounded-2xl border flex items-center justify-between '+(state.nutrisi===o?'bg-teal-600 text-white border-teal-600':'bg-white border-slate-200');
+    b.innerHTML=`<span class="font-bold text-sm">${o}</span><i class="fa-solid ${state.nutrisi===o?'fa-check':''} text-xs"></i>`;
+    b.onclick=()=>{state.nutrisi=o; save(); renderKmc(); dlgNutrisi.close(); toast('Jalur nutrisi: '+o);};
+    c.appendChild(b);
+  });
+  dlgNutrisi.showModal();
+}
+
+// TUMBUH
+function renderTumbuh(){
+  const sorted=[...state.tumbuh].sort((a,b)=>a.date.localeCompare(b.date));
+  const last=sorted[sorted.length-1];
+  const prev=sorted[sorted.length-2];
+  if(last){
+    $('#beratNow').textContent=fmtBerat(last.berat);
+    $('#beratDate').textContent=last.date+' • '+ (last.cat||'');
+    $('#panjangNow').textContent= last.pjg? last.pjg+' cm':'—';
+    $('#lkNow').textContent= last.lk? last.lk+' cm':'—';
+    if(prev) {
+      const d=last.berat - prev.berat;
+      const el=$('#beratDelta'); el.textContent=(d>=0?'▲ ':'▼ ')+Math.abs(d)+' g dari kemarin';
+      el.className='text-xs font-bold '+(d>=0?'text-emerald-600':'text-rose-600');
+      const badge=$('#beratBadge');
+      if(d>0) {badge.textContent='Naik'; badge.className='px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-50 border border-emerald-200 text-emerald-700';}
+      else if(d<0){badge.textContent='Turun — pantau'; badge.className='px-2.5 py-1 rounded-full text-xs font-bold bg-rose-50 border border-rose-200 text-rose-700';}
+      else {badge.textContent='Stabil'; badge.className='px-2.5 py-1 rounded-full text-xs font-bold bg-slate-50 border border-slate-200 text-slate-600';}
+    }
+  } else {
+    $('#beratNow').textContent='—';
+  }
+  // list
+  const q=($('#searchTumbuh').value||'').toLowerCase();
+  const list=$('#listTumbuh'); list.innerHTML='';
+  let data=[...sorted].reverse();
+  if(q) data=data.filter(t=>t.date.includes(q));
+  if(!data.length) list.innerHTML='<div class="text-sm text-slate-500 text-center py-4 border border-dashed rounded-2xl">Belum ada data timbang</div>';
+  data.slice(0,30).forEach((t,i)=>{
+    const next=data[data.length-1 - (data.length-1 - i) +1]; // not needed
+    const sortedAsc=[...state.tumbuh].sort((a,b)=>a.date.localeCompare(b.date));
+    const idx=sortedAsc.findIndex(x=>x.id===t.id);
+    const prev2= idx>0? sortedAsc[idx-1]:null;
+    const delta= prev2? t.berat - prev2.berat : 0;
+    const row=document.createElement('div');
+    row.className='p-3 rounded-2xl bg-white border border-slate-200 flex items-center justify-between gap-3';
+    row.innerHTML=`<div><div class="font-bold text-sm">${t.date} • ${fmtBerat(t.berat)} ${prev2?`<span class="text-xs ${delta>=0?'text-emerald-600':'text-rose-600'}">${delta>=0?'▲':''}${delta} g</span>`:''}</div><div class="text-xs text-slate-500">${t.pjg? t.pjg+' cm • ':''}${t.lk? t.lk+' cm • ':''}${t.cat||''}</div></div>
+    <div class="flex gap-1"><button onclick="editTimbang('${t.id}')" class="w-8 h-8 rounded-lg bg-white border border-slate-200"><i class="fa-solid fa-pen text-xs"></i></button><button onclick="hapusTimbang('${t.id}')" class="w-8 h-8 rounded-lg bg-rose-50 border border-rose-200 text-rose-600"><i class="fa-solid fa-trash text-xs"></i></button></div>`;
+    list.appendChild(row);
+  });
+  setTimeout(drawChart,50);
+}
+function drawChart(){
+  const c=$('#growthChart'); if(!c) return;
+  const ctx=c.getContext('2d');
+  const W=c.width, H=c.height;
+  ctx.clearRect(0,0,W,H);
+  // bg
+  ctx.fillStyle='#FFFBF5'; ctx.fillRect(0,0,W,H);
+  const sorted=[...state.tumbuh].sort((a,b)=>a.date.localeCompare(b.date)).slice(-7);
+  if(!sorted.length) {ctx.fillStyle='#94A3B8'; ctx.font='12px Inter'; ctx.fillText('Belum ada data — isi timbang harian', 60, H/2); return;}
+  const weights=sorted.map(s=>s.berat);
+  const min=Math.min(...weights, state.profil.bbLahir)-100;
+  const max=Math.max(...weights)+150;
+  const pad={l:48, r:12, t:16, b:22};
+  const plotW=W-pad.l-pad.r, plotH=H-pad.t-pad.b;
+  // grid
+  ctx.strokeStyle='#FFE7CC'; ctx.lineWidth=1;
+  for(let i=0;i<=4;i++){const y=pad.t + plotH*i/4; ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(W-pad.r,y); ctx.stroke();
+    const val=Math.round(max - (max-min)*i/4); ctx.fillStyle='#9CA3AF'; ctx.font='10px Inter'; ctx.fillText(val+'g', 6, y+3);
+  }
+  // Fenton reference dashed (illustrative)
+  ctx.setLineDash([5,5]); ctx.strokeStyle='#CBD5E1'; ctx.lineWidth=1.2;
+  // fake reference lines
+  [[0.15,0.35],[0.45,0.65]].forEach(([a,b])=>{
+    ctx.beginPath();
+    sorted.forEach((s,i)=>{
+      const x=pad.l + plotW * (sorted.length===1?0.5:i/(sorted.length-1));
+      const refMin=min + (max-min)*a + (max-min)*0.2 * (i/(sorted.length-1));
+      const refMax=min + (max-min)*b + (max-min)*0.2 * (i/(sorted.length-1));
+      const y=pad.t + plotH * (1 - (refMin - min)/(max-min));
+      // just draw faint band as line middle
+      const y2=pad.t + plotH * (1 - (refMax - min)/(max-min));
+      // draw band line at midpoint
+      const ym=(y+y2)/2;
+      if(i===0) ctx.moveTo(x, ym); else ctx.lineTo(x, ym);
+    });
+    ctx.stroke();
+  });
+  ctx.setLineDash([]);
+  // weight line
+  ctx.strokeStyle='#059669'; ctx.lineWidth=2.5; ctx.beginPath();
+  sorted.forEach((s,i)=>{
+    const x=pad.l + plotW * (sorted.length===1?0.5:i/(sorted.length-1));
+    const y=pad.t + plotH * (1 - (s.berat - min)/(max-min));
+    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+  // points
+  sorted.forEach((s,i)=>{
+    const x=pad.l + plotW * (sorted.length===1?0.5:i/(sorted.length-1));
+    const y=pad.t + plotH * (1 - (s.berat - min)/(max-min));
+    ctx.fillStyle='#059669'; ctx.beginPath(); ctx.arc(x,y,4,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(x,y,1.8,0,Math.PI*2); ctx.fill();
+    // labels
+    ctx.fillStyle='#334155'; ctx.font='10px Inter'; const d=s.date.slice(5); ctx.fillText(d, x-14, H-6);
+  });
+}
+function openTimbangModal(){ $('#tId').value=''; $('#tTgl').value=todayStr(); $('#tBerat').value=''; $('#tPjg').value=''; $('#tLk').value=''; $('#tCat').value=''; dlgTimbang.showModal(); }
+function editTimbang(id){
+  const t=state.tumbuh.find(x=>x.id===id); if(!t) return;
+  $('#tId').value=t.id; $('#tTgl').value=t.date; $('#tBerat').value=t.berat; $('#tPjg').value=t.pjg||''; $('#tLk').value=t.lk||''; $('#tCat').value=t.cat||'';
+  dlgTimbang.showModal();
+}
+function saveTimbang(){
+  const id=$('#tId').value;
+  const date=$('#tTgl').value||todayStr();
+  const berat=Number($('#tBerat').value);
+  if(!berat || berat<500) return toast('Berat wajib diisi (gram)');
+  const pjg=$('#tPjg').value? Number($('#tPjg').value):null;
+  const lk=$('#tLk').value? Number($('#tLk').value):null;
+  const cat=$('#tCat').value.trim();
+  if(id){
+    const t=state.tumbuh.find(x=>x.id===id); Object.assign(t,{date, berat, pjg, lk, cat});
+  } else {
+    if(state.tumbuh.some(t=>t.date===date)) return toast('Tanggal sudah ada — edit yang lama');
+    state.tumbuh.push({id:uid(), date, berat, pjg, lk, cat});
+  }
+  state.tumbuh.sort((a,b)=>a.date.localeCompare(b.date));
+  save(); dlgTimbang.close(); renderTumbuh(); renderBeranda(); toast('Timbang dicatat: '+fmtBerat(berat));
+}
+function hapusTimbang(id){ if(!confirm('Hapus data timbang?')) return; state.tumbuh=state.tumbuh.filter(t=>t.id!==id); save(); renderTumbuh(); renderBeranda(); }
+function exportTumbuhCSV(){
+  let csv='tanggal,berat_g,panjang_cm,lingkar_kepala_cm,catatan\n';
+  [...state.tumbuh].sort((a,b)=>a.date.localeCompare(b.date)).forEach(t=>{csv+=`${t.date},${t.berat},${t.pjg||''},${t.lk||''},"${(t.cat||'').replace(/"/g,'""')}"\n`});
+  const blob=new Blob([csv],{type:'text/csv'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='tumbuh-'+state.profil.nama.replace(/\s+/g,'_')+'.csv'; a.click();
+}
+
+// BAHAYA
+function renderBahaya(){
+  if(!$('#bahayaDate').value) $('#bahayaDate').value=todayStr();
+  loadBahayaForDate();
+  const list=$('#listBahaya'); list.innerHTML='';
+  const data=[...state.bahaya].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,20);
+  if(!data.length) list.innerHTML='<div class="text-sm text-slate-500 text-center py-3 border border-dashed rounded-2xl">Belum ada cek</div>';
+  data.forEach(b=>{
+    const div=document.createElement('div');
+    const color = b.risk==='Tinggi'?'bg-rose-50 border-rose-200': b.risk==='Sedang'?'bg-amber-50 border-amber-200':'bg-emerald-50 border-emerald-200';
+    const dot = b.risk==='Tinggi'?'bg-rose-600': b.risk==='Sedang'?'bg-amber-500':'bg-emerald-600';
+    const positives= Object.entries(b.checks).filter(([k,v])=>v).map(([k])=> CHECKS.find(c=>c.key===k)?.label || k).join(', ') || 'Tidak ada';
+    div.className='p-3 rounded-2xl border flex gap-3 '+color;
+    div.innerHTML=`<div class="w-2.5 h-2.5 rounded-full ${dot} mt-1.5 shrink-0"></div><div class="flex-1 min-w-0"><div class="flex items-center gap-2"><span class="font-bold text-sm">${b.date}</span><span class="px-2 py-0.5 rounded-full text-xs font-bold border bg-white">${b.risk}</span><span class="text-xs text-slate-500">${b.suhu? b.suhu+'°C':''}</span></div><div class="text-xs text-slate-600 mt-1 line-clamp-2">${positives}</div><div class="text-xs text-slate-500">${b.catatan||''}</div></div><button onclick="hapusBahaya('${b.id}')" class="w-8 h-8 rounded-lg bg-white border border-slate-200 text-slate-500"><i class="fa-solid fa-trash text-xs"></i></button>`;
+    list.appendChild(div);
+  });
+  evaluateRisk();
+}
+function loadBahayaForDate(){
+  const date=$('#bahayaDate').value||todayStr();
+  const found=state.bahaya.find(b=>b.date===date);
+  // reset checks
+  const wrap=$('#checklist'); wrap.innerHTML='';
+  CHECKS.forEach(c=>{
+    const checked=found?.checks[c.key]||false;
+    const row=document.createElement('label');
+    row.className='flex gap-3 p-3 rounded-2xl border bg-white cursor-pointer hover:border-rose-200';
+    row.innerHTML=`<input type="checkbox" data-key="${c.key}" ${checked?'checked':''} onchange="evaluateRisk()" class="mt-0.5 w-4 h-4 accent-rose-600"><div class="flex-1"><div class="font-semibold text-sm leading-tight">${c.label}</div><div class="text-xs text-slate-500">${c.hint}</div></div>`;
+    wrap.appendChild(row);
+  });
+  $('#suhuInput').value= found?.suhu || '';
+  $('#bahayaCatatan').value= found?.catatan || '';
+  evaluateRisk();
+}
+function evaluateRisk(){
+  const checks={}; document.querySelectorAll('#checklist input[data-key]').forEach(i=> checks[i.dataset.key]=i.checked);
+  const suhuVal=Number($('#suhuInput').value);
+  const hasSuhu= $('#suhuInput').value!=='' && !isNaN(suhuVal);
+  if(hasSuhu && suhuVal < 36.5) checks['hipo']=true;
+  // risk logic
+  const major=['kuning','sesak','hipo','kejang','letargi'];
+  const minor=['lemah','muntah','demam'];
+  const majorPos=major.filter(k=>checks[k]).length;
+  const minorPos=minor.filter(k=>checks[k]).length;
+  let risk='Aman', color='bg-emerald-50 border-emerald-200', icon='fa-circle-check', msg='Tidak ada tanda bahaya terdeteksi hari ini. Lanjutkan KMC, susui on-demand, dan timbang besok.';
+  let action='Pantau di rumah, lanjutkan edukasi.';
+  if(majorPos>=1 || suhuVal>=38 || suhuVal<36.0){ risk='Tinggi'; color='bg-rose-50 border-rose-300'; icon='fa-triangle-exclamation'; msg='Ada tanda bahaya — segera hubungi bidan/RS. Jangan tunda.'; action='SEGERA ke faskes. Bawa buku KIA & catatan ini.'; }
+  else if(majorPos===0 && (minorPos>=1 || (hasSuhu && suhuVal<36.5))){ risk='Sedang'; color='bg-amber-50 border-amber-300'; icon='fa-circle-exclamation'; msg='Perlu perhatian — pantau ketat 24 jam, ulangi cek 6 jam lagi.'; action='Hubungi nakes untuk konsultasi, perketat KMC & menyusui.'; }
+  $('#riskBanner').className='p-4 rounded-[20px] border '+color;
+  $('#riskBanner').innerHTML=`<div class="flex gap-3"><div class="w-10 h-10 rounded-xl bg-white border flex items-center justify-center shrink-0"><i class="fa-solid ${icon} ${risk==='Tinggi'?'text-rose-600': risk==='Sedang'?'text-amber-600':'text-emerald-600'}"></i></div><div class="flex-1"><div class="flex items-center gap-2"><span class="font-black text-sm">Risiko: ${risk}</span><span class="text-xs text-slate-500">${$('#bahayaDate').value||''}${hasSuhu?' • '+suhuVal+'°C':''}</span></div><div class="text-sm leading-5 mt-1">${msg}</div><div class="text-xs font-bold mt-1 ${risk==='Tinggi'?'text-rose-700': risk==='Sedang'?'text-amber-700':'text-emerald-700'}">${action}</div></div></div>`;
+  // store temp for save
+  $('#riskBanner').dataset.risk=risk;
+  return {risk, checks, suhu: hasSuhu? suhuVal: null};
+}
+function saveBahaya(){
+  const date=$('#bahayaDate').value||todayStr();
+  const {risk, checks}=evaluateRisk();
+  const suhu=$('#suhuInput').value.trim();
+  const catatan=$('#bahayaCatatan').value.trim();
+  const existing=state.bahaya.find(b=>b.date===date);
+  if(existing){ Object.assign(existing, {checks, suhu, catatan, risk}); }
+  else { state.bahaya.push({id:uid(), date, checks, suhu, catatan, risk}); }
+  state.bahaya.sort((a,b)=>a.date.localeCompare(b.date));
+  save(); renderBahaya(); renderBeranda(); toast('Checklist '+date+' → Risiko '+risk);
+}
+function hapusBahaya(id){ if(!confirm('Hapus cek ini?')) return; state.bahaya=state.bahaya.filter(b=>b.id!==id); save(); renderBahaya(); renderBeranda(); }
+
+// EDUKASI
+function renderEdu(){
+  const done=Object.values(state.eduDone).filter(Boolean).length;
+  $('#eduCounter').textContent=done+'/6';
+  const list=$('#listEdu'); list.innerHTML='';
+  let data=[...EDU];
+  if(eduFilter!=='semua') data=data.filter(e=>e.kat===eduFilter);
+  data.forEach(e=>{
+    const isDone=!!state.eduDone[e.id];
+    const card=document.createElement('div');
+    card.className='p-3 rounded-[20px] bg-white border flex gap-3 '+(isDone?'border-emerald-200 bg-emerald-50/50':'border-slate-200');
+    card.innerHTML=`
+      <img src="${e.thumb}" loading="lazy" alt="" class="w-[96px] h-[72px] rounded-xl object-cover shrink-0">
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-2"><span class="px-2 py-0.5 rounded-full text-[11px] font-bold ${e.kat==='KMC'?'bg-orange-100 text-orange-700': e.kat==='ASI'?'bg-pink-100 text-pink-700':'bg-blue-100 text-blue-700'}">${e.kat}</span><span class="text-xs font-bold text-slate-500">${e.dur}</span>${isDone?'<span class="ml-auto px-2 py-0.5 rounded-full bg-emerald-600 text-white text-[11px] font-bold">Selesai</span>':''}</div>
+        <div class="font-extrabold text-sm leading-tight mt-1">${e.judul}</div>
+        <div class="text-xs text-slate-500 leading-4 mt-0.5 line-clamp-2">${e.desc}</div>
+        <div class="mt-2 flex gap-1.5">
+          <button onclick="playEdu('${e.id}')" class="px-3 py-1.5 rounded-full bg-slate-900 text-white text-xs font-bold"><i class="fa-solid fa-play mr-1"></i> Putar</button>
+          <button onclick="toggleEduDone('${e.id}')" class="px-3 py-1.5 rounded-full border ${isDone?'bg-white border-emerald-200 text-emerald-700':'bg-white border-slate-200'} text-xs font-bold">${isDone?'Batal selesai':'Tandai selesai'}</button>
+        </div>
+      </div>`;
+    list.appendChild(card);
+  });
+  // filter active
+  document.querySelectorAll('.edu-filter').forEach(b=>{
+    const on=b.dataset.eduFilter===eduFilter;
+    b.className= on? 'edu-filter px-3 py-1.5 rounded-full bg-slate-900 text-white text-xs font-bold whitespace-nowrap' : 'edu-filter px-3 py-1.5 rounded-full bg-white border border-slate-200 text-xs font-bold whitespace-nowrap';
+  });
+}
+function filterEdu(k){ eduFilter=k; renderEdu(); }
+function playEdu(id){
+  const e=EDU.find(x=>x.id===id); if(!e) return;
+  currentEduId=id;
+  $('#eduPlayer').classList.remove('hidden');
+  $('#eduPlayerTitle').textContent=e.judul+' • '+e.dur;
+  // scroll into view
+  $('#eduPlayer').scrollIntoView({behavior:'smooth', block:'center'});
+  // try video placeholder
+  $('#eduVideo').classList.add('hidden');
+  toast('Membuka: '+e.judul);
+}
+function closeEduPlayer(){ $('#eduPlayer').classList.add('hidden'); const a=$('#eduAudio'); a.pause(); a.removeAttribute('src'); }
+function toggleEduAudio(){
+  const a=$('#eduAudio');
+  if(!a.src || a.paused){ // fake audio: use beep placeholder? Just toggle UI
+    toast('Audio edukasi diputar (prototype)');
+    $('#eduPlayBtn').innerHTML='<i class="fa-solid fa-pause mr-1"></i> Jeda Audio';
+  } else {
+    $('#eduPlayBtn').innerHTML='<i class="fa-solid fa-headphones mr-1"></i> Putar Audio';
+  }
+}
+function markEduDone(){
+  if(!currentEduId) return toast('Pilih modul dulu');
+  state.eduDone[currentEduId]=true; save(); renderEdu(); renderBeranda(); toast('Modul selesai ✓');
+}
+function toggleEduDone(id){ state.eduDone[id]=!state.eduDone[id]; save(); renderEdu(); renderBeranda(); }
+
+// profil
+function openProfil(){
+  const p=state.profil;
+  $('#pNama').value=p.nama; $('#pTgl').value=p.tgl; $('#pGestasi').value=p.gestasi; $('#pBb').value=p.bbLahir; $('#pJk').value=p.jk; $('#pRs').value=p.rs;
+  dlgProfil.showModal();
+}
+function saveProfil(){
+  const nama=$('#pNama').value.trim()||'Si Kecil';
+  const tgl=$('#pTgl').value||todayStr();
+  const gestasi=Number($('#pGestasi').value)||34;
+  const bb=Number($('#pBb').value)||1850;
+  const jk=$('#pJk').value;
+  const rs=$('#pRs').value.trim();
+  state.profil={nama, tgl, gestasi, bbLahir:bb, jk, rs};
+  save(); dlgProfil.close(); renderHeader(); renderTumbuh(); renderBeranda(); toast('Profil disimpan');
+}
+
+// export/import
+function exportData(){
+  const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='tumbuh-kuat-backup.json'; a.click(); toast('Backup diunduh');
+}
+function importData(e){
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{ const j=JSON.parse(r.result); if(!j.profil || !j.kmc) throw new Error('Format tidak valid'); if(!confirm('Import akan mengganti data sekarang. Lanjut?')) return; state=j; save(); location.reload(); }catch(err){ toast('Gagal import: '+err.message); }
+  };
+  r.readAsText(f); e.target.value='';
+}
+
+renderAll();
+</script>
+</body>
+</html>
