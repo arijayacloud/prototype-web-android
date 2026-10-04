@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>KateringHub — Multi-Cabang (7 Katering + Hospitality)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],display:['Plus Jakarta Sans','sans-serif']}}}}</script>
+<style>
+  ::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:999px}
+  .nav-active{background:#0f172a;color:#fff !important}
+  .nav-active i{color:#fff !important}
+</style>
+</head>
+<body class="bg-[#F1F5F9] text-slate-800 font-sans antialiased">
+
+<!-- TOPBAR -->
+<header class="sticky top-0 z-40 bg-white border-b border-slate-200">
+  <div class="max-w-[1480px] mx-auto px-3 lg:px-6 h-[60px] flex items-center gap-3 justify-between">
+    <div class="flex items-center gap-3">
+      <button id="btnDrawer" class="lg:hidden w-9 h-9 rounded-xl bg-slate-900 text-white flex items-center justify-center"><i class="fa-solid fa-bars"></i></button>
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500 to-amber-400 flex items-center justify-center text-white font-black text-sm">KH</div>
+      <div class="hidden sm:block">
+        <div class="font-display font-extrabold leading-none text-[15px]">KATERING<span class="text-orange-500">HUB</span></div>
+        <div class="text-[11px] tracking-widest font-bold text-slate-400 -mt-0.5">7 KATERING + HOSPITALITY</div>
+      </div>
+      <span class="hidden lg:inline-flex ml-2 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse inline-block mr-1.5"></span>Online</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <select id="selBranch" class="hidden sm:block px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-sm font-semibold max-w-[180px]"></select>
+      <select id="selBranchMobile" class="sm:hidden px-2 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold max-w-[130px]"></select>
+      <select id="selRole" class="px-3 py-2 rounded-xl border border-slate-200 bg-white text-sm font-bold">
+        <option value="PIC">PIC Cabang</option>
+        <option value="HRGA">HRGA</option>
+        <option value="Finance">Finance</option>
+        <option value="Direktur">Direktur</option>
+        <option value="Administrator">Administrator</option>
+      </select>
+      <div class="hidden md:flex items-center gap-2 pl-2 border-l border-slate-200">
+        <img id="avatar" src="https://i.pravatar.cc/100?img=12" class="w-8 h-8 rounded-full object-cover">
+        <div class="text-xs leading-tight">
+          <div id="userName" class="font-bold">Rina — PIC</div>
+          <div id="userBranchLabel" class="text-slate-500">Pusat - Jakarta</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="max-w-[1480px] mx-auto px-3 lg:px-6 py-4 lg:py-6 grid lg:grid-cols-[260px_1fr] gap-4 lg:gap-6">
+  <!-- SIDEBAR -->
+  <aside id="sidebar" class="fixed lg:sticky top-[60px] lg:top-[76px] inset-y-0 left-0 z-30 w-[280px] lg:w-auto bg-white lg:rounded-[20px] border-r lg:border border-slate-200 lg:h-[calc(100vh-84px)] overflow-y-auto p-3 lg:p-4 -translate-x-full lg:translate-x-0 transition">
+    <div class="flex items-center justify-between lg:hidden mb-3">
+      <span class="font-bold text-sm">Menu</span>
+      <button id="btnCloseDrawer" class="w-8 h-8 rounded-full border flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div id="navList" class="space-y-1"></div>
+    <div class="mt-4 p-3 rounded-2xl bg-gradient-to-br from-slate-900 to-slate-700 text-white">
+      <div class="text-xs font-bold tracking-widest opacity-60">BANTUAN</div>
+      <div class="font-bold text-sm mt-1">Butuh cabang baru?</div>
+      <p class="text-xs opacity-70 mt-1 leading-5">Administrator bisa tambah menu/modul tanpa coding.</p>
+      <button onclick="switchView('menu-editor')" class="mt-3 w-full py-2 rounded-xl bg-white text-slate-900 text-xs font-bold">Buka Menu Editor</button>
+    </div>
+    <div class="mt-4 text-[11px] text-slate-400 leading-4 px-1">Tip: ganti Role di kanan atas untuk lihat hak akses tiap peran. Data disimpan di browser (localStorage).</div>
+  </aside>
+  <div id="overlay" class="fixed inset-0 bg-black/30 z-20 hidden lg:hidden"></div>
+
+  <!-- MAIN -->
+  <main class="min-w-0 space-y-4">
+    <!-- BRANCH STRIP -->
+    <div class="bg-white rounded-2xl border border-slate-200 p-3 flex flex-wrap gap-2 items-center text-xs">
+      <span class="font-bold text-slate-500">Cabang:</span>
+      <div id="branchChips" class="flex flex-wrap gap-1.5"></div>
+      <span class="ml-auto hidden sm:inline-flex items-center gap-1.5 text-slate-500"><i class="fa-solid fa-location-dot text-orange-500"></i><span id="branchCoordLabel"></span></span>
+    </div>
+
+    <!-- DASHBOARD -->
+    <section id="view-dashboard" class="space-y-4">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <div class="bg-white rounded-2xl border border-slate-200 p-4">
+          <div class="text-xs font-bold tracking-widest text-slate-400">ABSENSI HARI INI</div>
+          <div class="font-display font-extrabold text-2xl mt-1" id="statAbsensi">—</div>
+          <div class="text-xs text-slate-500 mt-1">PIC sudah absen masuk/pulang</div>
+        </div>
+        <div class="bg-white rounded-2xl border border-slate-200 p-4">
+          <div class="text-xs font-bold tracking-widest text-slate-400">ANGGARAN PENDING</div>
+          <div class="font-display font-extrabold text-2xl mt-1" id="statAnggaran">—</div>
+          <div class="text-xs text-slate-500 mt-1">Menunggu HRGA/Finance/Direktur</div>
+        </div>
+        <div class="bg-white rounded-2xl border border-slate-200 p-4">
+          <div class="text-xs font-bold tracking-widest text-slate-400">STOK OPNAME</div>
+          <div class="font-display font-extrabold text-2xl mt-1" id="statStok">—</div>
+          <div class="text-xs text-slate-500 mt-1">Laporan sisa belanja terbaru</div>
+        </div>
+        <div class="bg-white rounded-2xl border border-slate-200 p-4">
+          <div class="text-xs font-bold tracking-widest text-slate-400">SALDO CABANG</div>
+          <div class="font-display font-extrabold text-2xl mt-1" id="statSaldo">—</div>
+          <div class="text-xs text-slate-500 mt-1">Pemasukan - Pengeluaran</div>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-4">
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 lg:p-5">
+          <div class="flex items-center justify-between">
+            <h3 class="font-bold">Grafik Keuangan per Cabang</h3>
+            <span class="text-xs px-2 py-1 rounded-full bg-slate-100 font-bold">Direktur • Finance</span>
+          </div>
+          <canvas id="chartFinance" height="180" class="w-full mt-3"></canvas>
+          <div class="text-xs text-slate-500 mt-2">Data dari pencatatan Finance (pemasukan/pengeluaran). Direktur lihat penuh, Finance kelola.</div>
+        </div>
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 lg:p-5">
+          <div class="flex items-center justify-between">
+            <h3 class="font-bold">Kinerja Harian per Cabang</h3>
+            <button onclick="switchView('kinerja')" class="text-xs font-bold text-orange-600">Lihat laporan →</button>
+          </div>
+          <canvas id="chartKinerja" height="180" class="w-full mt-3"></canvas>
+          <div class="text-xs text-slate-500 mt-2">Diisi HRGA setiap hari. Direktur monitor 8 cabang sekaligus.</div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 p-4">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <h3 class="font-bold">Pengumuman Penting (HRGA)</h3>
+          <button onclick="switchView('pengumuman')" class="px-3 py-1.5 rounded-full bg-slate-900 text-white text-xs font-bold">Kelola pengumuman</button>
+        </div>
+        <div id="announceList" class="mt-3 space-y-2"></div>
+      </div>
+
+      <div id="roleHint" class="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-sm leading-6"></div>
+    </section>
+
+    <!-- ABSENSI PIC -->
+    <section id="view-absensi" class="hidden space-y-4">
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 lg:p-6">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h2 class="font-display font-extrabold text-xl">Absensi PIC — Foto + Lokasi 30m</h2>
+            <p class="text-sm text-slate-500 mt-1">Wajib foto kamera dan berada ≤30m dari titik cabang. Cabang aktif: <b id="absensiBranchName"></b>. <span id="absensiCoord"></span></p>
+          </div>
+          <span class="text-xs px-2.5 py-1 rounded-full bg-orange-100 border border-orange-200 font-bold text-orange-700">PIC only</span>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-4 mt-4">
+          <div class="space-y-3">
+            <div class="rounded-2xl overflow-hidden bg-slate-900 aspect-[4/3] relative flex items-center justify-center">
+              <video id="camVideo" autoplay playsinline muted class="w-full h-full object-cover hidden"></video>
+              <canvas id="camCanvas" class="hidden"></canvas>
+              <img id="camPreview" class="w-full h-full object-cover hidden">
+              <div id="camPlaceholder" class="text-center text-white/70 p-6">
+                <i class="fa-solid fa-camera text-3xl"></i>
+                <div class="text-sm font-semibold mt-2">Kamera belum aktif</div>
+                <div class="text-xs opacity-60 mt-1">Klik Aktifkan Kamera, izinkan akses kamera & lokasi.</div>
+              </div>
+              <div id="locBadge" class="absolute bottom-2 left-2 right-2 hidden bg-white/95 backdrop-blur rounded-xl px-3 py-2 text-xs font-semibold flex items-center gap-2">
+                <i class="fa-solid fa-location-crosshairs text-orange-600"></i><span id="locText">—</span>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button id="btnCamOn" class="px-4 py-2.5 rounded-xl bg-slate-900 text-white text-sm font-bold"><i class="fa-solid fa-video mr-1"></i> Aktifkan Kamera</button>
+              <button id="btnCapture" class="px-4 py-2.5 rounded-xl bg-orange-500 text-white text-sm font-bold disabled:opacity-40" disabled><i class="fa-solid fa-camera mr-1"></i> Ambil Foto</button>
+              <button id="btnRetake" class="px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-bold hidden">Ulangi</button>
+            </div>
+            <div id="absensiStatus" class="text-xs leading-5 p-3 rounded-xl bg-slate-50 border border-slate-200 hidden"></div>
+          </div>
+          <div class="space-y-3">
+            <div class="grid grid-cols-2 gap-2">
+              <button id="btnAbsenMasuk" class="py-3 rounded-2xl bg-emerald-600 text-white font-bold disabled:opacity-40" disabled><i class="fa-solid fa-right-to-bracket mr-1"></i> Absen Masuk</button>
+              <button id="btnAbsenPulang" class="py-3 rounded-2xl bg-slate-900 text-white font-bold disabled:opacity-40" disabled><i class="fa-solid fa-right-from-bracket mr-1"></i> Absen Pulang</button>
+            </div>
+            <div class="text-xs text-slate-500 leading-5 bg-amber-50 border border-amber-200 rounded-xl p-3">
+              Validasi: jarak dihitung Haversine ke koordinat cabang. Jika &gt;30m tombol absen terkunci dan muncul peringatan. Untuk demo, koordinat cabang bisa diubah di <b>Menu Editor (Administrator)</b> atau toleransi dilonggarkan.
+            </div>
+            <div class="bg-white border border-slate-200 rounded-2xl p-3">
+              <div class="font-bold text-sm">Riwayat absensi (cabang aktif)</div>
+              <div id="absensiList" class="mt-2 space-y-2 max-h-[320px] overflow-auto text-sm"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CUTI -->
+    <section id="view-cuti" class="hidden space-y-4">
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 lg:p-6">
+        <h2 class="font-display font-extrabold text-xl">Pengajuan Cuti / Tugas Luar (PIC)</h2>
+        <p class="text-sm text-slate-500 mt-1">Alur: PIC ajukan → HRGA setujui/tolak.</p>
+        <form id="formCuti" class="grid md:grid-cols-2 gap-3 mt-4">
+          <label class="text-sm font-semibold">Jenis <select id="cutiJenis" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-white"><option>Cuti Tahunan</option><option>Sakit</option><option>Tugas Luar / Kegiatan</option><option>Izin Khusus</option></select></label>
+          <label class="text-sm font-semibold">Tanggal <input id="cutiTgl" type="date" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200"></label>
+          <label class="text-sm font-semibold md:col-span-2">Keterangan <textarea id="cutiKet" rows="2" placeholder="Alasan / lokasi tugas luar" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200"></textarea></label>
+          <div class="md:col-span-2"><button class="px-5 py-2.5 rounded-xl bg-slate-900 text-white font-bold text-sm">Ajukan</button></div>
+        </form>
+        <div id="cutiList" class="mt-4 space-y-2"></div>
+      </div>
+    </section>
+
+    <!-- KEGIATAN -->
+    <section id="view-kegiatan" class="hidden space-y-4">
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 lg:p-6">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <h2 class="font-display font-extrabold text-xl">Laporan Kegiatan — Checklist + Foto</h2>
+            <p class="text-sm text-slate-500 mt-1">PIC buat laporan harian: tambah checklist (10+), centang, unggah foto bukti.</p>
+          </div>
+          <button id="btnKegiatanNew" class="px-4 py-2 rounded-xl bg-orange-500 text-white text-sm font-bold">+ Laporan Baru</button>
+        </div>
+        <div id="kegiatanList" class="mt-4 space-y-3"></div>
+      </div>
+    </section>
+
+    <!-- INVENTORI -->
+    <section id="view-inventori" class="hidden space-y-4">
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 lg:p-6">
+        <h2 class="font-display font-extrabold text-xl">Pengecekan Inventori Mingguan</h2>
+        <p class="text-sm text-slate-500 mt-1">Checklist peralatan/stok + keterangan kondisi.</p>
+        <form id="formInventori" class="mt-4 space-y-3">
+          <div id="inventoriItems" class="space-y-2"></div>
+          <div class="flex gap-2">
+            <button type="button" id="btnAddInventori" class="px-3 py-2 rounded-xl border border-slate-200 text-sm font-bold">+ Item</button>
+            <button class="px-5 py-2.5 rounded-xl bg-slate-900 text-white font-bold text-sm">Simpan Inventori Minggu Ini</button>
+          </div>
+        </form>
+        <div id="inventoriHistory" class="mt-4 space-y-2"></div>
+      </div>
+    </section>
+
+    <!-- STOK OPNAME -->
+    <section id="view-stok" class="hidden space-y-4">
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 lg:p-6">
+        <h2 class="font-display font-extrabold text-xl">Stok Opname — Sisa Belanja Harian/Mingguan</h2>
+        <p class="text-sm text-slate-500 mt-1">Catat sisa bahan belanja, hitung selisih & nilai.</p>
+        <form id="formStok" class="mt-4 space-y-3">
+          <div class="grid md:grid-cols-2 gap-3">
+            <label class="text-sm font-semibold">Periode <select id="stokPeriode" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200"><option>Harian</option><option>Mingguan</option></select></label>
+            <label class="text-sm font-semibold">Tanggal <input id="stokTgl" type="date" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200"></label>
+          </div>
+          <div id="stokItems" class="space-y-2"></div>
+          <div class="flex gap-2 flex-wrap">
+            <button type="button" id="btnAddStok" class="px-3 py-2 rounded-xl border border-slate-200 text-sm font-bold">+ Bahan</button>
+            <button class="px-5 py-2.5 rounded-xl bg-slate-900 text-white font-bold text-sm">Simpan Stok Opname</button>
+          </div>
+        </form>
+        <div id="stokHistory" class="mt-4 space-y-2"></div>
+      </div>
+    </section>
+
+    <!-- ANGGARAN -->
+    <section id="view-anggaran" class="hidden space-y-4">
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 lg:p-6">
+        <div class="flex items-start justify-between gap-3 flex-wrap">
+          <div>
+            <h2 class="font-display font-extrabold text-xl">Pengajuan Anggaran</h2>
+            <p class="text-sm text-slate-500 mt-1">Alur: <b>PIC → HRGA (tolak/teruskan) → Finance → Direktur</b>. Semua peran lihat status sesuai hak.</p>
+          </div>
+          <span class="text-xs px-2.5 py-1 rounded-full bg-slate-900 text-white font-bold">Workflow</span>
+        </div>
+        <form id="formAnggaran" class="grid md:grid-cols-2 gap-3 mt-4">
+          <label class="text-sm font-semibold">Judul <input id="agJudul" placeholder="Contoh: Belanja bahan Ramadan" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200"></label>
+          <label class="text-sm font-semibold">Nominal (Rp) <input id="agNominal" type="number" min="0" placeholder="1500000" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200"></label>
+          <label class="text-sm font-semibold md:col-span-2">Rincian <textarea id="agRincian" rows="2" placeholder="Rincian penggunaan" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200"></textarea></label>
+          <div class="md:col-span-2"><button class="px-5 py-2.5 rounded-xl bg-orange-500 text-white font-bold text-sm">Ajukan Anggaran</button></div>
+        </form>
+        <div id="anggaranList" class="mt-4 space-y-3"></div>
+      </div>
+    </section>
+
+    <!-- HRGA: LAPORAN ABSENSI -->
+    <section id="view-absensi-laporan" class="hidden space-y-4">
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 lg:p-6">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <h2 class="font-display font-extrabold text-xl">Laporan Absensi (HRGA)</h2>
+          <div class="flex gap-2">
+            <button id="btnExportAbsensi" class="px-3 py-2 rounded-xl border border-slate-200 text-sm font-bold"><i class="fa-solid fa-file-csv mr-1"></i> Export CSV</button>
+            <button id="btnClearAbsensi" class="px-3 py-2 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-sm font-bold">Hapus demo</button>
+          </div>
+        </div>
+        <div class="flex gap-2 mt-3 flex-wrap">
+          <select id="filterAbsensiBranch" class="px-3 py-2 rounded-xl border border-slate-200 text-sm font-semibold bg-white"></select>
+          <input id="filterAbsensiDate" type="date" class="px-3 py-2 rounded-xl border border-slate-200 text-sm">
+        </div>
+        <div id="absensiReport" class="mt-3 overflow-auto"></div>
+      </div>
+    </section>
+
+    <!-- PENGUMUMAN -->
+    <section id="view-pengumuman" class="hidden space-y-4">
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 lg:p-6">
+        <h2 class="font-display font-extrabold text-xl">Pengumuman Penting (HRGA)</h2>
+        <form id="formPengumuman" class="mt-3 grid gap-3">
+          <input id="annTitle" placeholder="Judul pengumuman" class="px-3 py-2.5 rounded-xl border border-slate-200">
+          <textarea id="annBody" rows="3" placeholder="Isi pengumuman" class="px-3 py-2.5 rounded-xl border border-slate-200"></textarea>
+          <div><button class="px-5 py-2.5 rounded-xl bg-slate-900 text-white font-bold text-sm">Terbitkan</button></div>
+        </form>
+        <div id="pengumumanList" class="mt-4 space-y-2"></div>
+      </div>
+    </section>
+
+    <!-- KINERJA -->
+    <section id="view-kinerja" class="hidden space-y-4">
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 lg:p-6">
+        <h2 class="font-display font-extrabold text-xl">Laporan Kinerja Harian tiap Cabang (HRGA)</h2>
+        <form id="formKinerja" class="grid md:grid-cols-4 gap-3 mt-4">
+          <label class="text-sm font-semibold">Cabang <select id="kinBranch" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200"></select></label>
+          <label class="text-sm font-semibold">Tanggal <input id="kinTgl" type="date" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200"></label>
+          <label class="text-sm font-semibold">Skor (0-100) <input id="kinSkor" type="number" min="0" max="100" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200"></label>
+          <label class="text-sm font-semibold">Pesanan <input id="kinPesanan" type="number" min="0" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200"></label>
+          <label class="text-sm font-semibold md:col-span-4">Catatan <input id="kinCatatan" placeholder="Catatan kinerja" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200"></label>
+          <div class="md:col-span-4"><button class="px-5 py-2.5 rounded-xl bg-slate-900 text-white font-bold text-sm">Simpan Kinerja</button></div>
+        </form>
+        <div id="kinerjaList" class="mt-4 space-y-2"></div>
+      </div>
+    </section>
+
+    <!-- FINANCE -->
+    <section id="view-finance" class="hidden space-y-4">
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 lg:p-6">
+        <h2 class="font-display font-extrabold text-xl">Finance — Pemasukan & Pengeluaran per Cabang</h2>
+        <form id="formFinance" class="grid md:grid-cols-4 gap-3 mt-4">
+          <label class="text-sm font-semibold">Jenis <select id="finJenis" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200"><option>Pemasukan</option><option>Pengeluaran</option></select></label>
+          <label class="text-sm font-semibold">Kategori <select id="finKategori" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200"><option>Penjualan Katering</option><option>Hospitality</option><option>Gaji</option><option>Perbaikan</option><option>Operasional</option><option>Lainnya</option></select></label>
+          <label class="text-sm font-semibold">Nominal <input id="finNominal" type="number" min="0" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200"></label>
+          <label class="text-sm font-semibold">Tanggal <input id="finTgl" type="date" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200"></label>
+          <label class="text-sm font-semibold md:col-span-4">Keterangan <input id="finKet" placeholder="Keterangan" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200"></label>
+          <div class="md:col-span-4 flex gap-2"><button class="px-5 py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-sm">Catat</button><button type="button" id="btnExportFinance" class="px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-bold">Export CSV</button></div>
+        </form>
+        <div id="financeList" class="mt-4 space-y-2 max-h-[420px] overflow-auto"></div>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 lg:p-6">
+        <h3 class="font-bold">Penggajian — Terhubung Absensi</h3>
+        <p class="text-sm text-slate-500 mt-1">Gaji pokok + tunjangan hadir (otomatis dari jumlah hari absen masuk di bulan berjalan).</p>
+        <div class="grid md:grid-cols-4 gap-3 mt-3">
+          <input id="gajiNama" placeholder="Nama karyawan" class="px-3 py-2.5 rounded-xl border border-slate-200">
+          <input id="gajiPokok" type="number" placeholder="Gaji pokok" class="px-3 py-2.5 rounded-xl border border-slate-200">
+          <input id="gajiHadir" type="number" placeholder="Tunjangan/hari" value="50000" class="px-3 py-2.5 rounded-xl border border-slate-200">
+          <button id="btnHitungGaji" class="px-4 py-2.5 rounded-xl bg-slate-900 text-white font-bold text-sm">Hitung & Catat</button>
+        </div>
+        <div id="gajiPreview" class="mt-3 text-sm p-3 rounded-xl bg-slate-50 border border-slate-200 hidden"></div>
+        <div id="gajiHistory" class="mt-3 space-y-2 text-sm"></div>
+      </div>
+    </section>
+
+    <!-- DIREKTUR -->
+    <section id="view-direktur" class="hidden space-y-4">
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 lg:p-6">
+        <h2 class="font-display font-extrabold text-xl">Direktur — Dashboard & Akses Penuh</h2>
+        <div class="grid lg:grid-cols-2 gap-4 mt-4">
+          <div class="border border-slate-200 rounded-2xl p-4">
+            <div class="font-bold text-sm">Ringkasan Keuangan (semua cabang)</div>
+            <canvas id="chartDirFinance" height="180" class="w-full mt-2"></canvas>
+          </div>
+          <div class="border border-slate-200 rounded-2xl p-4">
+            <div class="font-bold text-sm">Kinerja vs Target (8 cabang)</div>
+            <canvas id="chartDirKinerja" height="180" class="w-full mt-2"></canvas>
+          </div>
+        </div>
+        <div class="mt-4 p-3 rounded-xl bg-blue-50 border border-blue-200 text-sm leading-6">Direktur dapat membuka semua menu di sidebar. Kelola user & ganti password ada di bawah. Grafik di atas otomatis dari data Finance & Kinerja HRGA.</div>
+      </div>
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 lg:p-6">
+        <h3 class="font-bold">Pengelolaan User & Password</h3>
+        <div id="userTable" class="mt-3 overflow-auto"></div>
+        <form id="formUser" class="grid md:grid-cols-4 gap-2 mt-4">
+          <input id="newUserNama" placeholder="Nama" class="px-3 py-2.5 rounded-xl border border-slate-200">
+          <select id="newUserRole" class="px-3 py-2.5 rounded-xl border border-slate-200"><option>PIC</option><option>HRGA</option><option>Finance</option><option>Direktur</option><option>Administrator</option></select>
+          <select id="newUserBranch" class="px-3 py-2.5 rounded-xl border border-slate-200"></select>
+          <input id="newUserPass" placeholder="Password awal" class="px-3 py-2.5 rounded-xl border border-slate-200">
+          <div class="md:col-span-4"><button class="px-5 py-2.5 rounded-xl bg-slate-900 text-white font-bold text-sm">Tambah User</button></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ADMIN MENU EDITOR -->
+    <section id="view-menu-editor" class="hidden space-y-4">
+      <div class="bg-white rounded-2xl border border-slate-200 p-4 lg:p-6">
+        <h2 class="font-display font-extrabold text-xl">Administrator — Edit Menu & Tambah Modul</h2>
+        <p class="text-sm text-slate-500 mt-1">Centang menu yang aktif, ubah label/ikon, atau tambah modul baru. Perubahan disimpan lokal dan langsung tampil di sidebar.</p>
+        <div id="menuEditorList" class="mt-4 space-y-2"></div>
+        <form id="formNewMenu" class="grid md:grid-cols-4 gap-2 mt-4 p-3 rounded-2xl bg-slate-50 border border-slate-200">
+          <input id="newMenuLabel" placeholder="Label menu baru" class="px-3 py-2.5 rounded-xl border border-slate-200">
+          <input id="newMenuIcon" placeholder="Icon FA (mis: fa-utensils)" class="px-3 py-2.5 rounded-xl border border-slate-200">
+          <select id="newMenuRoles" class="px-3 py-2.5 rounded-xl border border-slate-200"><option value="all">Semua role</option><option value="PIC">PIC</option><option value="HRGA">HRGA</option><option value="Finance">Finance</option><option value="Direktur">Direktur</option><option value="Administrator">Administrator</option></select>
+          <button class="px-4 py-2.5 rounded-xl bg-orange-500 text-white font-bold text-sm">+ Tambah Modul</button>
+        </form>
+        <div class="mt-4 flex gap-2">
+          <button id="btnResetMenu" class="px-4 py-2 rounded-xl border border-slate-200 text-sm font-bold">Reset ke default</button>
+          <button id="btnExportMenu" class="px-4 py-2 rounded-xl border border-slate-200 text-sm font-bold">Export JSON</button>
+        </div>
+        <div id="customModulesView" class="mt-6"></div>
+      </div>
+    </section>
+
+    <!-- CUSTOM MODULE PLACEHOLDER -->
+    <section id="view-custom" class="hidden">
+      <div class="bg-white rounded-2xl border border-slate-200 p-6">
+        <h2 id="customTitle" class="font-display font-extrabold text-xl">Modul Custom</h2>
+        <p id="customDesc" class="text-sm text-slate-500 mt-1"></p>
+        <div id="customBody" class="mt-4"></div>
+      </div>
+    </section>
+
+    <footer class="text-center text-xs text-slate-400 py-4">KateringHub prototype — data demo disimpan di localStorage browser. Siap deploy ke GitHub Pages.</footer>
+  </main>
+</div>
+
+<!-- MODALS -->
+<dialog id="dlgKegiatan" class="m-0 max-w-[640px] w-[96%] p-0 rounded-[20px] backdrop:bg-black/40 open:mx-auto open:mt-[5vh] border-0 shadow-2xl">
+  <form method="dialog" class="p-5">
+    <div class="flex items-center justify-between"><h3 class="font-bold">Laporan Kegiatan Baru</h3><button class="w-8 h-8 rounded-full border flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="mt-3 space-y-3">
+      <input id="kegJudul" placeholder="Judul kegiatan (mis: Persiapan 200 box — Cabang Bandung)" class="w-full px-3 py-2.5 rounded-xl border border-slate-200">
+      <textarea id="kegDesk" rows="2" placeholder="Deskripsi singkat" class="w-full px-3 py-2.5 rounded-xl border border-slate-200"></textarea>
+      <div>
+        <div class="text-sm font-bold">Checklist tugas</div>
+        <div id="kegChecklist" class="mt-2 space-y-2"></div>
+        <button type="button" id="btnAddCheck" class="mt-2 px-3 py-1.5 rounded-full border border-slate-200 text-xs font-bold">+ Tambah item (target 10+)</button>
+      </div>
+      <label class="block text-sm font-semibold">Foto bukti <input id="kegFoto" type="file" accept="image/*" class="mt-1 w-full text-sm"></label>
+      <img id="kegFotoPreview" class="w-full h-48 object-cover rounded-xl hidden">
+      <div class="flex gap-2 justify-end">
+        <button value="cancel" class="px-4 py-2 rounded-xl border border-slate-200 text-sm font-bold">Batal</button>
+        <button id="btnSaveKegiatan" value="default" class="px-5 py-2.5 rounded-xl bg-slate-900 text-white text-sm font-bold">Simpan Laporan</button>
+      </div>
+    </div>
+  </form>
+</dialog>
+
+<script>
+// ----- DATA -----
+const BRANCHES = [
+  {id:'pusat', name:'Pusat - Jakarta', lat:-6.2088, lng:106.8456, type:'katering'},
+  {id:'bdg', name:'Bandung', lat:-6.9175, lng:107.6191, type:'katering'},
+  {id:'sby', name:'Surabaya', lat:-7.2575, lng:112.7521, type:'katering'},
+  {id:'yogya', name:'Yogyakarta', lat:-7.7956, lng:110.3695, type:'katering'},
+  {id:'smg', name:'Semarang', lat:-6.9667, lng:110.4200, type:'katering'},
+  {id:'medan', name:'Medan', lat:3.5952, lng:98.6722, type:'katering'},
+  {id:'mks', name:'Makassar', lat:-5.1477, lng:119.4327, type:'katering'},
+  {id:'bali', name:'Hospitality - Bali', lat:-8.6500, lng:115.2167, type:'hospitality'},
+];
+const DEFAULT_MENUS = [
+  {id:'dashboard', label:'Dashboard', icon:'fa-table-columns', roles:['all']},
+  {id:'absensi', label:'Absensi PIC', icon:'fa-camera', roles:['PIC','Direktur','HRGA','Administrator']},
+  {id:'cuti', label:'Cuti / Tugas Luar', icon:'fa-plane', roles:['PIC','HRGA','Direktur']},
+  {id:'kegiatan', label:'Laporan Kegiatan', icon:'fa-list-check', roles:['PIC','HRGA','Direktur']},
+  {id:'inventori', label:'Inventori Mingguan', icon:'fa-boxes-stacked', roles:['PIC','HRGA','Direktur']},
+  {id:'stok', label:'Stok Opname', icon:'fa-warehouse', roles:['PIC','Finance','Direktur']},
+  {id:'anggaran', label:'Pengajuan Anggaran', icon:'fa-file-invoice-dollar', roles:['all']},
+  {id:'absensi-laporan', label:'Laporan Absensi', icon:'fa-clipboard-user', roles:['HRGA','Direktur','Administrator']},
+  {id:'pengumuman', label:'Pengumuman', icon:'fa-bullhorn', roles:['HRGA','Direktur','all']},
+  {id:'kinerja', label:'Kinerja Harian', icon:'fa-chart-line', roles:['HRGA','Direktur']},
+  {id:'finance', label:'Keuangan', icon:'fa-coins', roles:['Finance','Direktur']},
+  {id:'direktur', label:'Direktur Panel', icon:'fa-crown', roles:['Direktur']},
+  {id:'menu-editor', label:'Menu Editor', icon:'fa-screwdriver-wrench', roles:['Administrator','Direktur']},
+];
+
+const LS = {
+  role:'kh_role', branch:'kh_branch', menus:'kh_menus',
+  absensi:'kh_absensi', cuti:'kh_cuti', kegiatan:'kh_kegiatan', inventori:'kh_inventori', stok:'kh_stok', anggaran:'kh_anggaran',
+  pengumuman:'kh_pengumuman', finance:'kh_finance', kinerja:'kh_kinerja', users:'kh_users', gaji:'kh_gaji'
+};
+const jload = (k,def)=>{ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):def }catch{ return def } };
+const jsave = (k,v)=> localStorage.setItem(k, JSON.stringify(v));
+const todayISO = ()=> new Date().toISOString().slice(0,10);
+const rupiah = n=> 'Rp '+(Number(n)||0).toLocaleString('id-ID');
+const haversine = (lat1,lng1,lat2,lng2)=>{
+  const R=6371e3, toRad=x=>x*Math.PI/180;
+  const dLat=toRad(lat2-lat1), dLng=toRad(lng2-lng1);
+  const a=Math.sin(dLat/2)**2 + Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLng/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+};
+
+// state
+let role = localStorage.getItem(LS.role) || 'PIC';
+let branchId = localStorage.getItem(LS.branch) || 'pusat';
+let menus = jload(LS.menus, null) || JSON.parse(JSON.stringify(DEFAULT_MENUS));
+let absensi = jload(LS.absensi, []);
+let cuti = jload(LS.cuti, []);
+let kegiatan = jload(LS.kegiatan, []);
+let inventoriHist = jload(LS.inventori, []);
+let stokHist = jload(LS.stok, []);
+let anggaran = jload(LS.anggaran, []);
+let pengumuman = jload(LS.pengumuman, [{id:'a1', judul:'Jaga kebersihan dapur — audit mingguan Jumat', isi:'Semua PIC wajib upload inventori sebelum Jumat 15:00. HRGA akan cek langsung.', tgl: todayISO()}]);
+let finance = jload(LS.finance, [
+  {id:'f1', cabang:'pusat', jenis:'Pemasukan', kategori:'Penjualan Katering', nominal:12500000, tgl: todayISO(), ket:'Catering 320 box'},
+  {id:'f2', cabang:'pusat', jenis:'Pengeluaran', kategori:'Operasional', nominal:3200000, tgl: todayISO(), ket:'Bahan + gas'},
+  {id:'f3', cabang:'bali', jenis:'Pemasukan', kategori:'Hospitality', nominal:8500000, tgl: todayISO(), ket:'Villa booking'},
+]);
+let kinerja = jload(LS.kinerja, [
+  {id:'k1', cabang:'pusat', tgl: todayISO(), skor:88, pesanan:320, catatan:'On time semua'},
+  {id:'k2', cabang:'bdg', tgl: todayISO(), skor:76, pesanan:180, catatan:'1 keterlambatan'},
+  {id:'k3', cabang:'bali', tgl: todayISO(), skor:92, pesanan:45, catatan:'Hospitality full'},
+]);
+let users = jload(LS.users, [
+  {id:'u1', nama:'Rina (PIC Pusat)', role:'PIC', cabang:'pusat', pass:'pic123'},
+  {id:'u2', nama:'Budi (HRGA)', role:'HRGA', cabang:'pusat', pass:'hrga123'},
+  {id:'u3', nama:'Siti (Finance)', role:'Finance', cabang:'pusat', pass:'fin123'},
+  {id:'u4', nama:'Direktur Utama', role:'Direktur', cabang:'pusat', pass:'dir123'},
+  {id:'u5', nama:'Admin', role:'Administrator', cabang:'pusat', pass:'admin123'},
+]);
+let gajiHist = jload(LS.gaji, []);
+
+function branch(){ return BRANCHES.find(b=>b.id===branchId) || BRANCHES[0]; }
+function canSee(menu){
+  if(menu.roles.includes('all')) return true;
+  if(role==='Direktur') return true;
+  if(role==='Administrator') return true;
+  return menu.roles.includes(role);
+}
+
+// init selects
+function initBranchSelects(){
+  ['selBranch','selBranchMobile','filterAbsensiBranch','kinBranch','newUserBranch'].forEach(id=>{
+    const el=document.getElementById(id); if(!el) return;
+    el.innerHTML = BRANCHES.map(b=>`<option value="${b.id}">${b.name}</option>`).join('');
+    if(id!=='filterAbsensiBranch') el.value=branchId;
+  });
+  const f=document.getElementById('filterAbsensiBranch');
+  if(f){ f.innerHTML = '<option value="all">Semua cabang</option>' + BRANCHES.map(b=>`<option value="${b.id}">${b.name}</option>`).join(''); f.value='all'; }
+  document.getElementById('selRole').value=role;
+  syncHeader();
+}
+function syncHeader(){
+  const b=branch();
+  document.getElementById('userBranchLabel').textContent=b.name;
+  document.getElementById('userName').textContent = role==='PIC' ? `PIC — ${b.name}` : role;
+  document.getElementById('branchCoordLabel').textContent = `${b.lat.toFixed(4)}, ${b.lng.toFixed(4)} • ${b.type}`;
+  document.getElementById('absensiBranchName').textContent=b.name;
+  document.getElementById('absensiCoord').textContent=`(${b.lat.toFixed(4)}, ${b.lng.toFixed(4)})`;
+  // chips
+  document.getElementById('branchChips').innerHTML = BRANCHES.map(x=>`<button onclick="setBranch('${x.id}')" class="px-2.5 py-1 rounded-full border text-xs font-bold ${x.id===branchId?'bg-slate-900 text-white border-slate-900':'bg-white hover:bg-slate-50'}">${x.type==='hospitality'?'🏨 ':''}${x.name}</button>`).join('');
+}
+function setBranch(id){ branchId=id; localStorage.setItem(LS.branch,id); document.getElementById('selBranch').value=id; document.getElementById('selBranchMobile').value=id; const k=document.getElementById('kinBranch'); if(k) k.value=id; syncHeader(); renderAll(); }
+document.getElementById('selBranch').addEventListener('change',e=>setBranch(e.target.value));
+document.getElementById('selBranchMobile').addEventListener('change',e=>setBranch(e.target.value));
+document.getElementById('selRole').addEventListener('change',e=>{ role=e.target.value; localStorage.setItem(LS.role, role); renderNav(); renderAll(); });
+
+// nav
+function renderNav(){
+  const nav=document.getElementById('navList');
+  const visible = menus.filter(canSee);
+  nav.innerHTML = visible.map(m=>`<button data-view="${m.id}" onclick="switchView('${m.id}')" class="w-full text-left px-3 py-2.5 rounded-xl flex items-center gap-3 text-sm font-semibold hover:bg-slate-100 ${m.id==='dashboard'?'nav-active':''}"><i class="fa-solid ${m.icon} w-5 text-slate-400"></i>${m.label}${m.id.startsWith('custom_')?'<span class="ml-auto text-[10px] px-1.5 py-0.5 rounded-full bg-orange-100 text-orange-700">CUSTOM</span>':''}</button>`).join('');
+  // if current view hidden, go dashboard
+  const cur = document.querySelector('[id^="view-"]:not(.hidden)');
+  if(cur){
+    const curId=cur.id.replace('view-','');
+    if(!visible.some(m=>m.id===curId) && curId!=='custom'){
+      switchView('dashboard');
+    }
+  }
+}
+function switchView(id){
+  // handle custom
+  if(id.startsWith('custom_')){
+    const m=menus.find(x=>x.id===id);
+    document.querySelectorAll('[id^="view-"]').forEach(s=>s.classList.add('hidden'));
+    document.getElementById('view-custom').classList.remove('hidden');
+    document.getElementById('customTitle').textContent=m?m.label:'Modul Custom';
+    document.getElementById('customDesc').textContent='Modul tambahan oleh Administrator. Role akses: '+(m?m.roles.join(', '):'-');
+    document.getElementById('customBody').innerHTML = `<div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-sm leading-6">Ini modul custom <b>${m?m.label:''}</b>. Administrator bisa mengisi konten, form, atau embed sesuai kebutuhan. Tambahkan field/logika di Menu Editor.<br><br><button onclick="switchView('dashboard')" class="px-4 py-2 rounded-xl bg-slate-900 text-white font-bold text-sm">Kembali ke Dashboard</button></div>`;
+    highlightNav(id); closeDrawer(); return;
+  }
+  document.querySelectorAll('[id^="view-"]').forEach(s=>s.classList.add('hidden'));
+  const target=document.getElementById('view-'+id);
+  if(target) target.classList.remove('hidden');
+  else document.getElementById('view-dashboard').classList.remove('hidden');
+  highlightNav(id);
+  closeDrawer();
+  if(id==='dashboard' || id==='direktur'){ setTimeout(drawCharts,100); }
+}
+function highlightNav(id){
+  document.querySelectorAll('#navList button').forEach(b=>{
+    b.classList.toggle('nav-active', b.dataset.view===id);
+  });
+}
+window.switchView=switchView;
+window.setBranch=setBranch;
+
+// drawer
+const sidebar=document.getElementById('sidebar'), overlay=document.getElementById('overlay');
+function openDrawer(){ sidebar.classList.remove('-translate-x-full'); overlay.classList.remove('hidden'); }
+function closeDrawer(){ sidebar.classList.add('-translate-x-full'); overlay.classList.add('hidden'); if(window.innerWidth>=1024){ sidebar.classList.remove('-translate-x-full'); overlay.classList.add('hidden'); } }
+document.getElementById('btnDrawer').onclick=openDrawer;
+document.getElementById('btnCloseDrawer').onclick=closeDrawer;
+overlay.onclick=closeDrawer;
+
+// ----- RENDER ALL -----
+function renderAll(){
+  renderStats(); renderAnnounce(); renderAbsensiList(); renderCuti(); renderKegiatan(); renderInventori(); renderStok(); renderAnggaran(); renderAbsensiReport(); renderPengumuman(); renderKinerja(); renderFinance(); renderGaji(); renderUsers(); renderMenuEditor(); drawCharts(); updateRoleHint();
+}
+function updateRoleHint(){
+  const hints={
+    PIC:'<b>PIC</b>: Fokus absensi (kamera + 30m), cuti, laporan kegiatan, inventori & stok opname, serta ajukan anggaran. Data terfilter cabang <b>'+branch().name+'</b>.',
+    HRGA:'<b>HRGA</b>: Periksa laporan absensi semua cabang, setujui cuti & teruskan anggaran, kelola pengumuman & kinerja harian.',
+    Finance:'<b>Finance</b>: Catat pemasukan/pengeluaran per cabang, hitung gaji dari absensi, tarik laporan. Anggaran yang diteruskan HRGA masuk ke Finance.',
+    Direktur:'<b>Direktur</b>: Akses penuh — lihat grafik kinerja & keuangan 8 cabang, setujui anggaran final, kelola user/password.',
+    Administrator:'<b>Administrator</b>: Edit menu, tambah modul baru, atur hak akses per menu. Perubahan langsung tampil di sidebar.'
+  };
+  document.getElementById('roleHint').innerHTML = hints[role] || '';
+}
+function renderStats(){
+  const bAbs = absensi.filter(a=>a.cabang===branchId && a.tgl===todayISO()).length;
+  document.getElementById('statAbsensi').textContent = bAbs ? bAbs+' hadir' : '0 hadir';
+  const pending = anggaran.filter(a=>a.status!=='Disetujui Direktur' && a.status!=='Ditolak').length;
+  document.getElementById('statAnggaran').textContent = pending? pending+' pending' : '0 pending';
+  document.getElementById('statStok').textContent = stokHist.filter(s=>s.cabang===branchId).length + ' laporan';
+  const pemasukan = finance.filter(f=>f.cabang===branchId && f.jenis==='Pemasukan').reduce((s,x)=>s+Number(x.nominal),0);
+  const pengeluaran = finance.filter(f=>f.cabang===branchId && f.jenis==='Pengeluaran').reduce((s,x)=>s+Number(x.nominal),0);
+  document.getElementById('statSaldo').textContent = rupiah(pemasukan-pengeluaran);
+}
+function renderAnnounce(){
+  const list=document.getElementById('announceList');
+  if(!pengumuman.length){ list.innerHTML='<div class="text-sm text-slate-500">Belum ada pengumuman.</div>'; return; }
+  list.innerHTML = pengumuman.slice(-4).reverse().map(a=>`<div class="p-3 rounded-2xl bg-orange-50 border border-orange-200"><div class="font-bold text-sm">${a.judul}</div><div class="text-sm text-slate-600 mt-1 leading-6">${a.isi}</div><div class="text-xs text-slate-400 mt-1">${a.tgl} • HRGA</div></div>`).join('');
+}
+
+// ----- ABSENSI CAMERA + LOCATION -----
+let stream=null, capturedDataUrl=null, lastPosition=null, watchId=null;
+const video=document.getElementById('camVideo'), canvasEl=document.getElementById('camCanvas'), preview=document.getElementById('camPreview'), placeholder=document.getElementById('camPlaceholder');
+document.getElementById('btnCamOn').onclick=async()=>{
+  try{
+    stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'user'}, audio:false});
+    video.srcObject=stream; video.classList.remove('hidden'); placeholder.classList.add('hidden'); preview.classList.add('hidden');
+    document.getElementById('btnCapture').disabled=false;
+    // geolocation
+    if(navigator.geolocation){
+      navigator.geolocation.getCurrentPosition(pos=>{
+        lastPosition=pos; updateLocBadge();
+      }, err=>{
+        document.getElementById('locBadge').classList.remove('hidden');
+        document.getElementById('locText').textContent='Lokasi gagal: '+err.message+' — aktifkan GPS';
+      }, {enableHighAccuracy:true, timeout:10000});
+      // watch
+      watchId=navigator.geolocation.watchPosition(p=>{ lastPosition=p; updateLocBadge(); });
+    } else {
+      document.getElementById('locBadge').classList.remove('hidden');
+      document.getElementById('locText').textContent='Browser tidak dukung geolocation';
+    }
+  }catch(e){ alert('Kamera gagal: '+e.message+' — cek izin browser. Untuk demo tanpa kamera, tetap bisa absen dengan validasi lokasi saja.'); }
+};
+function updateLocBadge(){
+  if(!lastPosition) return;
+  const b=branch();
+  const d = haversine(lastPosition.coords.latitude, lastPosition.coords.longitude, b.lat, b.lng);
+  const ok = d<=30;
+  const badge=document.getElementById('locBadge');
+  badge.classList.remove('hidden');
+  document.getElementById('locText').textContent = `${d.toFixed(1)}m dari ${b.name} • ${ok?'✅ Dalam radius 30m':'⛔ Di luar 30m — mendekat ke titik cabang'}`;
+  badge.className = 'absolute bottom-2 left-2 right-2 bg-white/95 backdrop-blur rounded-xl px-3 py-2 text-xs font-semibold flex items-center gap-2 '+(ok?'border border-emerald-300':'border border-rose-300');
+  // enable/disable absen
+  const hasPhoto = !!capturedDataUrl;
+  const canAbsen = ok && hasPhoto;
+  document.getElementById('btnAbsenMasuk').disabled = !canAbsen;
+  document.getElementById('btnAbsenPulang').disabled = !canAbsen;
+  const st=document.getElementById('absensiStatus');
+  st.classList.remove('hidden');
+  st.className='text-xs leading-5 p-3 rounded-xl border '+(ok?'bg-emerald-50 border-emerald-200 text-emerald-800':'bg-rose-50 border-rose-200 text-rose-700');
+  st.innerHTML = ok ? `✅ Validasi lokasi lolos (${d.toFixed(1)}m). ${hasPhoto?'Siap absen.':'Ambil foto dulu.'}` : `⛔ Jarak ${d.toFixed(1)}m melebihi 30m. Pindah ke dekat titik cabang atau longgarkan di Menu Editor (Administrator).`;
+  if(!ok){
+    document.getElementById('btnAbsenMasuk').disabled=true;
+    document.getElementById('btnAbsenPulang').disabled=true;
+  }
+}
+document.getElementById('btnCapture').onclick=()=>{
+  if(!stream) return;
+  const w=video.videoWidth||640, h=video.videoHeight||480;
+  canvasEl.width=w; canvasEl.height=h;
+  canvasEl.getContext('2d').drawImage(video,0,0,w,h);
+  capturedDataUrl = canvasEl.toDataURL('image/jpeg',0.8);
+  preview.src=capturedDataUrl; preview.classList.remove('hidden'); video.classList.add('hidden');
+  document.getElementById('btnRetake').classList.remove('hidden');
+  updateLocBadge();
+  // if no geolocation yet, allow after photo but still need loc
+  if(!lastPosition){
+    document.getElementById('absensiStatus').classList.remove('hidden');
+    document.getElementById('absensiStatus').textContent='Foto diambil. Menunggu lokasi GPS...';
+    document.getElementById('absensiStatus').className='text-xs leading-5 p-3 rounded-xl bg-amber-50 border border-amber-200';
+  }
+};
+document.getElementById('btnRetake').onclick=()=>{
+  capturedDataUrl=null; preview.classList.add('hidden'); video.classList.remove('hidden'); document.getElementById('btnRetake').classList.add('hidden');
+  document.getElementById('btnAbsenMasuk').disabled=true; document.getElementById('btnAbsenPulang').disabled=true;
+};
+function doAbsen(jenis){
+  if(!capturedDataUrl){ alert('Ambil foto dulu'); return; }
+  if(!lastPosition){ alert('Lokasi belum didapat — aktifkan GPS'); return; }
+  const b=branch();
+  const d=haversine(lastPosition.coords.latitude,lastPosition.coords.longitude,b.lat,b.lng);
+  if(d>30){ alert('Di luar radius 30m ('+d.toFixed(1)+'m) — tidak bisa absen'); return; }
+  const rec={id:Date.now().toString(36), cabang:branchId, cabangName:b.name, jenis, tgl:todayISO(), jam:new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}), foto:capturedDataUrl, lat:lastPosition.coords.latitude, lng:lastPosition.coords.longitude, jarak:Math.round(d), user: role+' — '+b.name};
+  absensi.push(rec); jsave(LS.absensi, absensi); renderAbsensiList(); renderStats(); renderAbsensiReport();
+  alert(jenis+' berhasil — jarak '+d.toFixed(1)+'m');
+}
+document.getElementById('btnAbsenMasuk').onclick=()=>doAbsen('Masuk');
+document.getElementById('btnAbsenPulang').onclick=()=>doAbsen('Pulang');
+
+function renderAbsensiList(){
+  const list=document.getElementById('absensiList');
+  const filtered = absensi.filter(a=>a.cabang===branchId).slice(-10).reverse();
+  if(!filtered.length){ list.innerHTML='<div class="text-xs text-slate-500">Belum ada absensi di cabang ini. Aktifkan kamera & ambil foto.</div>'; return; }
+  list.innerHTML = filtered.map(a=>`<div class="flex gap-3 p-2 rounded-xl border border-slate-100 bg-slate-50">
+    <img src="${a.foto}" class="w-16 h-16 rounded-xl object-cover border">
+    <div class="min-w-0"><div class="font-bold text-xs">${a.jenis} • ${a.jam} • ${a.tgl}</div><div class="text-xs text-slate-500">${a.cabangName} • ${a.jarak}m • ${a.lat.toFixed(4)},${a.lng.toFixed(4)}</div><span class="inline-flex mt-1 px-2 py-0.5 rounded-full text-[11px] font-bold ${a.jenis==='Masuk'?'bg-emerald-100 text-emerald-700':'bg-slate-900 text-white'}">${a.jenis}</span></div>
+  </div>`).join('');
+}
+
+// ----- CUTI -----
+document.getElementById('formCuti').addEventListener('submit',e=>{
+  e.preventDefault();
+  const rec={id:Date.now().toString(36), cabang:branchId, cabangName:branch().name, jenis:document.getElementById('cutiJenis').value, tgl:document.getElementById('cutiTgl').value||todayISO(), ket:document.getElementById('cutiKet').value, status:'Menunggu HRGA', pemohon:role};
+  if(!rec.ket) rec.ket='-';
+  cuti.push(rec); jsave(LS.cuti, cuti); e.target.reset(); renderCuti();
+});
+function renderCuti(){
+  const el=document.getElementById('cutiList');
+  const filtered = branchId==='pusat' || role!=='PIC' ? cuti : cuti.filter(c=>c.cabang===branchId);
+  if(!filtered.length){ el.innerHTML='<div class="text-sm text-slate-500 p-3 rounded-xl bg-slate-50 border">Belum ada pengajuan.</div>'; return; }
+  el.innerHTML = filtered.slice(-20).reverse().map(c=>`<div class="p-3 rounded-2xl border ${c.status.includes('Disetujui')?'bg-emerald-50 border-emerald-200':c.status.includes('Ditolak')?'bg-rose-50 border-rose-200':'bg-white border-slate-200'}">
+    <div class="flex items-start justify-between gap-2"><div><div class="font-bold text-sm">${c.jenis} • ${c.tgl}</div><div class="text-xs text-slate-500">${c.cabangName} • ${c.pemohon}</div><div class="text-sm mt-1">${c.ket}</div></div><span class="shrink-0 px-2.5 py-1 rounded-full text-xs font-bold ${c.status.includes('Menunggu')?'bg-amber-100 text-amber-700':'bg-slate-900 text-white'}">${c.status}</span></div>
+    ${role==='HRGA' && c.status==='Menunggu HRGA' ? `<div class="mt-2 flex gap-2"><button onclick="updateCuti('${c.id}','Disetujui HRGA')" class="px-3 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-bold">Setujui</button><button onclick="updateCuti('${c.id}','Ditolak HRGA')" class="px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-xs font-bold">Tolak</button></div>`:''}
+  </div>`).join('');
+}
+window.updateCuti=(id,status)=>{ const x=cuti.find(c=>c.id===id); if(x){ x.status=status; jsave(LS.cuti, cuti); renderCuti(); } };
+
+// ----- KEGIATAN -----
+let kegDraftChecks=[];
+function openKegiatanDialog(){
+  kegDraftChecks = Array.from({length:5},(_,i)=>({text:['Siapkan bahan','Cek kebersihan','Masak & plating','Packing box','Pengiriman'][i]||'', done:false}));
+  renderKegDraft(); document.getElementById('kegFotoPreview').classList.add('hidden'); document.getElementById('kegJudul').value=''; document.getElementById('kegDesk').value=''; document.getElementById('kegFoto').value='';
+  document.getElementById('dlgKegiatan').showModal();
+}
+function renderKegDraft(){
+  document.getElementById('kegChecklist').innerHTML = kegDraftChecks.map((c,i)=>`<div class="flex gap-2 items-center"><input type="checkbox" ${c.done?'checked':''} onchange="kegDraftChecks[${i}].done=this.checked" class="w-4 h-4"><input value="${c.text.replace(/"/g,'&quot;')}" oninput="kegDraftChecks[${i}].text=this.value" placeholder="Item checklist #${i+1}" class="flex-1 px-3 py-2 rounded-xl border border-slate-200 text-sm"><button type="button" onclick="kegDraftChecks.splice(${i},1);renderKegDraft()" class="w-8 h-8 rounded-full border flex items-center justify-center text-slate-400"><i class="fa-solid fa-xmark text-xs"></i></button></div>`).join('');
+}
+window.renderKegDraft=renderKegDraft;
+document.getElementById('btnKegiatanNew').onclick=openKegiatanDialog;
+document.getElementById('btnAddCheck').onclick=()=>{ kegDraftChecks.push({text:'',done:false}); renderKegDraft(); };
+document.getElementById('kegFoto').addEventListener('change',e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader(); r.onload=()=>{ const img=document.getElementById('kegFotoPreview'); img.src=r.result; img.classList.remove('hidden'); img.dataset.b64=r.result; }; r.readAsDataURL(f);
+});
+document.getElementById('btnSaveKegiatan').onclick=(e)=>{
+  e.preventDefault();
+  const judul=document.getElementById('kegJudul').value.trim()||'Laporan Kegiatan';
+  const desk=document.getElementById('kegDesk').value.trim();
+  const foto=document.getElementById('kegFotoPreview').dataset.b64||'';
+  const checks=kegDraftChecks.filter(c=>c.text.trim()).map(c=>({text:c.text.trim(), done:!!c.done}));
+  if(checks.length<3){ alert('Tambah minimal 3 checklist'); return; }
+  kegiatan.push({id:Date.now().toString(36), cabang:branchId, cabangName:branch().name, judul, desk, checks, foto, tgl:todayISO(), jam: new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})});
+  jsave(LS.kegiatan, kegiatan); document.getElementById('dlgKegiatan').close(); renderKegiatan(); renderStats();
+};
+function renderKegiatan(){
+  const el=document.getElementById('kegiatanList');
+  const filtered = kegiatan.filter(k=>k.cabang===branchId).slice(-20).reverse();
+  if(!filtered.length){ el.innerHTML='<div class="text-sm text-slate-500 p-3 rounded-xl bg-slate-50 border">Belum ada laporan. Klik Laporan Baru — tambah 10+ checklist jika perlu.</div>'; return; }
+  el.innerHTML = filtered.map(k=>{
+    const done=k.checks.filter(c=>c.done).length;
+    return `<div class="p-4 rounded-2xl border border-slate-200 bg-white">
+      <div class="flex items-start justify-between gap-3"><div><div class="font-bold">${k.judul}</div><div class="text-xs text-slate-500">${k.cabangName} • ${k.tgl} ${k.jam} • ${done}/${k.checks.length} selesai</div><div class="text-sm text-slate-600 mt-1">${k.desk||''}</div></div>${k.foto?`<img src="${k.foto}" class="w-20 h-20 rounded-xl object-cover border">`:''}</div>
+      <div class="mt-3 space-y-1">${k.checks.map((c,i)=>`<label class="flex gap-2 items-center text-sm p-2 rounded-xl ${c.done?'bg-emerald-50 border border-emerald-200':'bg-slate-50 border border-slate-200'}"><input type="checkbox" ${c.done?'checked':''} onchange="toggleKeg('${k.id}',${i},this.checked)" class="w-4 h-4"> <span class="${c.done?'line-through text-slate-500':''}">${c.text}</span></label>`).join('')}</div>
+      <div class="mt-2 w-full bg-slate-100 rounded-full h-2 overflow-hidden"><div class="h-full bg-emerald-500" style="width:${k.checks.length?Math.round(done/k.checks.length*100):0}%"></div></div>
+    </div>`;
+  }).join('');
+}
+window.toggleKeg=(id,idx,checked)=>{ const k=kegiatan.find(x=>x.id===id); if(k){ k.checks[idx].done=checked; jsave(LS.kegiatan,kegiatan); renderKegiatan(); } };
+
+// ----- INVENTORI -----
+let inventoriDraft=[{nama:'Kompor gas', ket:'Baik'}, {nama:'Chiller', ket:'Baik'}, {nama:'Pisau set', ket:'Perlu diasah'}];
+function renderInventoriDraft(){
+  document.getElementById('inventoriItems').innerHTML = inventoriDraft.map((it,i)=>`<div class="flex gap-2 items-center"><input value="${it.nama.replace(/"/g,'&quot;')}" oninput="inventoriDraft[${i}].nama=this.value" placeholder="Nama item" class="flex-1 px-3 py-2.5 rounded-xl border border-slate-200 text-sm"><input value="${it.ket.replace(/"/g,'&quot;')}" oninput="inventoriDraft[${i}].ket=this.value" placeholder="Keterangan kondisi" class="flex-1 px-3 py-2.5 rounded-xl border border-slate-200 text-sm"><button type="button" onclick="inventoriDraft.splice(${i},1);renderInventoriDraft()" class="w-9 h-9 rounded-xl border flex items-center justify-center"><i class="fa-solid fa-trash text-xs"></i></button></div>`).join('');
+}
+window.renderInventoriDraft=renderInventoriDraft; // for inline
+document.getElementById('btnAddInventori').onclick=()=>{ inventoriDraft.push({nama:'',ket:''}); renderInventoriDraft(); };
+document.getElementById('formInventori').addEventListener('submit',e=>{
+  e.preventDefault();
+  const items=inventoriDraft.filter(x=>x.nama.trim()).map(x=>({nama:x.nama.trim(), ket:x.ket.trim()||'-'}));
+  if(!items.length) return alert('Isi minimal 1 item');
+  inventoriHist.push({id:Date.now().toString(36), cabang:branchId, cabangName:branch().name, tgl:todayISO(), items});
+  jsave(LS.inventori,inventoriHist); renderInventori();
+});
+function renderInventori(){
+  renderInventoriDraft();
+  const el=document.getElementById('inventoriHistory');
+  const filtered=inventoriHist.filter(x=>x.cabang===branchId).slice(-10).reverse();
+  if(!filtered.length){ el.innerHTML='<div class="text-sm text-slate-500 p-3 rounded-xl bg-slate-50 border">Belum ada pengecekan minggu ini.</div>'; return; }
+  el.innerHTML = filtered.map(h=>`<div class="p-3 rounded-2xl border border-slate-200 bg-white"><div class="font-bold text-sm">${h.tgl} • ${h.cabangName}</div><div class="mt-2 grid sm:grid-cols-2 gap-2 text-sm">${h.items.map(it=>`<div class="px-3 py-2 rounded-xl bg-slate-50 border border-slate-200"><b>${it.nama}</b><div class="text-xs text-slate-500">${it.ket}</div></div>`).join('')}</div></div>`).join('');
+}
+
+// ----- STOK OPNAME -----
+let stokDraft=[{nama:'Ayam', sisa:'2 kg', beli:'50.000/kg'}, {nama:'Beras', sisa:'5 kg', beli:'12.000/kg'}];
+function renderStokDraft(){
+  document.getElementById('stokItems').innerHTML = stokDraft.map((it,i)=>`<div class="grid grid-cols-1 sm:grid-cols-3 gap-2 items-center p-2 rounded-xl bg-slate-50 border border-slate-200"><input value="${it.nama.replace(/"/g,'&quot;')}" oninput="stokDraft[${i}].nama=this.value" placeholder="Bahan" class="px-3 py-2 rounded-xl border border-slate-200 text-sm bg-white"><input value="${it.sisa.replace(/"/g,'&quot;')}" oninput="stokDraft[${i}].sisa=this.value" placeholder="Sisa (mis: 2 kg)" class="px-3 py-2 rounded-xl border border-slate-200 text-sm bg-white"><div class="flex gap-2"><input value="${it.beli.replace(/"/g,'&quot;')}" oninput="stokDraft[${i}].beli=this.value" placeholder="Harga beli" class="flex-1 px-3 py-2 rounded-xl border border-slate-200 text-sm bg-white"><button type="button" onclick="stokDraft.splice(${i},1);renderStokDraft()" class="w-9 h-9 rounded-xl bg-white border flex items-center justify-center"><i class="fa-solid fa-xmark text-xs"></i></button></div></div>`).join('');
+}
+window.renderStokDraft=renderStokDraft;
+document.getElementById('btnAddStok').onclick=()=>{ stokDraft.push({nama:'',sisa:'',beli:''}); renderStokDraft(); };
+document.getElementById('formStok').addEventListener('submit',e=>{
+  e.preventDefault();
+  const items=stokDraft.filter(x=>x.nama.trim()).map(x=>({nama:x.nama.trim(), sisa:x.sisa.trim()||'-', beli:x.beli.trim()||'-'}));
+  if(!items.length) return alert('Isi bahan');
+  stokHist.push({id:Date.now().toString(36), cabang:branchId, cabangName:branch().name, periode:document.getElementById('stokPeriode').value, tgl:document.getElementById('stokTgl').value||todayISO(), items});
+  jsave(LS.stok, stokHist); renderStok(); renderStats();
+});
+function renderStok(){
+  renderStokDraft();
+  const el=document.getElementById('stokHistory');
+  const filtered=stokHist.filter(x=>x.cabang===branchId).slice(-10).reverse();
+  if(!filtered.length){ el.innerHTML='<div class="text-sm text-slate-500 p-3 rounded-xl bg-slate-50 border">Belum ada stok opname.</div>'; return; }
+  el.innerHTML = filtered.map(h=>`<div class="p-3 rounded-2xl border border-slate-200 bg-white"><div class="font-bold text-sm">${h.periode} • ${h.tgl} • ${h.cabangName}</div><div class="mt-2 flex flex-wrap gap-2 text-sm">${h.items.map(it=>`<span class="px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 font-semibold">${it.nama}: ${it.sisa} <span class="text-xs text-slate-500">(${it.beli})</span></span>`).join('')}</div></div>`).join('');
+}
+
+// ----- ANGGARAN WORKFLOW -----
+document.getElementById('formAnggaran').addEventListener('submit',e=>{
+  e.preventDefault();
+  const judul=document.getElementById('agJudul').value.trim(), nominal=Number(document.getElementById('agNominal').value), rincian=document.getElementById('agRincian').value.trim();
+  if(!judul || !nominal) return alert('Isi judul & nominal');
+  anggaran.push({id:Date.now().toString(36), cabang:branchId, cabangName:branch().name, judul, nominal, rincian: rincian||'-', status:'Menunggu HRGA', tgl:todayISO(), pemohon:role});
+  jsave(LS.anggaran,anggaran); e.target.reset(); renderAnggaran(); renderStats();
+});
+function renderAnggaran(){
+  const el=document.getElementById('anggaranList');
+  const filtered = role==='Direktur' || role==='Administrator' ? anggaran : role==='Finance' ? anggaran.filter(a=> a.status==='Menunggu Finance' || a.status==='Disetujui Direktur' || a.cabang===branchId) : role==='HRGA' ? anggaran : anggaran.filter(a=>a.cabang===branchId);
+  // For HRGA show all
+  let list = role==='PIC' ? anggaran.filter(a=>a.cabang===branchId) : filtered;
+  if(!list.length){ el.innerHTML='<div class="text-sm text-slate-500 p-3 rounded-xl bg-slate-50 border">Belum ada pengajuan.</div>'; return; }
+  el.innerHTML = list.slice(-30).reverse().map(a=>{
+    const steps = [
+      {label:'PIC Ajukan', done:true},
+      {label:'HRGA', done: ['Menunggu Finance','Menunggu Direktur','Disetujui Direktur'].includes(a.status) || a.status.includes('Ditolak'), active: a.status==='Menunggu HRGA'},
+      {label:'Finance', done: ['Menunggu Direktur','Disetujui Direktur'].includes(a.status), active: a.status==='Menunggu Finance'},
+      {label:'Direktur', done: a.status==='Disetujui Direktur', active: a.status==='Menunggu Direktur'},
+    ];
+    let actions='';
+    if(role==='HRGA' && a.status==='Menunggu HRGA'){
+      actions=`<div class="mt-2 flex gap-2"><button onclick="anggaranAction('${a.id}','teruskanHRGA')" class="px-3 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-bold">Teruskan ke Finance</button><button onclick="anggaranAction('${a.id}','tolakHRGA')" class="px-3 py-1.5 rounded-xl bg-white border border-rose-200 text-rose-700 text-xs font-bold">Tolak</button></div>`;
+    } else if(role==='Finance' && a.status==='Menunggu Finance'){
+      actions=`<div class="mt-2 flex gap-2"><button onclick="anggaranAction('${a.id}','teruskanFinance')" class="px-3 py-1.5 rounded-xl bg-blue-600 text-white text-xs font-bold">Teruskan ke Direktur</button><button onclick="anggaranAction('${a.id}','tolakFinance')" class="px-3 py-1.5 rounded-xl bg-white border border-rose-200 text-rose-700 text-xs font-bold">Tolak</button></div>`;
+    } else if(role==='Direktur' && a.status==='Menunggu Direktur'){
+      actions=`<div class="mt-2 flex gap-2"><button onclick="anggaranAction('${a.id}','setujuiDirektur')" class="px-3 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-bold">Setujui</button><button onclick="anggaranAction('${a.id}','tolakDirektur')" class="px-3 py-1.5 rounded-xl bg-white border border-rose-200 text-rose-700 text-xs font-bold">Tolak</button></div>`;
+    }
+    const badgeColor = a.status.includes('Disetujui')?'bg-emerald-100 text-emerald-700 border-emerald-200':a.status.includes('Ditolak')?'bg-rose-100 text-rose-700 border-rose-200':'bg-amber-100 text-amber-700 border-amber-200';
+    return `<div class="p-4 rounded-2xl border border-slate-200 bg-white">
+      <div class="flex items-start justify-between gap-2"><div><div class="font-bold">${a.judul}</div><div class="text-xs text-slate-500">${a.cabangName} • ${a.tgl} • ${rupiah(a.nominal)}</div><div class="text-sm mt-1">${a.rincian}</div></div><span class="shrink-0 px-2.5 py-1 rounded-full border text-xs font-bold ${badgeColor}">${a.status}</span></div>
+      <div class="mt-3 flex items-center gap-1 text-[11px] font-bold">${steps.map((s,i)=>`<span class="flex items-center gap-1"><span class="w-6 h-6 rounded-full flex items-center justify-center ${s.done?'bg-emerald-500 text-white':s.active?'bg-amber-500 text-white':'bg-slate-200 text-slate-500'}">${s.done?'✓':i+1}</span>${s.label}${i<steps.length-1?'<span class="w-4 h-0.5 bg-slate-200 mx-1"></span>':''}</span>`).join('')}</div>
+      ${actions}
+    </div>`;
+  }).join('');
+}
+window.anggaranAction=(id,act)=>{
+  const a=anggaran.find(x=>x.id===id); if(!a) return;
+  if(act==='teruskanHRGA') a.status='Menunggu Finance';
+  if(act==='tolakHRGA') a.status='Ditolak HRGA';
+  if(act==='teruskanFinance') a.status='Menunggu Direktur';
+  if(act==='tolakFinance') a.status='Ditolak Finance';
+  if(act==='setujuiDirektur') a.status='Disetujui Direktur';
+  if(act==='tolakDirektur') a.status='Ditolak Direktur';
+  jsave(LS.anggaran,anggaran); renderAnggaran(); renderStats();
+};
+
+// ----- ABSENSI LAPORAN HRGA -----
+function renderAbsensiReport(){
+  const branchFilter=document.getElementById('filterAbsensiBranch')?.value||'all';
+  const dateFilter=document.getElementById('filterAbsensiDate')?.value||'';
+  let filtered=absensi;
+  if(branchFilter!=='all') filtered=filtered.filter(a=>a.cabang===branchFilter);
+  if(dateFilter) filtered=filtered.filter(a=>a.tgl===dateFilter);
+  const el=document.getElementById('absensiReport');
+  if(!filtered.length){ el.innerHTML='<div class="text-sm text-slate-500 p-3">Tidak ada data untuk filter ini.</div>'; return; }
+  el.innerHTML = `<div class="overflow-auto rounded-xl border border-slate-200"><table class="w-full text-sm"><thead class="bg-slate-50"><tr><th class="text-left px-3 py-2">Tanggal</th><th class="text-left px-3 py-2">Cabang</th><th class="text-left px-3 py-2">Jenis</th><th class="text-left px-3 py-2">Jam</th><th class="text-left px-3 py-2">Jarak</th><th class="text-left px-3 py-2">Foto</th></tr></thead><tbody>${filtered.slice(-100).reverse().map(a=>`<tr class="border-t"><td class="px-3 py-2">${a.tgl}</td><td class="px-3 py-2">${a.cabangName}</td><td class="px-3 py-2"><span class="px-2 py-1 rounded-full text-xs font-bold ${a.jenis==='Masuk'?'bg-emerald-100 text-emerald-700':'bg-slate-900 text-white'}">${a.jenis}</span></td><td class="px-3 py-2">${a.jam}</td><td class="px-3 py-2">${a.jarak}m</td><td class="px-3 py-2"><img src="${a.foto}" class="w-10 h-10 rounded-lg object-cover"></td></tr>`).join('')}</tbody></table></div><div class="text-xs text-slate-500 mt-2">Total ${filtered.length} baris • Filter cabang & tanggal di atas</div>`;
+}
+document.getElementById('filterAbsensiBranch')?.addEventListener('change',renderAbsensiReport);
+document.getElementById('filterAbsensiDate')?.addEventListener('change',renderAbsensiReport);
+document.getElementById('btnExportAbsensi').onclick=()=>{
+  const rows=[['tanggal','cabang','jenis','jam','jarak','lat','lng']].concat(absensi.map(a=>[a.tgl,a.cabangName,a.jenis,a.jam,a.jarak,a.lat,a.lng]));
+  downloadCSV(rows,'laporan-absensi.csv');
+};
+document.getElementById('btnClearAbsensi').onclick=()=>{ if(confirm('Hapus semua data absensi demo?')){ absensi=[]; jsave(LS.absensi,absensi); renderAbsensiList(); renderAbsensiReport(); renderStats(); }};
+
+// ----- PENGUMUMAN -----
+document.getElementById('formPengumuman').addEventListener('submit',e=>{
+  e.preventDefault();
+  const j=document.getElementById('annTitle').value.trim(), b=document.getElementById('annBody').value.trim();
+  if(!j||!b) return alert('Isi judul & isi');
+  pengumuman.push({id:Date.now().toString(36), judul:j, isi:b, tgl:todayISO()}); jsave(LS.pengumuman,pengumuman); e.target.reset(); renderPengumuman(); renderAnnounce();
+});
+function renderPengumuman(){
+  const el=document.getElementById('pengumumanList');
+  el.innerHTML = pengumuman.slice(-20).reverse().map(a=>`<div class="p-3 rounded-2xl border border-slate-200 bg-white"><div class="font-bold text-sm">${a.judul}</div><div class="text-sm text-slate-600 mt-1">${a.isi}</div><div class="text-xs text-slate-400 mt-1">${a.tgl}</div></div>`).join('') || '<div class="text-sm text-slate-500">Belum ada.</div>';
+}
+
+// ----- KINERJA -----
+document.getElementById('formKinerja').addEventListener('submit',e=>{
+  e.preventDefault();
+  const rec={id:Date.now().toString(36), cabang:document.getElementById('kinBranch').value, cabangName: BRANCHES.find(b=>b.id===document.getElementById('kinBranch').value).name, tgl:document.getElementById('kinTgl').value||todayISO(), skor:Number(document.getElementById('kinSkor').value)||0, pesanan:Number(document.getElementById('kinPesanan').value)||0, catatan:document.getElementById('kinCatatan').value||'-'};
+  kinerja.push(rec); jsave(LS.kinerja,kinerja); e.target.reset(); document.getElementById('kinBranch').value=branchId; renderKinerja(); drawCharts();
+});
+function renderKinerja(){
+  const el=document.getElementById('kinerjaList');
+  if(!kinerja.length){ el.innerHTML='<div class="text-sm text-slate-500">Belum ada laporan.</div>'; return; }
+  el.innerHTML = kinerja.slice(-30).reverse().map(k=>`<div class="p-3 rounded-2xl border border-slate-200 bg-white flex items-center justify-between gap-3"><div><div class="font-bold text-sm">${k.cabangName} • ${k.tgl}</div><div class="text-xs text-slate-500">Skor ${k.skor}/100 • ${k.pesanan} pesanan • ${k.catatan}</div></div><span class="px-2.5 py-1 rounded-full text-xs font-bold ${k.skor>=85?'bg-emerald-100 text-emerald-700':k.skor>=70?'bg-amber-100 text-amber-700':'bg-rose-100 text-rose-700'}">${k.skor}</span></div>`).join('');
+}
+
+// ----- FINANCE -----
+document.getElementById('formFinance').addEventListener('submit',e=>{
+  e.preventDefault();
+  const rec={id:Date.now().toString(36), cabang:branchId, cabangName:branch().name, jenis:document.getElementById('finJenis').value, kategori:document.getElementById('finKategori').value, nominal:Number(document.getElementById('finNominal').value)||0, tgl:document.getElementById('finTgl').value||todayISO(), ket:document.getElementById('finKet').value||'-'};
+  if(!rec.nominal) return alert('Isi nominal');
+  finance.push(rec); jsave(LS.finance,finance); e.target.reset(); renderFinance(); renderStats(); drawCharts();
+});
+function renderFinance(){
+  const el=document.getElementById('financeList');
+  const filtered=finance.filter(f=>f.cabang===branchId).slice(-50).reverse();
+  if(!filtered.length){ el.innerHTML='<div class="text-sm text-slate-500 p-3 rounded-xl bg-slate-50 border">Belum ada transaksi di cabang ini.</div>'; return; }
+  const totalMasuk=finance.filter(f=>f.cabang===branchId&&f.jenis==='Pemasukan').reduce((s,x)=>s+x.nominal,0);
+  const totalKeluar=finance.filter(f=>f.cabang===branchId&&f.jenis==='Pengeluaran').reduce((s,x)=>s+x.nominal,0);
+  el.innerHTML = `<div class="flex gap-2 text-xs font-bold mb-2"><span class="px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700">Masuk ${rupiah(totalMasuk)}</span><span class="px-3 py-1.5 rounded-full bg-rose-50 border border-rose-200 text-rose-700">Keluar ${rupiah(totalKeluar)}</span><span class="px-3 py-1.5 rounded-full bg-slate-900 text-white">Saldo ${rupiah(totalMasuk-totalKeluar)}</span></div>` + filtered.map(f=>`<div class="p-3 rounded-2xl border ${f.jenis==='Pemasukan'?'bg-emerald-50/50 border-emerald-200':'bg-rose-50/50 border-rose-200'} flex items-center justify-between gap-3"><div><div class="font-bold text-sm">${f.kategori} • ${rupiah(f.nominal)}</div><div class="text-xs text-slate-500">${f.tgl} • ${f.cabangName} • ${f.ket}</div></div><span class="px-2.5 py-1 rounded-full text-xs font-bold ${f.jenis==='Pemasukan'?'bg-emerald-600 text-white':'bg-rose-600 text-white'}">${f.jenis}</span></div>`).join('');
+  // gaji preview link
+}
+document.getElementById('btnExportFinance').onclick=()=>{
+  const rows=[['tanggal','cabang','jenis','kategori','nominal','ket']].concat(finance.map(f=>[f.tgl,f.cabangName,f.jenis,f.kategori,f.nominal,f.ket]));
+  downloadCSV(rows,'laporan-keuangan.csv');
+};
+document.getElementById('btnHitungGaji').onclick=()=>{
+  const nama=document.getElementById('gajiNama').value.trim(), pokok=Number(document.getElementById('gajiPokok').value)||0, perHadir=Number(document.getElementById('gajiHadir').value)||0;
+  if(!nama||!pokok) return alert('Isi nama & gaji pokok');
+  const hadirCount = absensi.filter(a=>a.cabang===branchId && a.jenis==='Masuk' && a.tgl.slice(0,7)===todayISO().slice(0,7)).length || 22;
+  const tunjangan = hadirCount * perHadir;
+  const total = pokok + tunjangan;
+  const preview=document.getElementById('gajiPreview');
+  preview.classList.remove('hidden');
+  preview.innerHTML=`<b>${nama}</b> — hadir ${hadirCount} hari × ${rupiah(perHadir)} = ${rupiah(tunjangan)}<br>Gaji pokok ${rupiah(pokok)} → <b>Total ${rupiah(total)}</b><br><button onclick="saveGaji('${nama.replace(/'/g,"\\'")}',${pokok},${tunjangan},${total})" class="mt-2 px-3 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-bold">Simpan ke Finance sebagai Pengeluaran Gaji</button>`;
+};
+window.saveGaji=(nama,pokok,tunj,total)=>{
+  finance.push({id:Date.now().toString(36), cabang:branchId, cabangName:branch().name, jenis:'Pengeluaran', kategori:'Gaji', nominal:total, tgl:todayISO(), ket:`Gaji ${nama} (pokok ${rupiah(pokok)} + tunjangan hadir ${rupiah(tunj)})`});
+  gajiHist.push({nama, pokok, tunj, total, tgl:todayISO(), cabang:branchId}); jsave(LS.finance,finance); jsave(LS.gaji,gajiHist); renderFinance(); renderGaji(); renderStats();
+};
+function renderGaji(){
+  const el=document.getElementById('gajiHistory');
+  if(!gajiHist.length){ el.innerHTML='<div class="text-xs text-slate-500">Belum ada riwayat gaji.</div>'; return; }
+  el.innerHTML = gajiHist.slice(-10).reverse().map(g=>`<div class="p-2 rounded-xl bg-slate-50 border border-slate-200">${g.nama} • ${g.tgl} • ${rupiah(g.total)} <span class="text-xs text-slate-500">(pokok ${rupiah(g.pokok)} + tunj ${rupiah(g.tunj)})</span></div>`).join('');
+}
+
+// ----- USERS (Direktur) -----
+function renderUsers(){
+  const el=document.getElementById('userTable');
+  el.innerHTML = `<div class="overflow-auto rounded-xl border border-slate-200"><table class="w-full text-sm"><thead class="bg-slate-50"><tr><th class="text-left px-3 py-2">Nama</th><th class="text-left px-3 py-2">Role</th><th class="text-left px-3 py-2">Cabang</th><th class="text-left px-3 py-2">Password</th><th class="px-3 py-2"></th></tr></thead><tbody>${users.map(u=>`<tr class="border-t"><td class="px-3 py-2 font-semibold">${u.nama}</td><td class="px-3 py-2"><span class="px-2 py-1 rounded-full bg-slate-900 text-white text-xs font-bold">${u.role}</span></td><td class="px-3 py-2">${BRANCHES.find(b=>b.id===u.cabang)?.name||u.cabang}</td><td class="px-3 py-2"><input value="${u.pass}" onchange="updateUserPass('${u.id}',this.value)" class="px-2 py-1 rounded-lg border border-slate-200 text-xs w-28"></td><td class="px-3 py-2"><button onclick="removeUser('${u.id}')" class="text-rose-600 text-xs font-bold">Hapus</button></td></tr>`).join('')}</tbody></table></div>`;
+  const su=document.getElementById('newUserBranch'); if(su) su.innerHTML=BRANCHES.map(b=>`<option value="${b.id}">${b.name}</option>`).join('');
+}
+window.updateUserPass=(id,val)=>{ const u=users.find(x=>x.id===id); if(u){ u.pass=val; jsave(LS.users,users); } };
+window.removeUser=(id)=>{ if(confirm('Hapus user?')){ users=users.filter(x=>x.id!==id); jsave(LS.users,users); renderUsers(); } };
+document.getElementById('formUser').addEventListener('submit',e=>{
+  e.preventDefault();
+  const nama=document.getElementById('newUserNama').value.trim(), roleSel=document.getElementById('newUserRole').value, cab=document.getElementById('newUserBranch').value, pass=document.getElementById('newUserPass').value.trim();
+  if(!nama||!pass) return alert('Isi nama & password');
+  users.push({id:Date.now().toString(36), nama, role:roleSel, cabang:cab, pass}); jsave(LS.users,users); e.target.reset(); renderUsers();
+});
+
+// ----- MENU EDITOR -----
+function renderMenuEditor(){
+  const el=document.getElementById('menuEditorList');
+  el.innerHTML = menus.map((m,i)=>`<div class="flex flex-wrap gap-2 items-center p-3 rounded-2xl border ${m.roles.includes('all')?'bg-blue-50 border-blue-200':'bg-white border-slate-200'}">
+    <i class="fa-solid ${m.icon} w-6 text-slate-500"></i>
+    <input value="${m.label.replace(/"/g,'&quot;')}" oninput="menus[${i}].label=this.value; saveMenus()" class="flex-1 min-w-[140px] px-3 py-2 rounded-xl border border-slate-200 text-sm font-semibold">
+    <input value="${m.icon}" oninput="menus[${i}].icon=this.value; saveMenus()" placeholder="fa-icon" class="w-32 px-2 py-2 rounded-xl border border-slate-200 text-xs">
+    <select onchange="menus[${i}].roles=[this.value]; saveMenus()" class="px-2 py-2 rounded-xl border border-slate-200 text-xs font-bold"><option value="all" ${m.roles.includes('all')?'selected':''}>Semua</option><option value="PIC" ${m.roles[0]==='PIC'?'selected':''}>PIC</option><option value="HRGA" ${m.roles[0]==='HRGA'?'selected':''}>HRGA</option><option value="Finance" ${m.roles[0]==='Finance'?'selected':''}>Finance</option><option value="Direktur" ${m.roles[0]==='Direktur'?'selected':''}>Direktur</option><option value="Administrator" ${m.roles[0]==='Administrator'?'selected':''}>Administrator</option></select>
+    <button onclick="menus.splice(${i},1);saveMenus()" class="w-8 h-8 rounded-xl border flex items-center justify-center text-rose-500"><i class="fa-solid fa-trash text-xs"></i></button>
+  </div>`).join('');
+  // custom modules view
+  const custom=menus.filter(m=>m.id.startsWith('custom_'));
+  document.getElementById('customModulesView').innerHTML = custom.length? `<div class="mt-4 p-3 rounded-2xl bg-amber-50 border border-amber-200 text-sm"><b>${custom.length} modul custom aktif</b> — muncul di sidebar sesuai role.</div>` : '';
+}
+window.saveMenus=()=>{ jsave(LS.menus,menus); renderNav(); renderMenuEditor(); };
+document.getElementById('formNewMenu').addEventListener('submit',e=>{
+  e.preventDefault();
+  const label=document.getElementById('newMenuLabel').value.trim(), icon=document.getElementById('newMenuIcon').value.trim()||'fa-cube', rolesVal=document.getElementById('newMenuRoles').value;
+  if(!label) return alert('Isi label');
+  const id='custom_'+Date.now().toString(36);
+  menus.push({id, label, icon: icon.replace('fa-','fa-'), roles:[rolesVal]}); jsave(LS.menus,menus); e.target.reset(); renderNav(); renderMenuEditor();
+});
+document.getElementById('btnResetMenu').onclick=()=>{ if(confirm('Reset menu ke default? Modul custom akan hilang.')){ menus=JSON.parse(JSON.stringify(DEFAULT_MENUS)); jsave(LS.menus,menus); renderNav(); renderMenuEditor(); } };
+document.getElementById('btnExportMenu').onclick=()=>{
+  const blob=new Blob([JSON.stringify(menus,null,2)],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='kateringhub-menus.json'; a.click(); URL.revokeObjectURL(url);
+};
+
+// ----- CHARTS (vanilla canvas) -----
+function drawBar(canvas, labels, values, color){
+  const ctx=canvas.getContext('2d'); const W=canvas.width=canvas.clientWidth*2, H=canvas.height=180*2;
+  ctx.clearRect(0,0,W,H); ctx.scale(2,2);
+  const w=canvas.clientWidth, h=180, padL=40, padB=30, padT=10, padR=10;
+  const max=Math.max(...values,1)*1.2;
+  // grid
+  ctx.strokeStyle='#e2e8f0'; ctx.lineWidth=1;
+  for(let i=0;i<=4;i++){ const y=padT+(h-padT-padB)/4*i; ctx.beginPath(); ctx.moveTo(padL,y); ctx.lineTo(w-padR,y); ctx.stroke(); ctx.fillStyle='#94a3b8'; ctx.font='10px Inter'; ctx.fillText(Math.round(max*(1-i/4)/1000)+'k',2,y+3); }
+  const barW=(w-padL-padR)/labels.length*0.6;
+  labels.forEach((lb,i)=>{
+    const x=padL+(w-padL-padR)/labels.length*i+(w-padL-padR)/labels.length/2-barW/2;
+    const bh=(values[i]/max)*(h-padT-padB);
+    const y=h-padB-bh;
+    ctx.fillStyle=color; ctx.beginPath(); ctx.roundRect(x,y,barW,bh,6); ctx.fill();
+    ctx.fillStyle='#334155'; ctx.font='700 9px Inter'; ctx.textAlign='center'; ctx.fillText(lb.slice(0,8), x+barW/2, h-8);
+    ctx.fillStyle='#0f172a'; ctx.font='700 10px Inter'; ctx.fillText(values[i]? (values[i]>=1000000? (values[i]/1000000).toFixed(1)+'jt' : values[i]):'0', x+barW/2, y-6);
+  });
+}
+function drawCharts(){
+  // finance per cabang
+  const c1=document.getElementById('chartFinance'), c2=document.getElementById('chartKinerja'), c3=document.getElementById('chartDirFinance'), c4=document.getElementById('chartDirKinerja');
+  if(c1){
+    const labels=BRANCHES.map(b=>b.name.split(' - ').pop().slice(0,7));
+    const masuk=BRANCHES.map(b=> finance.filter(f=>f.cabang===b.id&&f.jenis==='Pemasukan').reduce((s,x)=>s+x.nominal,0));
+    drawBar(c1, labels, masuk, '#f97316');
+  }
+  if(c2){
+    const labels=BRANCHES.map(b=>b.name.split(' - ').pop().slice(0,7));
+    const skor=BRANCHES.map(b=>{ const arr=kinerja.filter(k=>k.cabang===b.id); return arr.length? Math.round(arr.reduce((s,x)=>s+x.skor,0)/arr.length) : 0; });
+    drawBar(c2, labels, skor.map(s=>s*10000), '#0ea5e9'); // scale
+  }
+  if(c3) drawBar(c3, BRANCHES.map(b=>b.name.split(' ')[0].slice(0,6)), BRANCHES.map(b=> finance.filter(f=>f.cabang===b.id&&f.jenis==='Pemasukan').reduce((s,x)=>s+x.nominal,0)), '#0f172a');
+  if(c4){
+    const labels=BRANCHES.map(b=>b.name.split(' ')[0].slice(0,6));
+    const vals=BRANCHES.map(b=>{ const arr=kinerja.filter(k=>k.cabang===b.id); return arr.length? Math.round(arr.reduce((s,x)=>s+x.skor,0)/arr.length)*10000 : 0; });
+    drawBar(c4, labels, vals, '#10b981');
+  }
+}
+
+// utils
+function downloadCSV(rows, filename){
+  const csv=rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=filename; a.click(); URL.revokeObjectURL(url);
+}
+
+// init
+initBranchSelects(); renderNav(); renderAll();
+if(window.innerWidth<1024) closeDrawer(); else { sidebar.classList.remove('-translate-x-full'); overlay.classList.add('hidden'); }
+window.addEventListener('resize',()=>{ if(window.innerWidth>=1024){ sidebar.classList.remove('-translate-x-full'); overlay.classList.add('hidden'); }});
+document.getElementById('kinTgl').value=todayISO();
+document.getElementById('finTgl').value=todayISO();
+document.getElementById('stokTgl').value=todayISO();
+document.getElementById('cutiTgl').value=todayISO();
+</script>
+</body>
+</html>
