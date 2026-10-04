@@ -73,7 +73,7 @@ tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter','sans-serif'
         <div class="mt-6 flex items-center gap-6 text-sm">
           <span class="inline-flex items-center gap-2 font-semibold text-slate-600"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Pages Active</span>
           <span class="text-slate-400">•</span>
-          <span class="text-slate-500">8 karya live • HTML statis</span>
+          <span class="text-slate-500">9 karya live • HTML statis</span>
         </div>
       </div>
       <div class="relative">
@@ -82,7 +82,7 @@ tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter','sans-serif'
           <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center"><i class="fa-solid fa-cube"></i></div>
           <div>
             <div class="text-xs tracking-widest font-semibold opacity-60">PORTFOLIO</div>
-            <div class="font-bold">8 Karya Live</div>
+            <div class="font-bold">9 Karya Live</div>
           </div>
         </div>
       </div>
@@ -300,6 +300,32 @@ tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter','sans-serif'
         </div>
         <a href="tumbuh-kuat/index.html" target="_blank" rel="noopener" class="mt-2 inline-flex justify-center items-center gap-2 py-2.5 rounded-full bg-teal-50 border border-teal-200 text-teal-700 text-sm font-bold hover:bg-teal-100 transition"><i class="fa-solid fa-arrow-up-right-from-square text-xs"></i> Kunjungi</a>
         <a href="https://github.com/arijayacloud/prototype-web-android/tree/main/tumbuh-kuat" target="_blank" rel="noopener" class="mt-1 inline-flex justify-center items-center gap-2 py-2 rounded-full text-xs font-semibold text-slate-500 hover:text-slate-900"><i class="fa-brands fa-github"></i> Lihat Kode — tumbuh-kuat/</a>
+      </div>
+    </article>
+
+    <!-- EKG-BELAJAR CARD — KEDOKTERAN -->
+    <article class="project-card group bg-white rounded-[24px] border border-slate-100 overflow-hidden hover:shadow-xl hover:border-blue-100 transition flex flex-col" data-project="ekg-belajar">
+      <div class="relative h-48 overflow-hidden bg-slate-100">
+        <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=700&q=80" loading="lazy" alt="EKG Belajar thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+        <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-cyan-600 text-white text-[11px] font-bold tracking-widest">NEW • MED</span>
+        <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur text-slate-700 text-[11px] font-bold">MOBILE</span>
+      </div>
+      <div class="p-6 flex-1 flex flex-col">
+        <div class="text-xs font-bold tracking-widest text-cyan-600">EKG-BELAJAR • KEDOKTERAN • CALCULATOR & KUIS</div>
+        <h3 class="font-display font-extrabold text-[18px] leading-tight mt-1">EKG Belajar — Kedokteran</h3>
+        <p class="text-sm text-slate-500 leading-6 mt-2 flex-1">Tips EKG, Kuis, Kalkulator HR/QTc/Axis, Latihan Strip & 9 menu belajar (Dasar, Interpretasi, Ritme, Aritmia, Video, Favorit) — replika gambar.</p>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <span class="px-2.5 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-xs font-semibold">HR 300/R-R</span>
+          <span class="px-2.5 py-1 rounded-full bg-violet-50 border border-violet-200 text-xs font-semibold">QTc</span>
+          <span class="px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-semibold">Axis</span>
+          <span class="px-2.5 py-1 rounded-full bg-amber-50 border border-amber-200 text-xs font-semibold">Kuis</span>
+        </div>
+        <div class="mt-5 grid grid-cols-2 gap-2">
+          <a href="ekg-belajar/index.html" target="_blank" rel="noopener" data-action="preview" data-url="ekg-belajar/index.html" data-title="EKG Belajar — Kedokteran" class="inline-flex justify-center items-center gap-2 py-2.5 rounded-full bg-slate-900 text-white text-sm font-bold hover:bg-cyan-600 transition"><i class="fa-solid fa-eye text-xs"></i> Live Preview</a>
+          <button data-action="detail" data-project="ekg-belajar" class="inline-flex justify-center items-center gap-2 py-2.5 rounded-full border border-slate-200 text-sm font-bold hover:bg-slate-50 transition"><i class="fa-solid fa-circle-info text-xs"></i> Detail</button>
+        </div>
+        <a href="ekg-belajar/index.html" target="_blank" rel="noopener" class="mt-2 inline-flex justify-center items-center gap-2 py-2.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-700 text-sm font-bold hover:bg-cyan-100 transition"><i class="fa-solid fa-arrow-up-right-from-square text-xs"></i> Kunjungi</a>
+        <a href="https://github.com/arijayacloud/prototype-web-android/tree/main/ekg-belajar" target="_blank" rel="noopener" class="mt-1 inline-flex justify-center items-center gap-2 py-2 rounded-full text-xs font-semibold text-slate-500 hover:text-slate-900"><i class="fa-brands fa-github"></i> Lihat Kode — ekg-belajar/</a>
       </div>
     </article>
 
@@ -521,6 +547,21 @@ const PROJECTS = {
       { label: 'Live Demo', href: 'tumbuh-kuat/index.html' },
       { label: 'Kunjungi Langsung', href: 'tumbuh-kuat/index.html' },
       { label: 'Source di GitHub', href: 'https://github.com/arijayacloud/prototype-web-android/tree/main/tumbuh-kuat' }
+    ]
+  },
+  'ekg-belajar': {
+    title: 'EKG Belajar — Kedokteran',
+    url: 'ekg-belajar/index.html',
+    codeUrl: 'https://github.com/arijayacloud/prototype-web-android/tree/main/ekg-belajar',
+    thumbnail: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=700&q=80',
+    background: 'Replika aplikasi EKG dari screenshot: Tips Hari Ini, 3 kartu fitur (Kuis, Kalkulator HR·QTc·Axis, Latihan Strip), grid 9 menu Eksplorasi, dan bottom nav Home/Materi/Kuis/Favorit/Profil.',
+    problem: 'Mahasiswa kedokteran butuh belajar EKG bertahap: dasar, interpretasi sistematis, ritme, aritmia, plus latihan soal & hitung cepat HR/QTc/Axis tanpa install APK.',
+    features: ['Tips harian (300/kotak besar), 9 menu: Dasar, Interpretasi, Ritme Normal, Aritmia, Kuis, Kalkulator, Video, Favorit, Tentang', 'Kalkulator live: HR (300/kotak besar, 1500/kecil, 60/RR), QTc Bazett, Axis I/aVF dengan panah', 'Kuis 8 soal + Latihan Strip 4 EKG grid dengan feedback, progress & skor', 'Materi lengkap + Video 6 judul + Favorit ★ + localStorage offline, mobile friendly'],
+    stack: ['HTML', 'Tailwind CDN', 'Font Awesome', 'Vanilla JS + SVG + localStorage (offline)'],
+    links: [
+      { label: 'Live Demo', href: 'ekg-belajar/index.html' },
+      { label: 'Kunjungi Langsung', href: 'ekg-belajar/index.html' },
+      { label: 'Source di GitHub', href: 'https://github.com/arijayacloud/prototype-web-android/tree/main/ekg-belajar' }
     ]
   },
   'katering-hub': {
