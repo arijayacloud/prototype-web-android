@@ -10,10 +10,13 @@ Prototipe antarmuka untuk permintaan aplikasi operasional multi-cabang dari chat
 - Pengajuan cuti, tugas luar, anggaran, dan alur persetujuan PIC → HRGA → Finance → Direktur
 - Checklist laporan kegiatan dengan dokumentasi foto
 - Pengecekan inventori mingguan serta pencatatan stok sisa
-- Pemasukan, pengeluaran, penggajian, perbaikan, dan laporan keuangan
-- Dashboard performa cabang, pengelolaan pengguna, serta menu/modul
+- Dashboard direktur, status pengajuan, performa cabang, dan KPI contoh
+- Direktori karyawan, pengingat kontrak, ringkasan absensi, serta evaluasi kinerja
+- Pengumuman/instruksi yang ditargetkan ke cabang atau peran
+- Pemasukan, pengeluaran, pengajuan biaya, komponen payroll, dan ringkasan laporan keuangan
+- Pengelolaan pengguna/menu, master data cabang dan kategori, serta contoh audit aktivitas
 
-Ini adalah demo front-end statis. Data contoh dan interaksi formulir hanya berjalan di browser; akun, backend, database, GPS/kamera nyata, upload, dan alur persetujuan belum dibuat.
+Ini adalah demo front-end statis untuk meninjau alur dan tampilan. Angka, akun, cabang, aktivitas, dan notifikasi adalah data contoh. Interaksi tidak menyimpan transaksi ke server. Autentikasi dan hak akses sungguhan, backend/database, GPS dan kamera nyata, unggahan permanen, payroll, ekspor laporan aktual, notifikasi, serta persetujuan belum terhubung atau dibuat.
 
 ## GitHub Pages
 
