@@ -7,7 +7,8 @@ Pratinjau front-end untuk alur layanan teknisi kompor panggilan. Scope awal meru
 - Beranda pelanggan, lokasi contoh, pencarian dan kategori layanan
 - Daftar mitra dengan tarif awal, jarak, ketersediaan dan rating contoh
 - Detail layanan dan formulir jadwal panggilan
-- Riwayat pesanan dan tahap status simulasi
+- Menu bawah pelanggan: Beranda, Layanan, Riwayat, dan Profil (tanpa Favorit)
+- Riwayat pesanan dan tahap status simulasi, dengan akses chat dari kartu pesanan
 - Layar chat pelanggan–teknisi setelah pesanan, dengan pesan contoh dan balasan lokal simulasi
 - Tampilan contoh untuk peran Teknisi dan Operator
 
