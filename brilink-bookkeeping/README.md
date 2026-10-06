@@ -1,6 +1,6 @@
 # Arus — Demo Pembukuan Mitra
 
-Pratinjau front-end interaktif untuk pencatatan transaksi, saldo akun, biaya admin, modal owner/pinjaman, hutang, laporan, dan pembagian hasil yang dapat diatur.
+Pratinjau front-end interaktif untuk pencatatan transaksi, saldo akun, biaya admin yang dapat diarahkan ke akun pilihan, modal owner/pinjaman, hutang, laporan, dan pembagian hasil yang dapat diatur.
 
 ## Batas demo
 
