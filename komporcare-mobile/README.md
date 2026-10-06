@@ -8,8 +8,9 @@ Pratinjau front-end untuk alur layanan teknisi kompor panggilan. Scope awal meru
 - Daftar mitra dengan tarif awal, jarak, ketersediaan dan rating contoh
 - Detail layanan dan formulir jadwal panggilan
 - Riwayat pesanan dan tahap status simulasi
+- Layar chat pelanggan–teknisi setelah pesanan, dengan pesan contoh dan balasan lokal simulasi
 - Tampilan contoh untuk peran Teknisi dan Operator
 
 ## Batasan
 
-Halaman ini hanya prototype HTML front-end. Tidak ada login, peta/GPS, chat, pembayaran, notifikasi, database, sinkronisasi, atau penugasan teknisi yang aktif. Pemesanan, filter, tombol, angka, lokasi, jadwal, identitas, harga, rating, grafik, dan status hanya simulasi/data contoh di halaman ini. Prototype ini bukan file Figma final atau aplikasi produksi.
+Halaman ini hanya prototype HTML front-end. Tidak ada login, peta/GPS, chat server, pembayaran, notifikasi, database, sinkronisasi, atau penugasan teknisi yang aktif. Chat kini hanya simulasi browser; isi pesan tidak terkirim ke teknisi/server. Pemesanan, filter, tombol, angka, lokasi, jadwal, identitas, harga, rating, grafik, dan status hanya simulasi/data contoh di halaman ini. Prototype ini bukan file Figma final atau aplikasi produksi.
