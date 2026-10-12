@@ -73,7 +73,7 @@ tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter','sans-serif'
         <div class="mt-6 flex items-center gap-6 text-sm">
           <span class="inline-flex items-center gap-2 font-semibold text-slate-600"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Pages Active</span>
           <span class="text-slate-400">•</span>
-          <span class="text-slate-500">13 karya live • HTML statis</span>
+          <span class="text-slate-500">14 karya live • HTML statis</span>
         </div>
       </div>
       <div class="relative">
@@ -82,7 +82,7 @@ tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter','sans-serif'
           <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center"><i class="fa-solid fa-cube"></i></div>
           <div>
             <div class="text-xs tracking-widest font-semibold opacity-60">PORTFOLIO</div>
-            <div class="font-bold">13 Karya Live</div>
+            <div class="font-bold">14 Karya Live</div>
           </div>
         </div>
       </div>
@@ -431,6 +431,32 @@ tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter','sans-serif'
       </div>
     </article>
 
+    <!-- BANYU-AGUNG CARD — BANYU AGUNG STASIUN AIR -->
+    <article class="project-card group bg-white rounded-[24px] border border-slate-100 overflow-hidden hover:shadow-xl hover:border-blue-100 transition flex flex-col" data-project="banyu-agung">
+      <div class="relative h-48 overflow-hidden bg-slate-100">
+        <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=700&q=80" loading="lazy" alt="Banyu Agung Stasiun Air thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+        <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-sky-600 text-white text-[11px] font-bold tracking-widest">NEW • BANYU AGUNG</span>
+        <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur text-slate-700 text-[11px] font-bold">3 ROLE</span>
+      </div>
+      <div class="p-6 flex-1 flex flex-col">
+        <div class="text-xs font-bold tracking-widest text-sky-600">BANYU-AGUNG • ADMIN • KASIR • DRIVER • WA</div>
+        <h3 class="font-display font-extrabold text-[18px] leading-tight mt-1">Banyu Agung — Stasiun Air Minum</h3>
+        <p class="text-sm text-slate-500 leading-6 mt-2 flex-1">WA → Driver input + foto & koordinat → Kasir konfirmasi bayar (Tunai/Transfer/Piutang) → Driver antar → selesai. Admin atur harga BIO/RO, kelola user & pelanggan, laporan omzet bersih/kotor — localStorage.</p>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <span class="px-2.5 py-1 rounded-full bg-sky-50 border border-sky-200 text-xs font-semibold">Foto + Koordinat</span>
+          <span class="px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-semibold">BIO & RO</span>
+          <span class="px-2.5 py-1 rounded-full bg-amber-50 border border-amber-200 text-xs font-semibold">Tunai/Transfer/Piutang</span>
+          <span class="px-2.5 py-1 rounded-full bg-violet-50 border border-violet-200 text-xs font-semibold">Omzet</span>
+        </div>
+        <div class="mt-5 grid grid-cols-2 gap-2">
+          <a href="banyu-agung/index.html" target="_blank" rel="noopener" data-action="preview" data-url="banyu-agung/index.html" data-title="Banyu Agung — Stasiun Air Minum" class="inline-flex justify-center items-center gap-2 py-2.5 rounded-full bg-slate-900 text-white text-sm font-bold hover:bg-sky-600 transition"><i class="fa-solid fa-eye text-xs"></i> Live Preview</a>
+          <button data-action="detail" data-project="banyu-agung" class="inline-flex justify-center items-center gap-2 py-2.5 rounded-full border border-slate-200 text-sm font-bold hover:bg-slate-50 transition"><i class="fa-solid fa-circle-info text-xs"></i> Detail</button>
+        </div>
+        <a href="banyu-agung/index.html" target="_blank" rel="noopener" class="mt-2 inline-flex justify-center items-center gap-2 py-2.5 rounded-full bg-sky-50 border border-sky-200 text-sky-700 text-sm font-bold hover:bg-sky-100 transition"><i class="fa-solid fa-arrow-up-right-from-square text-xs"></i> Kunjungi</a>
+        <a href="https://github.com/arijayacloud/prototype-web-android/tree/main/banyu-agung" target="_blank" rel="noopener" class="mt-1 inline-flex justify-center items-center gap-2 py-2 rounded-full text-xs font-semibold text-slate-500 hover:text-slate-900"><i class="fa-brands fa-github"></i> Lihat Kode — banyu-agung/</a>
+      </div>
+    </article>
+
     <!-- TEMPLATE: copy block di bawah untuk menambah project baru. Ganti URL, judul, deskripsi, tags, dan thumbnail. Tidak perlu ubah CSS. -->
     <!--
     <article class="project-card group bg-white rounded-[24px] border border-slate-100 overflow-hidden hover:shadow-xl hover:border-blue-100 transition flex flex-col" data-project="my-new-project">
@@ -739,6 +765,21 @@ const PROJECTS = {
       { label: 'Live Demo', href: 'kalender-buka-puasa/index.html' },
       { label: 'Kunjungi Langsung', href: 'kalender-buka-puasa/index.html' },
       { label: 'Source di GitHub', href: 'https://github.com/arijayacloud/prototype-web-android/tree/main/kalender-buka-puasa' }
+    ]
+  },
+  'banyu-agung': {
+    title: 'Banyu Agung — Stasiun Air Minum (Admin · Kasir · Driver)',
+    url: 'banyu-agung/index.html',
+    codeUrl: 'https://github.com/arijayacloud/prototype-web-android/tree/main/banyu-agung',
+    thumbnail: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=700&q=80',
+    background: 'Prototype BANYU AGUNG — stasiun air minum dengan 3 role: Admin kontrol penuh, Kasir terima & konfirmasi bayar, Driver terima WA & input + foto & koordinat lalu antar. Satu alur: WhatsApp → Driver Input → Kasir → Bayar → Driver Antar → Selesai.',
+    problem: 'Pesanan WA tercecer, alamat & koordinat tidak tercatat, harga BIO/RO sering salah, foto lokasi hilang, omzet bersih/kotor & piutang tidak terpantau. Butuh satu aplikasi ringan offline yang merekam foto + titik setiap pelanggan.',
+    features: ['👑 Admin: kontrol penuh, atur harga BIO & RO, lihat semua order, laporan omzet bersih/kotor & pembayaran, kelola Kasir & Driver, kelola database pelanggan', '💰 Kasir: terima pesanan dari Driver, input & edit pesanan, konfirmasi pembayaran (Tunai/Transfer/Piutang), lihat pesanan selesai & laporan transaksi', '🚚 Driver: terima WA, input ke aplikasi, pilih/tambah pelanggan, lihat HP & alamat, foto lokasi, simpan koordinat, konfirmasi selesai antar, riwayat pengantaran', '📍 Pelanggan: Nama+HP+Alamat+Titik Koordinat+Foto Lokasi+Riwayat — dipakai ulang, Navigasi 1-tap ke Maps, WA 1-tap, export CSV & cetak'],
+    stack: ['HTML', 'Tailwind CDN', 'Font Awesome', 'Vanilla JS + localStorage (offline) • Geolocation & map picker simulasi'],
+    links: [
+      { label: 'Live Demo', href: 'banyu-agung/index.html' },
+      { label: 'Kunjungi Langsung', href: 'banyu-agung/index.html' },
+      { label: 'Source di GitHub', href: 'https://github.com/arijayacloud/prototype-web-android/tree/main/banyu-agung' }
     ]
   }
 };
