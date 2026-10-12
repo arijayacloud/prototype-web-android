@@ -16,10 +16,10 @@
 .glass{backdrop-filter:blur(12px)}
 </style>
 </head>
-<body class="bg-[#F0FDF4] min-h-screen flex flex-col items-center">
+<body class="bg-[#FEF2F2] min-h-screen flex flex-col items-center">
 <div class="w-full bg-white border-b border-slate-200 sticky top-0 z-30">
   <div class="max-w-[980px] mx-auto px-4 h-14 flex items-center justify-between">
-    <a href="../index.html" class="flex items-center gap-2 font-bold text-slate-700 hover:text-emerald-600"><i class="fa-solid fa-arrow-left"></i> Kembali</a>
+    <a href="../index.html" class="flex items-center gap-2 font-bold text-slate-700 hover:text-red-600"><i class="fa-solid fa-arrow-left"></i> Kembali</a>
     <span class="hidden md:inline text-xs font-bold tracking-widest text-slate-400">RAMADHANKU • KALENDER BUKA PUASA • LOCALSTORAGE</span>
     <span class="md:hidden text-xs font-bold tracking-widest text-slate-400">RAMADHAN KU</span>
     <a href="https://github.com/arijayacloud/prototype-web-android/tree/main/kalender-buka-puasa" target="_blank" class="text-slate-400 hover:text-slate-700"><i class="fa-brands fa-github"></i></a>
@@ -29,21 +29,21 @@
 <div class="w-full max-w-[980px] mx-auto px-4 mt-6 mb-10 flex flex-col lg:flex-row gap-6 items-start justify-center">
 <!-- PHONE -->
 <div class="w-full max-w-[410px] mx-auto lg:mx-0 shrink-0 relative">
-<div id="phone" class="bg-white rounded-[36px] shadow-[0_20px_60px_rgba(0,0,0,.12)] overflow-hidden border-[8px] border-slate-900 flex flex-col relative" style="min-height:780px; background: linear-gradient(180deg,#FFFBEB 0%,#ECFDF5 60%, #ffffff 100%)">
+<div id="phone" class="bg-white rounded-[36px] shadow-[0_20px_60px_rgba(0,0,0,.12)] overflow-hidden border-[8px] border-slate-900 flex flex-col relative" style="min-height:780px; background: linear-gradient(180deg,#FFF1F2 0%,#FFE4E6 60%, #ffffff 100%)">
 <!-- status bar -->
 <div class="h-7 bg-slate-900 flex items-center justify-between px-6 text-white text-[11px] font-semibold shrink-0"><span id="clock">09:41</span><div class="flex gap-1.5 items-center"><i class="fa-solid fa-signal text-[10px]"></i><i class="fa-solid fa-wifi text-[10px]"></i><i class="fa-solid fa-battery-three-quarters"></i></div></div>
 
 <!-- TOP BAR inside phone -->
 <div class="px-5 pt-4 pb-3 flex items-center justify-between shrink-0">
   <div class="flex items-center gap-3">
-    <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-500 flex items-center justify-center text-white text-lg">☪</div>
+    <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-red-600 to-rose-500 flex items-center justify-center text-white text-lg">☪</div>
     <div>
       <div class="font-display font-extrabold text-[15px] leading-none">RamadhanKu</div>
-      <div class="text-[11px] font-semibold text-emerald-700 tracking-widest">1447 H • KALENDER BUKA PUASA</div>
+      <div class="text-[11px] font-semibold text-red-700 tracking-widest">1447 H • KALENDER BUKA PUASA</div>
     </div>
   </div>
   <div class="flex items-center gap-2">
-    <button onclick="openCityPicker()" class="px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold"><i class="fa-solid fa-location-dot mr-1"></i><span id="cityLabel">Jakarta</span> <i class="fa-solid fa-chevron-down text-[9px] ml-1"></i></button>
+    <button onclick="openCityPicker()" class="px-3 py-1.5 rounded-full bg-red-50 border border-red-200 text-red-700 text-xs font-bold"><i class="fa-solid fa-location-dot mr-1"></i><span id="cityLabel">Jakarta</span> <i class="fa-solid fa-chevron-down text-[9px] ml-1"></i></button>
     <button onclick="openNotif()" class="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center"><i class="fa-solid fa-bell text-xs"></i></button>
   </div>
 </div>
@@ -54,7 +54,7 @@
 <!-- VIEW BERANDA -->
 <div id="view-beranda">
   <!-- Hijri + Masehi -->
-  <div class="mx-4 rounded-[20px] bg-gradient-to-br from-emerald-600 via-emerald-700 to-teal-700 p-5 text-white relative overflow-hidden">
+  <div class="mx-4 rounded-[20px] bg-gradient-to-br from-red-600 via-red-700 to-rose-700 p-5 text-white relative overflow-hidden">
     <div class="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
     <div class="absolute -bottom-8 -left-8 w-32 h-32 bg-amber-300/20 rounded-full blur-2xl"></div>
     <div class="relative">
@@ -75,14 +75,14 @@
       <div class="mt-4 bg-white rounded-2xl p-4 text-slate-900 shadow-lg">
         <div class="flex justify-between items-center">
           <div>
-            <div class="text-[11px] font-bold tracking-widest text-emerald-600" id="countLabel">MENUJU BUKA PUASA</div>
+            <div class="text-[11px] font-bold tracking-widest text-red-600" id="countLabel">MENUJU BUKA PUASA</div>
             <div id="countdown" class="font-black text-[26px] leading-none tracking-tight mt-1">05:42:18</div>
             <div class="text-xs text-slate-500 mt-1"><span id="nextEvent">Buka puasa hari ini 18:11 WIB</span> • <span id="countSub">semangat, tinggal sedikit!</span></div>
           </div>
           <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white text-xl shadow"><i class="fa-solid fa-moon"></i></div>
         </div>
-        <div class="mt-3 h-2 bg-slate-100 rounded-full overflow-hidden"><div id="dayProgress" class="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full transition-all" style="width:62%"></div></div>
-        <div class="mt-1.5 flex justify-between text-[11px] font-semibold text-slate-500"><span>Imsak 04:32</span><span id="progressPct" class="text-emerald-600 font-bold">62% hari puasa</span><span>Buka 18:11</span></div>
+        <div class="mt-3 h-2 bg-slate-100 rounded-full overflow-hidden"><div id="dayProgress" class="h-full bg-gradient-to-r from-red-500 to-rose-400 rounded-full transition-all" style="width:62%"></div></div>
+        <div class="mt-1.5 flex justify-between text-[11px] font-semibold text-slate-500"><span>Imsak 04:32</span><span id="progressPct" class="text-red-600 font-bold">62% hari puasa</span><span>Buka 18:11</span></div>
       </div>
       <!-- quick stats -->
       <div class="mt-3 grid grid-cols-3 gap-2">
@@ -103,7 +103,7 @@
   <div class="mx-4 mt-4 bg-white rounded-2xl border border-slate-100 p-4 shadow-sm">
     <div class="flex justify-between items-center">
       <div class="font-bold text-sm">Hari ini</div>
-      <span id="badgeHariIni" class="px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold">Belum tandai</span>
+      <span id="badgeHariIni" class="px-2.5 py-1 rounded-full bg-red-50 border border-red-200 text-red-700 text-xs font-bold">Belum tandai</span>
     </div>
     <div class="mt-3 grid grid-cols-2 gap-2">
       <button onclick="tandaiBuka()" id="btnBuka" class="py-3 rounded-2xl bg-slate-900 text-white font-bold text-sm hover:bg-black transition"><i class="fa-solid fa-check mr-1"></i> Tandai Buka ✅</button>
@@ -111,7 +111,7 @@
     </div>
     <div class="mt-3 flex gap-2">
       <button onclick="addCatatanHari()" class="flex-1 py-2.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 font-bold text-xs"><i class="fa-solid fa-pen mr-1"></i> Catatan hari ini</button>
-      <button onclick="switchView('kalender')" class="flex-1 py-2.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 font-bold text-xs"><i class="fa-solid fa-calendar mr-1"></i> Lihat kalender</button>
+      <button onclick="switchView('kalender')" class="flex-1 py-2.5 rounded-full bg-red-50 border border-red-200 text-red-700 font-bold text-xs"><i class="fa-solid fa-calendar mr-1"></i> Lihat kalender</button>
     </div>
     <div id="catatanPreview" class="hidden mt-3 p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600"></div>
   </div>
@@ -120,10 +120,10 @@
   <div class="mx-4 mt-4 bg-white rounded-2xl border border-slate-100 p-4">
     <div class="flex justify-between items-center">
       <div class="font-bold text-sm">Amalan hari ini</div>
-      <button onclick="switchView('amalan')" class="text-xs font-bold text-emerald-600">Kelola <i class="fa-solid fa-chevron-right text-[10px]"></i></button>
+      <button onclick="switchView('amalan')" class="text-xs font-bold text-red-600">Kelola <i class="fa-solid fa-chevron-right text-[10px]"></i></button>
     </div>
     <div id="amalanHome" class="mt-3 grid grid-cols-3 gap-2"></div>
-    <div class="mt-3 h-2 bg-slate-100 rounded-full overflow-hidden"><div id="amalanBar" class="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full" style="width:0%"></div></div>
+    <div class="mt-3 h-2 bg-slate-100 rounded-full overflow-hidden"><div id="amalanBar" class="h-full bg-gradient-to-r from-red-500 to-rose-400 rounded-full" style="width:0%"></div></div>
   </div>
 
   <!-- Hadith / Motivasi -->
@@ -137,7 +137,7 @@
   <div class="mx-4 mt-4 mb-4 bg-white rounded-2xl border border-slate-100 p-4">
     <div class="flex justify-between items-center">
       <div class="font-bold text-sm">Jadwal hari ini — <span id="jadwalKota">Jakarta</span></div>
-      <button onclick="switchView('jadwal')" class="text-xs font-bold text-emerald-600">Lengkap</button>
+      <button onclick="switchView('jadwal')" class="text-xs font-bold text-red-600">Lengkap</button>
     </div>
     <div id="jadwalMini" class="mt-3 grid grid-cols-3 gap-2 text-center"></div>
   </div>
@@ -157,13 +157,13 @@
       </div>
     </div>
     <div class="mt-3 grid grid-cols-4 gap-2 text-center">
-      <div class="bg-emerald-600 text-white rounded-2xl p-3"><div class="text-lg font-black" id="kDone">0</div><div class="text-[10px] font-bold tracking-widest opacity-80">SELESAI</div></div>
+      <div class="bg-red-600 text-white rounded-2xl p-3"><div class="text-lg font-black" id="kDone">0</div><div class="text-[10px] font-bold tracking-widest opacity-80">SELESAI</div></div>
       <div class="bg-white border border-slate-200 rounded-2xl p-3"><div class="text-lg font-black" id="kSisa">30</div><div class="text-[10px] font-bold tracking-widest text-slate-400">SISA</div></div>
       <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3"><div class="text-lg font-black text-amber-700" id="kBatal">0</div><div class="text-[10px] font-bold tracking-widest text-amber-700">BATAL</div></div>
       <div class="bg-slate-900 text-white rounded-2xl p-3"><div class="text-lg font-black" id="kPct">0%</div><div class="text-[10px] font-bold tracking-widest opacity-60">PROGRES</div></div>
     </div>
     <div class="mt-3 flex gap-1.5 flex-wrap text-[11px] font-bold">
-      <span class="px-2.5 py-1 rounded-full bg-emerald-600 text-white">● Selesai</span>
+      <span class="px-2.5 py-1 rounded-full bg-red-600 text-white">● Selesai</span>
       <span class="px-2.5 py-1 rounded-full bg-amber-400 text-slate-900">● Batal/Udzur</span>
       <span class="px-2.5 py-1 rounded-full bg-white border border-slate-200">○ Belum</span>
       <span class="px-2.5 py-1 rounded-full bg-sky-600 text-white">◉ Hari ini</span>
@@ -184,13 +184,13 @@
       <button onclick="hideCalDetail()" class="w-7 h-7 rounded-full bg-white border border-slate-200 flex items-center justify-center"><i class="fa-solid fa-xmark text-xs"></i></button>
     </div>
     <div class="mt-3 grid grid-cols-3 gap-2">
-      <button onclick="setHariStatus('selesai')" class="py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-xs">Selesai ✓</button>
+      <button onclick="setHariStatus('selesai')" class="py-2.5 rounded-xl bg-red-600 text-white font-bold text-xs">Selesai ✓</button>
       <button onclick="setHariStatus('batal')" class="py-2.5 rounded-xl bg-amber-400 text-slate-900 font-bold text-xs">Batal</button>
       <button onclick="setHariStatus('belum')" class="py-2.5 rounded-xl bg-white border border-slate-200 font-bold text-xs">Belum</button>
     </div>
     <div class="mt-3">
       <label class="text-xs font-bold text-slate-600">Catatan</label>
-      <textarea id="calNote" rows="2" placeholder="Misal: buka bersama keluarga..." class="mt-1 w-full px-3 py-2 rounded-xl border border-slate-200 text-sm outline-none focus:border-emerald-400"></textarea>
+      <textarea id="calNote" rows="2" placeholder="Misal: buka bersama keluarga..." class="mt-1 w-full px-3 py-2 rounded-xl border border-slate-200 text-sm outline-none focus:border-red-400"></textarea>
       <button onclick="saveCalNote()" class="mt-2 w-full py-2.5 rounded-xl bg-slate-900 text-white font-bold text-xs">Simpan catatan</button>
     </div>
     <div id="calTimes" class="mt-3 grid grid-cols-3 gap-2 text-center"></div>
@@ -224,8 +224,8 @@
   <div class="mx-4 mt-3 bg-white rounded-2xl border border-slate-100 p-4">
     <div class="font-bold text-sm">Pengingat</div>
     <div class="mt-3 space-y-2 text-sm">
-      <label class="flex justify-between items-center p-3 rounded-xl border border-slate-200"><span class="font-semibold"><i class="fa-solid fa-bell mr-2 text-emerald-600"></i>Notifikasi Imsak (5 menit sebelum)</span><input id="remImsak" type="checkbox" class="accent-emerald-600 w-4 h-4" onchange="saveReminders()"></label>
-      <label class="flex justify-between items-center p-3 rounded-xl border border-slate-200"><span class="font-semibold"><i class="fa-solid fa-moon mr-2 text-amber-600"></i>Notifikasi Buka</span><input id="remBuka" type="checkbox" class="accent-emerald-600 w-4 h-4" onchange="saveReminders()" checked></label>
+      <label class="flex justify-between items-center p-3 rounded-xl border border-slate-200"><span class="font-semibold"><i class="fa-solid fa-bell mr-2 text-red-600"></i>Notifikasi Imsak (5 menit sebelum)</span><input id="remImsak" type="checkbox" class="accent-red-600 w-4 h-4" onchange="saveReminders()"></label>
+      <label class="flex justify-between items-center p-3 rounded-xl border border-slate-200"><span class="font-semibold"><i class="fa-solid fa-moon mr-2 text-amber-600"></i>Notifikasi Buka</span><input id="remBuka" type="checkbox" class="accent-red-600 w-4 h-4" onchange="saveReminders()" checked></label>
     </div>
     <div class="mt-3 text-xs text-slate-500">Prototype: notifikasi via in-app banner (tanpa push system). Tetap bunyi saat countdown 0.</div>
   </div>
@@ -250,8 +250,8 @@
         <div class="font-bold text-sm">Niat Puasa Ramadan</div>
         <button onclick="copyText('niat')" class="px-2.5 py-1 rounded-full bg-slate-100 text-xs font-bold"><i class="fa-solid fa-copy mr-1"></i> Salin</button>
       </div>
-      <div class="mt-3 p-3 rounded-xl bg-emerald-50 border border-emerald-100 text-center">
-        <div class="font-arab text-[19px] leading-8 text-emerald-900" dir="rtl">نَوَيْتُ صَوْمَ غَدٍ عَنْ أَدَاءِ فَرْضِ شَهْرِ رَمَضَانَ هٰذِهِ السَّنَةِ لِلّٰهِ تَعَالَى</div>
+      <div class="mt-3 p-3 rounded-xl bg-red-50 border border-red-100 text-center">
+        <div class="font-arab text-[19px] leading-8 text-red-900" dir="rtl">نَوَيْتُ صَوْمَ غَدٍ عَنْ أَدَاءِ فَرْضِ شَهْرِ رَمَضَانَ هٰذِهِ السَّنَةِ لِلّٰهِ تَعَالَى</div>
         <div class="mt-2 text-xs leading-6 text-slate-600"><b>Latin:</b> Nawaitu shauma ghadin ‘an adā’i fardhi syahri Ramadhāna hādzihis-sanati lillāhi ta‘ālā.</div>
         <div class="text-xs leading-6 text-slate-500"><b>Arti:</b> Aku niat puasa esok hari untuk menunaikan kewajiban bulan Ramadan tahun ini karena Allah Ta‘ala.</div>
       </div>
@@ -279,7 +279,7 @@
     <div class="bg-white rounded-2xl border border-slate-100 p-4">
       <div class="flex justify-between items-center">
         <div class="font-bold text-sm">Checklist hari ini — <span id="amalanDate">12 Ramadan</span></div>
-        <span id="amalanPct" class="px-2.5 py-1 rounded-full bg-emerald-600 text-white text-xs font-bold">0%</span>
+        <span id="amalanPct" class="px-2.5 py-1 rounded-full bg-red-600 text-white text-xs font-bold">0%</span>
       </div>
       <div id="amalanList" class="mt-3 space-y-2"></div>
       <div class="mt-4 p-3 rounded-xl bg-slate-50 border border-slate-200 flex justify-between items-center">
@@ -287,9 +287,9 @@
         <button onclick="addAmalanCustom()" class="px-3 py-1.5 rounded-full bg-slate-900 text-white text-xs font-bold"><i class="fa-solid fa-plus mr-1"></i> Tambah</button>
       </div>
     </div>
-    <div class="mt-3 bg-emerald-50 border border-emerald-200 rounded-2xl p-4">
-      <div class="text-xs font-bold tracking-widest text-emerald-700">TIPS</div>
-      <div class="text-xs leading-6 text-emerald-800 mt-1">Centang yang sudah dilakukan. Progress tersimpan per hari & ikut hitung statistik. Target ideal 80%+ setiap hari.</div>
+    <div class="mt-3 bg-red-50 border border-red-200 rounded-2xl p-4">
+      <div class="text-xs font-bold tracking-widest text-red-700">TIPS</div>
+      <div class="text-xs leading-6 text-red-800 mt-1">Centang yang sudah dilakukan. Progress tersimpan per hari & ikut hitung statistik. Target ideal 80%+ setiap hari.</div>
     </div>
   </div>
   <!-- Tasbih -->
@@ -299,7 +299,7 @@
       <div id="tasbihCount" class="font-black text-[56px] leading-none mt-3">0</div>
       <div class="text-xs opacity-60 mt-1">ketuk tombol besar • target 33</div>
       <div class="mt-2 h-2 bg-white/10 rounded-full overflow-hidden"><div id="tasbihBar" class="h-full bg-amber-400 rounded-full" style="width:0%"></div></div>
-      <button onclick="tapTasbih()" class="mt-6 w-full py-6 rounded-[24px] bg-gradient-to-br from-emerald-500 to-teal-500 font-black text-xl shadow-lg active:scale-[0.98] transition"><i class="fa-solid fa-hand-pointer mr-2"></i> TAP ZIKIR</button>
+      <button onclick="tapTasbih()" class="mt-6 w-full py-6 rounded-[24px] bg-gradient-to-br from-red-500 to-rose-500 font-black text-xl shadow-lg active:scale-[0.98] transition"><i class="fa-solid fa-hand-pointer mr-2"></i> TAP ZIKIR</button>
       <div class="mt-4 grid grid-cols-3 gap-2">
         <button onclick="setZikir('Subhanallah')" class="zikirBtn py-2.5 rounded-full bg-white text-slate-900 font-bold text-xs">Subhanallah</button>
         <button onclick="setZikir('Alhamdulillah')" class="zikirBtn py-2.5 rounded-full bg-white/10 border border-white/20 font-bold text-xs">Alhamdulillah</button>
@@ -316,7 +316,7 @@
 <div id="view-profil" class="hidden">
   <div class="px-4 pt-2">
     <div class="flex gap-3 items-center">
-      <img src="https://i.pravatar.cc/100?img=15" class="w-12 h-12 rounded-full border-2 border-emerald-200">
+      <img src="https://i.pravatar.cc/100?img=15" class="w-12 h-12 rounded-full border-2 border-red-200">
       <div>
         <div class="font-bold text-sm">Ahlan, Pejuang Ramadan 🌙</div>
         <div class="text-xs text-slate-500"><span id="profilKota">Jakarta</span> • <span id="profilHijri">12 Ramadan 1447 H</span></div>
@@ -325,17 +325,17 @@
     </div>
     <div class="mt-4 grid grid-cols-3 gap-2 text-center">
       <div class="bg-white border border-slate-200 rounded-2xl p-3"><div class="text-lg font-black" id="pTotal">0</div><div class="text-[10px] font-bold tracking-widest text-slate-400">TOTAL PUASA</div></div>
-      <div class="bg-emerald-600 text-white rounded-2xl p-3"><div class="text-lg font-black" id="pStreak2">0</div><div class="text-[10px] font-bold tracking-widest opacity-80">STREAK TERPANJANG</div></div>
+      <div class="bg-red-600 text-white rounded-2xl p-3"><div class="text-lg font-black" id="pStreak2">0</div><div class="text-[10px] font-bold tracking-widest opacity-80">STREAK TERPANJANG</div></div>
       <div class="bg-amber-400 rounded-2xl p-3"><div class="text-lg font-black" id="pAmalanAvg">0%</div><div class="text-[10px] font-bold tracking-widest opacity-70">RATA AMALAN</div></div>
     </div>
   </div>
   <div class="mx-4 mt-4 bg-white rounded-2xl border border-slate-100 p-4">
     <div class="font-bold text-sm">Progress 30 hari</div>
     <div class="mt-3 h-3 bg-slate-100 rounded-full overflow-hidden flex">
-      <div id="pBarDone" class="h-full bg-emerald-500" style="width:0%"></div>
+      <div id="pBarDone" class="h-full bg-red-500" style="width:0%"></div>
       <div id="pBarBatal" class="h-full bg-amber-400" style="width:0%"></div>
     </div>
-    <div class="mt-2 flex gap-3 text-xs font-semibold text-slate-500"><span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-emerald-500"></span> Selesai <span id="pDone2">0</span></span><span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-amber-400"></span> Batal <span id="pBatal2">0</span></span><span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-slate-200"></span> Sisa <span id="pSisa2">30</span></span></div>
+    <div class="mt-2 flex gap-3 text-xs font-semibold text-slate-500"><span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-red-500"></span> Selesai <span id="pDone2">0</span></span><span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-amber-400"></span> Batal <span id="pBatal2">0</span></span><span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-slate-200"></span> Sisa <span id="pSisa2">30</span></span></div>
     <canvas id="chartAmalan" width="340" height="120" class="mt-4 w-full"></canvas>
     <div class="mt-1 flex justify-between text-[10px] font-bold text-slate-400"><span>H-7</span><span>Hari ini</span></div>
   </div>
@@ -348,10 +348,10 @@
           <option>Jakarta</option><option>Bandung</option><option>Surabaya</option><option>Medan</option><option>Makassar</option>
         </select>
       </div>
-      <label class="flex justify-between items-center p-3 rounded-xl border border-slate-200"><span class="text-xs font-bold">Suara adzan saat buka (beep)</span><input id="soundOn" type="checkbox" class="accent-emerald-600" onchange="savePrefs()" checked></label>
+      <label class="flex justify-between items-center p-3 rounded-xl border border-slate-200"><span class="text-xs font-bold">Suara adzan saat buka (beep)</span><input id="soundOn" type="checkbox" class="accent-red-600" onchange="savePrefs()" checked></label>
       <div class="grid grid-cols-2 gap-2">
         <button onclick="exportData()" class="py-2.5 rounded-xl border border-slate-200 font-bold text-xs"><i class="fa-solid fa-file-csv mr-1"></i> Export CSV</button>
-        <button onclick="shareProgress()" class="py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-xs"><i class="fa-solid fa-share-nodes mr-1"></i> Bagikan</button>
+        <button onclick="shareProgress()" class="py-2.5 rounded-xl bg-red-600 text-white font-bold text-xs"><i class="fa-solid fa-share-nodes mr-1"></i> Bagikan</button>
       </div>
       <button onclick="resetAll()" class="w-full py-2.5 rounded-xl bg-red-50 border border-red-200 text-red-600 font-bold text-xs">Reset semua data</button>
     </div>
@@ -376,14 +376,14 @@
 </div><!-- phone -->
 <div class="hidden lg:block w-[340px] shrink-0">
   <div class="bg-white rounded-[24px] border border-slate-200 p-6 sticky top-[72px]">
-    <div class="text-xs font-bold tracking-widest text-emerald-600">TENTANG PROTOTYPE</div>
+    <div class="text-xs font-bold tracking-widest text-red-600">TENTANG PROTOTYPE</div>
     <div class="font-display font-extrabold text-lg leading-tight mt-2">Kalender Buka Puasa — Ramadan 1447 H</div>
     <p class="text-sm leading-6 text-slate-500 mt-3">Hitung mundur live menuju buka, kalender 30 hari dengan status puasa, jadwal imsakiyah 5 kota, checklist amalan harian, kumpulan doa (niat & buka), dan tasbih digital. Semua tersimpan di <b>localStorage</b> — tanpa backend.</p>
     <ul class="mt-4 space-y-2 text-sm text-slate-600">
-      <li class="flex gap-2"><i class="fa-solid fa-check text-emerald-500 mt-1"></i> Countdown buka & day progress + beep saat waktu buka</li>
-      <li class="flex gap-2"><i class="fa-solid fa-check text-emerald-500 mt-1"></i> Kalender tap-to-edit + catatan per hari</li>
-      <li class="flex gap-2"><i class="fa-solid fa-check text-emerald-500 mt-1"></i> Jadwal imsak/buka per kota + export CSV</li>
-      <li class="flex gap-2"><i class="fa-solid fa-check text-emerald-500 mt-1"></i> Amalan checklist + tasbih 33x</li>
+      <li class="flex gap-2"><i class="fa-solid fa-check text-red-500 mt-1"></i> Countdown buka & day progress + beep saat waktu buka</li>
+      <li class="flex gap-2"><i class="fa-solid fa-check text-red-500 mt-1"></i> Kalender tap-to-edit + catatan per hari</li>
+      <li class="flex gap-2"><i class="fa-solid fa-check text-red-500 mt-1"></i> Jadwal imsak/buka per kota + export CSV</li>
+      <li class="flex gap-2"><i class="fa-solid fa-check text-red-500 mt-1"></i> Amalan checklist + tasbih 33x</li>
     </ul>
     <div class="mt-4 p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs leading-6 text-amber-800">Jadwal ilustratif — cocokkan dengan masjid setempat. Data offline, tidak perlu login.</div>
   </div>
@@ -528,10 +528,10 @@ function renderAll(){
   // hari ini badge
   const st=db.hari[todayIdx].status;
   const badge=document.getElementById('badgeHariIni');
-  if(st==='selesai'){ badge.textContent='Selesai ✓'; badge.className='px-2.5 py-1 rounded-full bg-emerald-600 text-white text-xs font-bold'; }
+  if(st==='selesai'){ badge.textContent='Selesai ✓'; badge.className='px-2.5 py-1 rounded-full bg-red-600 text-white text-xs font-bold'; }
   else if(st==='batal'){ badge.textContent='Batal / Udzur'; badge.className='px-2.5 py-1 rounded-full bg-amber-400 text-slate-900 text-xs font-bold'; }
   else { badge.textContent='Belum tandai'; badge.className='px-2.5 py-1 rounded-full bg-white border border-slate-200 text-slate-600 text-xs font-bold'; }
-  document.getElementById('btnBuka').className = st==='selesai' ? 'py-3 rounded-2xl bg-emerald-600 text-white font-bold text-sm' : 'py-3 rounded-2xl bg-slate-900 text-white font-bold text-sm hover:bg-black transition';
+  document.getElementById('btnBuka').className = st==='selesai' ? 'py-3 rounded-2xl bg-red-600 text-white font-bold text-sm' : 'py-3 rounded-2xl bg-slate-900 text-white font-bold text-sm hover:bg-black transition';
   // catatan preview
   const note=db.hari[todayIdx].note;
   const cp=document.getElementById('catatanPreview');
@@ -573,8 +573,8 @@ function renderAmalanHome(){
   const c=document.getElementById('amalanHome');
   const defs=amalanDefs().slice(0,6);
   const m=db.amalan[todayIdx]||{};
-  c.innerHTML=defs.map(a=>`<label class="flex flex-col items-center gap-1.5 p-2.5 rounded-2xl border ${m[a.id]?'bg-emerald-50 border-emerald-200 text-emerald-700':'bg-white border-slate-200 text-slate-600'} cursor-pointer">
-    <i class="fa-solid ${a.icon} ${m[a.id]?'text-emerald-600':''}"></i><span class="text-[11px] font-bold leading-tight text-center">${a.label}</span><input type="checkbox" ${m[a.id]?'checked':''} onchange="toggleAmalan('${a.id}')" class="accent-emerald-600">
+  c.innerHTML=defs.map(a=>`<label class="flex flex-col items-center gap-1.5 p-2.5 rounded-2xl border ${m[a.id]?'bg-red-50 border-red-200 text-red-700':'bg-white border-slate-200 text-slate-600'} cursor-pointer">
+    <i class="fa-solid ${a.icon} ${m[a.id]?'text-red-600':''}"></i><span class="text-[11px] font-bold leading-tight text-center">${a.label}</span><input type="checkbox" ${m[a.id]?'checked':''} onchange="toggleAmalan('${a.id}')" class="accent-red-600">
   </label>`).join('');
   const pct=amalanPct(todayIdx);
   document.getElementById('amalanBar').style.width=pct+'%';
@@ -584,10 +584,10 @@ function renderAmalanList(){
   const c=document.getElementById('amalanList');
   const defs=amalanDefs();
   const m=db.amalan[todayIdx]||{};
-  c.innerHTML=defs.map(a=>`<label class="flex items-center gap-3 p-3 rounded-xl border ${m[a.id]?'bg-emerald-50 border-emerald-200':'bg-white border-slate-200'} cursor-pointer">
-    <input type="checkbox" ${m[a.id]?'checked':''} onchange="toggleAmalan('${a.id}')" class="accent-emerald-600 w-4 h-4">
-    <i class="fa-solid ${a.icon} ${m[a.id]?'text-emerald-600':'text-slate-400'}"></i>
-    <span class="flex-1 text-sm font-semibold ${m[a.id]?'text-emerald-800':''}">${a.label}</span>
+  c.innerHTML=defs.map(a=>`<label class="flex items-center gap-3 p-3 rounded-xl border ${m[a.id]?'bg-red-50 border-red-200':'bg-white border-slate-200'} cursor-pointer">
+    <input type="checkbox" ${m[a.id]?'checked':''} onchange="toggleAmalan('${a.id}')" class="accent-red-600 w-4 h-4">
+    <i class="fa-solid ${a.icon} ${m[a.id]?'text-red-600':'text-slate-400'}"></i>
+    <span class="flex-1 text-sm font-semibold ${m[a.id]?'text-red-800':''}">${a.label}</span>
     ${a.id.startsWith('custom_')?`<button onclick="removeCustom('${a.id}');event.preventDefault();event.stopPropagation();" class="text-xs text-red-500 font-bold">hapus</button>`:''}
   </label>`).join('');
 }
@@ -604,7 +604,7 @@ function renderKalender(){
     const isToday=i===todayIdx;
     const note=db.hari[i].note? '•': '';
     let cls='bg-white border border-slate-200 text-slate-700';
-    if(st==='selesai') cls='bg-emerald-600 text-white border border-emerald-600';
+    if(st==='selesai') cls='bg-red-600 text-white border border-red-600';
     else if(st==='batal') cls='bg-amber-400 text-slate-900 border border-amber-400';
     if(isToday) cls+=' ring-2 ring-sky-500 ring-offset-1';
     const d=dateFor(i);
@@ -626,10 +626,10 @@ function renderJadwal(){
     const j=jadwalFor(i, db.kota);
     const isToday=i===todayIdx;
     const st=db.hari[i].status;
-    html+=`<div class="grid grid-cols-[44px_1fr_64px_64px] gap-0 px-3 py-2.5 items-center ${isToday?'bg-emerald-50':''} ${st==='selesai'?'opacity-60':''}">
-      <div class="font-black text-sm ${isToday?'text-emerald-700':''}">${i}</div>
+    html+=`<div class="grid grid-cols-[44px_1fr_64px_64px] gap-0 px-3 py-2.5 items-center ${isToday?'bg-red-50':''} ${st==='selesai'?'opacity-60':''}">
+      <div class="font-black text-sm ${isToday?'text-red-700':''}">${i}</div>
       <div><div class="text-xs font-bold">${d.toLocaleDateString('id-ID',{day:'2-digit',month:'short'})} • ${['Min','Sen','Sel','Rab','Kam','Jum','Sab'][d.getDay()]}</div><div class="text-[11px] text-slate-500">${st==='selesai'?'Selesai ✓':st==='batal'?'Batal':isToday?'Hari ini':''}</div></div>
-      <div class="text-center font-bold text-xs ${isToday?'text-emerald-700':''}">${j.imsak}</div>
+      <div class="text-center font-bold text-xs ${isToday?'text-red-700':''}">${j.imsak}</div>
       <div class="text-center"><span class="px-2 py-1 rounded-full ${isToday?'bg-slate-900 text-white':'bg-amber-100 text-amber-800 border border-amber-200'} text-xs font-bold">${j.buka}</span></div>
     </div>`;
   }
@@ -675,7 +675,7 @@ function openCalDetail(i){
   document.getElementById('calDetailTitle').textContent=i+' Ramadan — '+d.toLocaleDateString('id-ID',{day:'2-digit',month:'short'});
   document.getElementById('calDetailSub').textContent=db.hari[i].status==='selesai'?'Selesai puasa':db.hari[i].status==='batal'?'Batal/udzur':'Belum ditandai';
   document.getElementById('calNote').value=db.hari[i].note||'';
-  document.getElementById('calTimes').innerHTML=`<div class="p-2 rounded-xl bg-white border border-slate-200"><div class="text-[10px] font-bold tracking-widest text-slate-400">IMSAK</div><div class="font-black text-sm">${j.imsak}</div></div><div class="p-2 rounded-xl bg-white border border-slate-200"><div class="text-[10px] font-bold tracking-widest text-slate-400">BUKA</div><div class="font-black text-sm">${j.buka}</div></div><div class="p-2 rounded-xl bg-emerald-50 border border-emerald-200"><div class="text-[10px] font-bold tracking-widest text-emerald-600">STATUS</div><div class="font-bold text-xs">${db.hari[i].status}</div></div>`;
+  document.getElementById('calTimes').innerHTML=`<div class="p-2 rounded-xl bg-white border border-slate-200"><div class="text-[10px] font-bold tracking-widest text-slate-400">IMSAK</div><div class="font-black text-sm">${j.imsak}</div></div><div class="p-2 rounded-xl bg-white border border-slate-200"><div class="text-[10px] font-bold tracking-widest text-slate-400">BUKA</div><div class="font-black text-sm">${j.buka}</div></div><div class="p-2 rounded-xl bg-red-50 border border-red-200"><div class="text-[10px] font-bold tracking-widest text-red-600">STATUS</div><div class="font-bold text-xs">${db.hari[i].status}</div></div>`;
 }
 function hideCalDetail(){ document.getElementById('calDetail').classList.add('hidden'); }
 function setHariStatus(s){ db.hari[selectedIdx].status=s; save(); renderAll(); toast(s==='selesai'?'Ditandai selesai ✓':s==='batal'?'Ditandai batal':'Direset ke belum'); }
@@ -785,7 +785,7 @@ function drawChart(){
   while(vals.length<7) vals.unshift(0);
   const max=100;
   // line
-  ctx.strokeStyle='#059669'; ctx.lineWidth=2.5; ctx.beginPath();
+  ctx.strokeStyle='#DC2626'; ctx.lineWidth=2.5; ctx.beginPath();
   vals.forEach((v,idx)=>{
     const x=30 + idx*( (W-40)/6 );
     const y= (H-30) - (v/max)*(H-50);
@@ -796,7 +796,7 @@ function drawChart(){
   vals.forEach((v,idx)=>{
     const x=30 + idx*( (W-40)/6 );
     const y= (H-30) - (v/max)*(H-50);
-    ctx.fillStyle='#059669'; ctx.beginPath(); ctx.arc(x,y,4,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#DC2626'; ctx.beginPath(); ctx.arc(x,y,4,0,Math.PI*2); ctx.fill();
     ctx.fillStyle='white'; ctx.beginPath(); ctx.arc(x,y,2,0,Math.PI*2); ctx.fill();
   });
   // labels
