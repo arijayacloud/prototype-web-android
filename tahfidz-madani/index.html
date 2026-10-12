@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tahfidz MADANI — Setoran & Koreksi Santri</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],display:['Plus Jakarta Sans','sans-serif'],arab:['Amiri','serif']}}}} </script>
+<style>
+*{font-family:Inter,sans-serif}
+.no-scrollbar::-webkit-scrollbar{display:none}
+.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
+.role-guru{ background:#ECFDF5; border-color:#A7F3D0; color:#065F46}
+.role-kepsek{ background:#EFF6FF; border-color:#BFDBFE; color:#1E40AF}
+.pct-high{ background:#D1FAE5; color:#065F46; border-color:#A7F3D0}
+.pct-mid{ background:#FEF3C7; color:#92400E; border-color:#FDE68A}
+.pct-low{ background:#FFE4E6; color:#9F1239; border-color:#FECDD3}
+.koreksi-tajwid{ background:#EDE9FE; color:#5B21B6}
+.koreksi-makhraj{ background:#DBEAFE; color:#1E40AF}
+.koreksi-lancar{ background:#D1FAE5; color:#065F46}
+.koreksi-hafalan{ background:#FEF3C7; color:#92400E}
+.koreksi-adab{ background:#FFE4E6; color:#9F1239}
+</style>
+</head>
+<body class="bg-[#F1F5F9] text-slate-800 min-h-screen">
+
+<!-- GATE -->
+<div id="roleGate" class="fixed inset-0 z-[100] bg-gradient-to-br from-emerald-900 via-teal-800 to-slate-900 flex items-center justify-center p-4 overflow-auto">
+  <div class="w-full max-w-6xl bg-white rounded-[28px] overflow-hidden shadow-2xl grid lg:grid-cols-[1.1fr_0.9fr] my-6">
+    <div class="p-8 lg:p-10">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-600 flex items-center justify-center text-white text-xl"><i class="fa-solid fa-book-quran"></i></div>
+        <div><div class="font-display font-extrabold text-xl leading-none">TAHFIDZ MADANI</div><div class="text-[11px] tracking-[0.18em] font-bold text-slate-400">SETORAN • KOREKSI • MINGGUAN • BULANAN</div></div>
+        <span class="ml-auto hidden sm:inline-flex px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-100 text-[11px] font-bold text-emerald-700">PROTOTIPE • OFFLINE</span>
+      </div>
+      <div class="mt-4 p-3 rounded-2xl bg-emerald-50 border border-emerald-100 text-center">
+        <div class="font-arab text-2xl text-emerald-800">خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ</div>
+        <div class="text-xs text-emerald-700">Sebaik-baik kalian adalah yang belajar Al-Qur'an dan mengajarkannya</div>
+      </div>
+      <h1 class="font-display font-extrabold text-[28px] leading-[0.95] mt-6">Setoran Guru →<br><span class="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">Koreksi Mingguan → Hasil Bulanan</span></h1>
+      <p class="text-sm text-slate-500 leading-6 mt-3">Guru input setoran santri disertai koreksi umum (tajwid, makhraj, kelancaran, hafalan, adab). Kepsek cek pencapaian mingguan & persentase bulanan. Data santri 1× terhubung.</p>
+
+      <div class="grid grid-cols-2 gap-2 mt-6">
+        <div class="rounded-2xl border-2 p-3 role-guru text-center"><i class="fa-solid fa-chalkboard-user text-lg"></i><div class="font-bold text-xs mt-1">GURU TAHFIDZ</div><div class="text-[11px] leading-tight opacity-80">Input setoran + koreksi</div></div>
+        <div class="rounded-2xl border-2 p-3 role-kepsek text-center"><i class="fa-solid fa-user-tie text-lg"></i><div class="font-bold text-xs mt-1">KEPALA SEKOLAH</div><div class="text-[11px] leading-tight opacity-80">Kontrol & persentase</div></div>
+      </div>
+
+      <div class="mt-6">
+        <div class="text-xs font-bold tracking-widest text-slate-400">MASUK SEBAGAI</div>
+        <div class="grid gap-2 mt-3">
+          <button onclick="enterRole('guru')" class="text-left p-4 rounded-2xl border-2 border-emerald-200 bg-emerald-50 hover:bg-emerald-100 flex items-center gap-3"><div class="w-11 h-11 rounded-xl bg-emerald-600 text-white flex items-center justify-center"><i class="fa-solid fa-chalkboard-user"></i></div><div class="flex-1"><div class="font-bold">Guru Tahfidz — Ustadz Ahmad</div><div class="text-xs text-emerald-700">Input setoran harian/mingguan + koreksi umum</div></div><i class="fa-solid fa-arrow-right text-emerald-400"></i></button>
+          <button onclick="enterRole('kepsek')" class="text-left p-4 rounded-2xl border-2 border-blue-200 bg-blue-50 hover:bg-blue-100 flex items-center gap-3"><div class="w-11 h-11 rounded-xl bg-blue-600 text-white flex items-center justify-center"><i class="fa-solid fa-user-tie"></i></div><div class="flex-1"><div class="font-bold">Kepala Sekolah</div><div class="text-xs text-blue-700">Cek pencapaian • Rekap mingguan • Hasil bulanan • Persentase</div></div><i class="fa-solid fa-arrow-right text-blue-400"></i></button>
+        </div>
+        <p class="text-[11px] text-slate-400 mt-3"><i class="fa-solid fa-circle-info"></i> Ganti role kapan saja via header. Data demo di localStorage.</p>
+      </div>
+    </div>
+    <div class="bg-slate-50 p-8 lg:p-10 border-t lg:border-t-0 lg:border-l border-slate-100">
+      <div class="rounded-[20px] bg-white border border-slate-200 p-5 shadow-sm">
+        <div class="text-xs font-bold tracking-widest text-emerald-600">ALUR TAHFIDZ MADANI</div>
+        <ol class="mt-3 space-y-2.5 text-sm">
+          <li class="flex gap-3"><span class="w-7 h-7 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-bold shrink-0">1</span><span><b>Guru</b> input setoran santri — pilih surah/ayat, jenis <b>Ziyadah/Muraja'ah</b></span></li>
+          <li class="flex gap-3"><span class="w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold shrink-0">2</span><span>Beri <b>koreksi umum</b>: Tajwid • Makhraj • Kelancaran • Hafalan • Adab + catatan</span></li>
+          <li class="flex gap-3"><span class="w-7 h-7 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs font-bold shrink-0">3</span><span><b>Mingguan</b> terkumpul otomatis per santri (Minggu 1-4)</span></li>
+          <li class="flex gap-3"><span class="w-7 h-7 rounded-full bg-violet-600 text-white flex items-center justify-center text-xs font-bold shrink-0">4</span><span><b>Akhir bulan</b>: guru & kepsek lihat <b>hasil akhir + koreksi bulanan</b></span></li>
+          <li class="flex gap-3"><span class="w-7 h-7 rounded-full bg-amber-500 text-white flex items-center justify-center text-xs font-bold shrink-0">5</span><span><b>Persentase pencapaian</b> per santri & keseluruhan — <b>kepsek kontrol</b></span></li>
+        </ol>
+      </div>
+      <div class="mt-4 rounded-2xl bg-slate-900 text-white p-5">
+        <div class="text-xs tracking-widest font-bold opacity-60">TARGET & PERSENTASE</div>
+        <div class="mt-2 text-xs leading-6 opacity-90">Setiap santri punya <b>target halaman/bulan</b> (mis. 4–8 halaman). Persentase = halaman setor ÷ target × 100%. Predikat: Mumtaz ≥85%, Jayyid 70-84%, Hasan 50-69%, Perlu Bimbingan &lt;50%.</div>
+        <div class="mt-3 grid grid-cols-2 gap-2 text-xs">
+          <div class="rounded-xl bg-white/10 p-3"><div class="font-bold">Halaqah A</div><div class="opacity-70">8 halaman / bulan</div></div>
+          <div class="rounded-xl bg-white/10 p-3"><div class="font-bold">Halaqah B</div><div class="opacity-70">4 halaman / bulan</div></div>
+        </div>
+      </div>
+      <div class="mt-4 flex gap-2">
+        <button onclick="resetDemo()" class="flex-1 py-3 rounded-full border border-slate-200 bg-white font-bold text-sm">Reset demo</button>
+        <button onclick="enterRole('guru')" class="flex-1 py-3 rounded-full bg-emerald-600 text-white font-bold text-sm">Masuk Guru →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="min-h-screen flex flex-col">
+  <div class="bg-white border-b border-slate-200 sticky top-0 z-30">
+    <div class="max-w-[1280px] mx-auto px-4 h-[64px] flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-600 flex items-center justify-center text-white"><i class="fa-solid fa-book-quran text-sm"></i></div>
+        <div>
+          <div class="font-display font-extrabold leading-none">TAHFIDZ MADANI</div>
+          <div class="text-[10px] tracking-widest font-bold text-slate-400 -mt-0.5">SETORAN & KOREKSI</div>
+        </div>
+        <span id="roleBadge" class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-bold"></span>
+      </div>
+      <div class="flex items-center gap-2">
+        <select id="roleSwitch" onchange="switchRole(this.value)" class="px-3 py-2 rounded-full border border-slate-200 bg-white text-xs font-semibold">
+          <option value="guru">Guru Tahfidz</option><option value="kepsek">Kepala Sekolah</option>
+        </select>
+        <button onclick="openSetoranModal()" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-600 text-white text-xs font-bold"><i class="fa-solid fa-plus"></i> <span class="hidden sm:inline">Setoran</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-[1280px] mx-auto w-full px-4 py-4 flex-1 flex flex-col lg:flex-row gap-4">
+    <aside class="lg:w-[250px] shrink-0">
+      <div class="bg-white rounded-[20px] border border-slate-200 p-2 sticky top-[76px]">
+        <nav class="grid grid-cols-3 lg:grid-cols-1 gap-1" id="nav">
+          <button data-view="dashboard" class="navBtn active flex flex-col lg:flex-row items-center gap-2 lg:gap-3 px-3 py-3 rounded-xl bg-slate-900 text-white font-bold text-xs lg:text-sm"><i class="fa-solid fa-chart-line"></i> Dashboard</button>
+          <button data-view="santri" class="navBtn flex flex-col lg:flex-row items-center gap-2 lg:gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 font-semibold text-xs lg:text-sm"><i class="fa-solid fa-users"></i> Santri</button>
+          <button data-view="setoran" class="navBtn flex flex-col lg:flex-row items-center gap-2 lg:gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 font-semibold text-xs lg:text-sm"><i class="fa-solid fa-book-open"></i> Setoran</button>
+          <button data-view="mingguan" class="navBtn flex flex-col lg:flex-row items-center gap-2 lg:gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 font-semibold text-xs lg:text-sm"><i class="fa-solid fa-calendar-week"></i> Mingguan</button>
+          <button data-view="bulanan" class="navBtn flex flex-col lg:flex-row items-center gap-2 lg:gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 font-semibold text-xs lg:text-sm"><i class="fa-solid fa-calendar-check"></i> Bulanan</button>
+          <button data-view="persentase" class="navBtn flex flex-col lg:flex-row items-center gap-2 lg:gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 font-semibold text-xs lg:text-sm"><i class="fa-solid fa-chart-pie"></i> Persentase</button>
+        </nav>
+        <div class="mt-3 p-4 rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white">
+          <div class="text-xs font-bold tracking-widest opacity-80">KOREKSI UMUM</div>
+          <div class="text-xs leading-5 mt-1 opacity-90">Tajwid • Makhraj • Kelancaran • Hafalan • Adab — checklist + catatan guru.</div>
+          <div class="mt-3 grid grid-cols-5 gap-1 text-[10px] font-bold text-center">
+            <span class="px-1 py-1 rounded bg-white/15">Tajwid</span><span class="px-1 py-1 rounded bg-white/15">Makhraj</span><span class="px-1 py-1 rounded bg-white/15">Lancar</span><span class="px-1 py-1 rounded bg-white/15">Hafalan</span><span class="px-1 py-1 rounded bg-white/15">Adab</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="flex-1 min-w-0">
+      <!-- DASHBOARD -->
+      <div id="view-dashboard" class="view space-y-4">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          <div class="bg-white rounded-2xl border border-slate-200 p-4"><div class="text-[11px] font-bold tracking-widest text-slate-400">SANTRI</div><div id="statSantri" class="font-black text-2xl mt-1">0</div><div class="text-xs text-slate-500">Halaqah A & B</div></div>
+          <div class="bg-white rounded-2xl border border-slate-200 p-4"><div class="text-[11px] font-bold tracking-widest text-slate-400">SETORAN MINGGU INI</div><div id="statMinggu" class="font-black text-2xl mt-1">0</div><div class="text-xs text-emerald-600" id="statMingguLabel">Minggu ke- —</div></div>
+          <div class="bg-white rounded-2xl border border-slate-200 p-4"><div class="text-[11px] font-bold tracking-widest text-slate-400">RATA PENCAPAIAN BULAN</div><div id="statRata" class="font-black text-2xl mt-1">0%</div><div class="text-xs text-slate-500">Semua santri</div></div>
+          <div class="bg-white rounded-2xl border border-slate-200 p-4"><div class="text-[11px] font-bold tracking-widest text-slate-400">BELUM SETOR MINGGU INI</div><div id="statBelum" class="font-black text-2xl mt-1">0</div><div class="text-xs text-amber-600">Perlu perhatian</div></div>
+        </div>
+
+        <div class="grid lg:grid-cols-[1.3fr_0.7fr] gap-4">
+          <div class="bg-white rounded-[20px] border border-slate-200 p-5">
+            <div class="flex items-center justify-between"><div class="font-bold">Pencapaian Bulanan per Santri</div><span id="dashBulan" class="text-xs font-bold px-2.5 py-1 rounded-full bg-slate-900 text-white"></span></div>
+            <div id="dashBars" class="mt-4 space-y-2"></div>
+            <div class="mt-4 flex gap-2 text-xs font-bold">
+              <span class="px-2 py-1 rounded-full pct-high">Mumtaz ≥85%</span><span class="px-2 py-1 rounded-full pct-mid">Jayyid 70-84%</span><span class="px-2 py-1 rounded-full pct-low"><50% Bimbingan</span>
+            </div>
+          </div>
+          <div class="bg-white rounded-[20px] border border-slate-200 p-5">
+            <div class="font-bold">Setoran Terbaru</div>
+            <div id="dashSetoran" class="mt-3 space-y-2 max-h-[380px] overflow-auto no-scrollbar pr-1"></div>
+            <button onclick="switchView('setoran')" class="mt-3 w-full py-2.5 rounded-full border font-bold text-sm hover:bg-slate-50">Lihat Semua Setoran →</button>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-[20px] border border-slate-200 p-5">
+          <div class="flex justify-between items-center"><div class="font-bold">Kontrol Kepala Sekolah — Ringkasan Mingguan</div><span class="text-xs font-bold px-2.5 py-1 rounded-full role-kepsek">Kepsek View</span></div>
+          <div id="dashMingguan" class="mt-3 grid md:grid-cols-4 gap-2"></div>
+        </div>
+      </div>
+
+      <!-- SANTRI -->
+      <div id="view-santri" class="view hidden space-y-4">
+        <div class="bg-white rounded-[20px] border border-slate-200 p-5">
+          <div class="flex flex-wrap gap-2 justify-between items-center">
+            <div><div class="font-display font-extrabold text-lg">Data Santri</div><div class="text-xs text-slate-500">Target halaman/bulan • Halaqah • Pencapaian terhubung</div></div>
+            <div class="flex gap-2">
+              <input id="searchSantri" oninput="renderSantri()" placeholder="Cari nama / NIS" class="px-4 py-2.5 rounded-full border border-slate-200 text-sm w-[200px]">
+              <select id="filterHalaqah" onchange="renderSantri()" class="px-3 py-2.5 rounded-full border border-slate-200 text-sm font-semibold"><option value="">Semua Halaqah</option><option>Halaqah A</option><option>Halaqah B</option></select>
+              <button onclick="openSantriModal()" class="px-4 py-2.5 rounded-full bg-slate-900 text-white text-sm font-bold">+ Santri</button>
+            </div>
+          </div>
+          <div id="santriGrid" class="grid md:grid-cols-2 xl:grid-cols-3 gap-3 mt-4"></div>
+        </div>
+      </div>
+
+      <!-- SETORAN -->
+      <div id="view-setoran" class="view hidden space-y-4">
+        <div class="bg-white rounded-[20px] border border-slate-200 p-5">
+          <div class="flex flex-wrap gap-2 justify-between items-center">
+            <div class="font-display font-extrabold text-lg">Setoran Santri</div>
+            <div class="flex flex-wrap gap-2">
+              <input id="searchSetoran" oninput="renderSetoran()" placeholder="Cari santri / surah" class="px-4 py-2.5 rounded-full border border-slate-200 text-sm w-[200px]">
+              <select id="filterBulanSetoran" onchange="renderSetoran()" class="px-3 py-2.5 rounded-full border border-slate-200 text-sm font-semibold"></select>
+              <select id="filterMingguSetoran" onchange="renderSetoran()" class="px-3 py-2.5 rounded-full border border-slate-200 text-sm font-semibold"><option value="">Semua Minggu</option><option value="1">Minggu 1</option><option value="2">Minggu 2</option><option value="3">Minggu 3</option><option value="4">Minggu 4</option></select>
+              <button onclick="openSetoranModal()" class="px-4 py-2.5 rounded-full bg-emerald-600 text-white text-sm font-bold">+ Setoran</button>
+            </div>
+          </div>
+          <div id="setoranList" class="mt-4 space-y-3"></div>
+        </div>
+      </div>
+
+      <!-- MINGGUAN -->
+      <div id="view-mingguan" class="view hidden space-y-4">
+        <div class="bg-white rounded-[20px] border border-slate-200 p-5">
+          <div class="flex flex-wrap gap-2 justify-between items-center">
+            <div><div class="font-display font-extrabold text-lg">Rekap Mingguan</div><div class="text-xs text-slate-500">Setoran per santri dikelompokkan Minggu 1-4 — koreksi mingguan terlihat di sini</div></div>
+            <div class="flex gap-2">
+              <select id="mingguanBulan" onchange="renderMingguan()" class="px-3 py-2.5 rounded-full border border-slate-200 text-sm font-semibold"></select>
+              <button onclick="exportCSV()" class="px-4 py-2.5 rounded-full border text-sm font-bold">Export CSV</button>
+            </div>
+          </div>
+          <div id="mingguanGrid" class="mt-4 space-y-4"></div>
+        </div>
+      </div>
+
+      <!-- BULANAN -->
+      <div id="view-bulanan" class="view hidden space-y-4">
+        <div class="bg-white rounded-[20px] border border-slate-200 p-5">
+          <div class="flex flex-wrap gap-2 justify-between items-center">
+            <div><div class="font-display font-extrabold text-lg">Hasil Akhir Bulanan — Koreksi Bulanan</div><div class="text-xs text-slate-500">Akumulasi minggu 1-4 + koreksi akhir bulan sebagai evaluasi</div></div>
+            <div class="flex gap-2">
+              <select id="bulananBulan" onchange="renderBulanan()" class="px-3 py-2.5 rounded-full border border-slate-200 text-sm font-semibold"></select>
+              <button onclick="window.print()" class="px-4 py-2.5 rounded-full bg-slate-900 text-white text-sm font-bold"><i class="fa-solid fa-print"></i> Cetak</button>
+            </div>
+          </div>
+          <div id="bulananList" class="mt-4 space-y-3"></div>
+          <div class="mt-4 p-4 rounded-2xl bg-amber-50 border border-amber-200">
+            <div class="font-bold text-sm">Koreksi Bulanan — Catatan Guru untuk Bulan Ini</div>
+            <textarea id="koreksiBulananNote" rows="3" placeholder="Tulis koreksi umum bulan ini — mis. perlu penguatan makhraj huruf isti'la, murajaah juz 30 belum lancar..." class="mt-2 w-full px-4 py-3 rounded-xl border border-amber-200 text-sm"></textarea>
+            <button onclick="saveKoreksiBulanan()" class="mt-2 px-4 py-2 rounded-full bg-amber-600 text-white text-sm font-bold">Simpan Koreksi Bulanan</button>
+            <div id="koreksiBulananSaved" class="text-xs text-amber-700 mt-2"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PERSENTASE -->
+      <div id="view-persentase" class="view hidden space-y-4">
+        <div class="bg-white rounded-[20px] border border-slate-200 p-5">
+          <div class="flex flex-wrap gap-2 justify-between items-center">
+            <div><div class="font-display font-extrabold text-lg">Persentase Pencapaian — Bulanan</div><div class="text-xs text-slate-500">Kepsek kontrol persentase umum setiap bulan — per santri & keseluruhan</div></div>
+            <div class="flex gap-2">
+              <select id="persenBulan" onchange="renderPersentase()" class="px-3 py-2.5 rounded-full border border-slate-200 text-sm font-semibold"></select>
+              <button onclick="exportCSV()" class="px-4 py-2.5 rounded-full border text-sm font-bold">Export CSV</button>
+            </div>
+          </div>
+          <div class="grid lg:grid-cols-[1.2fr_0.8fr] gap-4 mt-4">
+            <div>
+              <div class="rounded-2xl border p-4 bg-slate-50">
+                <div class="font-bold text-sm">Persentase per Santri — <span id="persenBulanLabel"></span></div>
+                <div id="persenBars" class="mt-3 space-y-2"></div>
+              </div>
+              <div class="mt-4 rounded-2xl border p-4">
+                <div class="font-bold text-sm">Tren 3 Bulan Terakhir (rata-rata)</div>
+                <div id="persenTren" class="mt-3 space-y-2"></div>
+              </div>
+            </div>
+            <div class="rounded-2xl border p-4 bg-white">
+              <div class="font-bold text-sm">Ringkasan Kepsek</div>
+              <div id="persenRingkasan" class="mt-3 space-y-3"></div>
+              <div class="mt-4 p-3 rounded-xl bg-blue-50 border border-blue-100 text-xs leading-5">Persentase dihitung dari <b>halaman setor ÷ target halaman</b>. Koreksi tidak mengurangi persentase — koreksi adalah catatan pembinaan. Predikat membantu kepsek cek pencapaian cepat.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center text-xs text-slate-400 py-4">© Tahfidz MADANI • Setoran mingguan • Hasil & koreksi bulanan • Persentase pencapaian</div>
+    </main>
+  </div>
+</div>
+
+<!-- MODAL SANTRI -->
+<div id="modalSantri" class="fixed inset-0 z-40 hidden">
+  <div onclick="closeSantriModal()" class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"></div>
+  <div class="absolute inset-0 flex items-center justify-center p-4">
+    <div class="bg-white rounded-[24px] w-full max-w-lg p-6 shadow-2xl">
+      <div class="flex justify-between items-center"><div class="font-extrabold text-lg">Santri</div><button onclick="closeSantriModal()" class="w-9 h-9 rounded-full border flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button></div>
+      <div class="grid gap-3 mt-4">
+        <input id="sNama" placeholder="Nama santri" class="px-4 py-3 rounded-xl border border-slate-200 text-sm">
+        <div class="grid grid-cols-2 gap-2">
+          <input id="sNis" placeholder="NIS" class="px-4 py-3 rounded-xl border border-slate-200 text-sm">
+          <select id="sHalaqah" class="px-4 py-3 rounded-xl border border-slate-200 text-sm font-semibold"><option>Halaqah A</option><option>Halaqah B</option></select>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <input id="sTarget" type="number" placeholder="Target halaman/bulan" class="px-4 py-3 rounded-xl border border-slate-200 text-sm">
+          <input id="sFoto" placeholder="URL foto (opsional)" class="px-4 py-3 rounded-xl border border-slate-200 text-sm">
+        </div>
+        <input type="hidden" id="sId">
+        <button onclick="saveSantri()" class="py-3 rounded-full bg-slate-900 text-white font-bold">Simpan</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL SETORAN -->
+<div id="modalSetoran" class="fixed inset-0 z-40 hidden">
+  <div onclick="closeSetoranModal()" class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"></div>
+  <div class="absolute inset-0 flex items-center justify-center p-4 overflow-auto">
+    <div class="bg-white rounded-[24px] w-full max-w-2xl p-6 shadow-2xl my-6">
+      <div class="flex justify-between items-center"><div class="font-extrabold text-lg" id="setoranModalTitle">Setoran Santri</div><button onclick="closeSetoranModal()" class="w-9 h-9 rounded-full border flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button></div>
+      <div class="text-xs text-slate-500">Guru input setoran + koreksi umum — otomatis masuk rekap mingguan & bulanan</div>
+      <div class="grid gap-3 mt-4">
+        <div class="grid md:grid-cols-2 gap-2">
+          <select id="stSantri" class="px-4 py-3 rounded-xl border border-slate-200 text-sm font-semibold"></select>
+          <input id="stTanggal" type="date" class="px-4 py-3 rounded-xl border border-slate-200 text-sm">
+        </div>
+        <div class="grid md:grid-cols-3 gap-2">
+          <input id="stSurah" placeholder="Surah — mis. An-Naba" class="px-4 py-3 rounded-xl border border-slate-200 text-sm">
+          <input id="stAyat" placeholder="Ayat — mis. 1-20" class="px-4 py-3 rounded-xl border border-slate-200 text-sm">
+          <select id="stJenis" class="px-4 py-3 rounded-xl border border-slate-200 text-sm font-semibold"><option value="Ziyadah">Ziyadah (baru)</option><option value="Murajaah">Muraja'ah</option></select>
+        </div>
+        <div class="grid md:grid-cols-2 gap-2">
+          <input id="stHalaman" type="number" step="0.5" placeholder="Halaman — mis. 1 / 0.5" class="px-4 py-3 rounded-xl border border-slate-200 text-sm">
+          <select id="stNilai" class="px-4 py-3 rounded-xl border border-slate-200 text-sm font-semibold"><option value="Mumtaz">Mumtaz (Istimewa)</option><option value="Jayyid">Jayyid (Baik)</option><option value="Hasan">Hasan (Cukup)</option><option value="Perlu Bimbingan">Perlu Bimbingan</option></select>
+        </div>
+        <div>
+          <div class="text-xs font-bold tracking-widest text-slate-400">KOREKSI UMUM (checklist)</div>
+          <div class="grid grid-cols-2 md:grid-cols-5 gap-2 mt-2">
+            <label class="flex items-center gap-2 px-3 py-2 rounded-xl border cursor-pointer hover:bg-slate-50"><input type="checkbox" id="kTajwid"> <span class="text-xs font-bold">Tajwid</span></label>
+            <label class="flex items-center gap-2 px-3 py-2 rounded-xl border cursor-pointer hover:bg-slate-50"><input type="checkbox" id="kMakhraj"> <span class="text-xs font-bold">Makhraj</span></label>
+            <label class="flex items-center gap-2 px-3 py-2 rounded-xl border cursor-pointer hover:bg-slate-50"><input type="checkbox" id="kLancar"> <span class="text-xs font-bold">Kelancaran</span></label>
+            <label class="flex items-center gap-2 px-3 py-2 rounded-xl border cursor-pointer hover:bg-slate-50"><input type="checkbox" id="kHafalan"> <span class="text-xs font-bold">Hafalan</span></label>
+            <label class="flex items-center gap-2 px-3 py-2 rounded-xl border cursor-pointer hover:bg-slate-50"><input type="checkbox" id="kAdab"> <span class="text-xs font-bold">Adab</span></label>
+          </div>
+        </div>
+        <textarea id="stCatatan" rows="3" placeholder="Catatan koreksi umum — mis. Perhatikan ghunnah, huruf ق belum tepat, sudah lancar tapi perlu murajaah..." class="px-4 py-3 rounded-xl border border-slate-200 text-sm"></textarea>
+        <input type="hidden" id="stId">
+        <button onclick="saveSetoran()" class="py-3 rounded-full bg-emerald-600 text-white font-bold">Simpan Setoran</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const LS='tahfidz_madani_v1';
+let db=loadDB();
+let role=localStorage.getItem('tahfidz_role')||'guru';
+
+function loadDB(){
+  try{
+    const r=localStorage.getItem(LS);
+    if(r){ const j=JSON.parse(r); if(j.santri && j.setoran) return j; }
+  }catch(e){}
+  return seed();
+}
+function saveDB(){ localStorage.setItem(LS, JSON.stringify(db)); }
+function seed(){
+  const santri=[
+    {id:'S01', nama:'Ahmad Fauzi', nis:'MAD001', halaqah:'Halaqah A', target:8, foto:'https://i.pravatar.cc/200?img=12'},
+    {id:'S02', nama:'Budi Ilham', nis:'MAD002', halaqah:'Halaqah A', target:8, foto:'https://i.pravatar.cc/200?img=15'},
+    {id:'S03', nama:'Citra Aisyah', nis:'MAD003', halaqah:'Halaqah B', target:4, foto:'https://i.pravatar.cc/200?img=32'},
+    {id:'S04', nama:'Dewi Lestari', nis:'MAD004', halaqah:'Halaqah B', target:4, foto:'https://i.pravatar.cc/200?img=26'},
+    {id:'S05', nama:'Farhan Zaki', nis:'MAD005', halaqah:'Halaqah A', target:8, foto:'https://i.pravatar.cc/200?img=18'},
+    {id:'S06', nama:'Gilang Pratama', nis:'MAD006', halaqah:'Halaqah B', target:4, foto:'https://i.pravatar.cc/200?img=20'},
+  ];
+  const today=new Date();
+  const ym=today.toISOString().slice(0,7);
+  const dstr=today.toISOString().slice(0,10);
+  const addDays=(n)=>{ const x=new Date(); x.setDate(x.getDate()+n); return x.toISOString().slice(0,10); };
+  const setoran=[
+    {id:'ST01', santriId:'S01', tanggal:addDays(-2), minggu: mingguKe(addDays(-2)), bulan: ym, surah:'An-Naba', ayat:'1-20', jenis:'Ziyadah', halaman:1, nilai:'Jayyid', koreksi:{tajwid:true,makhraj:false,lancar:true,hafalan:false,adab:false}, catatan:'Ghunnah perlu ditahan 2 harokat', guru:'Ustadz Ahmad', created:Date.now()-90000},
+    {id:'ST02', santriId:'S02', tanggal:addDays(-1), minggu: mingguKe(addDays(-1)), bulan: ym, surah:"An-Nazi'at", ayat:'1-15', jenis:'Ziyadah', halaman:0.5, nilai:'Mumtaz', koreksi:{tajwid:false,makhraj:false,lancar:false,hafalan:false,adab:false}, catatan:'Lancar, pertahankan', guru:'Ustadz Ahmad', created:Date.now()-80000},
+    {id:'ST03', santriId:'S03', tanggal:addDays(-5), minggu: mingguKe(addDays(-5)), bulan: ym, surah:'An-Nas', ayat:'1-6', jenis:'Murajaah', halaman:0.5, nilai:'Hasan', koreksi:{tajwid:true,makhraj:true,lancar:false,hafalan:true,adab:false}, catatan:'Makhraj ح masih tipis', guru:'Ustadz Ahmad', created:Date.now()-70000},
+    {id:'ST04', santriId:'S01', tanggal:addDays(-8), minggu: mingguKe(addDays(-8)), bulan: ym, surah:'Abasa', ayat:'1-10', jenis:'Ziyadah', halaman:0.5, nilai:'Jayyid', koreksi:{tajwid:false,makhraj:true,lancar:false,hafalan:false,adab:false}, catatan:'Qalqalah baik', guru:'Ustadz Ahmad', created:Date.now()-60000},
+    {id:'ST05', santriId:'S04', tanggal:addDays(-3), minggu: mingguKe(addDays(-3)), bulan: ym, surah:'Al-Ikhlas', ayat:'1-4', jenis:'Ziyadah', halaman:0.5, nilai:'Perlu Bimbingan', koreksi:{tajwid:true,makhraj:true,lancar:true,hafalan:true,adab:false}, catatan:'Perlu bimbingan makhraj ع', guru:'Ustadz Ahmad', created:Date.now()-50000},
+    {id:'ST06', santriId:'S05', tanggal:dstr, minggu: mingguKe(dstr), bulan: ym, surah:'Al-Mulk', ayat:'1-10', jenis:'Ziyadah', halaman:1, nilai:'Jayyid', koreksi:{tajwid:true,makhraj:false,lancar:false,hafalan:false,adab:true}, catatan:'Adab membawa mushaf baik', guru:'Ustadz Ahmad', created:Date.now()-30000},
+  ];
+  return {santri, setoran, koreksiBulanan: {}};
+}
+function mingguKe(tglStr){
+  const d=new Date(tglStr); const day=d.getDate();
+  if(day<=7) return 1; if(day<=14) return 2; if(day<=21) return 3; return 4;
+}
+function resetDemo(){ if(confirm('Reset demo?')){ localStorage.removeItem(LS); db=seed(); saveDB(); renderAll(); alert('Demo direset'); } }
+
+function enterRole(r){ role=r; localStorage.setItem('tahfidz_role',r); document.getElementById('roleGate').classList.add('hidden'); initRole(); renderAll(); }
+function switchRole(r){ role=r; localStorage.setItem('tahfidz_role',r); initRole(); renderAll(); }
+function initRole(){
+  document.getElementById('roleSwitch').value=role;
+  const b=document.getElementById('roleBadge');
+  if(role==='guru'){ b.className='hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-bold role-guru'; b.innerHTML='<i class="fa-solid fa-chalkboard-user"></i> Guru Tahfidz'; }
+  else { b.className='hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-bold role-kepsek'; b.innerHTML='<i class="fa-solid fa-user-tie"></i> Kepala Sekolah'; }
+  populateBulanFilters();
+}
+function populateBulanFilters(){
+  const bulanSet=new Set(db.setoran.map(s=> s.bulan));
+  const cur=new Date().toISOString().slice(0,7);
+  bulanSet.add(cur);
+  // add prev month too
+  const prev=new Date(); prev.setMonth(prev.getMonth()-1); bulanSet.add(prev.toISOString().slice(0,7));
+  const opts=[...bulanSet].sort().reverse().map(b=> `<option value="${b}">${bulanLabel(b)}</option>`).join('');
+  ['filterBulanSetoran','mingguanBulan','bulananBulan','persenBulan'].forEach(id=>{
+    const el=document.getElementById(id); if(!el) return;
+    const curVal=el.value; el.innerHTML=opts; if(curVal) el.value=curVal; else el.value=cur;
+  });
+  document.getElementById('dashBulan').textContent=bulanLabel(cur);
+  document.getElementById('persenBulanLabel').textContent=bulanLabel(cur);
+}
+function bulanLabel(ym){ const [y,m]=ym.split('-'); const names=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des']; return names[parseInt(m)-1]+' '+y; }
+
+// NAV
+document.querySelectorAll('.navBtn').forEach(b=> b.addEventListener('click', ()=> switchView(b.dataset.view)));
+function switchView(v){
+  document.querySelectorAll('.view').forEach(el=> el.classList.add('hidden'));
+  document.getElementById('view-'+v).classList.remove('hidden');
+  document.querySelectorAll('.navBtn').forEach(b=>{ b.classList.remove('bg-slate-900','text-white'); b.classList.add('hover:bg-slate-50'); if(b.dataset.view===v){ b.classList.add('bg-slate-900','text-white'); b.classList.remove('hover:bg-slate-50'); }});
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(v==='dashboard') renderDashboard();
+  if(v==='santri') renderSantri();
+  if(v==='setoran') renderSetoran();
+  if(v==='mingguan') renderMingguan();
+  if(v==='bulanan') renderBulanan();
+  if(v==='persentase') renderPersentase();
+}
+function renderAll(){ renderDashboard(); renderSantri(); renderSetoran(); renderMingguan(); renderBulanan(); renderPersentase(); populateSantriSelect(); }
+
+function pctFor(santriId, bulan){
+  const s=db.santri.find(x=>x.id===santriId); const target=s?.target||4;
+  const total=db.setoran.filter(x=> x.santriId===santriId && x.bulan===bulan).reduce((sum,x)=> sum+(parseFloat(x.halaman)||0),0);
+  const pct=Math.min(100, Math.round(total/target*100));
+  return {total, target, pct};
+}
+function predikat(pct){
+  if(pct>=85) return {label:'Mumtaz', cls:'pct-high'};
+  if(pct>=70) return {label:'Jayyid', cls:'pct-mid'};
+  if(pct>=50) return {label:'Hasan', cls:'pct-mid'};
+  return {label:'Perlu Bimbingan', cls:'pct-low'};
+}
+
+// DASHBOARD
+function renderDashboard(){
+  const cur=new Date().toISOString().slice(0,7);
+  const minggu=mingguKe(new Date().toISOString().slice(0,10));
+  document.getElementById('statSantri').textContent=db.santri.length;
+  const mingguIni=db.setoran.filter(s=> s.bulan===cur && s.minggu===minggu).length;
+  document.getElementById('statMinggu').textContent=mingguIni;
+  document.getElementById('statMingguLabel').textContent='Minggu ke-'+minggu+' • '+bulanLabel(cur);
+  // rata pencapaian
+  const ratas=db.santri.map(s=> pctFor(s.id,cur).pct);
+  const rata=ratas.length? Math.round(ratas.reduce((a,b)=>a+b,0)/ratas.length):0;
+  document.getElementById('statRata').textContent=rata+'%';
+  // belum setor minggu ini
+  const sudahSet=new Set(db.setoran.filter(s=> s.bulan===cur && s.minggu===minggu).map(s=> s.santriId));
+  const belum=db.santri.filter(s=> !sudahSet.has(s.id)).length;
+  document.getElementById('statBelum').textContent=belum;
+
+  // bars per santri
+  const bars=document.getElementById('dashBars');
+  bars.innerHTML=db.santri.map(s=>{
+    const {total,target,pct}=pctFor(s.id,cur);
+    const pred=predikat(pct);
+    const col=pct>=85?'#10B981':pct>=70?'#F59E0B':pct>=50?'#EAB308':'#EF4444';
+    return `<div class="flex items-center gap-3">
+      <img src="${s.foto||'https://i.pravatar.cc/100?u='+s.id}" class="w-8 h-8 rounded-full object-cover border">
+      <div class="flex-1 min-w-0">
+        <div class="flex justify-between items-center"><span class="font-bold text-sm truncate">${s.nama} <span class="text-xs font-normal text-slate-500">${s.halaqah}</span></span><span class="text-xs font-bold px-2 py-1 rounded-full border ${pred.cls}">${pred.label} ${pct}%</span></div>
+        <div class="mt-1 flex items-center gap-2"><div class="flex-1 h-2.5 rounded-full bg-slate-100 overflow-hidden"><div class="h-full rounded-full" style="width:${pct}%; background:${col}"></div></div><span class="text-xs font-semibold">${total}/${target} hal</span></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // setoran terbaru
+  const recent=[...db.setoran].sort((a,b)=> b.created-a.created).slice(0,5);
+  const ds=document.getElementById('dashSetoran');
+  if(recent.length===0) ds.innerHTML=`<div class="text-sm text-slate-400">Belum ada setoran.</div>`;
+  else ds.innerHTML=recent.map(s=>{
+    const san=db.santri.find(x=>x.id===s.santriId);
+    return `<div class="p-3 rounded-2xl border bg-slate-50 flex gap-3">
+      <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0"><i class="fa-solid fa-book-quran text-xs"></i></div>
+      <div class="flex-1 min-w-0">
+        <div class="font-bold text-sm truncate">${san?.nama||'?'} • ${s.surah} ${s.ayat} <span class="font-normal text-slate-500">• ${s.jenis}</span></div>
+        <div class="text-xs text-slate-500">${s.tanggal} • M${s.minggu} • ${s.halaman} hal • ${s.nilai}</div>
+        <div class="flex flex-wrap gap-1 mt-1">${koreksiBadges(s.koreksi)}</div>
+        <div class="text-xs mt-1">${s.catatan||'-'}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // mingguan kontrol kepsek
+  const dm=document.getElementById('dashMingguan');
+  dm.innerHTML=[1,2,3,4].map(m=>{
+    const list=db.setoran.filter(s=> s.bulan===cur && s.minggu===m);
+    const unique=new Set(list.map(s=> s.santriId)).size;
+    return `<div class="rounded-2xl border p-4 ${m===minggu?'bg-blue-50 border-blue-200':'bg-slate-50'}"><div class="text-xs font-bold tracking-widest ${m===minggu?'text-blue-700':'text-slate-400'}">MINGGU ${m} ${m===minggu?'(INI)':''}</div><div class="font-black text-lg mt-1">${list.length} <span class="text-xs font-semibold">setoran</span></div><div class="text-xs text-slate-500">${unique}/${db.santri.length} santri setor</div></div>`;
+  }).join('');
+}
+function koreksiBadges(k){
+  if(!k) return '';
+  const map=[['tajwid','Tajwid','koreksi-tajwid'],['makhraj','Makhraj','koreksi-makhraj'],['lancar','Lancar','koreksi-lancar'],['hafalan','Hafalan','koreksi-hafalan'],['adab','Adab','koreksi-adab']];
+  return map.filter(([key])=> k[key]).map(([key,label,cls])=> `<span class="text-[10px] font-bold px-2 py-1 rounded-full ${cls}">${label}</span>`).join('') || `<span class="text-[10px] text-slate-400">Tanpa koreksi</span>`;
+}
+
+// SANTRI
+function renderSantri(){
+  const q=(document.getElementById('searchSantri').value||'').toLowerCase();
+  const f=document.getElementById('filterHalaqah').value;
+  let list=[...db.santri];
+  if(f) list=list.filter(s=> s.halaqah===f);
+  if(q) list=list.filter(s=> s.nama.toLowerCase().includes(q)||s.nis.toLowerCase().includes(q));
+  const cur=new Date().toISOString().slice(0,7);
+  const el=document.getElementById('santriGrid');
+  if(list.length===0) el.innerHTML=`<div class="col-span-full text-center text-sm text-slate-400 py-10">Belum ada santri.</div>`;
+  else el.innerHTML=list.map(s=>{
+    const {total,target,pct}=pctFor(s.id,cur);
+    const pred=predikat(pct);
+    const mingguSet=new Set(db.setoran.filter(x=> x.santriId===s.id && x.bulan===cur).map(x=> 'M'+x.minggu));
+    return `<div class="bg-slate-50 border border-slate-200 rounded-[20px] p-4 hover:bg-white">
+      <div class="flex gap-3">
+        <img src="${s.foto||'https://i.pravatar.cc/100?u='+s.id}" class="w-14 h-14 rounded-2xl object-cover border">
+        <div class="flex-1 min-w-0">
+          <div class="font-bold truncate">${s.nama}</div>
+          <div class="text-xs text-slate-500">${s.nis} • ${s.halaqah} • target ${target} hal/bulan</div>
+          <div class="mt-1 flex items-center gap-2"><div class="flex-1 h-2 rounded-full bg-slate-200 overflow-hidden"><div class="h-full" style="width:${pct}%; background:${pct>=85?'#10B981':pct>=50?'#F59E0B':'#EF4444'}"></div></div><span class="text-xs font-bold">${pct}%</span><span class="text-[10px] font-bold px-2 py-1 rounded-full border ${pred.cls}">${pred.label}</span></div>
+          <div class="text-[11px] text-slate-400 mt-1">${[...mingguSet].join(' • ')||'Belum setor bulan ini'} • ${total}/${target} hal</div>
+        </div>
+      </div>
+      <div class="mt-3 flex gap-2">
+        <button onclick="editSantri('${s.id}')" class="flex-1 py-2 rounded-full bg-white border text-xs font-bold">Edit</button>
+        <button onclick="openSetoranFor('${s.id}')" class="flex-1 py-2 rounded-full bg-emerald-600 text-white text-xs font-bold">+ Setoran</button>
+        <button onclick="deleteSantri('${s.id}')" class="px-4 py-2 rounded-full bg-white border text-xs font-bold text-rose-600">Hapus</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function populateSantriSelect(){
+  const sel=document.getElementById('stSantri');
+  sel.innerHTML=db.santri.map(s=> `<option value="${s.id}">${s.nama} — ${s.halaqah} (target ${s.target} hal)</option>`).join('');
+}
+function openSantriModal(){ document.getElementById('sId').value=''; document.getElementById('sNama').value=''; document.getElementById('sNis').value=''; document.getElementById('sTarget').value=''; document.getElementById('sFoto').value=''; document.getElementById('sHalaqah').value='Halaqah A'; document.getElementById('modalSantri').classList.remove('hidden'); }
+function closeSantriModal(){ document.getElementById('modalSantri').classList.add('hidden'); }
+function editSantri(id){ const s=db.santri.find(x=>x.id===id); document.getElementById('sId').value=s.id; document.getElementById('sNama').value=s.nama; document.getElementById('sNis').value=s.nis; document.getElementById('sHalaqah').value=s.halaqah; document.getElementById('sTarget').value=s.target; document.getElementById('sFoto').value=s.foto||''; document.getElementById('modalSantri').classList.remove('hidden'); }
+function saveSantri(){
+  const id=document.getElementById('sId').value || 'S'+Date.now().toString(36).toUpperCase();
+  const nama=document.getElementById('sNama').value.trim(); if(!nama) return alert('Nama wajib');
+  const obj={id, nama, nis:document.getElementById('sNis').value.trim()||id, halaqah:document.getElementById('sHalaqah').value, target:parseFloat(document.getElementById('sTarget').value)||4, foto:document.getElementById('sFoto').value.trim()};
+  const idx=db.santri.findIndex(x=>x.id===id); if(idx>=0) db.santri[idx]=obj; else db.santri.push(obj);
+  saveDB(); closeSantriModal(); renderAll(); populateBulanFilters();
+}
+function deleteSantri(id){
+  if(db.setoran.some(s=> s.santriId===id)) return alert('Santri sudah punya setoran — hapus setorannya dulu atau biarkan agar riwayat aman.');
+  if(!confirm('Hapus santri?')) return; db.santri=db.santri.filter(x=>x.id!==id); saveDB(); renderAll();
+}
+function openSetoranFor(santriId){ openSetoranModal(); document.getElementById('stSantri').value=santriId; }
+
+// SETORAN
+function renderSetoran(){
+  const q=(document.getElementById('searchSetoran').value||'').toLowerCase();
+  const fB=document.getElementById('filterBulanSetoran').value;
+  const fM=document.getElementById('filterMingguSetoran').value;
+  let list=[...db.setoran].sort((a,b)=> b.created-a.created);
+  if(fB) list=list.filter(s=> s.bulan===fB);
+  if(fM) list=list.filter(s=> String(s.minggu)===fM);
+  if(q) list=list.filter(s=>{
+    const san=db.santri.find(x=>x.id===s.santriId);
+    return (san?.nama.toLowerCase().includes(q) || s.surah.toLowerCase().includes(q));
+  });
+  const el=document.getElementById('setoranList');
+  if(list.length===0) el.innerHTML=`<div class="text-sm text-slate-400 p-6 border border-dashed rounded-2xl text-center">Belum ada setoran.</div>`;
+  else el.innerHTML=list.slice(0,100).map(s=>{
+    const san=db.santri.find(x=>x.id===s.santriId);
+    return `<div class="p-4 rounded-[20px] border bg-white flex flex-col md:flex-row gap-3 justify-between">
+      <div class="flex gap-3 flex-1">
+        <img src="${san?.foto||'https://i.pravatar.cc/100?u='+s.santriId}" class="w-10 h-10 rounded-xl object-cover border shrink-0">
+        <div class="flex-1 min-w-0">
+          <div class="font-bold text-sm">${san?.nama||'?'} <span class="text-xs font-normal text-slate-500">• ${san?.halaqah||''} • ${s.tanggal} • M${s.minggu} • ${s.bulan}</span></div>
+          <div class="text-sm"><b>${s.surah}</b> ${s.ayat} • <span class="px-2 py-1 rounded-full bg-slate-900 text-white text-xs font-bold">${s.jenis}</span> • ${s.halaman} hal • <span class="font-bold">${s.nilai}</span></div>
+          <div class="flex flex-wrap gap-1 mt-1">${koreksiBadges(s.koreksi)}</div>
+          <div class="text-xs mt-1 leading-5">${s.catatan?'<b>Koreksi:</b> '+s.catatan:'<span class="text-slate-400">Tanpa catatan</span>'} <span class="text-slate-400">— ${s.guru}</span></div>
+        </div>
+      </div>
+      <div class="flex md:flex-col gap-2 shrink-0">
+        <button onclick="editSetoran('${s.id}')" class="px-4 py-2 rounded-full border text-xs font-bold">Edit</button>
+        <button onclick="deleteSetoran('${s.id}')" class="px-4 py-2 rounded-full border text-xs font-bold text-rose-600">Hapus</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function openSetoranModal(){ document.getElementById('stId').value=''; document.getElementById('stSurah').value=''; document.getElementById('stAyat').value=''; document.getElementById('stHalaman').value=''; document.getElementById('stCatatan').value=''; document.getElementById('stNilai').value='Jayyid'; ['kTajwid','kMakhraj','kLancar','kHafalan','kAdab'].forEach(id=> document.getElementById(id).checked=false); document.getElementById('stTanggal').valueAsDate=new Date(); populateSantriSelect(); document.getElementById('setoranModalTitle').textContent='Tambah Setoran'; document.getElementById('modalSetoran').classList.remove('hidden'); }
+function closeSetoranModal(){ document.getElementById('modalSetoran').classList.add('hidden'); }
+function editSetoran(id){
+  const s=db.setoran.find(x=>x.id===id); if(!s) return;
+  populateSantriSelect(); document.getElementById('stId').value=s.id; document.getElementById('stSantri').value=s.santriId; document.getElementById('stTanggal').value=s.tanggal; document.getElementById('stSurah').value=s.surah; document.getElementById('stAyat').value=s.ayat; document.getElementById('stJenis').value=s.jenis; document.getElementById('stHalaman').value=s.halaman; document.getElementById('stNilai').value=s.nilai; document.getElementById('stCatatan').value=s.catatan;
+  document.getElementById('kTajwid').checked=!!s.koreksi.tajwid; document.getElementById('kMakhraj').checked=!!s.koreksi.makhraj; document.getElementById('kLancar').checked=!!s.koreksi.lancar; document.getElementById('kHafalan').checked=!!s.koreksi.hafalan; document.getElementById('kAdab').checked=!!s.koreksi.adab;
+  document.getElementById('setoranModalTitle').textContent='Edit Setoran'; document.getElementById('modalSetoran').classList.remove('hidden');
+}
+function saveSetoran(){
+  const id=document.getElementById('stId').value || 'ST'+Date.now().toString(36).toUpperCase();
+  const santriId=document.getElementById('stSantri').value; if(!santriId) return alert('Pilih santri');
+  const tanggal=document.getElementById('stTanggal').value; if(!tanggal) return alert('Tanggal wajib');
+  const surah=document.getElementById('stSurah').value.trim(); if(!surah) return alert('Surah wajib');
+  const halaman=parseFloat(document.getElementById('stHalaman').value)||0; if(halaman<=0) return alert('Halaman harus >0');
+  const bulan=tanggal.slice(0,7);
+  const minggu=mingguKe(tanggal);
+  const obj={
+    id, santriId, tanggal, minggu, bulan,
+    surah, ayat:document.getElementById('stAyat').value.trim()||'-',
+    jenis:document.getElementById('stJenis').value,
+    halaman, nilai:document.getElementById('stNilai').value,
+    koreksi:{tajwid:document.getElementById('kTajwid').checked, makhraj:document.getElementById('kMakhraj').checked, lancar:document.getElementById('kLancar').checked, hafalan:document.getElementById('kHafalan').checked, adab:document.getElementById('kAdab').checked},
+    catatan:document.getElementById('stCatatan').value.trim(),
+    guru: role==='guru'?'Ustadz Ahmad':'Kepala Sekolah',
+    created: db.setoran.find(x=>x.id===id)?.created || Date.now()
+  };
+  const idx=db.setoran.findIndex(x=>x.id===id); if(idx>=0) db.setoran[idx]=obj; else db.setoran.push(obj);
+  saveDB(); closeSetoranModal(); renderAll(); populateBulanFilters();
+}
+function deleteSetoran(id){ if(!confirm('Hapus setoran?')) return; db.setoran=db.setoran.filter(x=>x.id!==id); saveDB(); renderAll(); }
+
+// MINGGUAN
+function renderMingguan(){
+  const bulan=document.getElementById('mingguanBulan').value;
+  const grid=document.getElementById('mingguanGrid');
+  grid.innerHTML=[1,2,3,4].map(m=>{
+    const list=db.setoran.filter(s=> s.bulan===bulan && s.minggu===m).sort((a,b)=> a.tanggal.localeCompare(b.tanggal));
+    return `<div class="rounded-2xl border p-4 bg-white">
+      <div class="flex justify-between items-center"><div class="font-bold">Minggu ${m}</div><span class="text-xs font-bold px-2.5 py-1 rounded-full bg-slate-900 text-white">${list.length} setoran</span></div>
+      <div class="mt-3 space-y-2">${list.length? list.map(s=>{
+        const san=db.santri.find(x=>x.id===s.santriId);
+        return `<div class="p-3 rounded-xl border bg-slate-50 flex gap-3"><div class="flex-1"><div class="font-bold text-sm">${san?.nama||'?'} • ${s.surah} ${s.ayat} • ${s.halaman} hal • ${s.jenis}</div><div class="text-xs text-slate-500">${s.tanggal} • ${s.nilai}</div><div class="flex gap-1 mt-1 flex-wrap">${koreksiBadges(s.koreksi)}</div><div class="text-xs mt-1">${s.catatan||''}</div></div></div>`;
+      }).join('') : `<div class="text-sm text-slate-400">Belum ada setoran minggu ini.</div>`}</div>
+    </div>`;
+  }).join('');
+  // per santri ringkas
+  const perSantri=db.santri.map(s=>{
+    const counts=[1,2,3,4].map(m=> db.setoran.filter(x=> x.santriId===s.id && x.bulan===bulan && x.minggu===m).reduce((sum,x)=> sum+parseFloat(x.halaman),0));
+    const total=counts.reduce((a,b)=>a+b,0);
+    return `<div class="p-3 rounded-2xl border bg-slate-50 flex justify-between items-center"><div><div class="font-bold text-sm">${s.nama} <span class="text-xs font-normal text-slate-500">${s.halaqah}</span></div><div class="text-xs text-slate-500">M1:${counts[0]} • M2:${counts[1]} • M3:${counts[2]} • M4:${counts[3]} hal</div></div><div class="text-right"><div class="font-black">${total} hal</div><div class="text-xs text-slate-500">${bulan}</div></div></div>`;
+  }).join('');
+  grid.innerHTML+=`<div class="rounded-2xl border-2 border-dashed p-4 bg-white"><div class="font-bold">Ringkasan per Santri — ${bulanLabel(bulan)}</div><div class="mt-3 grid md:grid-cols-2 gap-2">${perSantri}</div></div>`;
+}
+
+// BULANAN
+function renderBulanan(){
+  const bulan=document.getElementById('bulananBulan').value;
+  const list=db.santri.map(s=>{
+    const {total,target,pct}=pctFor(s.id, bulan);
+    const pred=predikat(pct);
+    const setorans=db.setoran.filter(x=> x.santriId===s.id && x.bulan===bulan).sort((a,b)=> a.tanggal.localeCompare(b.tanggal));
+    const koreksiAll=[...new Set(setorans.flatMap(x=> Object.entries(x.koreksi).filter(([,v])=>v).map(([k])=>k)))];
+    return {s,total,target,pct,pred,setorans,koreksiAll};
+  }).sort((a,b)=> b.pct-a.pct);
+  const el=document.getElementById('bulananList');
+  el.innerHTML=list.map(x=>`
+    <div class="p-4 rounded-[20px] border bg-white">
+      <div class="flex gap-3">
+        <img src="${x.s.foto||'https://i.pravatar.cc/100?u='+x.s.id}" class="w-12 h-12 rounded-xl object-cover border">
+        <div class="flex-1">
+          <div class="flex flex-wrap gap-2 justify-between"><div class="font-bold">${x.s.nama} <span class="text-xs font-normal text-slate-500">${x.s.halaqah} • ${x.s.nis}</span></div><span class="text-xs font-bold px-2.5 py-1 rounded-full border ${x.pred.cls}">${x.pred.label} • ${x.pct}%</span></div>
+          <div class="mt-2 flex items-center gap-2"><div class="flex-1 h-2.5 rounded-full bg-slate-100 overflow-hidden"><div class="h-full rounded-full" style="width:${x.pct}%; background:${x.pct>=85?'#10B981':x.pct>=50?'#F59E0B':'#EF4444'}"></div></div><span class="text-xs font-bold">${x.total}/${x.target} hal</span></div>
+          <div class="text-xs text-slate-500 mt-1">${x.setorans.length} setoran • Koreksi dominan: ${x.koreksiAll.length? x.koreksiAll.join(', '): '-'}</div>
+          <div class="mt-2 flex flex-wrap gap-1">${x.setorans.slice(0,3).map(s=> `<span class="text-[11px] px-2 py-1 rounded-full bg-slate-50 border">${s.surah} ${s.ayat} • ${s.halaman} hal • M${s.minggu}</span>`).join('')}${x.setorans.length>3?` <span class="text-xs text-slate-400">+${x.setorans.length-3} lagi</span>`:''}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  // koreksi bulanan
+  document.getElementById('koreksiBulananNote').value=(db.koreksiBulanan && db.koreksiBulanan[bulan])||'';
+  document.getElementById('koreksiBulananSaved').textContent=db.koreksiBulanan && db.koreksiBulanan[bulan] ? 'Tersimpan untuk '+bulanLabel(bulan) : '';
+}
+function saveKoreksiBulanan(){
+  const bulan=document.getElementById('bulananBulan').value;
+  const note=document.getElementById('koreksiBulananNote').value.trim();
+  db.koreksiBulanan= db.koreksiBulanan||{}; db.koreksiBulanan[bulan]=note; saveDB();
+  document.getElementById('koreksiBulananSaved').textContent='Tersimpan ✓ '+bulanLabel(bulan);
+}
+
+// PERSENTASE
+function renderPersentase(){
+  const bulan=document.getElementById('persenBulan').value;
+  document.getElementById('persenBulanLabel').textContent=bulanLabel(bulan);
+  const list=db.santri.map(s=>{
+    const {total,target,pct}=pctFor(s.id, bulan);
+    const pred=predikat(pct);
+    return {s,total,target,pct,pred};
+  }).sort((a,b)=> b.pct-a.pct);
+  const ratas = list.length? Math.round(list.reduce((sum,x)=> sum+x.pct,0)/list.length):0;
+  document.getElementById('persenBars').innerHTML=list.map(x=>{
+    const col=x.pct>=85?'#10B981':x.pct>=70?'#F59E0B':x.pct>=50?'#EAB308':'#EF4444';
+    return `<div class="flex items-center gap-3">
+      <img src="${x.s.foto||'https://i.pravatar.cc/100?u='+x.s.id}" class="w-8 h-8 rounded-full object-cover border">
+      <div class="flex-1">
+        <div class="flex justify-between"><span class="font-bold text-sm">${x.s.nama}</span><span class="text-xs font-bold px-2 py-1 rounded-full border ${x.pred.cls}">${x.pred.label} ${x.pct}%</span></div>
+        <div class="mt-1 flex items-center gap-2"><div class="flex-1 h-2.5 rounded-full bg-slate-100 overflow-hidden"><div class="h-full" style="width:${x.pct}%; background:${col}"></div></div><span class="text-xs font-semibold">${x.total}/${x.target}</span></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // tren 3 bulan
+  const months=[...new Set(db.setoran.map(s=> s.bulan))].sort().reverse().slice(0,3);
+  // ensure include current
+  const cur=new Date().toISOString().slice(0,7); if(!months.includes(cur)) months.unshift(cur);
+  const trenEl=document.getElementById('persenTren');
+  trenEl.innerHTML=months.slice(0,3).map(m=>{
+    const avg=Math.round(db.santri.map(s=> pctFor(s.id,m).pct).reduce((a,b)=>a+b,0)/ (db.santri.length||1));
+    return `<div class="flex items-center gap-3"><span class="text-xs font-bold w-24">${bulanLabel(m)}</span><div class="flex-1 h-2.5 rounded-full bg-slate-100 overflow-hidden"><div class="h-full bg-emerald-500" style="width:${avg}%"></div></div><span class="text-xs font-bold w-12 text-right">${avg}%</span></div>`;
+  }).join('');
+
+  // ringkasan kepsek
+  const mumtaz=list.filter(x=> x.pct>=85).length;
+  const perlu=list.filter(x=> x.pct<50).length;
+  document.getElementById('persenRingkasan').innerHTML=`
+    <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-center"><div class="text-xs font-bold tracking-widest text-emerald-700">RATA-RATA KESELURUHAN</div><div class="font-black text-3xl text-emerald-700">${ratas}%</div><div class="text-xs text-emerald-600">${bulanLabel(bulan)}</div></div>
+    <div class="grid grid-cols-2 gap-2">
+      <div class="p-3 rounded-2xl border bg-white text-center"><div class="font-black text-xl">${mumtaz}</div><div class="text-xs font-bold text-emerald-700">Mumtaz ≥85%</div></div>
+      <div class="p-3 rounded-2xl border bg-white text-center"><div class="font-black text-xl">${perlu}</div><div class="text-xs font-bold text-rose-700">Perlu Bimbingan &lt;50%</div></div>
+    </div>
+    <div class="p-3 rounded-xl bg-slate-50 border text-xs">Kepsek dapat cek per santri yang <b>belum mencapai target</b> untuk tindak lanjut halaqah.</div>
+  `;
+}
+
+function exportCSV(){
+  const rows=[['Tanggal','Bulan','Minggu','Santri','NIS','Halaqah','Surah','Ayat','Jenis','Halaman','Nilai','Koreksi','Catatan','Guru']];
+  db.setoran.forEach(s=>{
+    const san=db.santri.find(x=>x.id===s.santriId);
+    const koreksi=Object.entries(s.koreksi).filter(([,v])=>v).map(([k])=>k).join(';');
+    rows.push([s.tanggal,s.bulan,s.minggu,san?.nama||'',san?.nis||'',san?.halaqah||'',s.surah,s.ayat,s.jenis,s.halaman,s.nilai,koreksi,s.catatan,s.guru]);
+  });
+  const csv=rows.map(r=> r.map(v=> `"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=`tahfidz-madani-${new Date().toISOString().slice(0,10)}.csv`; a.click(); URL.revokeObjectURL(url);
+}
+
+// INIT
+(function(){
+  if(localStorage.getItem('tahfidz_role')) document.getElementById('roleGate').classList.add('hidden');
+  initRole(); renderAll();
+})();
+</script>
+</body>
+</html>

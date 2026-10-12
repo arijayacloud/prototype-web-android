@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>EKG Belajar — Kedokteran</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],display:['Plus Jakarta Sans','sans-serif']}}}}</script>
+<style>
+*{font-family:Inter,sans-serif}
+.no-scrollbar::-webkit-scrollbar{display:none}
+.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
+.ecg-grid{background-image: linear-gradient(#fecaca 1px, transparent 1px), linear-gradient(90deg,#fecaca 1px, transparent 1px), linear-gradient(#fee2e2 1px, transparent 1px), linear-gradient(90deg,#fee2e2 1px, transparent 1px); background-size:40px 40px,40px 40px,8px 8px,8px 8px}
+.range{ -webkit-appearance:none; appearance:none; height:6px; border-radius:999px; background:#E2E8F0 }
+.range::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; height:18px; border-radius:999px; background:#0e7490; border:3px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,.2)}
+</style>
+</head>
+<body class="bg-[#F1F5F9] min-h-screen flex flex-col items-center">
+<!-- top bar -->
+<div class="w-full bg-white border-b border-slate-200 sticky top-0 z-30">
+  <div class="max-w-[1140px] mx-auto px-4 h-[56px] flex items-center justify-between">
+    <a href="../index.html" class="flex items-center gap-2 text-slate-600 font-bold hover:text-cyan-700 text-sm"><i class="fa-solid fa-arrow-left"></i> Portfolio</a>
+    <span class="hidden md:inline text-[11px] font-bold tracking-widest text-slate-400">EKG BELAJAR • KEDOKTERAN • PROTOTYPE OFFLINE</span>
+    <div class="flex items-center gap-2">
+      <span class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-700 text-xs font-bold"><span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Offline</span>
+      <button onclick="switchTab('profil')" class="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center"><i class="fa-regular fa-user text-xs"></i></button>
+    </div>
+  </div>
+</div>
+
+<div class="w-full max-w-[1140px] mx-auto px-3 md:px-4 mt-4 md:mt-6 mb-10 flex flex-col lg:flex-row gap-6 items-start justify-center">
+<!-- phone frame — flex-col, nav shrink-0 agar tidak menumpuk -->
+<div class="w-full max-w-[410px] mx-auto lg:mx-0 shrink-0">
+<div id="phone" class="bg-white rounded-[36px] shadow-[0_20px_60px_rgba(0,0,0,0.12)] overflow-hidden border-[8px] border-slate-900 flex flex-col relative" style="min-height:800px; background:#F8FAFC">
+  <!-- status bar -->
+  <div class="h-7 bg-slate-900 flex items-center justify-between px-6 text-white text-[11px] font-semibold shrink-0">
+    <span id="clock">09:41</span>
+    <div class="flex items-center gap-1.5"><i class="fa-solid fa-signal text-[10px]"></i><i class="fa-solid fa-wifi text-[10px]"></i><i class="fa-solid fa-battery-three-quarters"></i></div>
+  </div>
+  <!-- app header -->
+  <div class="px-5 pt-3 pb-3 bg-white border-b border-slate-100 shrink-0">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-cyan-600 to-teal-600 flex items-center justify-center text-white shadow"><i class="fa-solid fa-heart-pulse"></i></div>
+        <div>
+          <div class="font-display font-extrabold text-[15px] leading-none">EKG Belajar</div>
+          <div class="text-[11px] font-semibold text-slate-500">Belajar EKG dari dasar hingga mahir</div>
+        </div>
+      </div>
+      <button onclick="toggleFavHeader()" class="w-9 h-9 rounded-full bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600"><i class="fa-regular fa-bookmark"></i></button>
+    </div>
+  </div>
+
+  <!-- scrollable views -->
+  <div class="flex-1 overflow-y-auto no-scrollbar">
+    <!-- HOME — replika gambar -->
+    <div id="view-home" class="p-4 space-y-4">
+      <!-- Tips Hari Ini -->
+      <div class="p-4 rounded-[18px] bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 flex gap-3">
+        <div class="w-10 h-10 rounded-xl bg-amber-400 text-white flex items-center justify-center shrink-0"><i class="fa-regular fa-lightbulb"></i></div>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2"><span class="text-xs font-extrabold tracking-widest text-amber-700">TIPS HARI INI EKG</span><button onclick="nextTip()" class="ml-auto text-[11px] font-bold px-2 py-1 rounded-full bg-white border border-amber-200 text-amber-700">Ganti</button></div>
+          <div id="tipText" class="text-sm font-semibold leading-5 mt-1 text-slate-800">Hitung HR cepat: bagi 300 dengan jumlah kotak besar antara dua R.</div>
+        </div>
+      </div>
+
+      <!-- 3 feature cards -->
+      <div class="grid grid-cols-3 gap-2">
+        <button onclick="switchTab('kuis')" class="text-left p-3 rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-600 text-white">
+          <div class="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center"><i class="fa-solid fa-clipboard-question text-sm"></i></div>
+          <div class="font-extrabold text-[13px] leading-tight mt-2">Kuis</div>
+          <div class="text-xs text-white/80 leading-tight">Uji pemahaman</div>
+          <div id="homeKuisProgress" class="text-[11px] font-bold mt-1.5 px-1.5 py-0.5 rounded-full bg-white/20 inline-block">0 soal</div>
+        </button>
+        <button onclick="switchTab('kalkulator')" class="text-left p-3 rounded-2xl bg-white border border-slate-200">
+          <div class="w-8 h-8 rounded-xl bg-cyan-100 text-cyan-700 flex items-center justify-center"><i class="fa-solid fa-calculator text-sm"></i></div>
+          <div class="font-extrabold text-[13px] leading-tight mt-2 text-slate-900">Kalkulator</div>
+          <div class="text-xs text-slate-500 leading-tight">HR · QTc · Axis</div>
+          <div class="text-[11px] font-bold mt-1.5 text-cyan-700">Buka →</div>
+        </button>
+        <button onclick="switchTab('latihan')" class="text-left p-3 rounded-2xl bg-white border border-slate-200">
+          <div class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center"><i class="fa-solid fa-wave-square text-sm"></i></div>
+          <div class="font-extrabold text-[13px] leading-tight mt-2 text-slate-900">Latihan Strip</div>
+          <div class="text-xs text-slate-500 leading-tight">Baca EKG</div>
+          <div id="homeLatihanProgress" class="text-[11px] font-bold mt-1.5 text-emerald-700">0/strip →</div>
+        </button>
+      </div>
+
+      <!-- EKSPLORASI Menu Belajar — 3x3 grid -->
+      <div>
+        <div class="flex items-center justify-between">
+          <h2 class="font-display font-extrabold text-sm tracking-wide">EKSPLORASI Menu Belajar</h2>
+          <button onclick="switchTab('materi')" class="text-xs font-bold text-cyan-700">Lihat semua</button>
+        </div>
+        <div id="menuGrid" class="mt-3 grid grid-cols-3 gap-2.5"></div>
+      </div>
+
+      <div class="p-3 rounded-2xl bg-slate-900 text-white flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center"><i class="fa-solid fa-fire text-amber-400"></i></div>
+        <div class="flex-1"><div class="font-bold text-sm">Streak belajar</div><div id="homeStreak" class="text-xs text-white/70">0 hari • ayo mulai hari ini</div></div>
+        <button onclick="switchTab('kuis')" class="px-3 py-1.5 rounded-full bg-white text-slate-900 text-xs font-bold">Kuis</button>
+      </div>
+    </div>
+
+    <!-- MATERI -->
+    <div id="view-materi" class="hidden p-4 space-y-3">
+      <div class="flex items-center gap-2">
+        <button onclick="switchTab('home')" class="w-8 h-8 rounded-xl bg-white border border-slate-200 flex items-center justify-center"><i class="fa-solid fa-arrow-left text-xs"></i></button>
+        <h2 class="font-display font-extrabold">Materi</h2>
+        <span class="ml-auto text-xs font-bold px-2 py-1 rounded-full bg-slate-900 text-white" id="materiCount">9 modul</span>
+      </div>
+      <div class="relative">
+        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+        <input id="searchMateri" oninput="renderMateri()" placeholder="Cari: dasar, aritmia, axis..." class="w-full pl-9 pr-3 py-2.5 rounded-full border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-200">
+      </div>
+      <div class="flex gap-1.5 overflow-auto no-scrollbar pb-1">
+        <button onclick="filterMateri('semua')" data-cat="semua" class="cat-btn px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-slate-900 text-white">Semua</button>
+        <button onclick="filterMateri('Dasar')" data-cat="Dasar" class="cat-btn px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white border border-slate-200">Dasar</button>
+        <button onclick="filterMateri('Klinis')" data-cat="Klinis" class="cat-btn px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white border border-slate-200">Klinis</button>
+        <button onclick="filterMateri('Alat')" data-cat="Alat" class="cat-btn px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white border border-slate-200">Alat</button>
+      </div>
+      <div id="listMateri" class="space-y-2.5"></div>
+      <!-- detail materi inline -->
+      <div id="materiDetail" class="hidden p-4 rounded-[20px] bg-white border border-slate-200">
+        <button onclick="closeMateriDetail()" class="text-xs font-bold px-2.5 py-1 rounded-full bg-slate-100">← Kembali</button>
+        <div id="materiDetailContent" class="mt-3"></div>
+      </div>
+    </div>
+
+    <!-- KUIS -->
+    <div id="view-kuis" class="hidden p-4 space-y-3">
+      <div class="flex items-center gap-2">
+        <button onclick="switchTab('home')" class="w-8 h-8 rounded-xl bg-white border border-slate-200 flex items-center justify-center"><i class="fa-solid fa-arrow-left text-xs"></i></button>
+        <h2 class="font-display font-extrabold">Kuis EKG</h2>
+        <span id="kuisScoreBadge" class="ml-auto text-xs font-bold px-2.5 py-1 rounded-full bg-violet-600 text-white">Skor 0</span>
+      </div>
+      <div class="flex gap-2 overflow-auto no-scrollbar">
+        <button onclick="filterKuis('semua')" data-kcat="semua" class="kcat px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-slate-900 text-white">Semua</button>
+        <button onclick="filterKuis('Dasar')" data-kcat="Dasar" class="kcat px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white border">Dasar</button>
+        <button onclick="filterKuis('Aritmia')" data-kcat="Aritmia" class="kcat px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white border">Aritmia</button>
+        <button onclick="filterKuis('Klinis')" data-kcat="Klinis" class="kcat px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white border">Klinis</button>
+      </div>
+      <div id="kuisProgress" class="h-2 bg-slate-200 rounded-full overflow-hidden"><div id="kuisBar" class="h-full bg-violet-600" style="width:0%"></div></div>
+      <div id="kuisCard" class="p-4 rounded-[20px] bg-white border border-slate-200"></div>
+      <div class="flex gap-2">
+        <button onclick="prevKuis()" class="flex-1 py-2.5 rounded-full border border-slate-200 bg-white font-bold text-sm">Sebelumnya</button>
+        <button onclick="nextKuis()" class="flex-1 py-2.5 rounded-full bg-violet-600 text-white font-bold text-sm">Lanjut</button>
+      </div>
+      <div id="kuisResult" class="hidden p-4 rounded-[20px] bg-emerald-50 border border-emerald-200"></div>
+    </div>
+
+    <!-- KALKULATOR -->
+    <div id="view-kalkulator" class="hidden p-4 space-y-3">
+      <div class="flex items-center gap-2">
+        <button onclick="switchTab('home')" class="w-8 h-8 rounded-xl bg-white border border-slate-200 flex items-center justify-center"><i class="fa-solid fa-arrow-left text-xs"></i></button>
+        <h2 class="font-display font-extrabold">Kalkulator HR · QTc · Axis</h2>
+      </div>
+      <!-- HR -->
+      <div class="p-4 rounded-[20px] bg-white border border-slate-200">
+        <div class="flex items-center gap-2"><div class="w-8 h-8 rounded-xl bg-cyan-600 text-white flex items-center justify-center"><i class="fa-solid fa-heart-pulse text-xs"></i></div><h3 class="font-extrabold text-sm">Heart Rate</h3><span class="ml-auto text-[11px] font-bold px-2 py-1 rounded-full bg-slate-900 text-white">300 / kotak besar</span></div>
+        <div class="mt-3 grid grid-cols-2 gap-2">
+          <div><label class="text-xs font-bold">Kotak besar R-R</label><input id="hrKotak" type="number" step="0.1" placeholder="4" oninput="calcHR()" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"></div>
+          <div><label class="text-xs font-bold">Kotak kecil R-R</label><input id="hrKecil" type="number" placeholder="20" oninput="calcHRkecil()" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"></div>
+          <div><label class="text-xs font-bold">RR interval (detik)</label><input id="hrRR" type="number" step="0.01" placeholder="0.8" oninput="calcHRrr()" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"></div>
+          <div><label class="text-xs font-bold">Metode</label><select id="hrMetode" onchange="calcHR()" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white"><option>300/kotak besar</option><option>1500/kotak kecil</option><option>60/RR detik</option></select></div>
+        </div>
+        <div class="mt-3 p-3 rounded-2xl bg-cyan-50 border border-cyan-200 text-center"><div class="text-xs font-bold tracking-widest text-cyan-700">HASIL HR</div><div id="hrHasil" class="font-black text-2xl text-cyan-700">—</div><div id="hrKategori" class="text-xs font-semibold text-slate-600"></div></div>
+        <div class="mt-2 text-[11px] text-slate-500 leading-4">Tips: 1 kotak besar = 0.2 detik (5mm), 1 kotak kecil = 0.04 detik. Regular → pakai R-R, irregular → hitung 6 detik ×10.</div>
+      </div>
+      <!-- QTc -->
+      <div class="p-4 rounded-[20px] bg-white border border-slate-200">
+        <div class="flex items-center gap-2"><div class="w-8 h-8 rounded-xl bg-violet-600 text-white flex items-center justify-center"><i class="fa-solid fa-wave-square text-xs"></i></div><h3 class="font-extrabold text-sm">QTc (Bazett)</h3></div>
+        <div class="mt-3 grid grid-cols-2 gap-2">
+          <div><label class="text-xs font-bold">QT (ms)</label><input id="qt" type="number" placeholder="400" oninput="calcQTc()" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"></div>
+          <div><label class="text-xs font-bold">RR (ms) atau HR</label><input id="qtRR" type="number" placeholder="800" oninput="calcQTc()" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"></div>
+          <div class="col-span-2"><label class="text-xs font-bold">HR (bpm) — alternatif isi HR, kosongkan RR</label><input id="qtHR" type="number" placeholder="75" oninput="calcQTcHR()" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"></div>
+        </div>
+        <div class="mt-3 p-3 rounded-2xl bg-violet-50 border border-violet-200 text-center"><div class="text-xs font-bold tracking-widest text-violet-700">QTc</div><div id="qtcHasil" class="font-black text-2xl text-violet-700">—</div><div id="qtcKategori" class="text-xs font-semibold"></div></div>
+        <div class="text-[11px] text-slate-500 mt-1">Normal pria &lt;450ms, wanita &lt;460ms. Bazett: QTc = QT / √RR(detik).</div>
+      </div>
+      <!-- Axis -->
+      <div class="p-4 rounded-[20px] bg-white border border-slate-200">
+        <div class="flex items-center gap-2"><div class="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center"><i class="fa-solid fa-compass text-xs"></i></div><h3 class="font-extrabold text-sm">Axis QRS</h3></div>
+        <div class="mt-3 grid grid-cols-2 gap-2">
+          <div><label class="text-xs font-bold">Lead I (mm)</label><input id="axisI" type="number" step="0.5" placeholder="5" oninput="calcAxis()" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"></div>
+          <div><label class="text-xs font-bold">aVF (mm)</label><input id="axisAvf" type="number" step="0.5" placeholder="8" oninput="calcAxis()" class="mt-1 w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm"></div>
+        </div>
+        <div class="mt-3">
+          <div class="h-32 relative bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden flex items-center justify-center">
+            <div class="absolute w-[88%] h-[2px] bg-slate-300 top-1/2 left-[6%]"></div>
+            <div class="absolute h-[88%] w-[2px] bg-slate-300 left-1/2 top-[6%]"></div>
+            <div class="absolute left-2 top-1/2 -translate-y-1/2 text-[10px] font-bold">I−</div><div class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-bold">I+</div>
+            <div class="absolute left-1/2 top-2 -translate-x-1/2 text-[10px] font-bold">aVF−</div><div class="absolute left-1/2 bottom-2 -translate-x-1/2 text-[10px] font-bold">aVF+</div>
+            <div id="axisArrow" class="absolute w-[70px] h-[3px] bg-emerald-600 rounded-full origin-left" style="left:50%; top:50%; transform:rotate(0deg)"></div>
+            <div class="absolute w-2 h-2 rounded-full bg-slate-900 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+          </div>
+        </div>
+        <div class="mt-3 p-3 rounded-2xl bg-emerald-50 border border-emerald-200 text-center"><div id="axisHasil" class="font-black text-emerald-700">—</div><div id="axisKategori" class="text-xs font-semibold"></div></div>
+      </div>
+    </div>
+
+    <!-- LATIHAN STRIP -->
+    <div id="view-latihan" class="hidden p-4 space-y-3">
+      <div class="flex items-center gap-2">
+        <button onclick="switchTab('home')" class="w-8 h-8 rounded-xl bg-white border border-slate-200 flex items-center justify-center"><i class="fa-solid fa-arrow-left text-xs"></i></button>
+        <h2 class="font-display font-extrabold">Latihan Strip EKG</h2>
+        <span id="stripProgress" class="ml-auto text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-600 text-white">1/8</span>
+      </div>
+      <div id="stripCard" class="p-3 rounded-[20px] bg-white border border-slate-200"></div>
+      <div id="stripFeedback" class="hidden p-3 rounded-2xl border"></div>
+      <div class="flex gap-2">
+        <button onclick="prevStrip()" class="flex-1 py-2.5 rounded-full border border-slate-200 bg-white font-bold text-sm">Sebelumnya</button>
+        <button onclick="nextStrip()" class="flex-1 py-2.5 rounded-full bg-emerald-600 text-white font-bold text-sm">Lanjut</button>
+      </div>
+    </div>
+
+    <!-- VIDEO -->
+    <div id="view-video" class="hidden p-4 space-y-3">
+      <div class="flex items-center gap-2">
+        <button onclick="switchTab('home')" class="w-8 h-8 rounded-xl bg-white border border-slate-200 flex items-center justify-center"><i class="fa-solid fa-arrow-left text-xs"></i></button>
+        <h2 class="font-display font-extrabold">Video Belajar</h2>
+      </div>
+      <div id="listVideo" class="space-y-3"></div>
+      <div id="videoPlayer" class="hidden p-3 rounded-[20px] bg-slate-900 text-white">
+        <div class="flex items-center justify-between"><div id="videoTitle" class="font-bold text-sm">—</div><button onclick="closeVideo()" class="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center"><i class="fa-solid fa-xmark text-xs"></i></button></div>
+        <div class="mt-3 rounded-2xl overflow-hidden bg-black aspect-video flex items-center justify-center"><div class="text-center p-6"><div class="w-12 h-12 rounded-full bg-white/15 flex items-center justify-center mx-auto"><i class="fa-solid fa-play"></i></div><div class="text-sm font-bold mt-2">Placeholder video</div><div class="text-xs text-white/60">Ganti dengan file nyata di produksi</div></div></div>
+        <button onclick="markVideoDone()" class="mt-3 w-full py-2.5 rounded-full bg-white text-slate-900 font-bold text-sm">Tandai selesai</button>
+      </div>
+    </div>
+
+    <!-- FAVORIT -->
+    <div id="view-favorit" class="hidden p-4 space-y-3">
+      <h2 class="font-display font-extrabold">Favorit</h2>
+      <div id="listFavorit" class="space-y-2"></div>
+    </div>
+
+    <!-- TENTANG / PROFIL -->
+    <div id="view-profil" class="hidden p-4 space-y-3">
+      <h2 class="font-display font-extrabold">Profil & Tentang</h2>
+      <div class="p-4 rounded-[20px] bg-gradient-to-br from-cyan-600 to-teal-600 text-white">
+        <div class="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center text-xl"><i class="fa-solid fa-user-doctor"></i></div>
+        <div class="font-display font-extrabold mt-3">Calon Dokter</div>
+        <div class="text-sm text-white/80">EKG Belajar — prototype offline, semua progress di localStorage.</div>
+        <div class="mt-3 grid grid-cols-3 gap-2 text-center">
+          <div class="bg-white/15 rounded-2xl p-2.5"><div id="statMateri" class="font-black">0/9</div><div class="text-xs text-white/70">Materi</div></div>
+          <div class="bg-white rounded-2xl p-2.5 text-slate-900"><div id="statKuis" class="font-black">0</div><div class="text-xs text-slate-500">Skor kuis</div></div>
+          <div class="bg-white/15 rounded-2xl p-2.5"><div id="statVideo" class="font-black">0/6</div><div class="text-xs text-white/70">Video</div></div>
+        </div>
+      </div>
+      <div class="p-4 rounded-[20px] bg-white border border-slate-200">
+        <h3 class="font-extrabold text-sm">Tentang Aplikasi</h3>
+        <p class="text-sm text-slate-600 leading-6 mt-2">Replika menu dari desain: Dasar EKG, Interpretasi, Ritme Normal, Aritmia, Kuis, Kalkulator HR/QTc/Axis, Video, Favorit. Untuk pembelajaran — bukan alat diagnosis.</p>
+        <div class="mt-3 flex flex-wrap gap-2"><span class="px-2.5 py-1 rounded-full bg-slate-900 text-white text-xs font-bold">Offline</span><span class="px-2.5 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-xs font-bold">Mobile friendly</span></div>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="exportData()" class="flex-1 py-2.5 rounded-full border border-slate-200 bg-white font-bold text-sm">Export</button>
+        <label class="flex-1 py-2.5 rounded-full border border-slate-200 bg-white font-bold text-sm text-center cursor-pointer">Import<input type="file" accept=".json" class="hidden" onchange="importData(event)"></label>
+      </div>
+      <button onclick="resetData()" class="w-full py-2.5 rounded-full bg-rose-50 border border-rose-200 text-rose-700 font-bold text-sm">Reset progress</button>
+    </div>
+
+    <!-- MATERI / TENTANG generic — for grid nav -->
+    <div id="view-tentang" class="hidden p-4">
+      <h2 class="font-display font-extrabold">Tentang</h2>
+      <p class="text-sm text-slate-600 mt-2">Lihat Profil untuk info lengkap.</p>
+      <button onclick="switchTab('profil')" class="mt-3 px-4 py-2 rounded-full bg-slate-900 text-white text-sm font-bold">Ke Profil</button>
+    </div>
+  </div>
+
+  <!-- bottom nav — shrink-0 flex footer, tidak absolute agar tidak menumpuk -->
+  <nav class="shrink-0 bg-white border-t border-slate-200 px-1 py-1.5 flex justify-around z-10">
+    <button onclick="switchTab('home')" data-tab="home" class="tab-btn flex flex-col items-center gap-0.5 px-2 py-1 rounded-2xl"><i class="fa-solid fa-house text-[16px]"></i><span class="text-[10px] font-bold">Home</span></button>
+    <button onclick="switchTab('materi')" data-tab="materi" class="tab-btn flex flex-col items-center gap-0.5 px-2 py-1 rounded-2xl"><i class="fa-solid fa-book-open text-[16px]"></i><span class="text-[10px] font-bold">Materi</span></button>
+    <button onclick="switchTab('kuis')" data-tab="kuis" class="tab-btn flex flex-col items-center gap-0.5 px-2 py-1 rounded-2xl"><i class="fa-solid fa-clipboard-question text-[16px]"></i><span class="text-[10px] font-bold">Kuis</span></button>
+    <button onclick="switchTab('favorit')" data-tab="favorit" class="tab-btn flex flex-col items-center gap-0.5 px-2 py-1 rounded-2xl"><i class="fa-regular fa-bookmark text-[16px]"></i><span class="text-[10px] font-bold">Favorit</span></button>
+    <button onclick="switchTab('profil')" data-tab="profil" class="tab-btn flex flex-col items-center gap-0.5 px-2 py-1 rounded-2xl"><i class="fa-regular fa-user text-[16px]"></i><span class="text-[10px] font-bold">Profil</span></button>
+  </nav>
+</div>
+<p class="text-center text-[11px] text-slate-400 mt-3 px-4">Prototype edukasi — bukan pengganti konsultasi medis.</p>
+</div>
+
+<!-- desktop side info -->
+<div class="hidden lg:block flex-1 max-w-[560px]">
+  <div class="bg-white rounded-[20px] border border-slate-200 p-5 sticky top-[72px]">
+    <div class="text-xs font-bold tracking-widest text-cyan-600">KEDOKTERAN • EKG</div>
+    <h3 class="font-display font-extrabold text-lg mt-1">Belajar EKG interaktif</h3>
+    <p class="text-sm text-slate-600 leading-6 mt-2">Replika gambar: Tips harian, 3 kartu fitur, grid 9 menu (Dasar, Interpretasi, Ritme Normal, Aritmia, Kuis, Kalkulator HR/QTc/Axis, Video, Favorit, Tentang) + bottom nav Home/Materi/Kuis/Favorit/Profil.</p>
+    <ul class="text-sm text-slate-600 list-disc pl-5 mt-3 space-y-1"><li>Kalkulator berfungsi: 300/kotak besar, QTc Bazett, axis I/aVF</li><li>Kuis & Latihan Strip dengan feedback</li><li>Video placeholder + Favorit & progress localStorage</li></ul>
+  </div>
+</div>
+</div>
+
+<div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 hidden px-4 py-3 rounded-2xl bg-slate-900 text-white text-sm font-semibold shadow-xl">—</div>
+
+<script>
+const LS='ekg_belajar_v2';
+const $=s=>document.querySelector(s);
+function uid(){return Math.random().toString(36).slice(2,9)}
+function toast(m){const t=$('#toast'); t.textContent=m; t.classList.remove('hidden'); setTimeout(()=>t.classList.add('hidden'),2000)}
+function load(){try{const r=localStorage.getItem(LS); if(r) return JSON.parse(r)}catch(e){} return {favs:[], doneMateri:[], kuisAns:{}, kuisScore:0, stripAns:{}, videoDone:{}, streak:0, lastVisit:null}}
+let S=load();
+function save(){localStorage.setItem(LS, JSON.stringify(S))}
+
+const TIPS=[
+ "Hitung HR cepat: bagi 300 dengan jumlah kotak besar antara dua R.",
+ "1 kotak kecil = 1 mm = 0.04 detik; 1 kotak besar = 5 mm = 0.2 detik.",
+ "Gelombang P normal <120 ms & <2.5 mm; QRS <120 ms.",
+ "QTc normal pria <450 ms, wanita <460 ms (Bazett).",
+ "Axis normal -30° sampai +90°; LAD, RAD, extreme axis hafalkan.",
+ "STEMI: ST elevasi ≥1 mm di 2 sadapan berurutan.",
+];
+let tipIdx=0;
+function nextTip(){tipIdx=(tipIdx+1)%TIPS.length; $('#tipText').textContent=TIPS[tipIdx]}
+
+const MENU=[
+ {id:'dasar', label:'Dasar EKG', icon:'fa-heart-pulse', color:'bg-cyan-100 text-cyan-700', cat:'Dasar'},
+ {id:'interpretasi', label:'Interpretasi EKG', icon:'fa-stethoscope', color:'bg-teal-100 text-teal-700', cat:'Klinis'},
+ {id:'ritme', label:'Ritme Normal', icon:'fa-wave-square', color:'bg-emerald-100 text-emerald-700', cat:'Dasar'},
+ {id:'aritmia', label:'Aritmia', icon:'fa-bolt', color:'bg-amber-100 text-amber-700', cat:'Klinis'},
+ {id:'kuis', label:'Kuis EKG', icon:'fa-clipboard-question', color:'bg-violet-100 text-violet-700', cat:'Alat'},
+ {id:'kalkulator', label:'Kalkulator HR', icon:'fa-calculator', color:'bg-sky-100 text-sky-700', cat:'Alat'},
+ {id:'video', label:'Video Belajar', icon:'fa-circle-play', color:'bg-rose-100 text-rose-700', cat:'Alat'},
+ {id:'favorit', label:'Favorit', icon:'fa-bookmark', color:'bg-orange-100 text-orange-700', cat:'Alat'},
+ {id:'tentang', label:'Tentang', icon:'fa-circle-info', color:'bg-slate-100 text-slate-700', cat:'Dasar'},
+];
+
+const MATERI=[
+ {id:'dasar', title:'Dasar EKG', cat:'Dasar', icon:'fa-heart-pulse', desc:'Kertas EKG, gelombang P-QRS-T, interval PR/QT, segmen ST.', content:`
+  <div class="space-y-3 text-sm leading-6 text-slate-700">
+    <div class="p-3 rounded-2xl bg-cyan-50 border border-cyan-200"><b>Kertas:</b> kecepatan 25 mm/detik. 1 kotak kecil 1 mm = 0.04 dtk, 1 kotak besar 5 mm = 0.2 dtk. Kalibrasi 10 mm = 1 mV.</div>
+    <ul class="list-disc pl-5 space-y-1"><li><b>P:</b> depolarisasi atrium, <120 ms, <2.5 mm.</li><li><b>QRS:</b> depolarisasi ventrikel, <120 ms (sempit).</li><li><b>T:</b> repolarisasi ventrikel.</li><li><b>PR:</b> 120-200 ms, <b>QT</b> tergantung HR.</li></ul>
+    <div class="p-3 rounded-2xl bg-slate-50 border">Hafalan cepat: <b>300-150-100-75-60-50</b> untuk 1-6 kotak besar.</div>
+  </div>`},
+ {id:'interpretasi', title:'Interpretasi Sistematis', cat:'Klinis', icon:'fa-stethoscope', desc:'Urutan baca: rate, ritme, axis, P, QRS, ST-T, QTc.', content:`
+  <div class="space-y-3 text-sm leading-6 text-slate-700">
+    <ol class="list-decimal pl-5 space-y-1"><li><b>Rate</b> — hitung HR (300/kotak besar).</li><li><b>Ritme</b> — regular? P tiap QRS?</li><li><b>Axis</b> — lihat I & aVF.</li><li><b>P</b> — ada? morfologi?</li><li><b>QRS</b> — lebar? R/S?</li><li><b>ST-T</b> — elevasi/depresi?</li><li><b>QTc</b> — hitung Bazett.</li></ol>
+    <div class="p-3 rounded-2xl bg-amber-50 border border-amber-200">Jangan baca lompat-lompat — ikut urutan biar tidak miss STEMI/AV block.</div>
+  </div>`},
+ {id:'ritme', title:'Ritme Normal', cat:'Dasar', icon:'fa-wave-square', desc:'Sinus rhythm: P positif di II, tiap P diikuti QRS, RR regular.', content:`
+  <div class="text-sm leading-6 text-slate-700 space-y-2">
+    <div class="ecg-grid rounded-2xl border border-rose-200 h-24 relative overflow-hidden flex items-center">
+      <svg viewBox="0 0 300 60" class="w-full h-full"><path d="M0 30 H40 L50 30 L55 10 L60 50 L65 30 H100 L110 30 L115 10 L120 50 L125 30 H170 L180 30 L185 10 L190 50 L195 30 H240 L250 30 L255 10 L260 50 L265 30 H300" fill="none" stroke="#dc2626" stroke-width="1.6"/></svg>
+    </div>
+    <p><b>Sinus:</b> P tegak di II, PR 120-200 ms, QRS sempit, rate 60-100, regular.</p>
+  </div>`},
+ {id:'aritmia', title:'Aritmia Penting', cat:'Klinis', icon:'fa-bolt', desc:'AF, SVT, VT, bradikardia, AV block — kenali pola.', content:`
+  <div class="text-sm leading-6 text-slate-700 space-y-2">
+    <div class="grid grid-cols-2 gap-2">
+      <div class="p-2.5 rounded-2xl bg-violet-50 border border-violet-200"><b>AF:</b> irregularly irregular, tanpa P, f wave.</div>
+      <div class="p-2.5 rounded-2xl bg-rose-50 border border-rose-200"><b>VT:</b> QRS lebar, rate cepat, AV dissociasi.</div>
+      <div class="p-2.5 rounded-2xl bg-amber-50 border border-amber-200"><b>SVT:</b> QRS sempit, rate 150-250, P tersembunyi.</div>
+      <div class="p-2.5 rounded-2xl bg-slate-50 border"><b>AV block:</b> PR memanjang/putus.</div>
+    </div>
+  </div>`},
+ {id:'kuis-card', title:'Kuis EKG', cat:'Alat', icon:'fa-clipboard-question', desc:'Bank soal — uji interpretasi.', content:`<p class="text-sm text-slate-600">Buka tab Kuis untuk mengerjakan soal interaktif.</p><button onclick="switchTab('kuis')" class="mt-3 px-4 py-2 rounded-full bg-violet-600 text-white text-sm font-bold">Mulai Kuis</button>`},
+ {id:'kalkulator-card', title:'Kalkulator HR', cat:'Alat', icon:'fa-calculator', desc:'Hitung HR, QTc, Axis.', content:`<p class="text-sm text-slate-600">Buka tab Kalkulator.</p><button onclick="switchTab('kalkulator')" class="mt-3 px-4 py-2 rounded-full bg-cyan-600 text-white text-sm font-bold">Buka Kalkulator</button>`},
+ {id:'video-card', title:'Video Belajar', cat:'Alat', icon:'fa-circle-play', desc:'Playlist video EKG.', content:`<p class="text-sm text-slate-600">Koleksi video pembelajaran.</p><button onclick="switchTab('video')" class="mt-3 px-4 py-2 rounded-full bg-rose-600 text-white text-sm font-bold">Lihat Video</button>`},
+ {id:'favorit-card', title:'Favorit', cat:'Alat', icon:'fa-bookmark', desc:'Materi yang kamu simpan.', content:`<p class="text-sm text-slate-600">Tandai materi favorit untuk akses cepat.</p>`},
+ {id:'tentang-card', title:'Tentang', cat:'Dasar', icon:'fa-circle-info', desc:'Info aplikasi & disclaimer.', content:`<p class="text-sm text-slate-600">EKG Belajar — prototype edukasi, bukan alat diagnosis. Konsultasi ke dokter untuk kasus nyata.</p>`},
+];
+
+let materiCat='semua';
+function filterMateri(c){materiCat=c; document.querySelectorAll('.cat-btn').forEach(b=>{const on=b.dataset.cat===c; b.className= on? 'cat-btn px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-slate-900 text-white' : 'cat-btn px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white border border-slate-200'}); renderMateri()}
+function renderMateri(){
+  const q=($('#searchMateri').value||'').toLowerCase();
+  let data=[...MATERI];
+  if(materiCat!=='semua') data=data.filter(m=>m.cat===materiCat);
+  if(q) data=data.filter(m=> m.title.toLowerCase().includes(q) || m.desc.toLowerCase().includes(q));
+  $('#materiCount').textContent=data.length+' modul';
+  const list=$('#listMateri'); list.innerHTML='';
+  data.forEach(m=>{
+    const fav=S.favs.includes(m.id);
+    const div=document.createElement('div');
+    div.className='p-3 rounded-[18px] bg-white border border-slate-200 flex gap-3 cursor-pointer hover:border-cyan-200';
+    div.onclick=()=>openMateri(m.id);
+    div.innerHTML=`<div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0"><i class="fa-solid ${m.icon} text-sm"></i></div>
+    <div class="flex-1 min-w-0"><div class="font-bold text-sm leading-tight">${m.title}</div><div class="text-xs text-slate-500 leading-4 mt-0.5 line-clamp-2">${m.desc}</div><div class="mt-2 flex gap-1.5"><span class="px-2 py-1 rounded-full bg-slate-100 text-xs font-bold">${m.cat}</span><span class="px-2 py-1 rounded-full border text-xs font-bold">${fav?'★ Favorit':'Baca'}</span></div></div>
+    <button onclick="event.stopPropagation(); toggleFav('${m.id}')" class="w-9 h-9 rounded-xl ${fav?'bg-amber-400 text-white':'bg-white border border-slate-200 text-slate-400'} flex items-center justify-center shrink-0"><i class="${fav?'fa-solid':'fa-regular'} fa-bookmark text-xs"></i></button>`;
+    list.appendChild(div);
+  });
+}
+function openMateri(id){
+  const m=MATERI.find(x=>x.id===id); if(!m) return;
+  // routing for special cards
+  if(id==='kuis-card') return switchTab('kuis');
+  if(id==='kalkulator-card') return switchTab('kalkulator');
+  if(id==='video-card') return switchTab('video');
+  if(id==='favorit-card') return switchTab('favorit');
+  if(id==='tentang-card') return switchTab('profil');
+  if(!S.doneMateri.includes(id)){S.doneMateri.push(id); save(); updateHome();}
+  $('#listMateri').classList.add('hidden');
+  $('#materiDetail').classList.remove('hidden');
+  const fav=S.favs.includes(id);
+  $('#materiDetailContent').innerHTML=`
+    <div class="flex items-start justify-between gap-3">
+      <div class="flex gap-3"><div class="w-10 h-10 rounded-xl bg-cyan-600 text-white flex items-center justify-center"><i class="fa-solid ${m.icon}"></i></div>
+      <div><div class="font-extrabold">${m.title}</div><div class="text-xs text-slate-500">${m.cat} • ${m.desc}</div></div></div>
+      <button onclick="toggleFav('${m.id}'); openMateri('${m.id}')" class="px-3 py-1.5 rounded-full ${fav?'bg-amber-400 text-white':'bg-white border border-slate-200'} text-xs font-bold">${fav?'★ Favorit':'☆ Favorit'}</button>
+    </div>
+    <div class="mt-3">${m.content}</div>
+  `;
+}
+function closeMateriDetail(){ $('#materiDetail').classList.add('hidden'); $('#listMateri').classList.remove('hidden'); }
+function toggleFav(id){ if(S.favs.includes(id)) S.favs=S.favs.filter(x=>x!==id); else S.favs.push(id); save(); renderMateri(); renderFavorit(); updateHome(); toast(S.favs.includes(id)?'Ditambah ke favorit':'Dihapus dari favorit'); }
+function toggleFavHeader(){ switchTab('favorit'); }
+
+// KUIS
+const KUIS=[
+ {id:'q1', cat:'Dasar', q:'1 kotak besar = berapa detik?', opts:['0.04 dtk','0.2 dtk','0.4 dtk','1 dtk'], ans:1, exp:'1 kotak kecil 0.04 dtk, 1 kotak besar (5 kecil) = 0.2 dtk.'},
+ {id:'q2', cat:'Dasar', q:'HR jika R-R = 4 kotak besar?', opts:['50','60','75','100'], ans:2, exp:'300/4 = 75 bpm.'},
+ {id:'q3', cat:'Aritmia', q:'EKG irregularly irregular tanpa gelombang P jelas, paling mungkin?', opts:['Sinus','Atrial Fibrillation','VT','AV block'], ans:1, exp:'AF: tidak ada P, baseline f wave, RR irregular.'},
+ {id:'q4', cat:'Klinis', q:'ST elevasi 2 mm di II, III, aVF menunjukkan?', opts:['Anterior STEMI','Inferior STEMI','Lateral STEMI','NSTEMI'], ans:1, exp:'II, III, aVF = inferior.'},
+ {id:'q5', cat:'Dasar', q:'QRS normal berapa ms?', opts:['<80','<120','120-200','>200'], ans:1, exp:'QRS normal sempit <120 ms.'},
+ {id:'q6', cat:'Aritmia', q:'QRS lebar regular 180 bpm, paling curiga?', opts:['SVT dengan aberransi','VT','Sinus takikardia','AF'], ans:1, exp:'QRS lebar + cepat = anggap VT sampai terbukti lain.'},
+ {id:'q7', cat:'Klinis', q:'QTc 520 ms pada pria, interpretasi?', opts:['Normal','Borderline','Memanjang','Pendek'], ans:2, exp:'Memanjang (>450 pria). Risiko torsades.'},
+ {id:'q8', cat:'Dasar', q:'Axis -40° termasuk?', opts:['Normal','LAD','RAD','Extreme'], ans:1, exp:'Normal -30 s/d +90, jadi -40 = LAD.'},
+];
+let kuisCat='semua', kuisIdx=0;
+function filterKuis(c){kuisCat=c; document.querySelectorAll('.kcat').forEach(b=>{const on=b.dataset.kcat===c; b.className= on? 'kcat px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-slate-900 text-white':'kcat px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap bg-white border'}); kuisIdx=0; renderKuis()}
+function getKuisList(){ let d=[...KUIS]; if(kuisCat!=='semua') d=d.filter(x=>x.cat===kuisCat); return d }
+function renderKuis(){
+  const list=getKuisList();
+  if(!list.length){$('#kuisCard').innerHTML='<div class="text-sm text-slate-500">Tidak ada soal</div>'; return}
+  if(kuisIdx<0) kuisIdx=0; if(kuisIdx>=list.length) kuisIdx=list.length-1;
+  const q=list[kuisIdx];
+  const chosen=S.kuisAns[q.id];
+  const total=list.length; const answered=Object.keys(S.kuisAns).filter(k=> list.some(x=>x.id===k)).length;
+  $('#kuisBar').style.width=Math.round(answered/total*100)+'%';
+  $('#kuisScoreBadge').textContent='Skor '+S.kuisScore+' • '+answered+'/'+total;
+  let html=`<div class="text-xs font-bold tracking-widest text-violet-600">${q.cat} • ${kuisIdx+1}/${total}</div><div class="font-bold text-sm mt-1 leading-5">${q.q}</div><div class="mt-3 space-y-2">`;
+  q.opts.forEach((o,i)=>{
+    const isChosen=chosen===i;
+    const isAns=i===q.ans;
+    let cls='w-full text-left px-3 py-2.5 rounded-xl border text-sm font-semibold ';
+    if(chosen!==undefined){
+      if(isAns) cls+='bg-emerald-50 border-emerald-300 text-emerald-700';
+      else if(isChosen) cls+='bg-rose-50 border-rose-300 text-rose-700';
+      else cls+='bg-white border-slate-200 text-slate-600';
+    } else {
+      cls+= isChosen? 'bg-violet-600 text-white border-violet-600':'bg-white border-slate-200 hover:border-violet-200';
+    }
+    html+=`<button onclick="answerKuis(${i})" class="${cls}">${String.fromCharCode(65+i)}. ${o}</button>`;
+  });
+  html+=`</div>`;
+  if(chosen!==undefined) html+=`<div class="mt-3 p-3 rounded-xl ${chosen===q.ans?'bg-emerald-50 border border-emerald-200 text-emerald-800':'bg-amber-50 border border-amber-200 text-amber-800'} text-sm"><b>${chosen===q.ans?'Benar!':'Belum tepat.'}</b> ${q.exp}</div>`;
+  $('#kuisCard').innerHTML=html;
+  // result
+  if(answered===total){
+    const correct=list.filter(x=> S.kuisAns[x.id]===x.ans).length;
+    $('#kuisResult').classList.remove('hidden');
+    $('#kuisResult').innerHTML=`<div class="font-black">Hasil: ${correct}/${total} benar</div><div class="text-sm mt-1">${correct===total?'Sempurna!':'Lanjutkan belajar, ulangi yang salah.'}</div><button onclick="resetKuis()" class="mt-3 px-4 py-2 rounded-full bg-white border font-bold text-sm">Ulangi</button>`;
+  } else $('#kuisResult').classList.add('hidden');
+}
+function answerKuis(i){
+  const list=getKuisList(); const q=list[kuisIdx];
+  const prev=S.kuisAns[q.id];
+  if(prev===undefined && i===q.ans) S.kuisScore++;
+  if(prev!==undefined && prev===q.ans && i!==q.ans) S.kuisScore=Math.max(0,S.kuisScore-1);
+  S.kuisAns[q.id]=i; save(); renderKuis(); updateHome();
+}
+function prevKuis(){ kuisIdx=Math.max(0,kuisIdx-1); renderKuis()}
+function nextKuis(){ const list=getKuisList(); kuisIdx=Math.min(list.length-1,kuisIdx+1); renderKuis()}
+function resetKuis(){ const list=getKuisList(); list.forEach(x=> delete S.kuisAns[x.id]); S.kuisScore=0; save(); kuisIdx=0; renderKuis(); updateHome();}
+
+// KALKULATOR
+function calcHR(){
+  const kotak=Number($('#hrKotak').value);
+  if(!kotak || kotak<=0){$('#hrHasil').textContent='—'; return}
+  let hr=300/kotak;
+  // sync small & rr
+  $('#hrKecil').value=Math.round(kotak*5);
+  $('#hrRR').value=(kotak*0.2).toFixed(2);
+  showHR(hr);
+}
+function calcHRkecil(){
+  const kecil=Number($('#hrKecil').value);
+  if(!kecil) return;
+  $('#hrKotak').value=(kecil/5).toFixed(1);
+  calcHR();
+}
+function calcHRrr(){
+  const rr=Number($('#hrRR').value);
+  if(!rr) return;
+  const hr=60/rr;
+  $('#hrKotak').value=(60/hr/0.2? 300/hr : '').toString() || (300/hr).toFixed(1);
+  showHR(hr);
+}
+function showHR(hr){
+  $('#hrHasil').textContent=Math.round(hr)+' bpm';
+  let kat=''; if(hr<60) kat='Bradikardia'; else if(hr<=100) kat='Normal (60-100)'; else if(hr<=150) kat='Takikardia'; else kat='Takikardia cepat';
+  $('#hrKategori').textContent=kat;
+}
+function calcQTc(){
+  const qt=Number($('#qt').value);
+  let rr=Number($('#qtRR').value);
+  if(!qt || !rr){$('#qtcHasil').textContent='—'; return}
+  // rr in ms to sec
+  const rrSec=rr/1000;
+  const qtc=qt/Math.sqrt(rrSec);
+  showQTc(Math.round(qtc));
+}
+function calcQTcHR(){
+  const hr=Number($('#qtHR').value);
+  if(!hr){calcQTc(); return}
+  const rr=60000/hr;
+  $('#qtRR').value=Math.round(rr);
+  calcQTc();
+}
+function showQTc(v){
+  $('#qtcHasil').textContent=v+' ms';
+  let kat=''; if(v<450) kat='Normal (pria <450, wanita <460)'; else if(v<480) kat='Borderline'; else kat='Memanjang — waspada';
+  $('#qtcKategori').textContent=kat;
+  $('#qtcKategori').className='text-xs font-bold '+(v>=480?'text-rose-600': v>=450?'text-amber-600':'text-emerald-600');
+}
+function calcAxis(){
+  const i=Number($('#axisI').value);
+  const a=Number($('#axisAvf').value);
+  if(isNaN(i) || isNaN(a) || ($('#axisI').value==='' && $('#axisAvf').value==='')){ $('#axisHasil').textContent='—'; return}
+  const deg=Math.atan2(a,i)*180/Math.PI;
+  let norm=((deg%360)+360)%360; if(norm>180) norm-=360; // -180..180
+  const d=Math.round(norm);
+  $('#axisHasil').textContent=d+'°';
+  let kat=''; if(d>=-30 && d<=90) kat='Normal axis (-30° s/d +90°)'; else if(d<-30 && d>=-90) kat='Left axis deviation (LAD)'; else if(d>90 && d<=180) kat='Right axis deviation (RAD)'; else kat='Extreme axis';
+  $('#axisKategori').textContent=kat;
+  // arrow
+  const el=$('#axisArrow'); el.style.transform=`rotate(${d}deg)`;
+}
+
+// STRIP
+const STRIPS=[
+ {id:'s1', title:'Sinus Normal — 75 bpm', svg:`<svg viewBox="0 0 320 60" class="w-full h-[64px]"><rect width="320" height="60" fill="#fff"/><g stroke="#fecaca" stroke-width="1"><line x1="0" y1="10" x2="320" y2="10"/><line x1="0" y1="30" x2="320" y2="30"/><line x1="0" y1="50" x2="320" y2="50"/></g><path d="M0 30 H30 L35 30 L38 18 L42 42 L45 30 H90 L95 30 L98 18 L102 42 L105 30 H150 L155 30 L158 18 L162 42 L165 30 H210 L215 30 L218 18 L222 42 L225 30 H270" fill="none" stroke="#dc2626" stroke-width="1.8"/></svg>`, q:'Interpretasi?', opts:['Sinus rhythm, HR 75, normal','AF','VT','Bradikardia'], ans:0, exp:'P tiap QRS, regular, HR 75 — sinus normal.'},
+ {id:'s2', title:'Atrial Fibrillation', svg:`<svg viewBox="0 0 320 60" class="w-full h-[64px]"><rect width="320" height="60" fill="#fff"/><path d="M0 30 Q10 28 20 32 T40 30 T60 28 T80 32 T100 30 T120 27 T140 33 T160 30 T180 28 T200 32 T220 30 T240 27 T260 33 T280 30 T320 30" fill="none" stroke="#dc2626" stroke-width="1.4" stroke-dasharray="2 2"/><path d="M0 30 H25 L27 30 L30 12 L33 48 L35 30 H70 L73 12 L76 48 L78 30 H120 L123 12 L126 48 L128 30 H170 L173 12 L176 48 L178 30 H230" fill="none" stroke="#7c3aed" stroke-width="1.8"/></svg>`, q:'Paling mungkin?', opts:['Sinus','Atrial Fibrillation','SVT','AV block'], ans:1, exp:'Irregularly irregular, tanpa P, f wave — AF.'},
+ {id:'s3', title:'Ventricular Tachycardia', svg:`<svg viewBox="0 0 320 60" class="w-full h-[64px]"><rect width="320" height="60" fill="#fff"/><path d="M0 30 H20 L25 30 L30 5 L40 55 L45 30 H70 L75 30 L80 5 L90 55 L95 30 H120 L125 30 L130 5 L140 55 L145 30 H170 L175 30 L180 5 L190 55 L195 30 H220" fill="none" stroke="#dc2626" stroke-width="2"/></svg>`, q:'QRS lebar cepat —?', opts:['SVT','VT','AF','Sinus takikardia'], ans:1, exp:'QRS lebar >120 ms, monomorphic, cepat — anggap VT.'},
+ {id:'s4', title:'Bradikardia Sinus 45 bpm', svg:`<svg viewBox="0 0 320 60" class="w-full h-[64px]"><rect width="320" height="60" fill="#fff"/><path d="M0 30 H30 L35 30 L38 18 L42 42 L45 30 H110 L115 30 L118 18 L122 42 L125 30 H190 L195 30 L198 18 L202 42 L205 30 H270" fill="none" stroke="#059669" stroke-width="1.8"/></svg>`, q:'Rate?', opts:['60','45','100','150'], ans:1, exp:'R-R ~6.5 kotak besar → 300/6.5≈46 bpm.'},
+];
+let stripIdx=0;
+function renderStrip(){
+  const s=STRIPS[stripIdx];
+  $('#stripProgress').textContent=(stripIdx+1)+'/'+STRIPS.length;
+  const chosen=S.stripAns[s.id];
+  const done=Object.keys(S.stripAns).length;
+  $('#homeLatihanProgress').textContent=done+'/4 →';
+  let html=`<div class="text-xs font-bold tracking-widest text-emerald-600">${s.title}</div><div class="mt-2 rounded-xl border border-rose-200 overflow-hidden bg-white ecg-grid">${s.svg}</div><div class="font-bold text-sm mt-3">${s.q}</div><div class="mt-2 space-y-2">`;
+  s.opts.forEach((o,i)=>{
+    const isAns=i===s.ans;
+    let cls='w-full text-left px-3 py-2.5 rounded-xl border text-sm font-semibold ';
+    if(chosen!==undefined){
+      if(isAns) cls+='bg-emerald-50 border-emerald-300 text-emerald-700';
+      else if(chosen===i) cls+='bg-rose-50 border-rose-300 text-rose-700';
+      else cls+='bg-white border-slate-200';
+    } else cls+='bg-white border-slate-200 hover:border-emerald-200';
+    html+=`<button onclick="answerStrip(${i})" class="${cls}">${String.fromCharCode(65+i)}. ${o}</button>`;
+  });
+  html+=`</div>`;
+  $('#stripCard').innerHTML=html;
+  const fb=$('#stripFeedback');
+  if(chosen!==undefined){
+    fb.classList.remove('hidden');
+    fb.className='p-3 rounded-2xl border '+(chosen===s.ans?'bg-emerald-50 border-emerald-200 text-emerald-800':'bg-amber-50 border-amber-200 text-amber-800');
+    fb.innerHTML=`<b>${chosen===s.ans?'Benar!':'Belum tepat.'}</b> ${s.exp}`;
+  } else fb.classList.add('hidden');
+}
+function answerStrip(i){ S.stripAns[STRIPS[stripIdx].id]=i; save(); renderStrip(); updateHome();}
+function prevStrip(){ stripIdx=Math.max(0,stripIdx-1); renderStrip()}
+function nextStrip(){ stripIdx=Math.min(STRIPS.length-1,stripIdx+1); renderStrip()}
+
+// VIDEO
+const VIDEOS=[
+ {id:'v1', title:'Cara Baca EKG Sistematis', dur:'8:20', desc:'Langkah rate-ritme-axis-P-QRS-ST-QTc.'},
+ {id:'v2', title:'Aritmia: AF vs SVT vs VT', dur:'10:05', desc:'Bedakan pola QRS sempit vs lebar.'},
+ {id:'v3', title:'STEMI & NSTEMI', dur:'7:40', desc:'ST elevasi, depresi, T inversi.'},
+ {id:'v4', title:'Axis & Blok Cabang', dur:'6:15', desc:'LAD/RAD, RBBB/LBBB.'},
+ {id:'v5', title:'Kalkulator QTc Praktik', dur:'4:30', desc:'Hitung QTc di UGD.'},
+ {id:'v6', title:'Latihan Strip 10 Kasus', dur:'12:00', desc:'Review strip dengan pembahasan.'},
+];
+let currentVideo=null;
+function renderVideo(){
+  const list=$('#listVideo'); list.innerHTML='';
+  VIDEOS.forEach(v=>{
+    const done=!!S.videoDone[v.id];
+    const div=document.createElement('div');
+    div.className='p-3 rounded-[18px] bg-white border flex gap-3 '+(done?'border-emerald-200 bg-emerald-50/50':'border-slate-200');
+    div.innerHTML=`<div class="w-[96px] h-[64px] rounded-xl bg-slate-900 flex items-center justify-center text-white shrink-0"><i class="fa-solid fa-play"></i></div>
+    <div class="flex-1 min-w-0"><div class="flex items-center gap-2"><span class="text-xs font-bold px-1.5 py-0.5 rounded bg-slate-900 text-white">${v.dur}</span>${done?'<span class="text-[11px] font-bold px-1.5 py-0.5 rounded-full bg-emerald-600 text-white">Selesai</span>':''}</div><div class="font-bold text-sm leading-tight mt-1">${v.title}</div><div class="text-xs text-slate-500">${v.desc}</div><button onclick="playVideo('${v.id}')" class="mt-2 px-3 py-1.5 rounded-full bg-slate-900 text-white text-xs font-bold">Putar</button></div>`;
+    list.appendChild(div);
+  });
+  $('#statVideo').textContent=Object.values(S.videoDone).filter(Boolean).length+'/6';
+}
+function playVideo(id){ currentVideo=id; $('#videoPlayer').classList.remove('hidden'); const v=VIDEOS.find(x=>x.id===id); $('#videoTitle').textContent=v.title+' • '+v.dur; $('#videoPlayer').scrollIntoView({behavior:'smooth'});}
+function closeVideo(){ $('#videoPlayer').classList.add('hidden'); }
+function markVideoDone(){ if(!currentVideo) return; S.videoDone[currentVideo]=true; save(); renderVideo(); updateHome(); toast('Video selesai ✓')}
+
+// FAVORIT
+function renderFavorit(){
+  const list=$('#listFavorit'); list.innerHTML='';
+  if(!S.favs.length){ list.innerHTML='<div class="text-sm text-slate-500 text-center py-6 border-2 border-dashed rounded-2xl">Belum ada favorit — tandai ★ di materi</div>'; return}
+  S.favs.forEach(id=>{
+    const m=MATERI.find(x=>x.id===id); if(!m) return;
+    const div=document.createElement('div');
+    div.className='p-3 rounded-2xl bg-white border border-slate-200 flex gap-3';
+    div.innerHTML=`<div class="w-10 h-10 rounded-xl bg-amber-400 text-white flex items-center justify-center"><i class="fa-solid ${m.icon}"></i></div><div class="flex-1"><div class="font-bold text-sm">${m.title}</div><div class="text-xs text-slate-500">${m.desc}</div></div><button onclick="toggleFav('${m.id}')" class="w-8 h-8 rounded-xl bg-rose-50 border border-rose-200 text-rose-600 flex items-center justify-center"><i class="fa-solid fa-trash text-xs"></i></button>`;
+    div.onclick=(e)=>{ if(e.target.closest('button')) return; openMateri(m.id); switchTab('materi');};
+    list.appendChild(div);
+  });
+}
+
+// HOME grid & stats
+function renderMenuGrid(){
+  const grid=$('#menuGrid'); grid.innerHTML='';
+  MENU.forEach(m=>{
+    const isFavAction = m.id==='favorit';
+    const favCount = S.favs.length;
+    const btn=document.createElement('button');
+    btn.className='p-3 rounded-[18px] bg-white border border-slate-200 flex flex-col items-center gap-1.5 hover:border-cyan-200 text-center';
+    btn.onclick=()=>{ if(m.id==='kuis') switchTab('kuis'); else if(m.id==='kalkulator') switchTab('kalkulator'); else if(m.id==='video') switchTab('video'); else if(m.id==='favorit') switchTab('favorit'); else if(m.id==='tentang') switchTab('profil'); else { switchTab('materi'); setTimeout(()=>openMateri(m.id),80)} };
+    btn.innerHTML=`<div class="w-10 h-10 rounded-xl ${m.color} flex items-center justify-center"><i class="fa-solid ${m.icon} text-sm"></i></div><div class="font-bold text-xs leading-tight">${m.label}</div>${isFavAction && favCount?`<span class="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-amber-400 text-white">${favCount}</span>`:''}`;
+    grid.appendChild(btn);
+  });
+}
+function updateHome(){
+  const totalMateri=5; // dasar, interpretasi, ritme, aritmia, tentang
+  const done=S.doneMateri.length;
+  $('#homeKuisProgress').textContent=Object.keys(S.kuisAns).length+'/'+KUIS.length;
+  $('#homeStreak').textContent=done+' materi • '+(S.streak||0)+' streak';
+  $('#statMateri').textContent=done+'/9';
+  $('#statKuis').textContent=S.kuisScore;
+  renderMenuGrid();
+}
+
+function switchTab(id){
+  const map={home:'view-home', materi:'view-materi', kuis:'view-kuis', kalkulator:'view-kalkulator', latihan:'view-latihan', video:'view-video', favorit:'view-favorit', profil:'view-profil', tentang:'view-tentang'};
+  // alias
+  if(id==='tentang') id='profil';
+  const target=map[id]||map.home;
+  Object.values(map).forEach(v=> document.getElementById(v)?.classList.add('hidden'));
+  document.getElementById(target)?.classList.remove('hidden');
+  document.querySelectorAll('.tab-btn').forEach(b=>{
+    const on=b.dataset.tab=== (id==='kalkulator'?'materi': id==='latihan'?'materi': id==='video'?'materi': id); // keep home active? simpler: exact
+    // reset: only exact tab highlights; kalkulator/latihan/video fallback to materi tab? We'll highlight materi for those
+    let activeTab=id;
+    if(['kalkulator','latihan','video'].includes(id)) activeTab='materi';
+    const isOn=b.dataset.tab===activeTab;
+    b.classList.toggle('bg-cyan-600', isOn);
+    b.classList.toggle('text-white', isOn);
+    b.classList.toggle('text-slate-500', !isOn);
+  });
+  // also highlight bottom nav correctly for home/materi/kuis/favorit/profil
+  document.querySelectorAll('.tab-btn').forEach(b=>{ /* already */ });
+  if(target==='view-materi') renderMateri();
+  if(target==='view-kuis') renderKuis();
+  if(target==='view-latihan') renderStrip();
+  if(target==='view-video') renderVideo();
+  if(target==='view-favorit') renderFavorit();
+  if(id==='home') updateHome();
+  document.querySelector('#phone .overflow-y-auto')?.scrollTo({top:0, behavior:'smooth'});
+}
+function updateClock(){ const el=$('#clock'); if(el) el.textContent=new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}); setTimeout(updateClock,30000); }
+
+// export/import
+function exportData(){ const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='ekg-belajar.json'; a.click(); toast('Backup diunduh')}
+function importData(e){ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{try{const j=JSON.parse(r.result); if(!j.favs) throw new Error('Format tidak valid'); S=j; save(); location.reload()}catch(err){toast('Gagal import')}}; r.readAsText(f)}
+function resetData(){ if(!confirm('Reset semua progress?')) return; localStorage.removeItem(LS); location.reload()}
+
+renderMenuGrid(); renderMateri(); renderKuis(); renderStrip(); renderVideo(); renderFavorit(); updateHome(); updateClock(); switchTab('home');
+</script>
+</body>
+</html>
