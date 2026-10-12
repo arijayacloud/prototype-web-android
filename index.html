@@ -73,7 +73,7 @@ tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter','sans-serif'
         <div class="mt-6 flex items-center gap-6 text-sm">
           <span class="inline-flex items-center gap-2 font-semibold text-slate-600"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Pages Active</span>
           <span class="text-slate-400">•</span>
-          <span class="text-slate-500">14 karya live • HTML statis</span>
+          <span class="text-slate-500">15 karya live • HTML statis</span>
         </div>
       </div>
       <div class="relative">
@@ -82,7 +82,7 @@ tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter','sans-serif'
           <div class="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center"><i class="fa-solid fa-cube"></i></div>
           <div>
             <div class="text-xs tracking-widest font-semibold opacity-60">PORTFOLIO</div>
-            <div class="font-bold">14 Karya Live</div>
+            <div class="font-bold">15 Karya Live</div>
           </div>
         </div>
       </div>
@@ -457,6 +457,32 @@ tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter','sans-serif'
       </div>
     </article>
 
+    <!-- SUNMORI-FOTO CARD — KATALOG SUNMORI -->
+    <article class="project-card group bg-white rounded-[24px] border border-slate-100 overflow-hidden hover:shadow-xl hover:border-blue-100 transition flex flex-col" data-project="sunmori-foto">
+      <div class="relative h-48 overflow-hidden bg-slate-100">
+        <img src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=700&q=80" loading="lazy" alt="Sunmori Foto thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+        <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-orange-600 text-white text-[11px] font-bold tracking-widest">NEW • SUNMORI</span>
+        <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur text-slate-700 text-[11px] font-bold">KATALOG</span>
+      </div>
+      <div class="p-6 flex-1 flex flex-col">
+        <div class="text-xs font-bold tracking-widest text-orange-600">SUNMORI-FOTO • ADMIN • PELANGGAN • WATERMARK</div>
+        <h3 class="font-display font-extrabold text-[18px] leading-tight mt-1">Sunmori Foto — Katalog & Jual Foto Sunmori</h3>
+        <p class="text-sm text-slate-500 leading-6 mt-2 flex-1">Admin upload massal + isi merek/model/warna/modifikasi/sesi & harga per foto (bulk apply). Pelanggan filter 7 dimensi + galeri watermark + keranjang & unduh asli tanpa watermark — localStorage.</p>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <span class="px-2.5 py-1 rounded-full bg-orange-50 border border-orange-200 text-xs font-semibold">Upload Massal</span>
+          <span class="px-2.5 py-1 rounded-full bg-violet-50 border border-violet-200 text-xs font-semibold">7 Filter</span>
+          <span class="px-2.5 py-1 rounded-full bg-sky-50 border border-sky-200 text-xs font-semibold">Watermark</span>
+          <span class="px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-semibold">Keranjang</span>
+        </div>
+        <div class="mt-5 grid grid-cols-2 gap-2">
+          <a href="sunmori-foto/index.html" target="_blank" rel="noopener" data-action="preview" data-url="sunmori-foto/index.html" data-title="Sunmori Foto — Katalog & Jual Foto Sunmori" class="inline-flex justify-center items-center gap-2 py-2.5 rounded-full bg-slate-900 text-white text-sm font-bold hover:bg-orange-600 transition"><i class="fa-solid fa-eye text-xs"></i> Live Preview</a>
+          <button data-action="detail" data-project="sunmori-foto" class="inline-flex justify-center items-center gap-2 py-2.5 rounded-full border border-slate-200 text-sm font-bold hover:bg-slate-50 transition"><i class="fa-solid fa-circle-info text-xs"></i> Detail</button>
+        </div>
+        <a href="sunmori-foto/index.html" target="_blank" rel="noopener" class="mt-2 inline-flex justify-center items-center gap-2 py-2.5 rounded-full bg-orange-50 border border-orange-200 text-orange-700 text-sm font-bold hover:bg-orange-100 transition"><i class="fa-solid fa-arrow-up-right-from-square text-xs"></i> Kunjungi</a>
+        <a href="https://github.com/arijayacloud/prototype-web-android/tree/main/sunmori-foto" target="_blank" rel="noopener" class="mt-1 inline-flex justify-center items-center gap-2 py-2 rounded-full text-xs font-semibold text-slate-500 hover:text-slate-900"><i class="fa-brands fa-github"></i> Lihat Kode — sunmori-foto/</a>
+      </div>
+    </article>
+
     <!-- TEMPLATE: copy block di bawah untuk menambah project baru. Ganti URL, judul, deskripsi, tags, dan thumbnail. Tidak perlu ubah CSS. -->
     <!--
     <article class="project-card group bg-white rounded-[24px] border border-slate-100 overflow-hidden hover:shadow-xl hover:border-blue-100 transition flex flex-col" data-project="my-new-project">
@@ -780,6 +806,21 @@ const PROJECTS = {
       { label: 'Live Demo', href: 'banyu-agung/index.html' },
       { label: 'Kunjungi Langsung', href: 'banyu-agung/index.html' },
       { label: 'Source di GitHub', href: 'https://github.com/arijayacloud/prototype-web-android/tree/main/banyu-agung' }
+    ]
+  },
+  'sunmori-foto': {
+    title: 'Sunmori Foto — Katalog & Penjualan Foto Sunmori',
+    url: 'sunmori-foto/index.html',
+    codeUrl: 'https://github.com/arijayacloud/prototype-web-android/tree/main/sunmori-foto',
+    thumbnail: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=700&q=80',
+    background: 'Katalog foto sunmori dengan upload massal dan metadata lengkap. Admin isi merek, model, warna, modifikasi, sesi (tanggal/event/lokasi), kode, harga, diskon & status per foto — website jadi galeri + katalog terorganisasi.',
+    problem: 'Ribuan foto sunmori sulit dicari pelanggan tanpa metadata. Butuh upload banyak sekaligus, edit detail tanpa re-upload file, dan pencarian multi-filter agar pelanggan temukan motornya cepat.',
+    features: ['Upload Foto Massal — pilih banyak file sekaligus, pratinjau grid, bulk-apply merek/model/warna/modifikasi/sesi/harga/diskon/status ke yang dicentang, plus edit per foto sebelum simpan', 'Detail per foto: Merek (Honda/Yamaha/Kawasaki/dll), Model (NMAX/Vario/Ninja...), Warna, Modifikasi (fairing/velg/knalpot/decal...), Sesi (tanggal/event/lokasi), Kode unik SNMR-XXXX, Harga & Diskon % → harga akhir otomatis', 'Watermark Otomatis — galeri pratinjau overlay PREVIEW • SUNMORI; file asli tanpa watermark hanya setelah beli (demo: langsung unduh dari Riwayat)', 'Pencarian 7 dimensi: merek, model, warna, modifikasi, tanggal, event, lokasi + search kode/model/warna/modifikasi & sort terbaru/termurah/termahal/diskon', 'Edit tanpa re-upload — ubah merek/model/warna/modifikasi/sesi/harga/diskon/status kapan saja, file tetap kecuali diganti manual; status Aktif/Sembunyi/Tidak tersedia', 'Alur beli: Galeri watermark → Keranjang → Bayar (demo) → Riwayat unduh asli; Laporan omzet bersih/kotor & diskon, export Foto CSV & Penjualan CSV — localStorage'],
+    stack: ['HTML', 'Tailwind CDN', 'Font Awesome', 'Vanilla JS + localStorage (offline)'],
+    links: [
+      { label: 'Live Demo', href: 'sunmori-foto/index.html' },
+      { label: 'Kunjungi Langsung', href: 'sunmori-foto/index.html' },
+      { label: 'Source di GitHub', href: 'https://github.com/arijayacloud/prototype-web-android/tree/main/sunmori-foto' }
     ]
   }
 };

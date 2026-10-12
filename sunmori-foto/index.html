@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sunmori Foto — Katalog & Penjualan Foto Sunmori | Admin & Pelanggan</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],display:['Plus Jakarta Sans','sans-serif']}}}}</script>
+<style>
+*{font-family:Inter,sans-serif}
+.no-scrollbar::-webkit-scrollbar{display:none}
+.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}
+.wm{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;overflow:hidden}
+.wm span{transform:rotate(-18deg);font-weight:900;letter-spacing:0.18em;font-size:13px;color:rgba(255,255,255,0.85);background:rgba(15,23,42,0.55);border:1px solid rgba(255,255,255,0.25);padding:6px 14px;border-radius:999px;backdrop-filter:blur(4px)}
+.badge-aktif{background:#D1FAE5;color:#065F46;border:1px solid #A7F3D0}
+.badge-sembunyi{background:#FEF3C7;color:#92400E;border:1px solid #FDE68A}
+.badge-habis{background:#FFE4E6;color:#9F1239;border:1px solid #FECDD3}
+.role-admin{background:#F3E8FF;border-color:#E9D5FF;color:#6B21A8}
+.role-pelanggan{background:#EFF6FF;border-color:#BFDBFE;color:#1D4ED8}
+</style>
+</head>
+<body class="bg-[#F1F5F9] text-slate-800 min-h-screen">
+
+<!-- ROLE GATE -->
+<div id="roleGate" class="fixed inset-0 z-[100] bg-gradient-to-br from-slate-900 via-zinc-900 to-neutral-900 flex items-center justify-center p-4 overflow-auto">
+  <div class="w-full max-w-6xl bg-white rounded-[28px] overflow-hidden shadow-2xl grid lg:grid-cols-[1.05fr_0.95fr] my-6">
+    <div class="p-8 lg:p-10">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center text-white text-xl"><i class="fa-solid fa-camera"></i></div>
+        <div><div class="font-display font-extrabold text-xl leading-none">SUNMORI FOTO</div><div class="text-[11px] tracking-[0.18em] font-bold text-slate-400">KATALOG & PENJUALAN • WATERMARK • PENCARIAN</div></div>
+        <span class="ml-auto hidden sm:inline-flex px-2.5 py-1 rounded-full bg-orange-50 border border-orange-100 text-[11px] font-bold text-orange-700">PROTOTIPE • OFFLINE</span>
+      </div>
+      <h1 class="font-display font-extrabold text-[30px] leading-[0.95] mt-6">Upload massal →<br><span class="bg-gradient-to-r from-orange-500 to-red-600 bg-clip-text text-transparent">detail lengkap → cari & beli</span></h1>
+      <p class="text-sm text-slate-500 leading-6 mt-3">Fotografer upload banyak foto sekaligus + isi merek, model, warna, modifikasi, sesi & harga. Pelanggan cari lewat filter dan beli — pratinjau watermark, file asli tanpa watermark setelah beli.</p>
+
+      <div class="grid grid-cols-2 gap-2 mt-6 text-center">
+        <div class="rounded-2xl border-2 p-3 bg-violet-50 border-violet-200"><i class="fa-solid fa-user-gear text-lg text-violet-600"></i><div class="font-bold text-xs mt-1">ADMIN (FOTOGRAFER)</div><div class="text-[11px] leading-tight text-violet-700">Upload massal & kelola metadata</div></div>
+        <div class="rounded-2xl border-2 p-3 bg-sky-50 border-sky-200"><i class="fa-solid fa-magnifying-glass text-lg text-sky-600"></i><div class="font-bold text-xs mt-1">PELANGGAN</div><div class="text-[11px] leading-tight text-sky-700">Cari & beli foto motor</div></div>
+      </div>
+
+      <div class="mt-6">
+        <div class="text-xs font-bold tracking-widest text-slate-400">MASUK SEBAGAI</div>
+        <div class="grid gap-2 mt-3">
+          <button onclick="enterRole('admin')" class="text-left p-4 rounded-2xl border-2 border-violet-200 bg-violet-50 hover:bg-violet-100 flex items-center gap-3"><div class="w-11 h-11 rounded-xl bg-violet-600 text-white flex items-center justify-center"><i class="fa-solid fa-camera"></i></div><div class="flex-1"><div class="font-bold">Admin — Fotografer</div><div class="text-xs text-violet-700">Upload massal • Edit detail tanpa re-upload • Atur harga & status</div></div><i class="fa-solid fa-arrow-right text-violet-400"></i></button>
+          <button onclick="enterRole('pelanggan')" class="text-left p-4 rounded-2xl border-2 border-sky-200 bg-sky-50 hover:bg-sky-100 flex items-center gap-3"><div class="w-11 h-11 rounded-xl bg-sky-600 text-white flex items-center justify-center"><i class="fa-solid fa-users"></i></div><div class="flex-1"><div class="font-bold">Pelanggan</div><div class="text-xs text-sky-700">Filter merek/model/warna/modifikasi/tanggal/event/lokasi • Beli</div></div><i class="fa-solid fa-arrow-right text-sky-400"></i></button>
+        </div>
+        <p class="text-[11px] text-slate-400 mt-3"><i class="fa-solid fa-circle-info"></i> Ganti role kapan saja via header. Data demo di localStorage.</p>
+      </div>
+    </div>
+    <div class="bg-slate-50 p-8 lg:p-10 border-t lg:border-t-0 lg:border-l border-slate-100">
+      <div class="rounded-[20px] bg-white border border-slate-200 p-5 shadow-sm">
+        <div class="text-xs font-bold tracking-widest text-orange-600">ALUR APLIKASI</div>
+        <ol class="mt-3 space-y-2.5 text-sm">
+          <li class="flex gap-3"><span class="w-7 h-7 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-bold shrink-0">1</span><span><b>Upload massal</b> → pilih banyak foto</span></li>
+          <li class="flex gap-3"><span class="w-7 h-7 rounded-full bg-violet-600 text-white flex items-center justify-center text-xs font-bold shrink-0">2</span><span>Isi <b>merek, model, warna, modifikasi</b> + <b>sesi</b> (tanggal/event/lokasi)</span></li>
+          <li class="flex gap-3"><span class="w-7 h-7 rounded-full bg-orange-500 text-white flex items-center justify-center text-xs font-bold shrink-0">3</span><span>Set <b>kode, harga & diskon</b> → watermark otomatis di galeri</span></li>
+          <li class="flex gap-3"><span class="w-7 h-7 rounded-full bg-sky-600 text-white flex items-center justify-center text-xs font-bold shrink-0">4</span><span>Pelanggan <b>filter & cari</b> → lihat galeri watermark → <b>beli</b> → unduh tanpa watermark</span></li>
+          <li class="flex gap-3"><span class="w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-bold shrink-0">5</span><span>Admin <b>edit detail tanpa re-upload</b> + ubah status Aktif/Sembunyi/Habis</span></li>
+        </ol>
+      </div>
+      <div class="mt-4 rounded-2xl bg-slate-900 text-white p-5">
+        <div class="text-xs tracking-widest font-bold opacity-60">METADATA PENCARIAN</div>
+        <div class="mt-2 text-xs leading-6 opacity-90">Merek • Model • Warna • Modifikasi • Tanggal • Event • Lokasi — semua jadi filter di galeri pelanggan.</div>
+        <div class="mt-3 grid grid-cols-3 gap-2 text-xs">
+          <div class="rounded-xl bg-white/10 p-3 text-center"><div class="font-black" id="gateTotal">0</div><div class="opacity-70">Total foto</div></div>
+          <div class="rounded-xl bg-white/10 p-3 text-center"><div class="font-black" id="gateAktif">0</div><div class="opacity-70">Aktif jual</div></div>
+          <div class="rounded-xl bg-white/10 p-3 text-center"><div class="font-black" id="gateSesi">0</div><div class="opacity-70">Sesi</div></div>
+        </div>
+      </div>
+      <div class="mt-4 flex gap-2">
+        <button onclick="enterRole('pelanggan')" class="flex-1 inline-flex justify-center items-center gap-2 py-3 rounded-full bg-slate-900 text-white font-bold text-sm"><i class="fa-solid fa-store"></i> Lihat Galeri</button>
+        <button onclick="resetDemo()" class="px-4 py-3 rounded-full border border-slate-200 bg-white font-bold text-sm">Reset demo</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="min-h-screen flex flex-col">
+  <div class="bg-white border-b border-slate-200 sticky top-0 z-30">
+    <div class="max-w-[1280px] mx-auto px-4 h-[64px] flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center text-white"><i class="fa-solid fa-camera text-sm"></i></div>
+        <div>
+          <div class="font-display font-extrabold leading-none">SUNMORI FOTO</div>
+          <div class="text-[10px] tracking-widest font-bold text-slate-400 -mt-0.5">KATALOG SUNMORI</div>
+        </div>
+        <span id="roleBadge" class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-bold"></span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span id="cartBadge" class="hidden px-3 py-1.5 rounded-full bg-amber-100 border border-amber-200 text-amber-800 text-xs font-bold"><i class="fa-solid fa-cart-shopping"></i> <span id="cartCount">0</span></span>
+        <select id="roleSwitch" onchange="switchRole(this.value)" class="px-3 py-2 rounded-full border border-slate-200 bg-white text-xs font-semibold">
+          <option value="admin">Admin (Fotografer)</option><option value="pelanggan">Pelanggan</option>
+        </select>
+        <button onclick="openUploadModal()" id="btnUpload" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900 text-white text-xs font-bold"><i class="fa-solid fa-cloud-arrow-up"></i> <span class="hidden sm:inline">Upload Massal</span><span class="sm:hidden">Upload</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-[1280px] mx-auto w-full px-4 py-4 flex-1 flex flex-col lg:flex-row gap-4">
+    <aside class="lg:w-[250px] shrink-0">
+      <div class="bg-white rounded-[20px] border border-slate-200 p-2 sticky top-[76px]">
+        <nav class="grid grid-cols-3 lg:grid-cols-1 gap-1" id="nav">
+          <button data-view="dashboard" class="navBtn active flex flex-col lg:flex-row items-center gap-2 lg:gap-3 px-3 py-3 rounded-xl bg-slate-900 text-white font-bold text-xs lg:text-sm"><i class="fa-solid fa-chart-line"></i> Dashboard</button>
+          <button data-view="galeri" class="navBtn flex flex-col lg:flex-row items-center gap-2 lg:gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 font-semibold text-xs lg:text-sm"><i class="fa-solid fa-images"></i> Galeri</button>
+          <button data-view="kelola" class="navBtn flex flex-col lg:flex-row items-center gap-2 lg:gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 font-semibold text-xs lg:text-sm"><i class="fa-solid fa-pen-to-square"></i> Kelola Foto</button>
+          <button data-view="sesi" class="navBtn flex flex-col lg:flex-row items-center gap-2 lg:gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 font-semibold text-xs lg:text-sm"><i class="fa-solid fa-calendar"></i> Sesi</button>
+          <button data-view="cart" class="navBtn flex flex-col lg:flex-row items-center gap-2 lg:gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 font-semibold text-xs lg:text-sm"><i class="fa-solid fa-cart-shopping"></i> Keranjang</button>
+          <button data-view="riwayat" class="navBtn flex flex-col lg:flex-row items-center gap-2 lg:gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 font-semibold text-xs lg:text-sm"><i class="fa-solid fa-clock-rotate-left"></i> Riwayat</button>
+          <button data-view="laporan" class="navBtn flex flex-col lg:flex-row items-center gap-2 lg:gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 font-semibold text-xs lg:text-sm"><i class="fa-solid fa-chart-pie"></i> Laporan</button>
+        </nav>
+        <div class="mt-3 p-4 rounded-2xl bg-gradient-to-br from-orange-500 to-red-600 text-white">
+          <div class="text-xs font-bold tracking-widest opacity-80">WATERMARK OTOMATIS</div>
+          <div class="text-xs leading-5 mt-1 opacity-90">Pratinjau berbayar watermark, file asli tanpa watermark setelah beli.</div>
+          <div class="mt-3 rounded-xl bg-white/15 p-3 text-center"><span class="px-3 py-1 rounded-full bg-white text-orange-600 text-[11px] font-black">PREVIEW • SUNMORI</span><div class="text-[11px] mt-1 opacity-80">Overlay otomatis di galeri</div></div>
+        </div>
+        <div class="mt-3 p-3 rounded-2xl bg-slate-50 border border-slate-200">
+          <div class="text-xs font-bold">Status jual</div>
+          <div class="mt-2 flex flex-wrap gap-1">
+            <span class="px-2 py-1 rounded-full badge-aktif text-[11px] font-bold">Aktif</span>
+            <span class="px-2 py-1 rounded-full badge-sembunyi text-[11px] font-bold">Sembunyi</span>
+            <span class="px-2 py-1 rounded-full badge-habis text-[11px] font-bold">Tidak tersedia</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="flex-1 space-y-4">
+      <!-- DASHBOARD -->
+      <div id="view-dashboard" class="view space-y-4">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          <div class="bg-white rounded-[20px] border border-slate-200 p-5"><div class="text-xs font-bold tracking-widest text-slate-400">TOTAL FOTO</div><div id="statTotal" class="font-black text-2xl mt-1">0</div><div class="text-xs text-slate-500" id="statSub">Semua status</div></div>
+          <div class="bg-white rounded-[20px] border border-slate-200 p-5"><div class="text-xs font-bold tracking-widest text-emerald-600">AKTIF JUAL</div><div id="statAktif" class="font-black text-2xl mt-1">0</div><div class="text-xs text-slate-500">Siap dibeli pelanggan</div></div>
+          <div class="bg-white rounded-[20px] border border-slate-200 p-5"><div class="text-xs font-bold tracking-widest text-amber-600">KERANJANG</div><div id="statCart" class="font-black text-2xl mt-1">0</div><div class="text-xs text-slate-500" id="statCartRp">Rp 0</div></div>
+          <div class="bg-white rounded-[20px] border border-slate-200 p-5"><div class="text-xs font-bold tracking-widest text-violet-600">OMSET (LUNAS)</div><div id="statOmset" class="font-black text-2xl mt-1">Rp 0</div><div class="text-xs text-slate-500">Total pembelian</div></div>
+        </div>
+        <div class="grid lg:grid-cols-[1.1fr_0.9fr] gap-4">
+          <div class="bg-white rounded-[20px] border border-slate-200 p-5">
+            <div class="flex justify-between items-center"><div class="font-bold">Foto terbaru</div><button onclick="switchView('kelola')" class="text-xs font-bold text-violet-600">Kelola →</button></div>
+            <div id="dashFoto" class="mt-3 grid grid-cols-3 gap-2"></div>
+          </div>
+          <div class="bg-white rounded-[20px] border border-slate-200 p-5">
+            <div class="font-bold">Pencarian populer</div>
+            <div id="dashFilter" class="mt-3 space-y-2"></div>
+            <button onclick="switchView('galeri')" class="mt-3 w-full py-2.5 rounded-full bg-slate-900 text-white text-sm font-bold">Buka Galeri Pencarian →</button>
+          </div>
+        </div>
+        <div class="bg-white rounded-[20px] border border-slate-200 p-5">
+          <div class="font-bold">Merek terlaris</div>
+          <div id="dashMerek" class="mt-3 grid grid-cols-2 lg:grid-cols-4 gap-2"></div>
+        </div>
+      </div>
+
+      <!-- GALERI PELANGGAN -->
+      <div id="view-galeri" class="view hidden space-y-4">
+        <div class="bg-white rounded-[20px] border border-slate-200 p-5">
+          <div class="flex flex-wrap gap-2 justify-between items-center">
+            <div><div class="font-display font-extrabold text-lg">Galeri Sunmori — Cari Foto Motormu</div><div class="text-xs text-slate-500">Filter merek, model, warna, modifikasi, tanggal, event, lokasi — pratinjau watermark, harga & diskon</div></div>
+            <div class="flex gap-2">
+              <button onclick="resetFilter()" class="px-4 py-2.5 rounded-full border border-slate-200 text-sm font-bold">Reset filter</button>
+              <button onclick="switchView('cart')" class="px-4 py-2.5 rounded-full bg-amber-500 text-white text-sm font-bold"><i class="fa-solid fa-cart-shopping"></i> Keranjang (<span id="galCartN">0</span>)</button>
+            </div>
+          </div>
+          <div class="mt-4 grid lg:grid-cols-3 gap-3">
+            <input id="fQ" oninput="renderGaleri()" placeholder="Cari kode / model / warna / modifikasi (mis. NMAX, knalpot)" class="px-4 py-3 rounded-xl border border-slate-200 text-sm lg:col-span-3">
+            <select id="fMerek" onchange="renderGaleri()" class="px-3 py-2.5 rounded-full border border-slate-200 text-sm font-semibold"><option value="">Semua Merek</option></select>
+            <select id="fModel" onchange="renderGaleri()" class="px-3 py-2.5 rounded-full border border-slate-200 text-sm font-semibold"><option value="">Semua Model</option></select>
+            <select id="fWarna" onchange="renderGaleri()" class="px-3 py-2.5 rounded-full border border-slate-200 text-sm font-semibold"><option value="">Semua Warna</option></select>
+            <input id="fModif" oninput="renderGaleri()" placeholder="Modifikasi (fairing, velg, decal...)" class="px-4 py-2.5 rounded-full border border-slate-200 text-sm">
+            <input id="fEvent" oninput="renderGaleri()" placeholder="Event / Sesi (mis. Sunmori Senayan)" class="px-4 py-2.5 rounded-full border border-slate-200 text-sm">
+            <input id="fLokasi" oninput="renderGaleri()" placeholder="Lokasi (Senayan, PIK...)" class="px-4 py-2.5 rounded-full border border-slate-200 text-sm">
+            <input id="fTanggal" type="date" onchange="renderGaleri()" class="px-4 py-2.5 rounded-full border border-slate-200 text-sm">
+            <select id="fStatus" onchange="renderGaleri()" class="px-3 py-2.5 rounded-full border border-slate-200 text-sm font-semibold"><option value="aktif">Hanya Aktif jual</option><option value="">Semua status (admin lihat)</option></select>
+            <select id="fSort" onchange="renderGaleri()" class="px-3 py-2.5 rounded-full border border-slate-200 text-sm font-semibold"><option value="new">Terbaru</option><option value="priceLow">Harga termurah</option><option value="priceHigh">Harga termahal</option><option value="diskon">Diskon terbesar</option></select>
+          </div>
+          <div id="galInfo" class="mt-3 text-xs text-slate-500"></div>
+          <div id="galGrid" class="mt-4 grid grid-cols-2 lg:grid-cols-3 gap-3"></div>
+        </div>
+      </div>
+
+      <!-- KELOLA FOTO (ADMIN) -->
+      <div id="view-kelola" class="view hidden space-y-4">
+        <div class="bg-white rounded-[20px] border border-slate-200 p-5">
+          <div class="flex flex-wrap gap-2 justify-between items-center">
+            <div><div class="font-display font-extrabold text-lg">Kelola Foto — Edit Detail Tanpa Re-upload</div><div class="text-xs text-slate-500">Ubah merek/model/warna/modifikasi/sesi/harga/diskon/status — file tetap</div></div>
+            <div class="flex gap-2">
+              <input id="kQ" oninput="renderKelola()" placeholder="Cari kode / model / merek" class="px-4 py-2.5 rounded-full border border-slate-200 text-sm w-[220px]">
+              <select id="kStatus" onchange="renderKelola()" class="px-3 py-2.5 rounded-full border border-slate-200 text-sm font-semibold"><option value="">Semua status</option><option value="aktif">Aktif</option><option value="sembunyi">Sembunyi</option><option value="habis">Tidak tersedia</option></select>
+              <button onclick="openUploadModal()" class="px-4 py-2.5 rounded-full bg-slate-900 text-white text-sm font-bold">+ Upload Massal</button>
+            </div>
+          </div>
+          <div id="kelolaList" class="mt-4 grid md:grid-cols-2 gap-3"></div>
+        </div>
+      </div>
+
+      <!-- SESI -->
+      <div id="view-sesi" class="view hidden space-y-4">
+        <div class="bg-white rounded-[20px] border border-slate-200 p-5">
+          <div class="flex flex-wrap gap-2 justify-between items-center">
+            <div><div class="font-display font-extrabold text-lg">Sesi Pemotretan</div><div class="text-xs text-slate-500">Tanggal • Nama event • Lokasi sunmori • Nama sesi — untuk pengelompokan & filter</div></div>
+            <button onclick="openSesiModal()" class="px-4 py-2.5 rounded-full bg-slate-900 text-white text-sm font-bold">+ Sesi</button>
+          </div>
+          <div id="sesiGrid" class="mt-4 grid md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+        </div>
+      </div>
+
+      <!-- KERANJANG -->
+      <div id="view-cart" class="view hidden space-y-4">
+        <div class="bg-white rounded-[20px] border border-slate-200 p-5">
+          <div class="flex justify-between items-center"><div class="font-display font-extrabold text-lg">Keranjang</div><button onclick="clearCart()" class="px-3 py-1.5 rounded-full border text-xs font-bold">Kosongkan</button></div>
+          <div id="cartList" class="mt-4 space-y-2"></div>
+          <div class="mt-4 p-4 rounded-2xl bg-slate-900 text-white flex flex-wrap gap-3 justify-between items-center">
+            <div><div class="text-xs tracking-widest opacity-60 font-bold">TOTAL BAYAR</div><div id="cartTotal" class="font-black text-xl">Rp 0</div><div class="text-xs opacity-60" id="cartMeta">0 foto • watermark hilang setelah beli</div></div>
+            <button onclick="checkout()" class="px-6 py-3 rounded-full bg-emerald-500 text-white font-bold">Bayar & Unduh →</button>
+          </div>
+          <div class="mt-3 text-xs text-slate-500">Demo: tanpa payment gateway — klik Bayar langsung jadi "Lunas" dan file asli tanpa watermark bisa diunduh di Riwayat.</div>
+        </div>
+      </div>
+
+      <!-- RIWAYAT -->
+      <div id="view-riwayat" class="view hidden space-y-4">
+        <div class="bg-white rounded-[20px] border border-slate-200 p-5">
+          <div class="font-display font-extrabold text-lg">Riwayat Pembelian</div>
+          <div id="riwayatList" class="mt-4 space-y-2"></div>
+        </div>
+      </div>
+
+      <!-- LAPORAN -->
+      <div id="view-laporan" class="view hidden space-y-4">
+        <div class="bg-white rounded-[20px] border border-slate-200 p-5">
+          <div class="flex flex-wrap gap-2 justify-between items-center">
+            <div class="font-display font-extrabold text-lg">Laporan Penjualan</div>
+            <div class="flex gap-2">
+              <button onclick="exportFotoCSV()" class="px-4 py-2.5 rounded-full border border-slate-200 text-sm font-bold">Export Foto CSV</button>
+              <button onclick="exportJualCSV()" class="px-4 py-2.5 rounded-full bg-slate-900 text-white text-sm font-bold">Export Penjualan CSV</button>
+            </div>
+          </div>
+          <div class="grid md:grid-cols-4 gap-3 mt-4">
+            <div class="rounded-2xl border p-4 bg-white"><div class="text-xs font-bold tracking-widest text-slate-400">FOTO TERJUAL</div><div id="lapTerjual" class="font-black text-xl mt-1">0 foto</div></div>
+            <div class="rounded-2xl border p-4 bg-white"><div class="text-xs font-bold tracking-widest text-slate-400">OMSET KOTOR</div><div id="lapKotor" class="font-black text-xl mt-1">Rp 0</div></div>
+            <div class="rounded-2xl border p-4 bg-white"><div class="text-xs font-bold tracking-widest text-slate-400">DISKON DIBERIKAN</div><div id="lapDiskon" class="font-black text-xl mt-1">Rp 0</div></div>
+            <div class="rounded-2xl border p-4 bg-emerald-50 border-emerald-200"><div class="text-xs font-bold tracking-widest text-emerald-700">OMSET BERSIH</div><div id="lapBersih" class="font-black text-xl mt-1">Rp 0</div></div>
+          </div>
+          <div id="lapGrid" class="mt-4 grid md:grid-cols-2 gap-3"></div>
+        </div>
+      </div>
+
+      <div class="text-center text-xs text-slate-400 py-4">© Sunmori Foto • Katalog Sunmori • Watermark pratinjau, asli tanpa watermark setelah beli — localStorage</div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL UPLOAD MASSAL -->
+<div id="modalUpload" class="fixed inset-0 z-40 hidden">
+  <div onclick="closeUploadModal()" class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"></div>
+  <div class="absolute inset-0 flex items-start justify-center p-4 overflow-auto">
+    <div class="bg-white rounded-[24px] w-full max-w-5xl my-6 p-6 shadow-2xl">
+      <div class="flex justify-between items-center gap-3">
+        <div><div class="font-display font-extrabold text-lg">Upload Foto Massal — Detail Per Foto</div><div class="text-xs text-slate-500">Pilih banyak file sekaligus, lalu isi detail agar mudah ditemukan pelanggan</div></div>
+        <button onclick="closeUploadModal()" class="w-9 h-9 rounded-full border flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="mt-4 p-4 rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50 text-center">
+        <label class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-slate-900 text-white font-bold text-sm cursor-pointer"><i class="fa-solid fa-images"></i> Pilih Banyak Foto <input type="file" id="upFiles" accept="image/*" multiple class="hidden" onchange="handleFiles(this)"></label>
+        <div class="text-xs text-slate-500 mt-2">Bisa pilih 20+ foto sekaligus — pratinjau di bawah, watermark otomatis</div>
+        <div id="upCount" class="text-xs font-bold text-slate-700 mt-1"></div>
+      </div>
+
+      <!-- bulk apply -->
+      <div class="mt-4 p-4 rounded-2xl bg-amber-50 border border-amber-200">
+        <div class="text-xs font-bold tracking-widest text-amber-800">APLIKASI MASSAL — ISI SEKALI UNTUK SEMUA YANG DIPILIH</div>
+        <div class="mt-3 grid md:grid-cols-4 gap-2">
+          <select id="bMerek" class="px-3 py-2.5 rounded-xl border border-amber-200 text-sm font-semibold"><option value="">— Merek —</option><option>Honda</option><option>Yamaha</option><option>Kawasaki</option><option>Suzuki</option><option>Ducati</option><option>Vespa</option><option>Husqvarna</option></select>
+          <input id="bModel" placeholder="Model (NMAX, Vario...)" class="px-3 py-2.5 rounded-xl border border-amber-200 text-sm">
+          <select id="bWarna" class="px-3 py-2.5 rounded-xl border border-amber-200 text-sm"><option value="">— Warna —</option><option>Hitam</option><option>Putih</option><option>Merah</option><option>Biru</option><option>Kuning</option><option>Silver</option><option>Hijau</option><option>Abu-abu</option></select>
+          <input id="bModif" placeholder="Modifikasi (fairing, knalpot...)" class="px-3 py-2.5 rounded-xl border border-amber-200 text-sm">
+        </div>
+        <div class="mt-2 grid md:grid-cols-4 gap-2">
+          <select id="bSesi" class="px-3 py-2.5 rounded-xl border border-amber-200 text-sm"><option value="">— Sesi —</option></select>
+          <input id="bHarga" type="number" placeholder="Harga (Rp) — mis 25000" class="px-3 py-2.5 rounded-xl border border-amber-200 text-sm">
+          <input id="bDiskon" type="number" min="0" max="90" placeholder="Diskon % (0-90)" class="px-3 py-2.5 rounded-xl border border-amber-200 text-sm">
+          <select id="bStatus" class="px-3 py-2.5 rounded-xl border border-amber-200 text-sm font-semibold"><option value="aktif">Aktif jual</option><option value="sembunyi">Sembunyi</option><option value="habis">Tidak tersedia</option></select>
+        </div>
+        <div class="mt-2 flex gap-2">
+          <button onclick="applyBulk()" class="px-4 py-2.5 rounded-full bg-amber-500 text-white text-sm font-bold">Terapkan ke yang dicentang</button>
+          <label class="ml-auto flex items-center gap-2 text-xs font-bold"><input type="checkbox" id="bulkAll" onchange="toggleBulkAll(this.checked)"> Centang semua</label>
+        </div>
+        <div class="text-[11px] text-amber-800 mt-2">Tip: centang beberapa kartu foto di bawah, lalu isi field di atas dan klik Terapkan — detail lain tetap bisa diedit per foto.</div>
+      </div>
+
+      <div id="upGrid" class="mt-4 grid md:grid-cols-2 gap-3 max-h-[52vh] overflow-auto no-scrollbar pr-1"></div>
+
+      <div class="mt-4 flex gap-2">
+        <button onclick="saveUpload()" class="flex-1 py-3 rounded-full bg-slate-900 text-white font-bold">Simpan Foto ke Katalog</button>
+        <button onclick="closeUploadModal()" class="px-6 py-3 rounded-full border font-bold">Batal</button>
+      </div>
+      <div class="text-[11px] text-slate-400 text-center mt-2">Setiap foto dapat kode unik otomatis (SNMR-XXXX) — bisa diedit. Sistem tambah watermark di pratinjau galeri.</div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EDIT FOTO -->
+<div id="modalEdit" class="fixed inset-0 z-40 hidden">
+  <div onclick="closeEditModal()" class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"></div>
+  <div class="absolute inset-0 flex items-center justify-center p-4">
+    <div class="bg-white rounded-[24px] w-full max-w-2xl p-6 shadow-2xl max-h-[92vh] overflow-auto no-scrollbar">
+      <div class="flex justify-between items-center"><div class="font-extrabold">Edit Detail Foto — Tanpa Re-upload</div><button onclick="closeEditModal()" class="w-9 h-9 rounded-full border flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button></div>
+      <div class="mt-4 grid gap-3">
+        <div class="flex gap-3">
+          <img id="ePreview" class="w-28 h-28 object-cover rounded-xl border">
+          <div class="flex-1">
+            <label class="text-xs font-bold">Kode Foto (unik)</label><input id="eKode" class="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm font-mono">
+            <div class="mt-2 flex gap-2">
+              <label class="flex-1 px-3 py-2.5 rounded-xl border bg-slate-50 text-xs font-semibold cursor-pointer text-center"><i class="fa-solid fa-image"></i> Ganti foto <input type="file" id="eFile" accept="image/*" class="hidden" onchange="handleEditFile(this)"></label>
+              <span id="eStatusBadge" class="px-3 py-2 rounded-full text-xs font-bold border"></span>
+            </div>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div><label class="text-xs font-bold">Merek Motor</label><select id="eMerek" class="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm"><option>Honda</option><option>Yamaha</option><option>Kawasaki</option><option>Suzuki</option><option>Ducati</option><option>Vespa</option><option>Husqvarna</option><option>Lainnya</option></select></div>
+          <div><label class="text-xs font-bold">Model / Tipe</label><input id="eModel" placeholder="NMAX, Vario, Ninja..." class="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm"></div>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div><label class="text-xs font-bold">Warna Motor</label><input id="eWarna" placeholder="Hitam, Merah..." class="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm"></div>
+          <div><label class="text-xs font-bold">Status</label><select id="eStat" class="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm"><option value="aktif">Aktif jual</option><option value="sembunyi">Sembunyi</option><option value="habis">Tidak tersedia</option></select></div>
+        </div>
+        <div><label class="text-xs font-bold">Detail Modifikasi / Tampilan</label><input id="eModif" placeholder="fairing, knalpot racing, velg gold, decal..." class="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm"></div>
+        <div class="grid grid-cols-2 gap-2">
+          <div><label class="text-xs font-bold">Sesi / Event</label><select id="eSesi" class="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm"></select></div>
+          <div><label class="text-xs font-bold">Tanggal Sesi</label><input id="eTanggal" type="date" class="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm"></div>
+        </div>
+        <div class="grid grid-cols-3 gap-2">
+          <div><label class="text-xs font-bold">Harga (Rp)</label><input id="eHarga" type="number" class="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm"></div>
+          <div><label class="text-xs font-bold">Diskon %</label><input id="eDiskon" type="number" min="0" max="90" class="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm"></div>
+          <div class="flex flex-col justify-end"><div class="px-3 py-2.5 rounded-xl bg-slate-900 text-white text-center"><div class="text-[10px] tracking-widest opacity-60">HARGA AKHIR</div><div id="eAkhir" class="font-black text-sm">Rp 0</div></div></div>
+        </div>
+        <input type="hidden" id="eId">
+        <button onclick="saveEdit()" class="mt-2 w-full py-3 rounded-full bg-slate-900 text-white font-bold">Simpan Perubahan</button>
+        <div class="text-[11px] text-slate-400 text-center">Edit detail kapan saja tanpa upload ulang — file foto tetap kecuali diganti manual.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL SESI -->
+<div id="modalSesi" class="fixed inset-0 z-40 hidden">
+  <div onclick="closeSesiModal()" class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"></div>
+  <div class="absolute inset-0 flex items-center justify-center p-4">
+    <div class="bg-white rounded-[24px] w-full max-w-md p-6 shadow-2xl">
+      <div class="flex justify-between items-center"><div class="font-extrabold">Sesi Pemotretan</div><button onclick="closeSesiModal()" class="w-9 h-9 rounded-full border flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button></div>
+      <div class="grid gap-3 mt-4">
+        <input id="sNama" placeholder="Nama sesi / event — mis. Sunmori Senayan #12" class="px-4 py-3 rounded-xl border text-sm">
+        <input id="sLokasi" placeholder="Lokasi — Senayan, PIK, BSD..." class="px-4 py-3 rounded-xl border text-sm">
+        <input id="sTanggal" type="date" class="px-4 py-3 rounded-xl border text-sm">
+        <input type="hidden" id="sId">
+        <button onclick="saveSesi()" class="w-full py-3 rounded-full bg-slate-900 text-white font-bold">Simpan Sesi</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DETAIL FOTO (watermark preview) -->
+<div id="modalDetail" class="fixed inset-0 z-40 hidden">
+  <div onclick="closeDetail()" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+  <div class="absolute inset-0 flex items-center justify-center p-4 overflow-auto">
+    <div class="bg-white rounded-[24px] w-full max-w-5xl my-6 overflow-hidden shadow-2xl grid lg:grid-cols-[1.2fr_0.8fr]">
+      <div class="relative bg-slate-900 flex items-center justify-center min-h-[360px]">
+        <img id="dImg" class="max-h-[70vh] w-full object-contain">
+        <div id="dWm" class="wm"><span>PREVIEW • SUNMORI • WATERMARK</span></div>
+        <button onclick="closeDetail()" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-white text-slate-900 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+        <div id="dBoughtNote" class="hidden absolute bottom-3 left-3 right-3 bg-emerald-500 text-white px-4 py-2 rounded-full text-xs font-bold text-center">✓ Sudah dibeli — file asli tanpa watermark siap unduh</div>
+      </div>
+      <div class="p-6">
+        <div class="flex gap-2 items-center"><span id="dKode" class="px-2.5 py-1 rounded-full bg-slate-900 text-white text-xs font-mono font-bold">SNMR-0001</span><span id="dStatus" class="px-2.5 py-1 rounded-full text-xs font-bold border">AKTIF</span><span id="dOwned" class="hidden px-2.5 py-1 rounded-full bg-emerald-100 border border-emerald-200 text-emerald-700 text-xs font-bold">Sudah dibeli</span></div>
+        <div class="font-display font-extrabold text-lg mt-3" id="dTitle">Honda Vario — Hitam</div>
+        <div class="text-xs text-slate-500" id="dMeta">Kawasaki • Ninja • fairing, knalpot</div>
+        <div class="mt-3 p-4 rounded-2xl bg-slate-50 border border-slate-200">
+          <div class="text-xs font-bold tracking-widest text-slate-400">HARGA</div>
+          <div class="flex items-baseline gap-2 mt-1"><span id="dHarga" class="font-black text-xl">Rp 25.000</span><span id="dHargaCoret" class="text-sm text-slate-400 line-through hidden"></span><span id="dDiskonBadge" class="hidden px-2 py-1 rounded-full bg-red-500 text-white text-xs font-bold">-20%</span></div>
+          <div class="text-xs text-slate-500" id="dSesi">Sesi: Sunmori Senayan • 2026-10-10 • Senayan</div>
+        </div>
+        <div class="mt-4 grid grid-cols-2 gap-2 text-xs">
+          <div class="p-3 rounded-xl bg-white border"><div class="font-bold text-slate-400">Merek</div><div id="dMerek" class="font-semibold">Honda</div></div>
+          <div class="p-3 rounded-xl bg-white border"><div class="font-bold text-slate-400">Model</div><div id="dModel" class="font-semibold">Vario</div></div>
+          <div class="p-3 rounded-xl bg-white border"><div class="font-bold text-slate-400">Warna</div><div id="dWarna" class="font-semibold">Hitam</div></div>
+          <div class="p-3 rounded-xl bg-white border"><div class="font-bold text-slate-400">Tanggal</div><div id="dTanggal" class="font-semibold">2026-10-10</div></div>
+        </div>
+        <div class="mt-3 p-3 rounded-xl bg-white border text-xs"><div class="font-bold text-slate-400">Modifikasi</div><div id="dModif" class="font-medium mt-1">—</div></div>
+        <div class="mt-4 flex gap-2">
+          <button id="dCartBtn" onclick="addToCartCurrent()" class="flex-1 py-3 rounded-full bg-amber-500 text-white font-bold"><i class="fa-solid fa-cart-plus"></i> Masuk Keranjang</button>
+          <button id="dBuyBtn" onclick="buyCurrent()" class="flex-1 py-3 rounded-full bg-slate-900 text-white font-bold">Beli Sekarang</button>
+        </div>
+        <button id="dDownloadBtn" onclick="downloadCurrent()" class="hidden mt-2 w-full py-3 rounded-full bg-emerald-600 text-white font-bold"><i class="fa-solid fa-download"></i> Unduh File Asli (tanpa watermark)</button>
+        <div class="mt-3 text-[11px] text-slate-400 text-center">Pratinjau selalu watermark — file asli dikirim setelah pembayaran (demo: langsung setelah Bayar).</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const LS='sunmori_foto_v1';
+const ROLE_KEY='sunmori_role';
+const MEREK=['Honda','Yamaha','Kawasaki','Suzuki','Ducati','Vespa','Husqvarna','Lainnya'];
+const WARNA=['Hitam','Putih','Merah','Biru','Kuning','Silver','Hijau','Abu-abu','Oranye','Ungu'];
+const SAMPLE_IMGS=[
+ 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=700&q=80',
+ 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=700&q=80',
+ 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=700&q=80',
+ 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=700&q=80',
+ 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=700&q=80',
+ 'https://images.unsplash.com/photo-1511919884226-fd3ec7956e9d?w=700&q=80',
+];
+
+function rupiah(n){ return 'Rp '+(n||0).toLocaleString('id-ID'); }
+function hargaAkhir(f){ const d=Math.min(90,Math.max(0, parseInt(f.diskon||0))); return Math.round((f.harga||0)*(1-d/100)); }
+
+function seed(){
+  const sesi=[
+    {id:'S01', nama:'Sunmori Senayan #12', lokasi:'Senayan, Jakarta', tanggal:'2026-10-05'},
+    {id:'S02', nama:'Sunmori PIK Night Ride', lokasi:'PIK, Jakarta', tanggal:'2026-10-08'},
+    {id:'S03', nama:'Sunmori BSD Morning', lokasi:'BSD, Tangerang', tanggal:'2026-10-10'},
+  ];
+  const fotos=[];
+  const rnd=(a)=> a[Math.floor(Math.random()*a.length)];
+  const mods=[['fairing','velg gold'],['knalpot racing','decal carbon'],['striping','velg jari'],['fairing','decal'],['knalpot','spion bar-end'],['velg racing','striping']];
+  const modelsPerMerek={Honda:['Vario','CBR','PCX','Beat'], Yamaha:['NMAX','R15','Aerox','XMAX'], Kawasaki:['Ninja','W175','ZX25R'], Suzuki:['GSX','Satria','Address'], Ducati:['Panigale','Monster'], Vespa:['Sprint','GTS'], Husqvarna:['Svartpilen']};
+  for(let i=1;i<=18;i++){
+    const merek=rnd(MEREK.slice(0,4));
+    const model=rnd(modelsPerMerek[merek]||['NMAX']);
+    const warna=rnd(WARNA);
+    const sesiPick=rnd(sesi);
+    fotos.push({
+      id:'SNMR-'+String(1000+i).slice(1), kode:'SNMR-'+String(1000+i).slice(1),
+      src:SAMPLE_IMGS[i%SAMPLE_IMGS.length],
+      merek, model, warna, modifikasi: rnd(mods).join(', '),
+      sesiId: sesiPick.id, tanggal: sesiPick.tanggal, event: sesiPick.nama, lokasi: sesiPick.lokasi,
+      harga: [15000,25000,35000,50000][i%4], diskon: [0,0,10,20,30][i%5], status: i===17?'sembunyi':i===18?'habis':'aktif',
+      created: Date.now()-i*3600000
+    });
+  }
+  return {fotos, sesi, cart:[], orders:[], nextNum:19};
+}
+let db=load();
+function load(){
+  try{ const v=JSON.parse(localStorage.getItem(LS)); if(v&&v.fotos) return v; }catch(e){}
+  const s=seed(); localStorage.setItem(LS, JSON.stringify(s)); return s;
+}
+function save(){ localStorage.setItem(LS, JSON.stringify(db)); }
+
+let role=localStorage.getItem(ROLE_KEY)||'admin';
+let uploadDraft=[]; // {file, dataUrl, kode, merek, model, warna, modifikasi, sesiId, harga, diskon, status, tanggal}
+let currentDetailId=null;
+
+function enterRole(r){ role=r; localStorage.setItem(ROLE_KEY,r); document.getElementById('roleGate').classList.add('hidden'); initRole(); renderAll(); }
+function switchRole(r){ role=r; localStorage.setItem(ROLE_KEY,r); initRole(); renderAll(); }
+function initRole(){
+  document.getElementById('roleSwitch').value=role;
+  const b=document.getElementById('roleBadge');
+  const map={admin:['Admin','role-admin','fa-camera'], pelanggan:['Pelanggan','role-pelanggan','fa-user']};
+  const [label,cls,icon]=map[role]||map.admin;
+  b.className='hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-bold '+cls;
+  b.innerHTML=`<i class="fa-solid ${icon}"></i> ${label}`;
+  document.getElementById('btnUpload').classList.toggle('hidden', role!=='admin');
+  // nav active stays
+  document.getElementById('gateTotal').textContent=db.fotos.length;
+  document.getElementById('gateAktif').textContent=db.fotos.filter(f=>f.status==='aktif').length;
+  document.getElementById('gateSesi').textContent=db.sesi.length;
+}
+
+function switchView(v){
+  document.querySelectorAll('.view').forEach(el=> el.classList.add('hidden'));
+  document.getElementById('view-'+v).classList.remove('hidden');
+  document.querySelectorAll('.navBtn').forEach(b=>{ b.classList.remove('bg-slate-900','text-white'); b.classList.add('hover:bg-slate-50'); if(b.dataset.view===v){ b.classList.add('bg-slate-900','text-white'); b.classList.remove('hover:bg-slate-50'); } });
+  if(v==='galeri') renderGaleri();
+  if(v==='kelola') renderKelola();
+  if(v==='dashboard') renderDashboard();
+  if(v==='cart') renderCart();
+  if(v==='sesi') renderSesi();
+  if(v==='riwayat') renderRiwayat();
+  if(v==='laporan') renderLaporan();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// DASHBOARD
+function renderDashboard(){
+  document.getElementById('statTotal').textContent=db.fotos.length;
+  document.getElementById('statAktif').textContent=db.fotos.filter(f=>f.status==='aktif').length;
+  const cartN=db.cart.length, cartRp=db.cart.reduce((s,id)=>{ const f=db.fotos.find(x=>x.id===id); return s+(f?hargaAkhir(f):0); },0);
+  document.getElementById('statCart').textContent=cartN;
+  document.getElementById('statCartRp').textContent=rupiah(cartRp);
+  document.getElementById('statOmset').textContent=rupiah(db.orders.reduce((s,o)=> s+o.total,0));
+  document.getElementById('statSub').textContent=db.sesi.length+' sesi • '+MEREK.slice(0,4).join(', ');
+  const dash=document.getElementById('dashFoto');
+  const recent=[...db.fotos].sort((a,b)=> b.created-a.created).slice(0,6);
+  dash.innerHTML=recent.map(f=> `<div class="relative rounded-xl overflow-hidden border aspect-square bg-slate-100"><img src="${f.src}" class="w-full h-full object-cover"><div class="wm"><span style="font-size:10px;padding:4px 8px">PREVIEW</span></div><div class="absolute bottom-1 left-1 right-1 bg-white/90 backdrop-blur text-[10px] font-bold px-2 py-1 rounded-full text-center truncate">${f.kode} • ${f.merek} ${f.model}</div></div>`).join('');
+  // pencarian populer
+  const byMerek={}; db.fotos.forEach(f=> byMerek[f.merek]=(byMerek[f.merek]||0)+1);
+  const topMerek=Object.entries(byMerek).sort((a,b)=> b[1]-a[1]).slice(0,4);
+  document.getElementById('dashMerek').innerHTML=topMerek.map(([m,c])=> `<div class="rounded-2xl border p-4 bg-white flex justify-between items-center"><div><div class="font-bold">${m}</div><div class="text-xs text-slate-500">${c} foto</div></div><span class="px-2 py-1 rounded-full bg-slate-900 text-white text-xs font-bold">${m.slice(0,2).toUpperCase()}</span></div>`).join('') || '<div class="text-xs text-slate-400">Belum ada foto</div>';
+  document.getElementById('dashFilter').innerHTML=`
+    <div class="p-3 rounded-xl bg-slate-50 border text-xs"><b>Filter galeri:</b> Merek • Model • Warna • Modifikasi • Tanggal • Event • Lokasi</div>
+    <div class="p-3 rounded-xl bg-white border text-xs">Klik <b>Galeri</b> untuk coba: ketik "NMAX" atau pilih merek Honda, lalu lihat watermark & harga promo.</div>
+  `;
+}
+
+// GALERI
+function fillFilterOptions(){
+  const merekSel=document.getElementById('fMerek');
+  const curM=merekSel.value;
+  merekSel.innerHTML='<option value="">Semua Merek</option>'+MEREK.map(m=> `<option>${m}</option>`).join('');
+  if(curM) merekSel.value=curM;
+  // model options from db
+  const models=[...new Set(db.fotos.map(f=> f.model).filter(Boolean))].sort();
+  const mSel=document.getElementById('fModel');
+  const curMo=mSel.value;
+  mSel.innerHTML='<option value="">Semua Model</option>'+models.map(m=> `<option>${m}</option>`).join('');
+  if(curMo) mSel.value=curMo;
+  const warnaSel=document.getElementById('fWarna');
+  const curW=warnaSel.value;
+  warnaSel.innerHTML='<option value="">Semua Warna</option>'+WARNA.map(w=> `<option>${w}</option>`).join('');
+  if(curW) warnaSel.value=curW;
+  // sesi options for upload bulk
+  const sesiOpts=db.sesi.map(s=> `<option value="${s.id}">${s.nama} — ${s.lokasi} • ${s.tanggal}</option>`).join('');
+  document.getElementById('bSesi').innerHTML='<option value="">— Sesi —</option>'+sesiOpts;
+  const eSesi=document.getElementById('eSesi');
+  if(eSesi) eSesi.innerHTML=sesiOpts;
+  const sSesi=document.getElementById('sId'); // keep
+}
+
+function filteredFotos(forAdminView){
+  let list=[...db.fotos];
+  const q=(document.getElementById('fQ')?.value||'').toLowerCase();
+  const fMerek=document.getElementById('fMerek')?.value||'';
+  const fModel=document.getElementById('fModel')?.value||'';
+  const fWarna=document.getElementById('fWarna')?.value||'';
+  const fModif=(document.getElementById('fModif')?.value||'').toLowerCase();
+  const fEvent=(document.getElementById('fEvent')?.value||'').toLowerCase();
+  const fLokasi=(document.getElementById('fLokasi')?.value||'').toLowerCase();
+  const fTanggal=document.getElementById('fTanggal')?.value||'';
+  const fStatus=document.getElementById('fStatus')?.value||'';
+  const fSort=document.getElementById('fSort')?.value||'new';
+  if(q) list=list.filter(f=> (f.kode+f.model+f.warna+f.modifikasi+f.merek).toLowerCase().includes(q));
+  if(fMerek) list=list.filter(f=> f.merek===fMerek);
+  if(fModel) list=list.filter(f=> f.model===fModel);
+  if(fWarna) list=list.filter(f=> f.warna===fWarna);
+  if(fModif) list=list.filter(f=> (f.modifikasi||'').toLowerCase().includes(fModif));
+  if(fEvent) list=list.filter(f=> (f.event||'').toLowerCase().includes(fEvent));
+  if(fLokasi) list=list.filter(f=> (f.lokasi||'').toLowerCase().includes(fLokasi));
+  if(fTanggal) list=list.filter(f=> f.tanggal===fTanggal);
+  if(!forAdminView && fStatus) list=list.filter(f=> f.status===fStatus);
+  else if(!forAdminView && !fStatus) { /* default aktif only when fStatus==aktif; if selector set to aktif already */ }
+  // actually fStatus selector controls it; when empty admin sees all, but pelanggan view uses same function with forAdminView=false and respects fStatus value (aktif or '')
+  if(fSort==='priceLow') list.sort((a,b)=> hargaAkhir(a)-hargaAkhir(b));
+  else if(fSort==='priceHigh') list.sort((a,b)=> hargaAkhir(b)-hargaAkhir(a));
+  else if(fSort==='diskon') list.sort((a,b)=> (b.diskon||0)-(a.diskon||0));
+  else list.sort((a,b)=> b.created-a.created);
+  return list;
+}
+
+function fotoCard(f, showAdminActions){
+  const akhir=hargaAkhir(f);
+  const coret=f.diskon>0?`Rp ${f.harga.toLocaleString('id-ID')}`:'';
+  const owned=db.orders.some(o=> o.items.includes(f.id));
+  const inCart=db.cart.includes(f.id);
+  const statusCls=f.status==='aktif'?'badge-aktif':f.status==='sembunyi'?'badge-sembunyi':'badge-habis';
+  const diskonBadge=f.diskon>0?`<span class="absolute top-2 right-2 px-2 py-1 rounded-full bg-red-500 text-white text-[11px] font-black">-${f.diskon}%</span>`:'';
+  return `<div class="bg-white rounded-[20px] border border-slate-200 overflow-hidden hover:shadow-md transition flex flex-col">
+    <div class="relative h-48 bg-slate-100 overflow-hidden cursor-pointer" onclick="openDetail('${f.id}')">
+      <img src="${f.src}" class="w-full h-full object-cover" loading="lazy">
+      ${!owned?'<div class="wm"><span>PREVIEW • SUNMORI</span></div>':''}
+      ${diskonBadge}
+      <span class="absolute top-2 left-2 px-2 py-1 rounded-full bg-white/90 backdrop-blur text-[11px] font-mono font-bold">${f.kode}</span>
+      <span class="absolute bottom-2 left-2 px-2 py-1 rounded-full ${statusCls} text-[11px] font-bold">${f.status.toUpperCase()}</span>
+      ${owned?'<span class="absolute bottom-2 right-2 px-2 py-1 rounded-full bg-emerald-500 text-white text-[11px] font-bold">Sudah dibeli ✓</span>':''}
+    </div>
+    <div class="p-4 flex-1 flex flex-col">
+      <div class="font-bold text-sm leading-tight">${f.merek} ${f.model} • ${f.warna}</div>
+      <div class="text-xs text-slate-500 mt-1 line-clamp-2">${f.modifikasi||'-'} • ${f.event} • ${f.lokasi} • ${f.tanggal}</div>
+      <div class="mt-3 flex items-baseline gap-2">
+        <span class="font-black ${f.diskon>0?'text-red-600':''}">${rupiah(akhir)}</span>
+        ${f.diskon>0?`<span class="text-xs text-slate-400 line-through">${coret}</span>`:''}
+        ${f.diskon>0?`<span class="px-1.5 py-0.5 rounded bg-red-50 border border-red-200 text-red-600 text-[11px] font-bold">Hemat ${rupiah(f.harga-akhir)}</span>`:''}
+      </div>
+      <div class="mt-3 flex gap-2">
+        ${!owned ? `<button onclick="addToCart('${f.id}')" class="flex-1 py-2.5 rounded-full ${inCart?'bg-slate-200 text-slate-500':'bg-amber-500 text-white'} text-xs font-bold">${inCart?'Di keranjang':'Keranjang'}</button><button onclick="openDetail('${f.id}')" class="flex-1 py-2.5 rounded-full bg-slate-900 text-white text-xs font-bold">Lihat</button>` : `<button onclick="openDetail('${f.id}')" class="flex-1 py-2.5 rounded-full bg-emerald-600 text-white text-xs font-bold">Unduh Asli</button>`}
+      </div>
+      ${showAdminActions?`<div class="mt-2 flex gap-2"><button onclick="openEdit('${f.id}')" class="flex-1 py-2 rounded-full border text-xs font-bold">Edit detail</button><button onclick="toggleStatus('${f.id}')" class="px-3 py-2 rounded-full border text-xs font-bold">${f.status==='aktif'?'Sembunyi':f.status==='sembunyi'?'Aktifkan':'Aktifkan'}</button><button onclick="deleteFoto('${f.id}')" class="px-3 py-2 rounded-full border text-xs font-bold text-red-600">Hapus</button></div>`:''}
+    </div>
+  </div>`;
+}
+
+function renderGaleri(){
+  fillFilterOptions();
+  const list=filteredFotos(false);
+  document.getElementById('galInfo').textContent=list.length+' foto ditemukan • pratinjau watermark, klik untuk detail & beli';
+  document.getElementById('galGrid').innerHTML=list.map(f=> fotoCard(f, role==='admin')).join('') || '<div class="col-span-3 text-center text-sm text-slate-400 p-8 border-2 border-dashed rounded-2xl">Tidak ada foto sesuai filter — coba reset atau ubah kata kunci.</div>';
+  document.getElementById('galCartN').textContent=db.cart.length;
+}
+
+function renderKelola(){
+  const q=(document.getElementById('kQ').value||'').toLowerCase();
+  const st=document.getElementById('kStatus').value;
+  let list=[...db.fotos].sort((a,b)=> b.created-a.created);
+  if(q) list=list.filter(f=> (f.kode+f.model+f.merek+f.warna).toLowerCase().includes(q));
+  if(st) list=list.filter(f=> f.status===st);
+  document.getElementById('kelolaList').innerHTML=list.map(f=> fotoCard(f, true)).join('') || '<div class="text-sm text-slate-400 p-6 border border-dashed rounded-2xl">Belum ada foto — upload massal dulu.</div>';
+}
+
+function renderSesi(){
+  const g=document.getElementById('sesiGrid');
+  g.innerHTML=db.sesi.map(s=> {
+    const count=db.fotos.filter(f=> f.sesiId===s.id).length;
+    return `<div class="bg-white rounded-[20px] border p-5">
+      <div class="font-bold">${s.nama}</div>
+      <div class="text-xs text-slate-500">${s.lokasi} • ${s.tanggal} • ${count} foto</div>
+      <div class="mt-3 flex gap-2">
+        <button onclick="editSesi('${s.id}')" class="px-3 py-1.5 rounded-full border text-xs font-bold">Edit</button>
+        <button onclick="deleteSesi('${s.id}')" class="px-3 py-1.5 rounded-full border text-xs font-bold text-red-600">Hapus</button>
+        <button onclick="filterBySesi('${s.id}')" class="ml-auto px-3 py-1.5 rounded-full bg-slate-900 text-white text-xs font-bold">Lihat foto</button>
+      </div>
+    </div>`;
+  }).join('') || '<div class="text-sm text-slate-400">Belum ada sesi</div>';
+}
+function filterBySesi(id){ const s=db.sesi.find(x=>x.id===id); if(s){ document.getElementById('fEvent').value=s.nama; } switchView('galeri'); renderGaleri(); }
+
+function renderCart(){
+  const list=db.cart.map(id=> db.fotos.find(f=> f.id===id)).filter(Boolean);
+  const el=document.getElementById('cartList');
+  if(list.length===0) el.innerHTML='<div class="text-sm text-slate-400 p-6 border border-dashed rounded-2xl text-center">Keranjang kosong — tambah dari galeri.</div>';
+  else el.innerHTML=list.map(f=> `<div class="flex gap-3 p-3 rounded-2xl border bg-white">
+    <img src="${f.src}" class="w-20 h-20 object-cover rounded-xl border">
+    <div class="flex-1"><div class="font-bold text-sm">${f.kode} • ${f.merek} ${f.model} • ${f.warna}</div><div class="text-xs text-slate-500">${f.event} • ${f.tanggal}</div><div class="font-black mt-1">${rupiah(hargaAkhir(f))} ${f.diskon>0?'<span class="text-xs font-normal text-slate-400 line-through">'+rupiah(f.harga)+'</span>':''}</div></div>
+    <button onclick="removeFromCart('${f.id}')" class="px-3 py-1.5 rounded-full border text-xs font-bold h-fit">Hapus</button>
+  </div>`).join('');
+  const total=list.reduce((s,f)=> s+hargaAkhir(f),0);
+  document.getElementById('cartTotal').textContent=rupiah(total);
+  document.getElementById('cartMeta').textContent=list.length+' foto • watermark hilang setelah beli';
+  document.getElementById('cartCount').textContent=list.length;
+  document.getElementById('cartCount').parentElement.classList.toggle('hidden', list.length===0);
+  document.getElementById('cartBadge').classList.toggle('hidden', list.length===0);
+  document.getElementById('statCart').textContent=list.length;
+  document.getElementById('statCartRp').textContent=rupiah(total);
+}
+
+function renderRiwayat(){
+  const el=document.getElementById('riwayatList');
+  if(db.orders.length===0) el.innerHTML='<div class="text-sm text-slate-400 p-6 border border-dashed rounded-2xl text-center">Belum ada pembelian.</div>';
+  else el.innerHTML=[...db.orders].sort((a,b)=> b.created-a.created).map(o=> `<div class="p-4 rounded-2xl border bg-white">
+    <div class="flex justify-between items-center"><div class="font-bold">Order ${o.id} • ${new Date(o.created).toLocaleString('id-ID')} • ${rupiah(o.total)} • ${o.items.length} foto</div><button onclick="downloadOrder('${o.id}')" class="px-3 py-1.5 rounded-full bg-emerald-600 text-white text-xs font-bold">Unduh Semua</button></div>
+    <div class="mt-3 grid grid-cols-3 gap-2">${o.items.map(id=> { const f=db.fotos.find(x=>x.id===id); if(!f) return ''; return `<div class="relative rounded-xl overflow-hidden border aspect-square bg-slate-100"><img src="${f.src}" class="w-full h-full object-cover"><div class="absolute bottom-1 left-1 right-1 bg-white/90 text-[10px] font-bold px-2 py-1 rounded-full text-center">${f.kode}</div></div>`}).join('')}</div>
+  </div>`).join('');
+}
+
+function renderLaporan(){
+  const sold=new Set(); db.orders.forEach(o=> o.items.forEach(id=> sold.add(id)));
+  const kotor=db.orders.reduce((s,o)=> s+o.kotor,0);
+  const bersih=db.orders.reduce((s,o)=> s+o.total,0);
+  const diskon=kotor-bersih;
+  document.getElementById('lapTerjual').textContent=sold.size+' foto';
+  document.getElementById('lapKotor').textContent=rupiah(kotor);
+  document.getElementById('lapDiskon').textContent=rupiah(diskon);
+  document.getElementById('lapBersih').textContent=rupiah(bersih);
+  const byMerek={}; sold.forEach(id=>{ const f=db.fotos.find(x=>x.id===id); if(f) byMerek[f.merek]=(byMerek[f.merek]||0)+1; });
+  document.getElementById('lapGrid').innerHTML=Object.entries(byMerek).sort((a,b)=> b[1]-a[1]).map(([m,c])=> `<div class="p-4 rounded-2xl border bg-white flex justify-between items-center"><div class="font-bold">${m}</div><div class="text-sm font-bold">${c} terjual</div></div>`).join('') || '<div class="text-sm text-slate-400">Belum ada penjualan</div>';
+}
+
+// CART ACTIONS
+function addToCart(id){ if(!db.cart.includes(id)){ db.cart.push(id); save(); renderCart(); renderGaleri(); renderKelola(); } }
+function removeFromCart(id){ db.cart=db.cart.filter(x=>x!==id); save(); renderCart(); renderGaleri(); }
+function clearCart(){ if(!confirm('Kosongkan keranjang?')) return; db.cart=[]; save(); renderCart(); renderGaleri(); }
+function addToCartCurrent(){ if(currentDetailId) addToCart(currentDetailId); closeDetail(); switchView('cart'); }
+function buyCurrent(){ if(!currentDetailId) return; if(!db.cart.includes(currentDetailId)) db.cart.push(currentDetailId); checkout(); closeDetail(); }
+function checkout(){
+  if(db.cart.length===0) return alert('Keranjang kosong');
+  const items=[...db.cart];
+  const kotor=items.reduce((s,id)=>{ const f=db.fotos.find(x=>x.id===id); return s+(f?f.harga:0); },0);
+  const total=items.reduce((s,id)=>{ const f=db.fotos.find(x=>x.id===id); return s+(f?hargaAkhir(f):0); },0);
+  db.orders.push({id:'ORD-'+Date.now().toString(36).toUpperCase(), items, kotor, total, created:Date.now()});
+  db.cart=[]; save(); renderCart(); renderGaleri(); renderRiwayat(); renderDashboard(); renderLaporan();
+  alert('Pembayaran berhasil (demo) — foto tanpa watermark siap di Riwayat!');
+  switchView('riwayat');
+}
+function downloadCurrent(){
+  if(!currentDetailId) return;
+  const f=db.fotos.find(x=>x.id===currentDetailId);
+  if(!f) return;
+  // simulate download by opening image in new tab
+  window.open(f.src, '_blank');
+}
+function downloadOrder(id){
+  const o=db.orders.find(x=>x.id===id);
+  if(!o) return;
+  o.items.forEach((fid,i)=>{ setTimeout(()=>{ const f=db.fotos.find(x=>x.id===fid); if(f) window.open(f.src,'_blank'); }, i*400); });
+}
+
+// UPLOAD MASSAL
+function openUploadModal(){ uploadDraft=[]; document.getElementById('upFiles').value=''; document.getElementById('upCount').textContent=''; document.getElementById('upGrid').innerHTML='<div class="text-sm text-slate-400 p-6 border border-dashed rounded-2xl text-center">Pilih foto di atas — bisa banyak sekaligus</div>'; fillFilterOptions(); document.getElementById('modalUpload').classList.remove('hidden'); }
+function closeUploadModal(){ document.getElementById('modalUpload').classList.add('hidden'); }
+function handleFiles(input){
+  const files=[...input.files];
+  if(files.length===0) return;
+  document.getElementById('upCount').textContent=files.length+' file dipilih — isi detail lalu Simpan';
+  uploadDraft=[];
+  const grid=document.getElementById('upGrid');
+  grid.innerHTML='';
+  files.forEach((file, idx)=>{
+    const reader=new FileReader();
+    reader.onload=e=>{
+      const kode='SNMR-'+String(db.nextNum+uploadDraft.length).padStart(4,'0');
+      const item={fileName:file.name, dataUrl:e.target.result, kode, merek:'Honda', model:'', warna:'Hitam', modifikasi:'', sesiId:db.sesi[0]?.id||'', harga:25000, diskon:0, status:'aktif', tanggal: new Date().toISOString().slice(0,10), checked:true};
+      uploadDraft.push(item);
+      renderUploadGrid();
+    };
+    reader.readAsDataURL(file);
+  });
+}
+function renderUploadGrid(){
+  const grid=document.getElementById('upGrid');
+  grid.innerHTML=uploadDraft.map((it,i)=> `<div class="p-3 rounded-2xl border bg-white ${it.checked?'border-violet-300 bg-violet-50/50':''}">
+    <div class="flex gap-3">
+      <label class="flex items-start gap-2"><input type="checkbox" ${it.checked?'checked':''} onchange="uploadDraft[${i}].checked=this.checked; renderUploadGrid()" class="mt-1"><img src="${it.dataUrl}" class="w-20 h-20 object-cover rounded-xl border"></label>
+      <div class="flex-1 grid grid-cols-2 gap-2">
+        <input value="${it.kode}" oninput="uploadDraft[${i}].kode=this.value" placeholder="Kode (SNMR-XXXX)" class="px-3 py-2 rounded-xl border text-xs font-mono">
+        <select onchange="uploadDraft[${i}].merek=this.value" class="px-3 py-2 rounded-xl border text-xs">${MEREK.map(m=> `<option ${it.merek===m?'selected':''}>${m}</option>`).join('')}</select>
+        <input value="${it.model}" oninput="uploadDraft[${i}].model=this.value" placeholder="Model (NMAX)" class="px-3 py-2 rounded-xl border text-xs">
+        <input value="${it.warna}" oninput="uploadDraft[${i}].warna=this.value" placeholder="Warna" class="px-3 py-2 rounded-xl border text-xs">
+        <input value="${it.modifikasi}" oninput="uploadDraft[${i}].modifikasi=this.value" placeholder="Modifikasi (fairing, knalpot...)" class="col-span-2 px-3 py-2 rounded-xl border text-xs">
+        <select onchange="uploadDraft[${i}].sesiId=this.value" class="px-3 py-2 rounded-xl border text-xs">${db.sesi.map(s=> `<option value="${s.id}" ${it.sesiId===s.id?'selected':''}>${s.nama}</option>`).join('')}</select>
+        <input type="date" value="${it.tanggal}" onchange="uploadDraft[${i}].tanggal=this.value" class="px-3 py-2 rounded-xl border text-xs">
+        <input type="number" value="${it.harga}" oninput="uploadDraft[${i}].harga=parseInt(this.value||0)" placeholder="Harga" class="px-3 py-2 rounded-xl border text-xs">
+        <div class="flex gap-1">
+          <input type="number" value="${it.diskon}" min="0" max="90" oninput="uploadDraft[${i}].diskon=parseInt(this.value||0)" placeholder="Diskon %" class="flex-1 px-3 py-2 rounded-xl border text-xs">
+          <select onchange="uploadDraft[${i}].status=this.value" class="px-2 py-2 rounded-xl border text-xs"><option value="aktif" ${it.status==='aktif'?'selected':''}>Aktif</option><option value="sembunyi" ${it.status==='sembunyi'?'selected':''}>Sembunyi</option><option value="habis" ${it.status==='habis'?'selected':''}>Habis</option></select>
+        </div>
+      </div>
+    </div>
+  </div>`).join('');
+}
+function toggleBulkAll(v){ uploadDraft.forEach(it=> it.checked=v); renderUploadGrid(); }
+function applyBulk(){
+  const bMerek=document.getElementById('bMerek').value;
+  const bModel=document.getElementById('bModel').value.trim();
+  const bWarna=document.getElementById('bWarna').value;
+  const bModif=document.getElementById('bModif').value.trim();
+  const bSesi=document.getElementById('bSesi').value;
+  const bHarga=document.getElementById('bHarga').value;
+  const bDiskon=document.getElementById('bDiskon').value;
+  const bStatus=document.getElementById('bStatus').value;
+  let n=0;
+  uploadDraft.forEach(it=>{ if(!it.checked) return; n++;
+    if(bMerek) it.merek=bMerek;
+    if(bModel) it.model=bModel;
+    if(bWarna) it.warna=bWarna;
+    if(bModif) it.modifikasi=bModif;
+    if(bSesi) it.sesiId=bSesi;
+    if(bHarga) it.harga=parseInt(bHarga);
+    if(bDiskon!=='') it.diskon=parseInt(bDiskon);
+    if(bStatus) it.status=bStatus;
+  });
+  if(n===0) return alert('Centang minimal 1 foto dulu');
+  renderUploadGrid();
+}
+
+function saveUpload(){
+  if(uploadDraft.length===0) return alert('Pilih foto dulu');
+  const checked=uploadDraft.filter(it=> it.checked);
+  if(checked.length===0) return alert('Centang minimal 1 foto');
+  // validate kode unique
+  const existing=new Set(db.fotos.map(f=> f.kode));
+  for(const it of checked){
+    if(!it.kode) return alert('Kode foto wajib diisi');
+    if(existing.has(it.kode)) return alert('Kode duplikat: '+it.kode);
+    existing.add(it.kode);
+  }
+  checked.forEach(it=>{
+    const sesi=db.sesi.find(s=> s.id===it.sesiId) || db.sesi[0];
+    db.fotos.push({
+      id:it.kode, kode:it.kode, src:it.dataUrl, merek:it.merek, model:it.model||'-', warna:it.warna||'-', modifikasi:it.modifikasi||'',
+      sesiId:it.sesiId, tanggal:it.tanggal, event: sesi? sesi.nama : '-', lokasi: sesi? sesi.lokasi : '-',
+      harga:it.harga||0, diskon: Math.min(90, Math.max(0, it.diskon||0)), status:it.status, created:Date.now()
+    });
+  });
+  db.nextNum+=checked.length;
+  save(); closeUploadModal(); renderAll();
+  alert(checked.length+' foto tersimpan — cek Galeri & Kelola');
+}
+
+// EDIT FOTO
+function openEdit(id){
+  const f=db.fotos.find(x=>x.id===id);
+  if(!f) return;
+  document.getElementById('eId').value=f.id;
+  document.getElementById('eKode').value=f.kode;
+  document.getElementById('ePreview').src=f.src;
+  document.getElementById('eMerek').value=f.merek;
+  document.getElementById('eModel').value=f.model;
+  document.getElementById('eWarna').value=f.warna;
+  document.getElementById('eModif').value=f.modifikasi;
+  document.getElementById('eSesi').value=f.sesiId;
+  document.getElementById('eTanggal').value=f.tanggal;
+  document.getElementById('eHarga').value=f.harga;
+  document.getElementById('eDiskon').value=f.diskon;
+  document.getElementById('eStat').value=f.status;
+  updateEditAkhir();
+  updateEditBadge();
+  fillFilterOptions();
+  // ensure sesi selected visible
+  document.getElementById('eSesi').value=f.sesiId;
+  document.getElementById('modalEdit').classList.remove('hidden');
+}
+function closeEditModal(){ document.getElementById('modalEdit').classList.add('hidden'); }
+function handleEditFile(input){
+  const file=input.files[0]; if(!file) return;
+  const r=new FileReader(); r.onload=e=>{ document.getElementById('ePreview').src=e.target.result; document.getElementById('ePreview').dataset.newSrc=e.target.result; }; r.readAsDataURL(file);
+}
+function updateEditAkhir(){
+  const h=parseInt(document.getElementById('eHarga').value||0);
+  const d=Math.min(90,Math.max(0, parseInt(document.getElementById('eDiskon').value||0)));
+  document.getElementById('eAkhir').textContent=rupiah(Math.round(h*(1-d/100)));
+}
+function updateEditBadge(){
+  const st=document.getElementById('eStat').value;
+  const el=document.getElementById('eStatusBadge');
+  el.textContent=st.toUpperCase();
+  el.className='px-3 py-2 rounded-full text-xs font-bold border '+(st==='aktif'?'badge-aktif':st==='sembunyi'?'badge-sembunyi':'badge-habis');
+}
+document.getElementById('eHarga')?.addEventListener('input', updateEditAkhir);
+document.getElementById('eDiskon')?.addEventListener('input', updateEditAkhir);
+document.getElementById('eStat')?.addEventListener('change', updateEditBadge);
+function saveEdit(){
+  const id=document.getElementById('eId').value;
+  const f=db.fotos.find(x=>x.id===id);
+  if(!f) return;
+  const newKode=document.getElementById('eKode').value.trim();
+  if(!newKode) return alert('Kode wajib');
+  if(newKode!==f.kode && db.fotos.some(x=> x.kode===newKode)) return alert('Kode sudah dipakai');
+  const sesi=db.sesi.find(s=> s.id===document.getElementById('eSesi').value);
+  const newSrc=document.getElementById('ePreview').dataset.newSrc;
+  f.kode=newKode; f.id=newKode;
+  if(newSrc){ f.src=newSrc; delete document.getElementById('ePreview').dataset.newSrc; }
+  // if id changed, update cart/orders references? keep old id in cart/orders as kode; update them
+  // migrate cart
+  // (cart stores kode, so find old)
+  const oldId=id;
+  if(oldId!==newKode){
+    db.cart=db.cart.map(x=> x===oldId? newKode : x);
+    db.orders.forEach(o=>{ o.items=o.items.map(x=> x===oldId? newKode : x); });
+  }
+  f.merek=document.getElementById('eMerek').value;
+  f.model=document.getElementById('eModel').value.trim()||'-';
+  f.warna=document.getElementById('eWarna').value.trim()||'-';
+  f.modifikasi=document.getElementById('eModif').value.trim();
+  f.sesiId=document.getElementById('eSesi').value;
+  f.tanggal=document.getElementById('eTanggal').value;
+  f.event=sesi? sesi.nama : f.event;
+  f.lokasi=sesi? sesi.lokasi : f.lokasi;
+  f.harga=parseInt(document.getElementById('eHarga').value||0);
+  f.diskon=Math.min(90,Math.max(0, parseInt(document.getElementById('eDiskon').value||0)));
+  f.status=document.getElementById('eStat').value;
+  save(); closeEditModal(); renderAll();
+}
+
+function toggleStatus(id){
+  const f=db.fotos.find(x=>x.id===id);
+  if(!f) return;
+  f.status = f.status==='aktif'?'sembunyi': f.status==='sembunyi'?'aktif':'aktif';
+  save(); renderKelola(); renderGaleri(); renderDashboard();
+}
+function deleteFoto(id){
+  if(!confirm('Hapus foto '+id+'?')) return;
+  db.fotos=db.fotos.filter(x=>x.id!==id);
+  db.cart=db.cart.filter(x=>x!==id);
+  save(); renderAll();
+}
+
+// SESI CRUD
+function openSesiModal(editId){
+  if(editId){
+    const s=db.sesi.find(x=>x.id===editId);
+    if(s){ document.getElementById('sId').value=s.id; document.getElementById('sNama').value=s.nama; document.getElementById('sLokasi').value=s.lokasi; document.getElementById('sTanggal').value=s.tanggal; }
+  } else {
+    document.getElementById('sId').value=''; document.getElementById('sNama').value=''; document.getElementById('sLokasi').value=''; document.getElementById('sTanggal').valueAsDate=new Date();
+  }
+  document.getElementById('modalSesi').classList.remove('hidden');
+}
+function closeSesiModal(){ document.getElementById('modalSesi').classList.add('hidden'); }
+function editSesi(id){ openSesiModal(id); }
+function saveSesi(){
+  const id=document.getElementById('sId').value || 'S'+Date.now().toString(36).toUpperCase();
+  const nama=document.getElementById('sNama').value.trim(); if(!nama) return alert('Nama sesi wajib');
+  const lokasi=document.getElementById('sLokasi').value.trim()||'-';
+  const tanggal=document.getElementById('sTanggal').value || new Date().toISOString().slice(0,10);
+  const idx=db.sesi.findIndex(x=>x.id===id);
+  const obj={id,nama,lokasi,tanggal};
+  if(idx>=0) db.sesi[idx]=obj; else db.sesi.push(obj);
+  // update fotos that use this sesi
+  db.fotos.forEach(f=>{ if(f.sesiId===id){ f.event=nama; f.lokasi=lokasi; f.tanggal=tanggal; } });
+  save(); closeSesiModal(); renderAll();
+}
+function deleteSesi(id){
+  if(db.fotos.some(f=> f.sesiId===id)) return alert('Sesi masih dipakai foto — pindahkan foto dulu atau hapus fotonya.');
+  if(!confirm('Hapus sesi?')) return;
+  db.sesi=db.sesi.filter(x=>x.id!==id); save(); renderAll();
+}
+
+// DETAIL
+function openDetail(id){
+  const f=db.fotos.find(x=>x.id===id);
+  if(!f) return;
+  currentDetailId=id;
+  const owned=db.orders.some(o=> o.items.includes(id));
+  document.getElementById('dImg').src=f.src;
+  document.getElementById('dWm').classList.toggle('hidden', owned);
+  document.getElementById('dBoughtNote').classList.toggle('hidden', !owned);
+  document.getElementById('dKode').textContent=f.kode;
+  document.getElementById('dStatus').textContent=f.status.toUpperCase();
+  document.getElementById('dStatus').className='px-2.5 py-1 rounded-full text-xs font-bold border '+(f.status==='aktif'?'badge-aktif':f.status==='sembunyi'?'badge-sembunyi':'badge-habis');
+  document.getElementById('dOwned').classList.toggle('hidden', !owned);
+  document.getElementById('dTitle').textContent=f.merek+' '+f.model+' • '+f.warna;
+  document.getElementById('dMeta').textContent=f.merek+' • '+f.model+' • '+f.warna+' • '+(f.modifikasi||'-');
+  document.getElementById('dHarga').textContent=rupiah(hargaAkhir(f));
+  const coretEl=document.getElementById('dHargaCoret');
+  const discEl=document.getElementById('dDiskonBadge');
+  if(f.diskon>0){ coretEl.textContent=rupiah(f.harga); coretEl.classList.remove('hidden'); discEl.textContent='-'+f.diskon+'%'; discEl.classList.remove('hidden'); } else { coretEl.classList.add('hidden'); discEl.classList.add('hidden'); }
+  document.getElementById('dSesi').textContent='Sesi: '+f.event+' • '+f.tanggal+' • '+f.lokasi;
+  document.getElementById('dMerek').textContent=f.merek;
+  document.getElementById('dModel').textContent=f.model;
+  document.getElementById('dWarna').textContent=f.warna;
+  document.getElementById('dTanggal').textContent=f.tanggal;
+  document.getElementById('dModif').textContent=f.modifikasi||'-';
+  const inCart=db.cart.includes(id);
+  document.getElementById('dCartBtn').textContent=inCart?'Di Keranjang':'Masuk Keranjang';
+  document.getElementById('dCartBtn').className='flex-1 py-3 rounded-full font-bold '+(inCart?'bg-slate-200 text-slate-500':'bg-amber-500 text-white');
+  document.getElementById('dBuyBtn').classList.toggle('hidden', owned);
+  document.getElementById('dDownloadBtn').classList.toggle('hidden', !owned);
+  // hide cart/buy if status not aktif and not owned
+  const isAktif=f.status==='aktif';
+  if(!isAktif && !owned){ document.getElementById('dCartBtn').classList.add('hidden'); document.getElementById('dBuyBtn').classList.add('hidden'); }
+  else { document.getElementById('dCartBtn').classList.remove('hidden'); }
+  document.getElementById('modalDetail').classList.remove('hidden');
+}
+function closeDetail(){ document.getElementById('modalDetail').classList.add('hidden'); }
+
+// FILTER helpers
+function resetFilter(){
+  ['fQ','fModif','fEvent','fLokasi'].forEach(id=> document.getElementById(id).value='');
+  document.getElementById('fMerek').value=''; document.getElementById('fModel').value=''; document.getElementById('fWarna').value=''; document.getElementById('fTanggal').value=''; renderGaleri();
+}
+function exportFotoCSV(){
+  const rows=[['Kode','Merek','Model','Warna','Modifikasi','Event','Lokasi','Tanggal','Harga','Diskon','HargaAkhir','Status']];
+  db.fotos.forEach(f=> rows.push([f.kode,f.merek,f.model,f.warna,f.modifikasi,f.event,f.lokasi,f.tanggal,f.harga,f.diskon,hargaAkhir(f),f.status]));
+  downloadCSV(rows, 'sunmori-foto-katalog.csv');
+}
+function exportJualCSV(){
+  const rows=[['Order','Tanggal','Kode','Merek','Model','Harga','Diskon','Bayar']];
+  db.orders.forEach(o=> o.items.forEach(id=>{ const f=db.fotos.find(x=>x.id===id); if(f) rows.push([o.id, new Date(o.created).toISOString(), f.kode,f.merek,f.model,f.harga,f.diskon,hargaAkhir(f)]); }));
+  if(rows.length===1) return alert('Belum ada penjualan');
+  downloadCSV(rows, 'sunmori-foto-penjualan.csv');
+}
+function downloadCSV(rows, name){
+  const csv=rows.map(r=> r.map(x=> `"${String(x).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=name; a.click(); URL.revokeObjectURL(url);
+}
+function resetDemo(){ if(!confirm('Reset semua data demo?')) return; localStorage.removeItem(LS); localStorage.removeItem(ROLE_KEY); location.reload(); }
+
+function renderAll(){
+  fillFilterOptions();
+  renderDashboard(); renderGaleri(); renderKelola(); renderSesi(); renderCart(); renderRiwayat(); renderLaporan();
+  initRole();
+}
+
+fillFilterOptions();
+renderAll();
+initRole();
+if(localStorage.getItem(ROLE_KEY)){ document.getElementById('roleGate').classList.add('hidden'); }
+switchView('galeri');
+</script>
+</body>
+</html>
