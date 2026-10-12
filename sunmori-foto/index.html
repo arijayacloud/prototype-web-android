@@ -80,7 +80,7 @@
 <!-- APP -->
 <div class="min-h-screen flex flex-col">
   <div class="bg-white border-b border-slate-200 sticky top-0 z-30">
-    <div class="max-w-[1280px] mx-auto px-4 h-[64px] flex items-center justify-between gap-3">
+    <div class="max-w-[1280px] mx-auto px-3 sm:px-4 min-h-[64px] py-2 sm:py-0 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 sm:gap-3">
       <div class="flex items-center gap-3">
         <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center text-white"><i class="fa-solid fa-camera text-sm"></i></div>
         <div>
@@ -89,20 +89,20 @@
         </div>
         <span id="roleBadge" class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-bold"></span>
       </div>
-      <div class="flex items-center gap-2">
+      <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 ml-auto">
         <span id="cartBadge" class="hidden px-3 py-1.5 rounded-full bg-amber-100 border border-amber-200 text-amber-800 text-xs font-bold"><i class="fa-solid fa-cart-shopping"></i> <span id="cartCount">0</span></span>
-        <select id="roleSwitch" onchange="switchRole(this.value)" class="px-3 py-2 rounded-full border border-slate-200 bg-white text-xs font-semibold">
+        <select id="roleSwitch" onchange="switchRole(this.value)" class="px-2.5 sm:px-3 py-2 rounded-full border border-slate-200 bg-white text-xs font-semibold max-w-[140px] sm:max-w-none">
           <option value="admin">Admin (Fotografer)</option><option value="pelanggan">Pelanggan</option>
         </select>
-        <button onclick="openUploadModal()" id="btnUpload" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900 text-white text-xs font-bold"><i class="fa-solid fa-cloud-arrow-up"></i> <span class="hidden sm:inline">Upload Massal</span><span class="sm:hidden">Upload</span></button>
+        <button onclick="openUploadModal()" id="btnUpload" class="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-full bg-slate-900 text-white text-xs font-bold shrink-0"><i class="fa-solid fa-cloud-arrow-up"></i> <span class="hidden sm:inline">Upload Massal</span><span class="sm:hidden">Upload</span></button>
       </div>
     </div>
   </div>
 
-  <div class="max-w-[1280px] mx-auto w-full px-4 py-4 flex-1 flex flex-col lg:flex-row gap-4">
+  <div class="max-w-[1280px] mx-auto w-full px-3 sm:px-4 py-3 sm:py-4 flex-1 flex flex-col lg:flex-row gap-3 sm:gap-4">
     <aside class="lg:w-[250px] shrink-0">
-      <div class="bg-white rounded-[20px] border border-slate-200 p-2 sticky top-[76px]">
-        <nav class="grid grid-cols-3 lg:grid-cols-1 gap-1" id="nav">
+      <div class="bg-white rounded-[20px] border border-slate-200 p-2 lg:sticky lg:top-[76px] overflow-x-auto lg:overflow-visible">
+        <nav class="grid grid-cols-3 lg:grid-cols-1 gap-1 min-w-[280px] sm:min-w-0" id="nav">
           <button onclick="switchView('dashboard')" data-view="dashboard" class="navBtn active flex flex-col lg:flex-row items-center gap-2 lg:gap-3 px-3 py-3 rounded-xl bg-slate-900 text-white font-bold text-xs lg:text-sm"><i class="fa-solid fa-chart-line"></i> Dashboard</button>
           <button onclick="switchView('galeri')" data-view="galeri" class="navBtn flex flex-col lg:flex-row items-center gap-2 lg:gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 font-semibold text-xs lg:text-sm"><i class="fa-solid fa-images"></i> Galeri</button>
           <button onclick="switchView('kelola')" data-view="kelola" class="navBtn flex flex-col lg:flex-row items-center gap-2 lg:gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 font-semibold text-xs lg:text-sm"><i class="fa-solid fa-pen-to-square"></i> Kelola Foto</button>
@@ -130,85 +130,85 @@
     <main class="flex-1 space-y-4">
       <!-- DASHBOARD -->
       <div id="view-dashboard" class="view space-y-4">
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
-          <div class="bg-white rounded-[20px] border border-slate-200 p-5"><div class="text-xs font-bold tracking-widest text-slate-400">TOTAL FOTO</div><div id="statTotal" class="font-black text-2xl mt-1">0</div><div class="text-xs text-slate-500" id="statSub">Semua status</div></div>
-          <div class="bg-white rounded-[20px] border border-slate-200 p-5"><div class="text-xs font-bold tracking-widest text-emerald-600">AKTIF JUAL</div><div id="statAktif" class="font-black text-2xl mt-1">0</div><div class="text-xs text-slate-500">Siap dibeli pelanggan</div></div>
-          <div class="bg-white rounded-[20px] border border-slate-200 p-5"><div class="text-xs font-bold tracking-widest text-amber-600">KERANJANG</div><div id="statCart" class="font-black text-2xl mt-1">0</div><div class="text-xs text-slate-500" id="statCartRp">Rp 0</div></div>
-          <div class="bg-white rounded-[20px] border border-slate-200 p-5"><div class="text-xs font-bold tracking-widest text-violet-600">OMSET (LUNAS)</div><div id="statOmset" class="font-black text-2xl mt-1">Rp 0</div><div class="text-xs text-slate-500">Total pembelian</div></div>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
+          <div class="bg-white rounded-[20px] border border-slate-200 p-4 sm:p-5"><div class="text-xs font-bold tracking-widest text-slate-400">TOTAL FOTO</div><div id="statTotal" class="font-black text-2xl mt-1">0</div><div class="text-xs text-slate-500" id="statSub">Semua status</div></div>
+          <div class="bg-white rounded-[20px] border border-slate-200 p-4 sm:p-5"><div class="text-xs font-bold tracking-widest text-emerald-600">AKTIF JUAL</div><div id="statAktif" class="font-black text-2xl mt-1">0</div><div class="text-xs text-slate-500">Siap dibeli pelanggan</div></div>
+          <div class="bg-white rounded-[20px] border border-slate-200 p-4 sm:p-5"><div class="text-xs font-bold tracking-widest text-amber-600">KERANJANG</div><div id="statCart" class="font-black text-2xl mt-1">0</div><div class="text-xs text-slate-500" id="statCartRp">Rp 0</div></div>
+          <div class="bg-white rounded-[20px] border border-slate-200 p-4 sm:p-5"><div class="text-xs font-bold tracking-widest text-violet-600">OMSET (LUNAS)</div><div id="statOmset" class="font-black text-2xl mt-1">Rp 0</div><div class="text-xs text-slate-500">Total pembelian</div></div>
         </div>
         <div class="grid lg:grid-cols-[1.1fr_0.9fr] gap-4">
-          <div class="bg-white rounded-[20px] border border-slate-200 p-5">
+          <div class="bg-white rounded-[20px] border border-slate-200 p-4 sm:p-5">
             <div class="flex justify-between items-center"><div class="font-bold">Foto terbaru</div><button onclick="switchView('kelola')" class="text-xs font-bold text-violet-600">Kelola →</button></div>
-            <div id="dashFoto" class="mt-3 grid grid-cols-3 gap-2"></div>
+            <div id="dashFoto" class="mt-3 grid grid-cols-2 sm:grid-cols-3 gap-2"></div>
           </div>
-          <div class="bg-white rounded-[20px] border border-slate-200 p-5">
+          <div class="bg-white rounded-[20px] border border-slate-200 p-4 sm:p-5">
             <div class="font-bold">Pencarian populer</div>
             <div id="dashFilter" class="mt-3 space-y-2"></div>
             <button onclick="switchView('galeri')" class="mt-3 w-full py-2.5 rounded-full bg-slate-900 text-white text-sm font-bold">Buka Galeri Pencarian →</button>
           </div>
         </div>
-        <div class="bg-white rounded-[20px] border border-slate-200 p-5">
+        <div class="bg-white rounded-[20px] border border-slate-200 p-4 sm:p-5">
           <div class="font-bold">Merek terlaris</div>
-          <div id="dashMerek" class="mt-3 grid grid-cols-2 lg:grid-cols-4 gap-2"></div>
+          <div id="dashMerek" class="mt-3 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2"></div>
         </div>
       </div>
 
       <!-- GALERI PELANGGAN -->
       <div id="view-galeri" class="view hidden space-y-4">
-        <div class="bg-white rounded-[20px] border border-slate-200 p-5">
-          <div class="flex flex-wrap gap-2 justify-between items-center">
-            <div><div class="font-display font-extrabold text-lg">Galeri Sunmori — Cari Foto Motormu</div><div class="text-xs text-slate-500">Filter merek, model, warna, modifikasi, tanggal, event, lokasi — pratinjau watermark, harga & diskon</div></div>
-            <div class="flex gap-2">
-              <button onclick="resetFilter()" class="px-4 py-2.5 rounded-full border border-slate-200 text-sm font-bold">Reset filter</button>
+        <div class="bg-white rounded-[20px] border border-slate-200 p-4 sm:p-5">
+          <div class="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-2 justify-between sm:items-center">
+            <div><div class="font-display font-extrabold text-base sm:text-lg leading-tight">Galeri Sunmori — Cari Foto Motormu</div><div class="text-xs text-slate-500">Filter merek, model, warna, modifikasi, tanggal, event, lokasi — pratinjau watermark, harga & diskon</div></div>
+            <div class="flex flex-wrap gap-2 w-full sm:w-auto">
+              <button onclick="resetFilter()" class="flex-1 sm:flex-none px-4 py-2.5 rounded-full border border-slate-200 text-sm font-bold">Reset filter</button>
               <button onclick="switchView('cart')" class="px-4 py-2.5 rounded-full bg-amber-500 text-white text-sm font-bold"><i class="fa-solid fa-cart-shopping"></i> Keranjang (<span id="galCartN">0</span>)</button>
             </div>
           </div>
-          <div class="mt-4 grid lg:grid-cols-3 gap-3">
-            <input id="fQ" oninput="renderGaleri()" placeholder="Cari kode / model / warna / modifikasi (mis. NMAX, knalpot)" class="px-4 py-3 rounded-xl border border-slate-200 text-sm lg:col-span-3">
-            <select id="fMerek" onchange="renderGaleri()" class="px-3 py-2.5 rounded-full border border-slate-200 text-sm font-semibold"><option value="">Semua Merek</option></select>
-            <select id="fModel" onchange="renderGaleri()" class="px-3 py-2.5 rounded-full border border-slate-200 text-sm font-semibold"><option value="">Semua Model</option></select>
-            <select id="fWarna" onchange="renderGaleri()" class="px-3 py-2.5 rounded-full border border-slate-200 text-sm font-semibold"><option value="">Semua Warna</option></select>
-            <input id="fModif" oninput="renderGaleri()" placeholder="Modifikasi (fairing, velg, decal...)" class="px-4 py-2.5 rounded-full border border-slate-200 text-sm">
-            <input id="fEvent" oninput="renderGaleri()" placeholder="Event / Sesi (mis. Sunmori Senayan)" class="px-4 py-2.5 rounded-full border border-slate-200 text-sm">
-            <input id="fLokasi" oninput="renderGaleri()" placeholder="Lokasi (Senayan, PIK...)" class="px-4 py-2.5 rounded-full border border-slate-200 text-sm">
-            <input id="fTanggal" type="date" onchange="renderGaleri()" class="px-4 py-2.5 rounded-full border border-slate-200 text-sm">
-            <select id="fStatus" onchange="renderGaleri()" class="px-3 py-2.5 rounded-full border border-slate-200 text-sm font-semibold"><option value="aktif">Hanya Aktif jual</option><option value="">Semua status (admin lihat)</option></select>
-            <select id="fSort" onchange="renderGaleri()" class="px-3 py-2.5 rounded-full border border-slate-200 text-sm font-semibold"><option value="new">Terbaru</option><option value="priceLow">Harga termurah</option><option value="priceHigh">Harga termahal</option><option value="diskon">Diskon terbesar</option></select>
+          <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
+            <input id="fQ" oninput="renderGaleri()" placeholder="Cari kode / model / warna / modifikasi (mis. NMAX, knalpot)" class="px-4 py-3 rounded-xl border border-slate-200 text-sm sm:col-span-2 lg:col-span-3 w-full">
+            <select id="fMerek" onchange="renderGaleri()" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold bg-white"><option value="">Semua Merek</option></select>
+            <select id="fModel" onchange="renderGaleri()" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold bg-white"><option value="">Semua Model</option></select>
+            <select id="fWarna" onchange="renderGaleri()" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold bg-white"><option value="">Semua Warna</option></select>
+            <input id="fModif" oninput="renderGaleri()" placeholder="Modifikasi (fairing, velg, decal...)" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm bg-white">
+            <input id="fEvent" oninput="renderGaleri()" placeholder="Event / Sesi (mis. Sunmori Senayan)" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm bg-white">
+            <input id="fLokasi" oninput="renderGaleri()" placeholder="Lokasi (Senayan, PIK...)" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm bg-white">
+            <input id="fTanggal" type="date" onchange="renderGaleri()" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm bg-white">
+            <select id="fStatus" onchange="renderGaleri()" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold bg-white"><option value="aktif">Hanya Aktif jual</option><option value="">Semua status (admin lihat)</option></select>
+            <select id="fSort" onchange="renderGaleri()" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold bg-white"><option value="new">Terbaru</option><option value="priceLow">Harga termurah</option><option value="priceHigh">Harga termahal</option><option value="diskon">Diskon terbesar</option></select>
           </div>
           <div id="galInfo" class="mt-3 text-xs text-slate-500"></div>
-          <div id="galGrid" class="mt-4 grid grid-cols-2 lg:grid-cols-3 gap-3"></div>
+          <div id="galGrid" class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3"></div>
         </div>
       </div>
 
       <!-- KELOLA FOTO (ADMIN) -->
       <div id="view-kelola" class="view hidden space-y-4">
-        <div class="bg-white rounded-[20px] border border-slate-200 p-5">
-          <div class="flex flex-wrap gap-2 justify-between items-center">
-            <div><div class="font-display font-extrabold text-lg">Kelola Foto — Edit Detail Tanpa Re-upload</div><div class="text-xs text-slate-500">Ubah merek/model/warna/modifikasi/sesi/harga/diskon/status — file tetap</div></div>
+        <div class="bg-white rounded-[20px] border border-slate-200 p-4 sm:p-5">
+          <div class="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-2 justify-between sm:items-center">
+            <div><div class="font-display font-extrabold text-base sm:text-lg leading-tight">Kelola Foto — Edit Detail Tanpa Re-upload</div><div class="text-xs text-slate-500">Ubah merek/model/warna/modifikasi/sesi/harga/diskon/status — file tetap</div></div>
             <div class="flex gap-2">
-              <input id="kQ" oninput="renderKelola()" placeholder="Cari kode / model / merek" class="px-4 py-2.5 rounded-full border border-slate-200 text-sm w-[220px]">
-              <select id="kStatus" onchange="renderKelola()" class="px-3 py-2.5 rounded-full border border-slate-200 text-sm font-semibold"><option value="">Semua status</option><option value="aktif">Aktif</option><option value="sembunyi">Sembunyi</option><option value="habis">Tidak tersedia</option></select>
-              <button onclick="openUploadModal()" class="px-4 py-2.5 rounded-full bg-slate-900 text-white text-sm font-bold">+ Upload Massal</button>
+              <input id="kQ" oninput="renderKelola()" placeholder="Cari kode / model / merek" class="w-full sm:w-[220px] px-4 py-2.5 rounded-xl border border-slate-200 text-sm bg-white">
+              <select id="kStatus" onchange="renderKelola()" class="w-full sm:w-auto px-3 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold bg-white"><option value="">Semua status</option><option value="aktif">Aktif</option><option value="sembunyi">Sembunyi</option><option value="habis">Tidak tersedia</option></select>
+              <button onclick="openUploadModal()" class="w-full sm:w-auto px-4 py-2.5 rounded-full bg-slate-900 text-white text-sm font-bold">+ Upload Massal</button>
             </div>
           </div>
-          <div id="kelolaList" class="mt-4 grid md:grid-cols-2 gap-3"></div>
+          <div id="kelolaList" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3"></div>
         </div>
       </div>
 
       <!-- SESI -->
       <div id="view-sesi" class="view hidden space-y-4">
-        <div class="bg-white rounded-[20px] border border-slate-200 p-5">
-          <div class="flex flex-wrap gap-2 justify-between items-center">
-            <div><div class="font-display font-extrabold text-lg">Sesi Pemotretan</div><div class="text-xs text-slate-500">Tanggal • Nama event • Lokasi sunmori • Nama sesi — untuk pengelompokan & filter</div></div>
+        <div class="bg-white rounded-[20px] border border-slate-200 p-4 sm:p-5">
+          <div class="flex flex-col sm:flex-row flex-wrap gap-2 justify-between sm:items-center">
+            <div><div class="font-display font-extrabold text-base sm:text-lg">Sesi Pemotretan</div><div class="text-xs text-slate-500">Tanggal • Nama event • Lokasi sunmori • Nama sesi — untuk pengelompokan & filter</div></div>
             <button onclick="openSesiModal()" class="px-4 py-2.5 rounded-full bg-slate-900 text-white text-sm font-bold">+ Sesi</button>
           </div>
-          <div id="sesiGrid" class="mt-4 grid md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+          <div id="sesiGrid" class="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div>
         </div>
       </div>
 
       <!-- KERANJANG -->
       <div id="view-cart" class="view hidden space-y-4">
-        <div class="bg-white rounded-[20px] border border-slate-200 p-5">
+        <div class="bg-white rounded-[20px] border border-slate-200 p-4 sm:p-5">
           <div class="flex justify-between items-center"><div class="font-display font-extrabold text-lg">Keranjang</div><button onclick="clearCart()" class="px-3 py-1.5 rounded-full border text-xs font-bold">Kosongkan</button></div>
           <div id="cartList" class="mt-4 space-y-2"></div>
           <div class="mt-4 p-4 rounded-2xl bg-slate-900 text-white flex flex-wrap gap-3 justify-between items-center">
@@ -221,7 +221,7 @@
 
       <!-- RIWAYAT -->
       <div id="view-riwayat" class="view hidden space-y-4">
-        <div class="bg-white rounded-[20px] border border-slate-200 p-5">
+        <div class="bg-white rounded-[20px] border border-slate-200 p-4 sm:p-5">
           <div class="font-display font-extrabold text-lg">Riwayat Pembelian</div>
           <div id="riwayatList" class="mt-4 space-y-2"></div>
         </div>
@@ -229,9 +229,9 @@
 
       <!-- LAPORAN -->
       <div id="view-laporan" class="view hidden space-y-4">
-        <div class="bg-white rounded-[20px] border border-slate-200 p-5">
-          <div class="flex flex-wrap gap-2 justify-between items-center">
-            <div class="font-display font-extrabold text-lg">Laporan Penjualan</div>
+        <div class="bg-white rounded-[20px] border border-slate-200 p-4 sm:p-5">
+          <div class="flex flex-col sm:flex-row flex-wrap gap-2 justify-between sm:items-center">
+            <div class="font-display font-extrabold text-base sm:text-lg">Laporan Penjualan</div>
             <div class="flex gap-2">
               <button onclick="exportFotoCSV()" class="px-4 py-2.5 rounded-full border border-slate-200 text-sm font-bold">Export Foto CSV</button>
               <button onclick="exportJualCSV()" class="px-4 py-2.5 rounded-full bg-slate-900 text-white text-sm font-bold">Export Penjualan CSV</button>
@@ -243,7 +243,7 @@
             <div class="rounded-2xl border p-4 bg-white"><div class="text-xs font-bold tracking-widest text-slate-400">DISKON DIBERIKAN</div><div id="lapDiskon" class="font-black text-xl mt-1">Rp 0</div></div>
             <div class="rounded-2xl border p-4 bg-emerald-50 border-emerald-200"><div class="text-xs font-bold tracking-widest text-emerald-700">OMSET BERSIH</div><div id="lapBersih" class="font-black text-xl mt-1">Rp 0</div></div>
           </div>
-          <div id="lapGrid" class="mt-4 grid md:grid-cols-2 gap-3"></div>
+          <div id="lapGrid" class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3"></div>
         </div>
       </div>
 
@@ -252,51 +252,56 @@
   </div>
 </div>
 
-<!-- MODAL UPLOAD MASSAL -->
+<!-- MODAL UPLOAD MASSAL — MOBILE FRIENDLY -->
 <div id="modalUpload" class="fixed inset-0 z-40 hidden">
   <div onclick="closeUploadModal()" class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"></div>
-  <div class="absolute inset-0 flex items-start justify-center p-4 overflow-auto">
-    <div class="bg-white rounded-[24px] w-full max-w-5xl my-6 p-6 shadow-2xl">
-      <div class="flex justify-between items-center gap-3">
-        <div><div class="font-display font-extrabold text-lg">Upload Foto Massal — Detail Per Foto</div><div class="text-xs text-slate-500">Pilih banyak file sekaligus, lalu isi detail agar mudah ditemukan pelanggan</div></div>
-        <button onclick="closeUploadModal()" class="w-9 h-9 rounded-full border flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-
-      <div class="mt-4 p-4 rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50 text-center">
-        <label class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-slate-900 text-white font-bold text-sm cursor-pointer"><i class="fa-solid fa-images"></i> Pilih Banyak Foto <input type="file" id="upFiles" accept="image/*" multiple class="hidden" onchange="handleFiles(this)"></label>
-        <div class="text-xs text-slate-500 mt-2">Bisa pilih 20+ foto sekaligus — pratinjau di bawah, watermark otomatis</div>
-        <div id="upCount" class="text-xs font-bold text-slate-700 mt-1"></div>
-      </div>
-
-      <!-- bulk apply -->
-      <div class="mt-4 p-4 rounded-2xl bg-amber-50 border border-amber-200">
-        <div class="text-xs font-bold tracking-widest text-amber-800">APLIKASI MASSAL — ISI SEKALI UNTUK SEMUA YANG DIPILIH</div>
-        <div class="mt-3 grid md:grid-cols-4 gap-2">
-          <select id="bMerek" class="px-3 py-2.5 rounded-xl border border-amber-200 text-sm font-semibold"><option value="">— Merek —</option><option>Honda</option><option>Yamaha</option><option>Kawasaki</option><option>Suzuki</option><option>Ducati</option><option>Vespa</option><option>Husqvarna</option></select>
-          <input id="bModel" placeholder="Model (NMAX, Vario...)" class="px-3 py-2.5 rounded-xl border border-amber-200 text-sm">
-          <select id="bWarna" class="px-3 py-2.5 rounded-xl border border-amber-200 text-sm"><option value="">— Warna —</option><option>Hitam</option><option>Putih</option><option>Merah</option><option>Biru</option><option>Kuning</option><option>Silver</option><option>Hijau</option><option>Abu-abu</option></select>
-          <input id="bModif" placeholder="Modifikasi (fairing, knalpot...)" class="px-3 py-2.5 rounded-xl border border-amber-200 text-sm">
+  <div class="absolute inset-0 flex items-start justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="bg-white rounded-[20px] sm:rounded-[24px] w-full max-w-5xl my-3 sm:my-6 shadow-2xl flex flex-col max-h-[96vh] sm:max-h-[94vh] overflow-hidden">
+      <div class="shrink-0 p-4 sm:p-6 pb-3 sm:pb-4 border-b border-slate-100">
+        <div class="flex justify-between items-start gap-3">
+          <div><div class="font-display font-extrabold text-base sm:text-lg leading-tight">Upload Foto Massal — Detail Per Foto</div><div class="text-[11px] sm:text-xs text-slate-500 mt-1">Pilih banyak file sekaligus, lalu isi detail agar mudah ditemukan pelanggan</div></div>
+          <button onclick="closeUploadModal()" class="w-9 h-9 rounded-full border flex items-center justify-center shrink-0"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <div class="mt-2 grid md:grid-cols-4 gap-2">
-          <select id="bSesi" class="px-3 py-2.5 rounded-xl border border-amber-200 text-sm"><option value="">— Sesi —</option></select>
-          <input id="bHarga" type="number" placeholder="Harga (Rp) — mis 25000" class="px-3 py-2.5 rounded-xl border border-amber-200 text-sm">
-          <input id="bDiskon" type="number" min="0" max="90" placeholder="Diskon % (0-90)" class="px-3 py-2.5 rounded-xl border border-amber-200 text-sm">
-          <select id="bStatus" class="px-3 py-2.5 rounded-xl border border-amber-200 text-sm font-semibold"><option value="aktif">Aktif jual</option><option value="sembunyi">Sembunyi</option><option value="habis">Tidak tersedia</option></select>
+      </div>
+      <div class="flex-1 overflow-y-auto p-4 sm:p-6 pt-4 space-y-4 no-scrollbar">
+        <div class="p-4 rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50 text-center">
+          <label class="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-slate-900 text-white font-bold text-sm cursor-pointer w-full sm:w-auto justify-center"><i class="fa-solid fa-images"></i> Pilih Banyak Foto <input type="file" id="upFiles" accept="image/*" multiple class="hidden" onchange="handleFiles(this)"></label>
+          <div class="text-xs text-slate-500 mt-2">Bisa pilih 20+ foto sekaligus — pratinjau di bawah, watermark otomatis</div>
+          <div id="upCount" class="text-xs font-bold text-slate-700 mt-1"></div>
         </div>
-        <div class="mt-2 flex gap-2">
-          <button onclick="applyBulk()" class="px-4 py-2.5 rounded-full bg-amber-500 text-white text-sm font-bold">Terapkan ke yang dicentang</button>
-          <label class="ml-auto flex items-center gap-2 text-xs font-bold"><input type="checkbox" id="bulkAll" onchange="toggleBulkAll(this.checked)"> Centang semua</label>
+
+        <!-- bulk apply -->
+        <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200">
+          <div class="text-[11px] sm:text-xs font-bold tracking-widest text-amber-800">APLIKASI MASSAL — ISI SEKALI UNTUK SEMUA YANG DICENTANG</div>
+          <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+            <select id="bMerek" class="w-full px-3 py-2.5 rounded-xl border border-amber-200 text-sm font-semibold bg-white"><option value="">— Merek —</option><option>Honda</option><option>Yamaha</option><option>Kawasaki</option><option>Suzuki</option><option>Ducati</option><option>Vespa</option><option>Husqvarna</option></select>
+            <input id="bModel" placeholder="Model (NMAX, Vario...)" class="w-full px-3 py-2.5 rounded-xl border border-amber-200 text-sm bg-white">
+            <select id="bWarna" class="w-full px-3 py-2.5 rounded-xl border border-amber-200 text-sm bg-white"><option value="">— Warna —</option><option>Hitam</option><option>Putih</option><option>Merah</option><option>Biru</option><option>Kuning</option><option>Silver</option><option>Hijau</option><option>Abu-abu</option></select>
+            <input id="bModif" placeholder="Modifikasi (fairing, knalpot...)" class="w-full px-3 py-2.5 rounded-xl border border-amber-200 text-sm bg-white">
+          </div>
+          <div class="mt-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+            <select id="bSesi" class="w-full px-3 py-2.5 rounded-xl border border-amber-200 text-sm bg-white"><option value="">— Sesi —</option></select>
+            <input id="bHarga" type="number" placeholder="Harga (Rp) — mis 25000" class="w-full px-3 py-2.5 rounded-xl border border-amber-200 text-sm bg-white">
+            <input id="bDiskon" type="number" min="0" max="90" placeholder="Diskon % (0-90)" class="w-full px-3 py-2.5 rounded-xl border border-amber-200 text-sm bg-white">
+            <select id="bStatus" class="w-full px-3 py-2.5 rounded-xl border border-amber-200 text-sm font-semibold bg-white"><option value="aktif">Aktif jual</option><option value="sembunyi">Sembunyi</option><option value="habis">Tidak tersedia</option></select>
+          </div>
+          <div class="mt-3 flex flex-col sm:flex-row gap-2 sm:items-center">
+            <button onclick="applyBulk()" class="w-full sm:w-auto px-5 py-2.5 rounded-full bg-amber-500 text-white text-sm font-bold">Terapkan ke yang dicentang</button>
+            <label class="flex items-center gap-2 text-xs font-bold sm:ml-auto"><input type="checkbox" id="bulkAll" onchange="toggleBulkAll(this.checked)" class="w-4 h-4"> Centang semua</label>
+          </div>
+          <div class="text-[11px] text-amber-800 mt-2">Tip: centang beberapa kartu foto di bawah, lalu isi field di atas dan klik Terapkan — detail lain tetap bisa diedit per foto.</div>
         </div>
-        <div class="text-[11px] text-amber-800 mt-2">Tip: centang beberapa kartu foto di bawah, lalu isi field di atas dan klik Terapkan — detail lain tetap bisa diedit per foto.</div>
+
+        <div id="upGrid" class="grid grid-cols-1 lg:grid-cols-2 gap-3"></div>
       </div>
 
-      <div id="upGrid" class="mt-4 grid md:grid-cols-2 gap-3 max-h-[52vh] overflow-auto no-scrollbar pr-1"></div>
-
-      <div class="mt-4 flex gap-2">
-        <button onclick="saveUpload()" class="flex-1 py-3 rounded-full bg-slate-900 text-white font-bold">Simpan Foto ke Katalog</button>
-        <button onclick="closeUploadModal()" class="px-6 py-3 rounded-full border font-bold">Batal</button>
+      <div class="shrink-0 p-4 sm:p-6 pt-3 border-t border-slate-100 bg-white">
+        <div class="flex flex-col sm:flex-row gap-2">
+          <button onclick="saveUpload()" class="flex-1 py-3 rounded-full bg-slate-900 text-white font-bold text-sm sm:text-base">Simpan Foto ke Katalog</button>
+          <button onclick="closeUploadModal()" class="w-full sm:w-auto px-6 py-3 rounded-full border font-bold text-sm">Batal</button>
+        </div>
+        <div class="text-[11px] text-slate-400 text-center mt-2">Setiap foto dapat kode unik otomatis (SNMR-XXXX) — bisa diedit. Sistem tambah watermark di pratinjau galeri.</div>
       </div>
-      <div class="text-[11px] text-slate-400 text-center mt-2">Setiap foto dapat kode unik otomatis (SNMR-XXXX) — bisa diedit. Sistem tambah watermark di pratinjau galeri.</div>
     </div>
   </div>
 </div>
@@ -305,11 +310,11 @@
 <div id="modalEdit" class="fixed inset-0 z-40 hidden">
   <div onclick="closeEditModal()" class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"></div>
   <div class="absolute inset-0 flex items-center justify-center p-4">
-    <div class="bg-white rounded-[24px] w-full max-w-2xl p-6 shadow-2xl max-h-[92vh] overflow-auto no-scrollbar">
+    <div class="bg-white rounded-[20px] sm:rounded-[24px] w-full max-w-2xl p-4 sm:p-6 shadow-2xl max-h-[92vh] sm:max-h-[92vh] overflow-auto no-scrollbar">
       <div class="flex justify-between items-center"><div class="font-extrabold">Edit Detail Foto — Tanpa Re-upload</div><button onclick="closeEditModal()" class="w-9 h-9 rounded-full border flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button></div>
       <div class="mt-4 grid gap-3">
-        <div class="flex gap-3">
-          <img id="ePreview" class="w-28 h-28 object-cover rounded-xl border">
+        <div class="flex flex-col sm:flex-row gap-3">
+          <img id="ePreview" class="w-full sm:w-28 h-48 sm:h-28 object-cover rounded-xl border">
           <div class="flex-1">
             <label class="text-xs font-bold">Kode Foto (unik)</label><input id="eKode" class="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm font-mono">
             <div class="mt-2 flex gap-2">
@@ -318,20 +323,20 @@
             </div>
           </div>
         </div>
-        <div class="grid grid-cols-2 gap-2">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <div><label class="text-xs font-bold">Merek Motor</label><select id="eMerek" class="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm"><option>Honda</option><option>Yamaha</option><option>Kawasaki</option><option>Suzuki</option><option>Ducati</option><option>Vespa</option><option>Husqvarna</option><option>Lainnya</option></select></div>
           <div><label class="text-xs font-bold">Model / Tipe</label><input id="eModel" placeholder="NMAX, Vario, Ninja..." class="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm"></div>
         </div>
-        <div class="grid grid-cols-2 gap-2">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <div><label class="text-xs font-bold">Warna Motor</label><input id="eWarna" placeholder="Hitam, Merah..." class="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm"></div>
           <div><label class="text-xs font-bold">Status</label><select id="eStat" class="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm"><option value="aktif">Aktif jual</option><option value="sembunyi">Sembunyi</option><option value="habis">Tidak tersedia</option></select></div>
         </div>
         <div><label class="text-xs font-bold">Detail Modifikasi / Tampilan</label><input id="eModif" placeholder="fairing, knalpot racing, velg gold, decal..." class="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm"></div>
-        <div class="grid grid-cols-2 gap-2">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <div><label class="text-xs font-bold">Sesi / Event</label><select id="eSesi" class="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm"></select></div>
           <div><label class="text-xs font-bold">Tanggal Sesi</label><input id="eTanggal" type="date" class="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm"></div>
         </div>
-        <div class="grid grid-cols-3 gap-2">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
           <div><label class="text-xs font-bold">Harga (Rp)</label><input id="eHarga" type="number" class="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm"></div>
           <div><label class="text-xs font-bold">Diskon %</label><input id="eDiskon" type="number" min="0" max="90" class="mt-1 w-full px-3 py-2.5 rounded-xl border text-sm"></div>
           <div class="flex flex-col justify-end"><div class="px-3 py-2.5 rounded-xl bg-slate-900 text-white text-center"><div class="text-[10px] tracking-widest opacity-60">HARGA AKHIR</div><div id="eAkhir" class="font-black text-sm">Rp 0</div></div></div>
@@ -348,8 +353,8 @@
 <div id="modalSesi" class="fixed inset-0 z-40 hidden">
   <div onclick="closeSesiModal()" class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm"></div>
   <div class="absolute inset-0 flex items-center justify-center p-4">
-    <div class="bg-white rounded-[24px] w-full max-w-md p-6 shadow-2xl">
-      <div class="flex justify-between items-center"><div class="font-extrabold">Sesi Pemotretan</div><button onclick="closeSesiModal()" class="w-9 h-9 rounded-full border flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="bg-white rounded-[20px] sm:rounded-[24px] w-full max-w-md p-4 sm:p-6 shadow-2xl">
+      <div class="flex justify-between items-center"><div class="font-extrabold text-sm sm:text-base">Sesi Pemotretan</div><button onclick="closeSesiModal()" class="w-9 h-9 rounded-full border flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button></div>
       <div class="grid gap-3 mt-4">
         <input id="sNama" placeholder="Nama sesi / event — mis. Sunmori Senayan #12" class="px-4 py-3 rounded-xl border text-sm">
         <input id="sLokasi" placeholder="Lokasi — Senayan, PIK, BSD..." class="px-4 py-3 rounded-xl border text-sm">
@@ -365,15 +370,15 @@
 <div id="modalDetail" class="fixed inset-0 z-40 hidden">
   <div onclick="closeDetail()" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
   <div class="absolute inset-0 flex items-center justify-center p-4 overflow-auto">
-    <div class="bg-white rounded-[24px] w-full max-w-5xl my-6 overflow-hidden shadow-2xl grid lg:grid-cols-[1.2fr_0.8fr]">
-      <div class="relative bg-slate-900 flex items-center justify-center min-h-[360px]">
-        <img id="dImg" class="max-h-[70vh] w-full object-contain">
+    <div class="bg-white rounded-[20px] sm:rounded-[24px] w-full max-w-5xl my-3 sm:my-6 overflow-hidden shadow-2xl grid lg:grid-cols-[1.2fr_0.8fr]">
+      <div class="relative bg-slate-900 flex items-center justify-center min-h-[240px] sm:min-h-[360px]">
+        <img id="dImg" class="max-h-[42vh] sm:max-h-[70vh] w-full object-contain">
         <div id="dWm" class="wm"><span>PREVIEW • SUNMORI • WATERMARK</span></div>
         <button onclick="closeDetail()" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-white text-slate-900 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
         <div id="dBoughtNote" class="hidden absolute bottom-3 left-3 right-3 bg-emerald-500 text-white px-4 py-2 rounded-full text-xs font-bold text-center">✓ Sudah dibeli — file asli tanpa watermark siap unduh</div>
       </div>
-      <div class="p-6">
-        <div class="flex gap-2 items-center"><span id="dKode" class="px-2.5 py-1 rounded-full bg-slate-900 text-white text-xs font-mono font-bold">SNMR-0001</span><span id="dStatus" class="px-2.5 py-1 rounded-full text-xs font-bold border">AKTIF</span><span id="dOwned" class="hidden px-2.5 py-1 rounded-full bg-emerald-100 border border-emerald-200 text-emerald-700 text-xs font-bold">Sudah dibeli</span></div>
+      <div class="p-4 sm:p-6">
+        <div class="flex flex-wrap gap-2 items-center"><span id="dKode" class="px-2.5 py-1 rounded-full bg-slate-900 text-white text-xs font-mono font-bold">SNMR-0001</span><span id="dStatus" class="px-2.5 py-1 rounded-full text-xs font-bold border">AKTIF</span><span id="dOwned" class="hidden px-2.5 py-1 rounded-full bg-emerald-100 border border-emerald-200 text-emerald-700 text-xs font-bold">Sudah dibeli</span></div>
         <div class="font-display font-extrabold text-lg mt-3" id="dTitle">Honda Vario — Hitam</div>
         <div class="text-xs text-slate-500" id="dMeta">Kawasaki • Ninja • fairing, knalpot</div>
         <div class="mt-3 p-4 rounded-2xl bg-slate-50 border border-slate-200">
@@ -567,7 +572,7 @@ function fotoCard(f, showAdminActions){
   const statusCls=f.status==='aktif'?'badge-aktif':f.status==='sembunyi'?'badge-sembunyi':'badge-habis';
   const diskonBadge=f.diskon>0?`<span class="absolute top-2 right-2 px-2 py-1 rounded-full bg-red-500 text-white text-[11px] font-black">-${f.diskon}%</span>`:'';
   return `<div class="bg-white rounded-[20px] border border-slate-200 overflow-hidden hover:shadow-md transition flex flex-col">
-    <div class="relative h-48 bg-slate-100 overflow-hidden cursor-pointer" onclick="openDetail('${f.id}')">
+    <div class="relative h-40 sm:h-48 bg-slate-100 overflow-hidden cursor-pointer" onclick="openDetail('${f.id}')">
       <img src="${f.src}" class="w-full h-full object-cover" loading="lazy">
       ${!owned?'<div class="wm"><span>PREVIEW • SUNMORI</span></div>':''}
       ${diskonBadge}
@@ -721,12 +726,12 @@ function renderUploadGrid(){
   grid.innerHTML=uploadDraft.map((it,i)=> `<div class="p-3 rounded-2xl border bg-white ${it.checked?'border-violet-300 bg-violet-50/50':''}">
     <div class="flex gap-3">
       <label class="flex items-start gap-2"><input type="checkbox" ${it.checked?'checked':''} onchange="uploadDraft[${i}].checked=this.checked; renderUploadGrid()" class="mt-1"><img src="${it.dataUrl}" class="w-20 h-20 object-cover rounded-xl border"></label>
-      <div class="flex-1 grid grid-cols-2 gap-2">
+      <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-2">
         <input value="${it.kode}" oninput="uploadDraft[${i}].kode=this.value" placeholder="Kode (SNMR-XXXX)" class="px-3 py-2 rounded-xl border text-xs font-mono">
         <select onchange="uploadDraft[${i}].merek=this.value" class="px-3 py-2 rounded-xl border text-xs">${MEREK.map(m=> `<option ${it.merek===m?'selected':''}>${m}</option>`).join('')}</select>
         <input value="${it.model}" oninput="uploadDraft[${i}].model=this.value" placeholder="Model (NMAX)" class="px-3 py-2 rounded-xl border text-xs">
         <input value="${it.warna}" oninput="uploadDraft[${i}].warna=this.value" placeholder="Warna" class="px-3 py-2 rounded-xl border text-xs">
-        <input value="${it.modifikasi}" oninput="uploadDraft[${i}].modifikasi=this.value" placeholder="Modifikasi (fairing, knalpot...)" class="col-span-2 px-3 py-2 rounded-xl border text-xs">
+        <input value="${it.modifikasi}" oninput="uploadDraft[${i}].modifikasi=this.value" placeholder="Modifikasi (fairing, knalpot...)" class="sm:col-span-2 px-3 py-2 rounded-xl border text-xs">
         <select onchange="uploadDraft[${i}].sesiId=this.value" class="px-3 py-2 rounded-xl border text-xs">${db.sesi.map(s=> `<option value="${s.id}" ${it.sesiId===s.id?'selected':''}>${s.nama}</option>`).join('')}</select>
         <input type="date" value="${it.tanggal}" onchange="uploadDraft[${i}].tanggal=this.value" class="px-3 py-2 rounded-xl border text-xs">
         <input type="number" value="${it.harga}" oninput="uploadDraft[${i}].harga=parseInt(this.value||0)" placeholder="Harga" class="px-3 py-2 rounded-xl border text-xs">
