@@ -103,13 +103,13 @@
     <aside class="lg:w-[250px] shrink-0">
       <div class="bg-white rounded-[20px] border border-slate-200 p-2 sticky top-[76px]">
         <nav class="grid grid-cols-3 lg:grid-cols-1 gap-1" id="nav">
-          <button data-view="dashboard" class="navBtn active flex flex-col lg:flex-row items-center gap-2 lg:gap-3 px-3 py-3 rounded-xl bg-slate-900 text-white font-bold text-xs lg:text-sm"><i class="fa-solid fa-chart-line"></i> Dashboard</button>
-          <button data-view="galeri" class="navBtn flex flex-col lg:flex-row items-center gap-2 lg:gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 font-semibold text-xs lg:text-sm"><i class="fa-solid fa-images"></i> Galeri</button>
-          <button data-view="kelola" class="navBtn flex flex-col lg:flex-row items-center gap-2 lg:gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 font-semibold text-xs lg:text-sm"><i class="fa-solid fa-pen-to-square"></i> Kelola Foto</button>
-          <button data-view="sesi" class="navBtn flex flex-col lg:flex-row items-center gap-2 lg:gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 font-semibold text-xs lg:text-sm"><i class="fa-solid fa-calendar"></i> Sesi</button>
-          <button data-view="cart" class="navBtn flex flex-col lg:flex-row items-center gap-2 lg:gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 font-semibold text-xs lg:text-sm"><i class="fa-solid fa-cart-shopping"></i> Keranjang</button>
-          <button data-view="riwayat" class="navBtn flex flex-col lg:flex-row items-center gap-2 lg:gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 font-semibold text-xs lg:text-sm"><i class="fa-solid fa-clock-rotate-left"></i> Riwayat</button>
-          <button data-view="laporan" class="navBtn flex flex-col lg:flex-row items-center gap-2 lg:gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 font-semibold text-xs lg:text-sm"><i class="fa-solid fa-chart-pie"></i> Laporan</button>
+          <button onclick="switchView('dashboard')" data-view="dashboard" class="navBtn active flex flex-col lg:flex-row items-center gap-2 lg:gap-3 px-3 py-3 rounded-xl bg-slate-900 text-white font-bold text-xs lg:text-sm"><i class="fa-solid fa-chart-line"></i> Dashboard</button>
+          <button onclick="switchView('galeri')" data-view="galeri" class="navBtn flex flex-col lg:flex-row items-center gap-2 lg:gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 font-semibold text-xs lg:text-sm"><i class="fa-solid fa-images"></i> Galeri</button>
+          <button onclick="switchView('kelola')" data-view="kelola" class="navBtn flex flex-col lg:flex-row items-center gap-2 lg:gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 font-semibold text-xs lg:text-sm"><i class="fa-solid fa-pen-to-square"></i> Kelola Foto</button>
+          <button onclick="switchView('sesi')" data-view="sesi" class="navBtn flex flex-col lg:flex-row items-center gap-2 lg:gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 font-semibold text-xs lg:text-sm"><i class="fa-solid fa-calendar"></i> Sesi</button>
+          <button onclick="switchView('cart')" data-view="cart" class="navBtn flex flex-col lg:flex-row items-center gap-2 lg:gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 font-semibold text-xs lg:text-sm"><i class="fa-solid fa-cart-shopping"></i> Keranjang</button>
+          <button onclick="switchView('riwayat')" data-view="riwayat" class="navBtn flex flex-col lg:flex-row items-center gap-2 lg:gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 font-semibold text-xs lg:text-sm"><i class="fa-solid fa-clock-rotate-left"></i> Riwayat</button>
+          <button onclick="switchView('laporan')" data-view="laporan" class="navBtn flex flex-col lg:flex-row items-center gap-2 lg:gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 font-semibold text-xs lg:text-sm"><i class="fa-solid fa-chart-pie"></i> Laporan</button>
         </nav>
         <div class="mt-3 p-4 rounded-2xl bg-gradient-to-br from-orange-500 to-red-600 text-white">
           <div class="text-xs font-bold tracking-widest opacity-80">WATERMARK OTOMATIS</div>
