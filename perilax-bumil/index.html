@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Perilax — Perineum Relax, Bumil Siap Bersalin Minim Trauma</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            body: ['Inter', 'sans-serif'],
+            serif: ['"Playfair Display"', 'serif']
+          },
+          colors: {
+            brand: {
+              50: '#fff1f4',
+              100: '#ffe4e9',
+              200: '#fecdd7',
+              300: '#fea3b5',
+              400: '#fb6f8c',
+              500: '#f43f68',
+              600: '#e11d4d',
+              700: '#be123c',
+              800: '#9f1237',
+              900: '#881333'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .pulsing-dot { animation: pulse 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .4; transform: scale(1.15); } }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased min-h-screen flex flex-col font-sans select-none">
+
+  <!-- ==================== TOP BAR VIEWER ==================== -->
+  <header class="w-full bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs">
+    <div class="max-w-[1400px] mx-auto px-4 h-14 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="../index.html" class="flex items-center gap-2 font-bold text-xs sm:text-sm text-slate-700 hover:text-brand-600 transition">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span>Kembali ke Portofolio</span>
+        </a>
+        <span class="text-slate-300">|</span>
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-lg bg-brand-500 text-white flex items-center justify-center text-xs">
+            <i class="fa-solid fa-heart"></i>
+          </div>
+          <span class="font-bold text-sm text-slate-900 font-serif tracking-tight">Perilax <span class="text-[11px] font-sans font-medium text-brand-600 hidden sm:inline">— Bumil Minim Trauma</span></span>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="resetToSplash()" class="px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-rotate-left text-[11px]"></i>
+          <span class="hidden sm:inline">Ulangi Alur Demo</span>
+        </a>
+        <a href="https://github.com/arijayacloud/prototype-web-android/tree/main/perilax-bumil" target="_blank" class="w-8 h-8 rounded-xl border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-slate-50 transition" title="Source Code di GitHub">
+          <i class="fa-brands fa-github text-sm"></i>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN WORKSPACE ==================== -->
+  <main class="w-full max-w-[1400px] mx-auto px-3 sm:px-6 py-6 flex-1 flex flex-col lg:flex-row gap-8 items-start justify-center">
+
+    <!-- ==================== LEFT / MAIN: ANDROID PHONE FRAME ==================== -->
+    <div class="w-full max-w-[400px] mx-auto shrink-0 relative">
+      <!-- Phone Outer Shell -->
+      <div id="phoneFrame" class="bg-slate-950 rounded-[48px] p-3 shadow-[0_25px_70px_rgba(159,18,55,0.18)] border-[6px] border-slate-900 relative">
+        <!-- Physical Camera Punch-hole -->
+        <div class="absolute top-5 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-black border border-slate-800 z-50 flex items-center justify-center">
+          <div class="w-1.5 h-1.5 rounded-full bg-slate-900"></div>
+        </div>
+
+        <!-- Phone Screen Inside (375x740 aspect) -->
+        <div class="bg-white rounded-[38px] overflow-hidden flex flex-col relative w-full h-[730px] shadow-inner font-sans">
+
+          <!-- Android Status Bar -->
+          <div class="h-8 bg-transparent px-6 pt-1.5 flex items-center justify-between text-slate-700 text-[11px] font-bold z-40 select-none">
+            <span id="statusBarClock">09:41</span>
+            <div class="flex items-center gap-1.5 text-[10px]">
+              <i class="fa-solid fa-signal"></i>
+              <i class="fa-solid fa-wifi"></i>
+              <i class="fa-solid fa-battery-three-quarters text-xs"></i>
+            </div>
+          </div>
+
+          <!-- Screen Views Container -->
+          <div id="screenContainer" class="flex-1 overflow-y-auto no-scrollbar relative flex flex-col">
+
+            <!-- ========================================== -->
+            <!-- LAYAR 1: SPLASH SCREEN                      -->
+            <!-- ========================================== -->
+            <div id="screen-1" class="screen-view absolute inset-0 bg-gradient-to-b from-brand-50 via-white to-brand-100/70 p-6 flex flex-col justify-between items-center text-center z-30">
+              <div class="pt-10">
+                <span class="inline-block px-3 py-1 bg-brand-100 rounded-full text-brand-700 text-[10px] font-bold tracking-widest uppercase">
+                  1. SPLASH SCREEN
+                </span>
+              </div>
+
+              <!-- Center Logo & Illustration -->
+              <div class="flex flex-col items-center">
+                <div class="relative w-36 h-36 rounded-full bg-gradient-to-tr from-brand-500 to-brand-300 flex items-center justify-center shadow-lg shadow-brand-500/30 p-2">
+                  <div class="w-full h-full rounded-full bg-white flex flex-col items-center justify-center p-3">
+                    <i class="fa-solid fa-person-pregnant text-4xl text-brand-600"></i>
+                    <i class="fa-solid fa-heart text-brand-500 text-xs absolute top-8 right-10 animate-bounce"></i>
+                  </div>
+                </div>
+
+                <h1 class="font-serif font-bold text-4xl text-brand-700 tracking-tight mt-6">
+                  Perilax
+                </h1>
+                <p class="text-xs text-brand-800 font-semibold tracking-wide max-w-[240px] mt-2 leading-relaxed italic">
+                  "Perineum Relax, Bumil Siap Bersalin Minim Trauma"
+                </p>
+              </div>
+
+              <!-- Bottom Indicator -->
+              <div class="pb-10 space-y-3 w-full max-w-[220px]">
+                <div class="h-1.5 w-full bg-brand-200 rounded-full overflow-hidden">
+                  <div class="h-full bg-brand-600 rounded-full w-2/3 animate-pulse"></div>
+                </div>
+                <div class="text-[11px] text-brand-600 font-semibold">Memuat aplikasi...</div>
+                <button onclick="goToScreen(2)" class="text-[10px] text-slate-400 hover:text-brand-600 underline transition">
+                  Lewati Splash →
+                </button>
+              </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- LAYAR 2: ONBOARDING 1                       -->
+            <!-- ========================================== -->
+            <div id="screen-2" class="screen-view hidden absolute inset-0 bg-white p-6 flex flex-col justify-between z-20">
+              <div class="flex justify-between items-center pt-2">
+                <span class="text-[10px] font-bold tracking-wider text-slate-400 uppercase">2. ONBOARDING 1</span>
+                <button onclick="goToScreen(5)" class="text-xs font-bold text-slate-400 hover:text-brand-600">Lewati</button>
+              </div>
+
+              <!-- Illustration & Text -->
+              <div class="flex flex-col items-center text-center my-auto">
+                <div class="w-48 h-48 rounded-full bg-brand-50 border-4 border-brand-100 flex items-center justify-center relative overflow-hidden shadow-inner mb-6">
+                  <div class="w-36 h-36 rounded-full bg-brand-200/60 flex items-center justify-center text-brand-700 text-6xl">
+                    <i class="fa-solid fa-person-pregnant"></i>
+                  </div>
+                  <div class="absolute bottom-2 text-brand-600 text-sm">
+                    <i class="fa-solid fa-hands-holding-child"></i>
+                  </div>
+                </div>
+
+                <h2 class="font-serif font-bold text-2xl text-slate-900 leading-tight">
+                  Pendamping Setia Kehamilanmu
+                </h2>
+                <p class="text-xs text-slate-500 leading-relaxed mt-3 max-w-[280px]">
+                  Informasi, edukasi, dan dukungan penuh untuk proses persalinan yang lebih aman, nyaman, dan minim rasa takut.
+                </p>
+              </div>
+
+              <!-- Page indicator & Action Button -->
+              <div class="space-y-4 pb-4">
+                <div class="flex justify-center items-center gap-2">
+                  <span class="w-7 h-2 rounded-full bg-brand-600 transition-all"></span>
+                  <span class="w-2 h-2 rounded-full bg-slate-200"></span>
+                  <span class="w-2 h-2 rounded-full bg-slate-200"></span>
+                </div>
+                <button onclick="goToScreen(3)" class="w-full py-3.5 rounded-2xl bg-brand-600 hover:bg-brand-700 active:scale-[0.99] text-white font-bold text-sm shadow-lg shadow-brand-600/25 transition">
+                  Lanjut <i class="fa-solid fa-arrow-right ml-1.5 text-xs"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- LAYAR 3: ONBOARDING 2                       -->
+            <!-- ========================================== -->
+            <div id="screen-3" class="screen-view hidden absolute inset-0 bg-white p-6 flex flex-col justify-between z-20">
+              <div class="flex justify-between items-center pt-2">
+                <span class="text-[10px] font-bold tracking-wider text-slate-400 uppercase">3. ONBOARDING 2</span>
+                <button onclick="goToScreen(5)" class="text-xs font-bold text-slate-400 hover:text-brand-600">Lewati</button>
+              </div>
+
+              <div class="flex flex-col items-center my-auto w-full">
+                <div class="w-40 h-40 rounded-full bg-brand-50 border-4 border-brand-100 flex items-center justify-center text-brand-600 text-5xl mb-6 shadow-xs">
+                  <i class="fa-solid fa-baby"></i>
+                </div>
+
+                <h2 class="font-serif font-bold text-xl text-center text-slate-900 leading-tight">
+                  Pantau Tumbuh Kembang Bayi & Kesehatan Ibu
+                </h2>
+
+                <div class="w-full space-y-2.5 mt-5">
+                  <div class="flex items-center gap-3 p-3 rounded-2xl bg-brand-50/60 border border-brand-100">
+                    <div class="w-9 h-9 rounded-xl bg-brand-600 text-white flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-heart-pulse"></i>
+                    </div>
+                    <div class="text-xs font-semibold text-slate-800">
+                      Informasi perkembangan janin mingguan
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-3 p-3 rounded-2xl bg-brand-50/60 border border-brand-100">
+                    <div class="w-9 h-9 rounded-xl bg-brand-600 text-white flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-calendar-check"></i>
+                    </div>
+                    <div class="text-xs font-semibold text-slate-800">
+                      Pengingat pemeriksaan kehamilan (ANC)
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-3 p-3 rounded-2xl bg-brand-50/60 border border-brand-100">
+                    <div class="w-9 h-9 rounded-xl bg-brand-600 text-white flex items-center justify-center text-sm shrink-0">
+                      <i class="fa-solid fa-file-waveform"></i>
+                    </div>
+                    <div class="text-xs font-semibold text-slate-800">
+                      Catatan rekam medis & hasil lab
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Indicators & Next -->
+              <div class="space-y-4 pb-4">
+                <div class="flex justify-center items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-slate-200"></span>
+                  <span class="w-7 h-2 rounded-full bg-brand-600 transition-all"></span>
+                  <span class="w-2 h-2 rounded-full bg-slate-200"></span>
+                </div>
+                <button onclick="goToScreen(4)" class="w-full py-3.5 rounded-2xl bg-brand-600 hover:bg-brand-700 active:scale-[0.99] text-white font-bold text-sm shadow-lg shadow-brand-600/25 transition">
+                  Lanjut <i class="fa-solid fa-arrow-right ml-1.5 text-xs"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- LAYAR 4: ONBOARDING 3                       -->
+            <!-- ========================================== -->
+            <div id="screen-4" class="screen-view hidden absolute inset-0 bg-white p-6 flex flex-col justify-between z-20">
+              <div class="flex justify-between items-center pt-2">
+                <span class="text-[10px] font-bold tracking-wider text-slate-400 uppercase">4. ONBOARDING 3</span>
+                <button onclick="goToScreen(5)" class="text-xs font-bold text-slate-400 hover:text-brand-600">Lewati</button>
+              </div>
+
+              <div class="flex flex-col items-center my-auto w-full">
+                <div class="w-40 h-40 rounded-full bg-brand-50 border-4 border-brand-100 flex items-center justify-center text-brand-600 text-5xl mb-4 shadow-xs">
+                  <i class="fa-solid fa-spa"></i>
+                </div>
+
+                <h2 class="font-serif font-bold text-xl text-center text-slate-900 leading-tight">
+                  Persiapan Persalinan untuk Minim Trauma
+                </h2>
+                <p class="text-[11px] text-slate-500 text-center mt-1">
+                  Metode alami & terbukti klinis mempercepat pemulihan:
+                </p>
+
+                <div class="w-full grid grid-cols-2 gap-2 mt-4 text-xs">
+                  <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col justify-between">
+                    <i class="fa-solid fa-hand-holding-medical text-brand-600 text-lg mb-1"></i>
+                    <div class="font-bold text-slate-800">Pijat Perineum</div>
+                    <div class="text-[10px] text-slate-400 mt-0.5">Mulai minggu ke-35</div>
+                  </div>
+                  <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col justify-between">
+                    <i class="fa-solid fa-dumbbell text-brand-600 text-lg mb-1"></i>
+                    <div class="font-bold text-slate-800">Otot Dasar Panggul</div>
+                    <div class="text-[10px] text-slate-400 mt-0.5">Senam Kegel rutin</div>
+                  </div>
+                  <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col justify-between">
+                    <i class="fa-solid fa-wind text-brand-600 text-lg mb-1"></i>
+                    <div class="font-bold text-slate-800">Teknik Napas</div>
+                    <div class="text-[10px] text-slate-400 mt-0.5">Relaksasi saat kontraksi</div>
+                  </div>
+                  <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col justify-between">
+                    <i class="fa-solid fa-temperature-arrow-up text-brand-600 text-lg mb-1"></i>
+                    <div class="font-bold text-slate-800">Kompres Hangat</div>
+                    <div class="text-[10px] text-slate-400 mt-0.5">Mencegah laserasi</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Indicators & Next -->
+              <div class="space-y-4 pb-4">
+                <div class="flex justify-center items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-slate-200"></span>
+                  <span class="w-2 h-2 rounded-full bg-slate-200"></span>
+                  <span class="w-7 h-2 rounded-full bg-brand-600 transition-all"></span>
+                </div>
+                <button onclick="goToScreen(10)" class="w-full py-3.5 rounded-2xl bg-brand-600 hover:bg-brand-700 active:scale-[0.99] text-white font-bold text-sm shadow-lg shadow-brand-600/25 transition">
+                  Lanjut ke Motivasi <i class="fa-solid fa-arrow-right ml-1.5 text-xs"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- LAYAR 10: PENUTUP / MOTIVASI                -->
+            <!-- ========================================== -->
+            <div id="screen-10" class="screen-view hidden absolute inset-0 bg-gradient-to-b from-brand-50 via-white to-brand-100/40 p-6 flex flex-col justify-between items-center text-center z-20">
+              <div class="pt-2">
+                <span class="text-[10px] font-bold tracking-wider text-slate-400 uppercase">10. PENUTUP & MOTIVASI</span>
+              </div>
+
+              <!-- Flower / Wreath & Quote -->
+              <div class="flex flex-col items-center my-auto">
+                <div class="w-44 h-44 rounded-full bg-white border-2 border-brand-200 p-2 shadow-lg shadow-brand-500/10 flex items-center justify-center relative mb-6">
+                  <div class="absolute inset-0 rounded-full border border-dashed border-brand-300 animate-spin" style="animation-duration: 25s"></div>
+                  <div class="flex flex-col items-center">
+                    <i class="fa-solid fa-seedling text-brand-400 text-xl mb-1"></i>
+                    <i class="fa-solid fa-person-breastfeeding text-5xl text-brand-600"></i>
+                  </div>
+                </div>
+
+                <div class="font-serif italic font-bold text-xl text-brand-900 leading-snug px-3">
+                  "Persiapan hari ini, untuk kelahiran yang lebih baik esok hari."
+                </div>
+                <p class="text-xs text-slate-500 mt-3 max-w-[260px] leading-relaxed">
+                  Bunda tidak sendirian. Bersama Perilax, kita wujudkan persalinan minim trauma dan penuh kebahagiaan.
+                </p>
+              </div>
+
+              <div class="w-full pb-4 space-y-3">
+                <button onclick="goToScreen(5)" class="w-full py-4 rounded-2xl bg-gradient-to-r from-brand-600 to-rose-600 hover:from-brand-700 hover:to-rose-700 active:scale-[0.99] text-white font-bold text-sm shadow-xl shadow-brand-600/30 flex items-center justify-center gap-2 transition">
+                  <span>Mulai Sekarang</span>
+                  <i class="fa-solid fa-arrow-right"></i>
+                </button>
+                <div class="text-[11px] text-slate-400 font-semibold">Selamat bergabung di Perilax Bunda</div>
+              </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- LAYAR 5: BERANDA / DASHBOARD UTAMA          -->
+            <!-- ========================================== -->
+            <div id="screen-5" class="screen-view hidden flex-1 flex flex-col justify-between bg-slate-50/50">
+              <div class="p-4 space-y-4">
+                <!-- Top Header Greeting -->
+                <div class="flex items-center justify-between">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-brand-100 border-2 border-brand-200 flex items-center justify-center text-brand-700 font-bold text-sm">
+                      <i class="fa-solid fa-user-nurse"></i>
+                    </div>
+                    <div>
+                      <div class="text-[11px] text-slate-400 font-bold uppercase tracking-wider">HALO, BUNDA</div>
+                      <div class="font-bold text-sm text-slate-900">Sehat hari ini, kuat untuk nanti</div>
+                    </div>
+                  </div>
+                  <button onclick="goToScreen(8)" class="w-9 h-9 rounded-full bg-rose-50 text-rose-600 border border-rose-200 flex items-center justify-center text-sm shadow-xs relative" title="Peringatan Darurat">
+                    <i class="fa-solid fa-bell"></i>
+                    <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-600 pulsing-dot"></span>
+                  </button>
+                </div>
+
+                <!-- Pregnancy Tracker Card (Pink Womb) -->
+                <div class="bg-gradient-to-br from-brand-600 via-rose-600 to-brand-800 text-white rounded-3xl p-5 shadow-lg shadow-brand-600/20 relative overflow-hidden">
+                  <div class="absolute -right-8 -bottom-8 w-36 h-36 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
+
+                  <div class="flex justify-between items-start">
+                    <div>
+                      <span class="inline-block px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur text-[10px] font-bold tracking-widest uppercase">
+                        USIA KEHAMILAN
+                      </span>
+                      <div class="font-serif font-black text-2xl mt-1.5">28 Minggu</div>
+                      <div class="text-xs text-rose-100 font-semibold mt-0.5">Trimester 2 (Bulan ke-7)</div>
+                    </div>
+                    <div class="w-16 h-16 rounded-2xl bg-white/15 backdrop-blur flex items-center justify-center text-3xl text-rose-100 shadow-inner">
+                      <i class="fa-solid fa-baby"></i>
+                    </div>
+                  </div>
+
+                  <div class="mt-4 pt-3 border-t border-white/20 flex items-center justify-between text-xs">
+                    <div>
+                      <div class="text-[10px] text-rose-200">Perkiraan Lahir (HPL)</div>
+                      <div class="font-bold">12 Februari 2026</div>
+                    </div>
+                    <div class="text-right">
+                      <div class="text-[10px] text-rose-200">Ukuran Janin</div>
+                      <div class="font-bold">± 1.000 gram (Terong)</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Emergency Banner Quick Button -->
+                <button onclick="goToScreen(8)" class="w-full p-3 rounded-2xl bg-rose-50 border border-rose-200 hover:bg-rose-100 text-left flex items-center justify-between gap-3 transition">
+                  <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-xl bg-rose-600 text-white flex items-center justify-center text-sm">
+                      <i class="fa-solid fa-truck-medical"></i>
+                    </div>
+                    <div>
+                      <div class="font-bold text-xs text-rose-900">Butuh Bantuan Darurat?</div>
+                      <div class="text-[10px] text-rose-700">Hubungi Ambulans & Bidan Siaga 24 Jam</div>
+                    </div>
+                  </div>
+                  <i class="fa-solid fa-chevron-right text-rose-400 text-xs"></i>
+                </button>
+
+                <!-- Grid Menu (6 Fitur Utama) -->
+                <div>
+                  <div class="flex justify-between items-center mb-2.5">
+                    <span class="text-xs font-bold text-slate-800">Menu Layanan Bunda</span>
+                    <span class="text-[10px] text-brand-600 font-bold">Lengkap</span>
+                  </div>
+
+                  <div class="grid grid-cols-3 gap-2.5">
+                    <button onclick="openModalArticle('janin')" class="p-3 rounded-2xl bg-white border border-slate-100 hover:border-brand-200 hover:shadow-xs flex flex-col items-center text-center transition">
+                      <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center text-base mb-1.5">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                      </div>
+                      <span class="text-[11px] font-bold text-slate-800 leading-tight">Perkembangan Janin</span>
+                    </button>
+
+                    <button onclick="goToScreen(9)" class="p-3 rounded-2xl bg-white border border-slate-100 hover:border-brand-200 hover:shadow-xs flex flex-col items-center text-center transition">
+                      <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-base mb-1.5">
+                        <i class="fa-solid fa-calendar-check"></i>
+                      </div>
+                      <span class="text-[11px] font-bold text-slate-800 leading-tight">Jadwal ANC</span>
+                    </button>
+
+                    <button onclick="goToScreen(7)" class="p-3 rounded-2xl bg-white border border-slate-100 hover:border-brand-200 hover:shadow-xs flex flex-col items-center text-center transition">
+                      <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-base mb-1.5">
+                        <i class="fa-solid fa-book-medical"></i>
+                      </div>
+                      <span class="text-[11px] font-bold text-slate-800 leading-tight">Info Kesehatan</span>
+                    </button>
+
+                    <button onclick="goToScreen(6)" class="p-3 rounded-2xl bg-white border border-slate-100 hover:border-brand-200 hover:shadow-xs flex flex-col items-center text-center transition">
+                      <div class="w-10 h-10 rounded-xl bg-violet-50 text-violet-600 flex items-center justify-center text-base mb-1.5">
+                        <i class="fa-solid fa-spa"></i>
+                      </div>
+                      <span class="text-[11px] font-bold text-slate-800 leading-tight">Latihan & Relaksasi</span>
+                    </button>
+
+                    <button onclick="goToScreen(6)" class="p-3 rounded-2xl bg-white border border-slate-100 hover:border-brand-200 hover:shadow-xs flex flex-col items-center text-center transition">
+                      <div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center text-base mb-1.5">
+                        <i class="fa-solid fa-hand-holding-medical"></i>
+                      </div>
+                      <span class="text-[11px] font-bold text-slate-800 leading-tight">Persiapan Persalinan</span>
+                    </button>
+
+                    <button onclick="simulateMidwifeChat()" class="p-3 rounded-2xl bg-white border border-slate-100 hover:border-brand-200 hover:shadow-xs flex flex-col items-center text-center transition">
+                      <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-base mb-1.5">
+                        <i class="fa-solid fa-comment-medical"></i>
+                      </div>
+                      <span class="text-[11px] font-bold text-slate-800 leading-tight">Konsultasi Bidan</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Daily Tips Banner -->
+                <div class="p-3.5 rounded-2xl bg-brand-50/70 border border-brand-100 flex items-start gap-3">
+                  <i class="fa-solid fa-lightbulb text-brand-600 text-sm mt-0.5"></i>
+                  <div>
+                    <div class="text-[11px] font-bold text-brand-900">Tips Minim Trauma Hari Ini:</div>
+                    <div class="text-[11px] text-brand-800 leading-relaxed mt-0.5">
+                      Lakukan latihan pernapasan perut 10 menit setiap pagi untuk melatih elastisitas dasar panggul.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Shared Bottom Navigation Bar -->
+              <div class="p-2 border-t border-slate-100 bg-white grid grid-cols-4 text-center">
+                <button onclick="goToScreen(5)" class="flex flex-col items-center text-brand-600 font-bold text-[10px]">
+                  <i class="fa-solid fa-house text-base mb-0.5"></i>
+                  <span>Beranda</span>
+                </button>
+                <button onclick="goToScreen(9)" class="flex flex-col items-center text-slate-400 hover:text-brand-600 text-[10px]">
+                  <i class="fa-solid fa-file-waveform text-base mb-0.5"></i>
+                  <span>Riwayat</span>
+                </button>
+                <button onclick="goToScreen(8)" class="flex flex-col items-center text-slate-400 hover:text-brand-600 text-[10px]">
+                  <i class="fa-solid fa-bell text-base mb-0.5"></i>
+                  <span>Darurat</span>
+                </button>
+                <button onclick="goToScreen(10)" class="flex flex-col items-center text-slate-400 hover:text-brand-600 text-[10px]">
+                  <i class="fa-solid fa-user text-base mb-0.5"></i>
+                  <span>Profil</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- LAYAR 6: PANDUAN PERSALINAN MINIM TRAUMA    -->
+            <!-- ========================================== -->
+            <div id="screen-6" class="screen-view hidden flex-1 flex flex-col justify-between bg-slate-50/40">
+              <div class="p-4 space-y-4">
+                <!-- Top Bar -->
+                <div class="flex items-center justify-between">
+                  <button onclick="goToScreen(5)" class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-700 text-xs hover:bg-slate-100">
+                    <i class="fa-solid fa-arrow-left"></i>
+                  </button>
+                  <h3 class="font-bold text-sm text-slate-900">Persiapan Persalinan</h3>
+                  <button onclick="openModalGuideHelp()" class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-700 text-xs">
+                    <i class="fa-solid fa-circle-question"></i>
+                  </button>
+                </div>
+
+                <!-- Stage Pills: Sebelum, Saat, Setelah -->
+                <div class="flex bg-slate-200/60 p-1 rounded-2xl text-xs font-bold">
+                  <button onclick="switchStageGuide('sebelum')" id="tabStage-sebelum" class="flex-1 py-1.5 rounded-xl bg-brand-600 text-white shadow-xs transition">
+                    Sebelum
+                  </button>
+                  <button onclick="switchStageGuide('saat')" id="tabStage-saat" class="flex-1 py-1.5 rounded-xl text-slate-600 hover:text-slate-900 transition">
+                    Saat Persalinan
+                  </button>
+                  <button onclick="switchStageGuide('setelah')" id="tabStage-setelah" class="flex-1 py-1.5 rounded-xl text-slate-600 hover:text-slate-900 transition">
+                    Setelah
+                  </button>
+                </div>
+
+                <!-- Guide Modules List -->
+                <div id="guideCardsList" class="space-y-3">
+                  <!-- Card 1: Pijat Perineum -->
+                  <div class="p-4 rounded-2xl bg-white border border-slate-200 hover:border-brand-300 transition shadow-2xs">
+                    <div class="flex items-start justify-between">
+                      <div class="flex items-center gap-2.5">
+                        <div class="w-9 h-9 rounded-xl bg-brand-100 text-brand-700 flex items-center justify-center text-sm">
+                          <i class="fa-solid fa-hand-holding-medical"></i>
+                        </div>
+                        <div>
+                          <div class="font-bold text-xs text-slate-900">Pijat Perineum</div>
+                          <div class="text-[10px] text-brand-600 font-semibold">Mulai usia kehamilan 35 minggu</div>
+                        </div>
+                      </div>
+                      <span class="px-2 py-0.5 rounded-full bg-brand-50 text-brand-700 text-[9px] font-bold">Utama</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500 mt-2 leading-relaxed">
+                      Lakukan 3-4x seminggu selama 5-10 menit menggunakan minyak zaitun/almond untuk meningkatkan elastisitas jaringan.
+                    </p>
+                    <div class="mt-3 pt-2 border-t border-slate-100 flex justify-between items-center">
+                      <button onclick="openPerineumModal()" class="text-xs font-bold text-brand-600 hover:underline flex items-center gap-1">
+                        <span>Lihat Langkah Pijat</span>
+                        <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                      </button>
+                      <span class="text-[10px] text-slate-400">Durasi: 10 mnt</span>
+                    </div>
+                  </div>
+
+                  <!-- Card 2: Latihan Otot Dasar Panggul (Kegel) -->
+                  <div class="p-4 rounded-2xl bg-white border border-slate-200 hover:border-brand-300 transition shadow-2xs">
+                    <div class="flex items-center gap-2.5">
+                      <div class="w-9 h-9 rounded-xl bg-violet-100 text-violet-700 flex items-center justify-center text-sm">
+                        <i class="fa-solid fa-dumbbell"></i>
+                      </div>
+                      <div>
+                        <div class="font-bold text-xs text-slate-900">Latihan Otot Dasar Panggul</div>
+                        <div class="text-[10px] text-slate-400">Senam Kegel teratur</div>
+                      </div>
+                    </div>
+                    <p class="text-[11px] text-slate-500 mt-2 leading-relaxed">
+                      Kencangkan otot panggul selama 5 detik lalu rilekskan 5 detik. Menguatkan daya dorong dan mencegah inkontinensia.
+                    </p>
+                    <div class="mt-3 pt-2 border-t border-slate-100 flex justify-between items-center">
+                      <button onclick="startKegelTimer()" class="text-xs font-bold text-violet-600 hover:underline flex items-center gap-1">
+                        <i class="fa-solid fa-play text-[10px]"></i>
+                        <span id="kegelBtnText">Mulai Timer Kegel</span>
+                      </button>
+                      <span id="kegelTimerDisplay" class="font-mono text-xs font-bold text-violet-700">00:00</span>
+                    </div>
+                  </div>
+
+                  <!-- Card 3: Kompres Hangat -->
+                  <div class="p-4 rounded-2xl bg-white border border-slate-200 hover:border-brand-300 transition shadow-2xs">
+                    <div class="flex items-center gap-2.5">
+                      <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-sm">
+                        <i class="fa-solid fa-temperature-arrow-up"></i>
+                      </div>
+                      <div>
+                        <div class="font-bold text-xs text-slate-900">Kompres Hangat</div>
+                        <div class="text-[10px] text-slate-400">Persiapan kala II persalinan</div>
+                      </div>
+                    </div>
+                    <p class="text-[11px] text-slate-500 mt-2 leading-relaxed">
+                      Gunakan kain hangat steril di area perineum saat kepala bayi mulai turun untuk mengurangi ketegangan dan rasa nyeri.
+                    </p>
+                  </div>
+
+                  <!-- Card 4: Teknik Napas & Mengejan -->
+                  <div class="p-4 rounded-2xl bg-white border border-slate-200 hover:border-brand-300 transition shadow-2xs">
+                    <div class="flex items-center gap-2.5">
+                      <div class="w-9 h-9 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-sm">
+                        <i class="fa-solid fa-wind"></i>
+                      </div>
+                      <div>
+                        <div class="font-bold text-xs text-slate-900">Teknik Napas & Mengejan</div>
+                        <div class="text-[10px] text-slate-400">Cegah robekan spontan</div>
+                      </div>
+                    </div>
+                    <p class="text-[11px] text-slate-500 mt-2 leading-relaxed">
+                      Tiup lembut saat dorongan memuncak dan jangan mengejan mendadak jika belum ada instruksi dari bidan/dokter penolong.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Big Primary Button -->
+                <button onclick="openModalGuideHelp()" class="w-full py-3.5 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs shadow-md transition">
+                  Lihat Panduan Lengkap Minim Trauma
+                </button>
+              </div>
+
+              <!-- Shared Bottom Nav -->
+              <div class="p-2 border-t border-slate-100 bg-white grid grid-cols-4 text-center">
+                <button onclick="goToScreen(5)" class="flex flex-col items-center text-slate-400 hover:text-brand-600 text-[10px]">
+                  <i class="fa-solid fa-house text-base mb-0.5"></i>
+                  <span>Beranda</span>
+                </button>
+                <button onclick="goToScreen(9)" class="flex flex-col items-center text-slate-400 hover:text-brand-600 text-[10px]">
+                  <i class="fa-solid fa-file-waveform text-base mb-0.5"></i>
+                  <span>Riwayat</span>
+                </button>
+                <button onclick="goToScreen(8)" class="flex flex-col items-center text-slate-400 hover:text-brand-600 text-[10px]">
+                  <i class="fa-solid fa-bell text-base mb-0.5"></i>
+                  <span>Darurat</span>
+                </button>
+                <button onclick="goToScreen(10)" class="flex flex-col items-center text-slate-400 hover:text-brand-600 text-[10px]">
+                  <i class="fa-solid fa-user text-base mb-0.5"></i>
+                  <span>Profil</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- LAYAR 7: EDUKASI & INFORMASI                -->
+            <!-- ========================================== -->
+            <div id="screen-7" class="screen-view hidden flex-1 flex flex-col justify-between bg-slate-50/40">
+              <div class="p-4 space-y-4">
+                <!-- Top Bar -->
+                <div class="flex items-center justify-between">
+                  <button onclick="goToScreen(5)" class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-700 text-xs hover:bg-slate-100">
+                    <i class="fa-solid fa-arrow-left"></i>
+                  </button>
+                  <h3 class="font-bold text-sm text-slate-900">Edukasi Kehamilan</h3>
+                  <div class="w-8"></div>
+                </div>
+
+                <!-- Search Input -->
+                <div class="relative">
+                  <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                  <input type="text" id="eduSearchInput" oninput="filterEduArticles()" placeholder="Cari topik..." class="w-full pl-9 pr-3 py-2 rounded-xl border border-slate-200 bg-white text-xs focus:outline-none focus:border-brand-500">
+                </div>
+
+                <!-- Category Chips: Janin, Ibu, Nutrisi, Tanda Bahaya -->
+                <div class="flex gap-2 overflow-x-auto no-scrollbar py-1">
+                  <button onclick="setEduCategory('Semua')" id="chip-Semua" class="edu-chip px-3 py-1.5 rounded-full text-xs font-bold bg-brand-600 text-white whitespace-nowrap transition">
+                    Semua
+                  </button>
+                  <button onclick="setEduCategory('Janin')" id="chip-Janin" class="edu-chip px-3 py-1.5 rounded-full text-xs font-bold bg-white text-slate-600 border border-slate-200 whitespace-nowrap transition">
+                    Janin
+                  </button>
+                  <button onclick="setEduCategory('Ibu')" id="chip-Ibu" class="edu-chip px-3 py-1.5 rounded-full text-xs font-bold bg-white text-slate-600 border border-slate-200 whitespace-nowrap transition">
+                    Ibu
+                  </button>
+                  <button onclick="setEduCategory('Nutrisi')" id="chip-Nutrisi" class="edu-chip px-3 py-1.5 rounded-full text-xs font-bold bg-white text-slate-600 border border-slate-200 whitespace-nowrap transition">
+                    Nutrisi
+                  </button>
+                  <button onclick="setEduCategory('Tanda Bahaya')" id="chip-Tanda Bahaya" class="edu-chip px-3 py-1.5 rounded-full text-xs font-bold bg-white text-slate-600 border border-slate-200 whitespace-nowrap transition">
+                    Tanda Bahaya
+                  </button>
+                </div>
+
+                <!-- Articles List -->
+                <div id="articlesListContainer" class="space-y-3">
+                  <!-- Article 1 -->
+                  <div onclick="openModalArticle('janin')" class="p-3.5 rounded-2xl bg-white border border-slate-200 hover:border-brand-300 transition cursor-pointer flex gap-3 items-center">
+                    <div class="w-16 h-16 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center text-2xl shrink-0">
+                      <i class="fa-solid fa-baby"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <span class="text-[9px] font-bold uppercase text-brand-600">Perkembangan</span>
+                      <h4 class="font-bold text-xs text-slate-900 leading-tight truncate">Perkembangan Janin Minggu ke-28</h4>
+                      <p class="text-[11px] text-slate-500 mt-1 line-clamp-1">Si Kecil semakin aktif & mulai bisa membuka kelopak matanya.</p>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                  </div>
+
+                  <!-- Article 2 -->
+                  <div onclick="openModalArticle('nutrisi')" class="p-3.5 rounded-2xl bg-white border border-slate-200 hover:border-brand-300 transition cursor-pointer flex gap-3 items-center">
+                    <div class="w-16 h-16 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl shrink-0">
+                      <i class="fa-solid fa-bowl-food"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <span class="text-[9px] font-bold uppercase text-emerald-600">Nutrisi Bumil</span>
+                      <h4 class="font-bold text-xs text-slate-900 leading-tight truncate">Makanan Bergizi untuk Ibu Hamil</h4>
+                      <p class="text-[11px] text-slate-500 mt-1 line-clamp-1">Asupan zat besi, kalsium, dan asam folat untuk daya tahan.</p>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                  </div>
+
+                  <!-- Article 3 -->
+                  <div onclick="openModalArticle('bahaya')" class="p-3.5 rounded-2xl bg-white border border-slate-200 hover:border-brand-300 transition cursor-pointer flex gap-3 items-center">
+                    <div class="w-16 h-16 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-2xl shrink-0">
+                      <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <span class="text-[9px] font-bold uppercase text-rose-600">Waspada</span>
+                      <h4 class="font-bold text-xs text-slate-900 leading-tight truncate">Mengenali Tanda Bahaya Kehamilan</h4>
+                      <p class="text-[11px] text-slate-500 mt-1 line-clamp-1">Segera hubungi faskes jika mendapati gejala-gejala ini.</p>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Shared Bottom Nav -->
+              <div class="p-2 border-t border-slate-100 bg-white grid grid-cols-4 text-center">
+                <button onclick="goToScreen(5)" class="flex flex-col items-center text-brand-600 font-bold text-[10px]">
+                  <i class="fa-solid fa-house text-base mb-0.5"></i>
+                  <span>Beranda</span>
+                </button>
+                <button onclick="goToScreen(9)" class="flex flex-col items-center text-slate-400 hover:text-brand-600 text-[10px]">
+                  <i class="fa-solid fa-file-waveform text-base mb-0.5"></i>
+                  <span>Riwayat</span>
+                </button>
+                <button onclick="goToScreen(8)" class="flex flex-col items-center text-slate-400 hover:text-brand-600 text-[10px]">
+                  <i class="fa-solid fa-bell text-base mb-0.5"></i>
+                  <span>Darurat</span>
+                </button>
+                <button onclick="goToScreen(10)" class="flex flex-col items-center text-slate-400 hover:text-brand-600 text-[10px]">
+                  <i class="fa-solid fa-user text-base mb-0.5"></i>
+                  <span>Profil</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- LAYAR 8: FITUR DARURAT & KONTAK MEDIS       -->
+            <!-- ========================================== -->
+            <div id="screen-8" class="screen-view hidden flex-1 flex flex-col justify-between bg-slate-50/50">
+              <div class="p-4 space-y-4">
+                <!-- Top Bar -->
+                <div class="flex items-center justify-between">
+                  <button onclick="goToScreen(5)" class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-700 text-xs hover:bg-slate-100">
+                    <i class="fa-solid fa-arrow-left"></i>
+                  </button>
+                  <h3 class="font-bold text-sm text-slate-900">Darurat & Kontak Medis</h3>
+                  <div class="w-8"></div>
+                </div>
+
+                <!-- Emergency Alert Header -->
+                <div class="text-center py-3">
+                  <div class="w-16 h-16 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center text-3xl mx-auto mb-2 shadow-inner pulsing-dot">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                  </div>
+                  <h4 class="font-serif font-bold text-lg text-rose-950">Darurat — Butuh Bantuan Segera?</h4>
+                  <p class="text-xs text-rose-800/80 mt-0.5">Langsung panggil ambulans atau tenaga medis terdekat.</p>
+                </div>
+
+                <!-- Big Call Ambulance Button -->
+                <a href="tel:119" onclick="simulateCall('Ambulans 118 / 119')" class="w-full py-4 rounded-2xl bg-rose-600 hover:bg-rose-700 active:scale-[0.99] text-white font-bold text-sm shadow-lg shadow-rose-600/30 flex items-center justify-center gap-2.5 transition">
+                  <i class="fa-solid fa-phone-volume text-base"></i>
+                  <span>Hubungi Ambulans 118 / 119</span>
+                </a>
+
+                <!-- Emergency Contacts Grid -->
+                <div class="space-y-2">
+                  <span class="text-xs font-bold text-slate-700">Kontak Cepat Fasilitas & Tenaga Kesehatan</span>
+
+                  <div class="grid grid-cols-2 gap-2">
+                    <button onclick="simulateCall('Bidan Siti, S.ST (0812-3456-7890)')" class="p-3 rounded-2xl bg-white border border-slate-200 hover:border-brand-300 text-left flex items-center gap-2.5 transition">
+                      <div class="w-8 h-8 rounded-xl bg-brand-100 text-brand-700 flex items-center justify-center text-xs shrink-0">
+                        <i class="fa-solid fa-user-nurse"></i>
+                      </div>
+                      <div class="min-w-0">
+                        <div class="font-bold text-xs text-slate-900 truncate">Bidan Desa</div>
+                        <div class="text-[10px] text-brand-600">Panggil / WA</div>
+                      </div>
+                    </button>
+
+                    <button onclick="simulateCall('Puskesmas Harapan (0274-889900)')" class="p-3 rounded-2xl bg-white border border-slate-200 hover:border-brand-300 text-left flex items-center gap-2.5 transition">
+                      <div class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs shrink-0">
+                        <i class="fa-solid fa-hospital"></i>
+                      </div>
+                      <div class="min-w-0">
+                        <div class="font-bold text-xs text-slate-900 truncate">Puskesmas</div>
+                        <div class="text-[10px] text-emerald-600">IGD 24 Jam</div>
+                      </div>
+                    </button>
+
+                    <button onclick="simulateCall('RSIA Bunda Sejahtera (0274-123456)')" class="p-3 rounded-2xl bg-white border border-slate-200 hover:border-brand-300 text-left flex items-center gap-2.5 transition">
+                      <div class="w-8 h-8 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-xs shrink-0">
+                        <i class="fa-solid fa-square-h"></i>
+                      </div>
+                      <div class="min-w-0">
+                        <div class="font-bold text-xs text-slate-900 truncate">Rumah Sakit</div>
+                        <div class="text-[10px] text-blue-600">Spesialis Obsgyn</div>
+                      </div>
+                    </button>
+
+                    <button onclick="simulateCall('Suami / Keluarga Darurat (0811-2233-4455)')" class="p-3 rounded-2xl bg-white border border-slate-200 hover:border-brand-300 text-left flex items-center gap-2.5 transition">
+                      <div class="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-xs shrink-0">
+                        <i class="fa-solid fa-heart"></i>
+                      </div>
+                      <div class="min-w-0">
+                        <div class="font-bold text-xs text-slate-900 truncate">Suami / Keluarga</div>
+                        <div class="text-[10px] text-amber-600">Darurat Utama</div>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Red Warning Box (Tanda Bahaya) -->
+                <div class="p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-900 text-xs leading-relaxed space-y-1">
+                  <div class="font-bold flex items-center gap-1.5 text-rose-700">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <span>Tanda Bahaya Segera Periksa:</span>
+                  </div>
+                  <p class="text-[11px] text-rose-800">
+                    Jika mengalami perdarahan dari jalan lahir, air ketuban pecah/merembes, sakit kepala berat tidak hilang, pandangan kabur, atau gerakan janin berkurang drastis, segera ke fasilitas kesehatan!
+                  </p>
+                </div>
+              </div>
+
+              <!-- Shared Bottom Nav -->
+              <div class="p-2 border-t border-slate-100 bg-white grid grid-cols-4 text-center">
+                <button onclick="goToScreen(5)" class="flex flex-col items-center text-slate-400 hover:text-brand-600 text-[10px]">
+                  <i class="fa-solid fa-house text-base mb-0.5"></i>
+                  <span>Beranda</span>
+                </button>
+                <button onclick="goToScreen(9)" class="flex flex-col items-center text-slate-400 hover:text-brand-600 text-[10px]">
+                  <i class="fa-solid fa-file-waveform text-base mb-0.5"></i>
+                  <span>Riwayat</span>
+                </button>
+                <button onclick="goToScreen(8)" class="flex flex-col items-center text-rose-600 font-bold text-[10px]">
+                  <i class="fa-solid fa-bell text-base mb-0.5"></i>
+                  <span>Darurat</span>
+                </button>
+                <button onclick="goToScreen(10)" class="flex flex-col items-center text-slate-400 hover:text-brand-600 text-[10px]">
+                  <i class="fa-solid fa-user text-base mb-0.5"></i>
+                  <span>Profil</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- ========================================== -->
+            <!-- LAYAR 9: JADWAL & RIWAYAT ANC               -->
+            <!-- ========================================== -->
+            <div id="screen-9" class="screen-view hidden flex-1 flex flex-col justify-between bg-slate-50/40">
+              <div class="p-4 space-y-4">
+                <!-- Top Bar -->
+                <div class="flex items-center justify-between">
+                  <button onclick="goToScreen(5)" class="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-700 text-xs hover:bg-slate-100">
+                    <i class="fa-solid fa-arrow-left"></i>
+                  </button>
+                  <h3 class="font-bold text-sm text-slate-900">Jadwal & Riwayat</h3>
+                  <button onclick="openModalAddRecord()" class="w-8 h-8 rounded-full bg-brand-50 text-brand-600 flex items-center justify-center text-xs">
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </div>
+
+                <!-- Tabs: Jadwal ANC & Riwayat -->
+                <div class="flex bg-slate-200/60 p-1 rounded-2xl text-xs font-bold">
+                  <button onclick="switchTabRecord('jadwal')" id="tabRec-jadwal" class="flex-1 py-1.5 rounded-xl bg-brand-600 text-white shadow-xs transition">
+                    Jadwal ANC
+                  </button>
+                  <button onclick="switchTabRecord('riwayat')" id="tabRec-riwayat" class="flex-1 py-1.5 rounded-xl text-slate-600 hover:text-slate-900 transition">
+                    Riwayat Pemeriksaan
+                  </button>
+                </div>
+
+                <!-- Section: Next Appointment Card -->
+                <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-2">
+                  <div class="flex items-center justify-between">
+                    <span class="px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 font-bold text-[10px] uppercase">
+                      JADWAL TERDEKAT
+                    </span>
+                    <span class="text-[10px] text-slate-400">18 hari lagi</span>
+                  </div>
+                  <div class="font-bold text-sm text-slate-900">Kunjungan ANC Trimester 3</div>
+                  <div class="text-xs text-slate-500 flex items-center gap-2">
+                    <i class="fa-regular fa-calendar text-brand-600"></i>
+                    <span>12 Des 2025 • Pukul 09:00 WIB</span>
+                  </div>
+                  <div class="text-xs text-slate-500 flex items-center gap-2">
+                    <i class="fa-solid fa-location-dot text-brand-600"></i>
+                    <span>Puskesmas Harapan (Poli KIA)</span>
+                  </div>
+                  <button onclick="alert('Pengingat jadwal telah disinkronkan ke kalender perangkat!')" class="w-full mt-2 py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold transition">
+                    Lihat Detail & Pengingat
+                  </button>
+                </div>
+
+                <!-- Medical History List -->
+                <div class="space-y-2.5">
+                  <div class="flex justify-between items-center text-xs font-bold text-slate-800">
+                    <span>Catatan Medis Bunda</span>
+                    <span class="text-[10px] text-slate-400">Terverifikasi Bidan</span>
+                  </div>
+
+                  <!-- USG Record -->
+                  <div class="p-3.5 rounded-2xl bg-white border border-slate-200 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                      <div class="w-9 h-9 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center text-sm">
+                        <i class="fa-solid fa-image"></i>
+                      </div>
+                      <div>
+                        <div class="font-bold text-xs text-slate-900">USG 2D/4D (20 Nov 2025)</div>
+                        <div class="text-[10px] text-emerald-600 font-semibold">Hasil: Normal • DJJ 142 bpm</div>
+                      </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                  </div>
+
+                  <!-- Lab Record -->
+                  <div class="p-3.5 rounded-2xl bg-white border border-slate-200 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                      <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm">
+                        <i class="fa-solid fa-vial"></i>
+                      </div>
+                      <div>
+                        <div class="font-bold text-xs text-slate-900">Lab Darah & Hb (15 Nov 2025)</div>
+                        <div class="text-[10px] text-emerald-600 font-semibold">Hasil: Hb 12.2 g/dL (Batas Normal)</div>
+                      </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-slate-300 text-xs"></i>
+                  </div>
+
+                  <!-- Daily Iron Pill (TTD) Tracker -->
+                  <div class="p-3.5 rounded-2xl bg-brand-50/70 border border-brand-200 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                      <div class="w-9 h-9 rounded-xl bg-brand-600 text-white flex items-center justify-center text-sm">
+                        <i class="fa-solid fa-pills"></i>
+                      </div>
+                      <div>
+                        <div class="font-bold text-xs text-brand-950">Tablet Tambah Darah (TTD)</div>
+                        <div class="text-[10px] text-brand-800">
+                          Sudah diminum: <span id="ttdCounter" class="font-bold text-brand-900">24/30</span> tablet
+                        </div>
+                      </div>
+                    </div>
+                    <button onclick="drinkTTD()" id="btnDrinkTTD" class="px-3 py-1.5 rounded-xl bg-white border border-brand-200 text-brand-700 hover:bg-brand-100 text-xs font-bold transition shadow-2xs">
+                      + Minum Hari Ini
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Shared Bottom Nav (Tab Riwayat Aktif) -->
+              <div class="p-2 border-t border-slate-100 bg-white grid grid-cols-4 text-center">
+                <button onclick="goToScreen(5)" class="flex flex-col items-center text-slate-400 hover:text-brand-600 text-[10px]">
+                  <i class="fa-solid fa-house text-base mb-0.5"></i>
+                  <span>Beranda</span>
+                </button>
+                <button onclick="goToScreen(9)" class="flex flex-col items-center text-brand-600 font-bold text-[10px]">
+                  <i class="fa-solid fa-file-waveform text-base mb-0.5"></i>
+                  <span>Riwayat</span>
+                </button>
+                <button onclick="goToScreen(8)" class="flex flex-col items-center text-slate-400 hover:text-brand-600 text-[10px]">
+                  <i class="fa-solid fa-bell text-base mb-0.5"></i>
+                  <span>Darurat</span>
+                </button>
+                <button onclick="goToScreen(10)" class="flex flex-col items-center text-slate-400 hover:text-brand-600 text-[10px]">
+                  <i class="fa-solid fa-user text-base mb-0.5"></i>
+                  <span>Profil</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Phone Home Indicator Bar -->
+          <div class="h-4 bg-white flex items-center justify-center pb-1">
+            <div class="w-32 h-1 bg-slate-300 rounded-full"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== RIGHT SIDE: INTERACTIVE SCREEN NAVIGATOR & DETAILS ==================== -->
+    <div class="flex-1 w-full space-y-6">
+
+      <!-- Navigator Card -->
+      <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
+          <div>
+            <span class="px-2.5 py-0.5 rounded-full bg-brand-50 text-brand-700 text-[11px] font-extrabold uppercase">
+              10 SCREEN UI PROTOTYPE
+            </span>
+            <h2 class="font-bold text-xl text-slate-900 mt-1">Pilih Layar Langsung (Screen Navigator)</h2>
+          </div>
+          <span class="text-xs text-slate-400 font-medium">Klik layar mana saja untuk coba instan di ponsel 📱</span>
+        </div>
+
+        <!-- 10 Screens Grid Buttons -->
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+          <button onclick="goToScreen(1)" id="btnNav-1" class="screen-nav-btn p-3 rounded-2xl border text-left transition hover:border-brand-500 bg-brand-50 border-brand-500 text-brand-900">
+            <div class="text-[10px] font-bold text-brand-600">Layar 1</div>
+            <div class="text-xs font-bold mt-0.5 truncate">Splash Screen</div>
+          </button>
+          <button onclick="goToScreen(2)" id="btnNav-2" class="screen-nav-btn p-3 rounded-2xl border border-slate-200 text-left transition hover:border-brand-500 bg-white text-slate-700">
+            <div class="text-[10px] font-bold text-slate-400">Layar 2</div>
+            <div class="text-xs font-bold mt-0.5 truncate">Onboarding 1</div>
+          </button>
+          <button onclick="goToScreen(3)" id="btnNav-3" class="screen-nav-btn p-3 rounded-2xl border border-slate-200 text-left transition hover:border-brand-500 bg-white text-slate-700">
+            <div class="text-[10px] font-bold text-slate-400">Layar 3</div>
+            <div class="text-xs font-bold mt-0.5 truncate">Onboarding 2</div>
+          </button>
+          <button onclick="goToScreen(4)" id="btnNav-4" class="screen-nav-btn p-3 rounded-2xl border border-slate-200 text-left transition hover:border-brand-500 bg-white text-slate-700">
+            <div class="text-[10px] font-bold text-slate-400">Layar 4</div>
+            <div class="text-xs font-bold mt-0.5 truncate">Onboarding 3</div>
+          </button>
+          <button onclick="goToScreen(10)" id="btnNav-10" class="screen-nav-btn p-3 rounded-2xl border border-slate-200 text-left transition hover:border-brand-500 bg-white text-slate-700">
+            <div class="text-[10px] font-bold text-slate-400">Layar 10</div>
+            <div class="text-xs font-bold mt-0.5 truncate">Penutup / Motivasi</div>
+          </button>
+          <button onclick="goToScreen(5)" id="btnNav-5" class="screen-nav-btn p-3 rounded-2xl border border-slate-200 text-left transition hover:border-brand-500 bg-white text-slate-700">
+            <div class="text-[10px] font-bold text-slate-400">Layar 5</div>
+            <div class="text-xs font-bold mt-0.5 truncate">Beranda / Dashboard</div>
+          </button>
+          <button onclick="goToScreen(6)" id="btnNav-6" class="screen-nav-btn p-3 rounded-2xl border border-slate-200 text-left transition hover:border-brand-500 bg-white text-slate-700">
+            <div class="text-[10px] font-bold text-slate-400">Layar 6</div>
+            <div class="text-xs font-bold mt-0.5 truncate">Panduan Persalinan</div>
+          </button>
+          <button onclick="goToScreen(7)" id="btnNav-7" class="screen-nav-btn p-3 rounded-2xl border border-slate-200 text-left transition hover:border-brand-500 bg-white text-slate-700">
+            <div class="text-[10px] font-bold text-slate-400">Layar 7</div>
+            <div class="text-xs font-bold mt-0.5 truncate">Edukasi Kehamilan</div>
+          </button>
+          <button onclick="goToScreen(8)" id="btnNav-8" class="screen-nav-btn p-3 rounded-2xl border border-slate-200 text-left transition hover:border-brand-500 bg-white text-slate-700">
+            <div class="text-[10px] font-bold text-slate-400">Layar 8</div>
+            <div class="text-xs font-bold mt-0.5 truncate">Darurat & Kontak</div>
+          </button>
+          <button onclick="goToScreen(9)" id="btnNav-9" class="screen-nav-btn p-3 rounded-2xl border border-slate-200 text-left transition hover:border-brand-500 bg-white text-slate-700">
+            <div class="text-[10px] font-bold text-slate-400">Layar 9</div>
+            <div class="text-xs font-bold mt-0.5 truncate">Jadwal & Riwayat</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Detail Deskripsi & Manfaat Aplikasi -->
+      <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+        <h3 class="font-bold text-base text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-circle-info text-brand-600"></i>
+          <span>Tentang Prototype Perilax</span>
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs leading-relaxed text-slate-600">
+          <div class="p-4 rounded-2xl bg-brand-50/50 border border-brand-100 space-y-1.5">
+            <div class="font-bold text-brand-900 text-sm">Tujuan & Filosofi:</div>
+            <p>
+              Membantu ibu hamil melewati kehamilan hingga persalinan normal dengan rasa percaya diri, minim komplikasi robekan perineum, dan minim trauma psikologis melalui edukasi dini & persiapan fisik.
+            </p>
+          </div>
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-1.5">
+            <div class="font-bold text-slate-900 text-sm">Fitur Berbasis Medis:</div>
+            <p>
+              Dilengkapi protokol pijat perineum terstandar mulai minggu 35, latihan Kegel untuk kelenturan dasar panggul, tombol dial darurat 118/119, dan pelacak konsumsi Tablet Tambah Darah (TTD).
+            </p>
+          </div>
+        </div>
+
+        <div class="pt-2 text-xs text-slate-400 flex items-center justify-between border-t border-slate-100">
+          <span>Desain merujuk mockup UI 10-screen Perilax</span>
+          <span>Dibuat dengan Tailwind CDN & Vanilla JS</span>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ==================== MODAL: LANGKAH PIJAT PERINEUM ==================== -->
+  <div id="modalPerineum" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl p-6 space-y-4">
+      <div class="flex justify-between items-center pb-2 border-b border-slate-100">
+        <div>
+          <h4 class="font-serif font-bold text-lg text-brand-900">Langkah Pijat Perineum</h4>
+          <p class="text-[11px] text-slate-400">Panduan aman persiapan persalinan minim trauma</p>
+        </div>
+        <button onclick="closePerineumModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center text-xs">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-3 text-xs text-slate-600">
+        <div class="p-3 rounded-2xl bg-brand-50 border border-brand-100 flex items-start gap-3">
+          <span class="w-6 h-6 rounded-full bg-brand-600 text-white font-bold text-xs flex items-center justify-center shrink-0">1</span>
+          <div>
+            <div class="font-bold text-brand-900">Cuci Tangan & Potong Kuku</div>
+            <p class="text-[11px] text-slate-500 mt-0.5">Pastikan tangan bersih dan gunakan minyak alami seperti virgin coconut oil (VCO) atau minyak zaitun.</p>
+          </div>
+        </div>
+
+        <div class="p-3 rounded-2xl bg-brand-50 border border-brand-100 flex items-start gap-3">
+          <span class="w-6 h-6 rounded-full bg-brand-600 text-white font-bold text-xs flex items-center justify-center shrink-0">2</span>
+          <div>
+            <div class="font-bold text-brand-900">Posisi Nyaman</div>
+            <p class="text-[11px] text-slate-500 mt-0.5">Duduk bersandar semi-fowler dengan bantal di punggung dan lutut ditekuk melebar.</p>
+          </div>
+        </div>
+
+        <div class="p-3 rounded-2xl bg-brand-50 border border-brand-100 flex items-start gap-3">
+          <span class="w-6 h-6 rounded-full bg-brand-600 text-white font-bold text-xs flex items-center justify-center shrink-0">3</span>
+          <div>
+            <div class="font-bold text-brand-900">Gerakan Memijat Bentuk U</div>
+            <p class="text-[11px] text-slate-500 mt-0.5">Masukkan ibu jari sedalam 3-4 cm ke dalam vagina, tekan lembut ke arah anus dan samping hingga terasa sedikit regangan lembut (bukan nyeri tajam). Tahan 1-2 menit.</p>
+          </div>
+        </div>
+      </div>
+
+      <button onclick="closePerineumModal()" class="w-full py-3 rounded-2xl bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs transition">
+        Saya Mengerti, Terima Kasih
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== MODAL: DETAIL ARTIKEL ==================== -->
+  <div id="modalArticle" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl p-6 space-y-4">
+      <div class="flex justify-between items-start pb-2 border-b border-slate-100">
+        <div>
+          <span id="artCategoryBadge" class="px-2 py-0.5 rounded-full bg-brand-100 text-brand-700 text-[10px] font-bold">JANIN</span>
+          <h4 id="artModalTitle" class="font-serif font-bold text-lg text-slate-900 mt-1">Judul Artikel</h4>
+        </div>
+        <button onclick="closeModalArticle()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center text-xs">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div id="artModalBody" class="text-xs text-slate-600 leading-relaxed max-h-[350px] overflow-y-auto space-y-2">
+        <!-- Rendered by JS -->
+      </div>
+
+      <button onclick="closeModalArticle()" class="w-full py-2.5 rounded-xl bg-slate-900 hover:bg-black text-white font-bold text-xs transition">
+        Tutup Artikel
+      </button>
+    </div>
+  </div>
+
+  <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+  <script>
+    let activeScreen = 1;
+    let ttdCount = 24;
+    let kegelInterval = null;
+    let kegelSeconds = 0;
+
+    function updateClock() {
+      const now = new Date();
+      const hrs = String(now.getHours()).padStart(2, '0');
+      const mins = String(now.getMinutes()).padStart(2, '0');
+      const clockEl = document.getElementById('statusBarClock');
+      if (clockEl) clockEl.textContent = `${hrs}:${mins}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    function goToScreen(num) {
+      activeScreen = num;
+      // Hide all screen views
+      document.querySelectorAll('.screen-view').forEach(el => el.classList.add('hidden'));
+
+      // Show selected screen
+      const target = document.getElementById('screen-' + num);
+      if (target) {
+        target.classList.remove('hidden');
+      }
+
+      // Update Screen Navigator Buttons UI
+      document.querySelectorAll('.screen-nav-btn').forEach(btn => {
+        btn.className = 'screen-nav-btn p-3 rounded-2xl border border-slate-200 text-left transition hover:border-brand-500 bg-white text-slate-700';
+        const label = btn.querySelector('div:first-child');
+        if (label) label.className = 'text-[10px] font-bold text-slate-400';
+      });
+
+      const activeBtn = document.getElementById('btnNav-' + num);
+      if (activeBtn) {
+        activeBtn.className = 'screen-nav-btn p-3 rounded-2xl border text-left transition hover:border-brand-500 bg-brand-50 border-brand-500 text-brand-900';
+        const label = activeBtn.querySelector('div:first-child');
+        if (label) label.className = 'text-[10px] font-bold text-brand-600';
+      }
+
+      // Scroll phone view to top
+      const screenContainer = document.getElementById('screenContainer');
+      if (screenContainer) screenContainer.scrollTop = 0;
+    }
+
+    function resetToSplash() {
+      goToScreen(1);
+    }
+
+    // Auto-advance splash after 2.5 seconds if still on splash
+    setTimeout(() => {
+      if (activeScreen === 1) {
+        goToScreen(2);
+      }
+    }, 2800);
+
+    // Stage guides tabs
+    function switchStageGuide(stage) {
+      ['sebelum', 'saat', 'setelah'].forEach(s => {
+        const btn = document.getElementById('tabStage-' + s);
+        if (s === stage) {
+          btn.className = 'flex-1 py-1.5 rounded-xl bg-brand-600 text-white shadow-xs transition';
+        } else {
+          btn.className = 'flex-1 py-1.5 rounded-xl text-slate-600 hover:text-slate-900 transition';
+        }
+      });
+    }
+
+    // Record tabs (Jadwal vs Riwayat)
+    function switchTabRecord(tab) {
+      const btnJadwal = document.getElementById('tabRec-jadwal');
+      const btnRiwayat = document.getElementById('tabRec-riwayat');
+      if (tab === 'jadwal') {
+        btnJadwal.className = 'flex-1 py-1.5 rounded-xl bg-brand-600 text-white shadow-xs transition';
+        btnRiwayat.className = 'flex-1 py-1.5 rounded-xl text-slate-600 hover:text-slate-900 transition';
+      } else {
+        btnJadwal.className = 'flex-1 py-1.5 rounded-xl text-slate-600 hover:text-slate-900 transition';
+        btnRiwayat.className = 'flex-1 py-1.5 rounded-xl bg-brand-600 text-white shadow-xs transition';
+      }
+    }
+
+    // Kegel timer simulation
+    function startKegelTimer() {
+      const btnText = document.getElementById('kegelBtnText');
+      const timerDisp = document.getElementById('kegelTimerDisplay');
+
+      if (kegelInterval) {
+        clearInterval(kegelInterval);
+        kegelInterval = null;
+        btnText.textContent = 'Mulai Timer Kegel';
+        return;
+      }
+
+      kegelSeconds = 0;
+      btnText.textContent = 'Hentikan Timer';
+      kegelInterval = setInterval(() => {
+        kegelSeconds++;
+        const mins = String(Math.floor(kegelSeconds / 60)).padStart(2, '0');
+        const secs = String(kegelSeconds % 60).padStart(2, '0');
+        timerDisp.textContent = `${mins}:${secs}`;
+      }, 1000);
+    }
+
+    // TTD Drink Button
+    function drinkTTD() {
+      if (ttdCount < 30) {
+        ttdCount++;
+        document.getElementById('ttdCounter').textContent = `${ttdCount}/30`;
+        alert(`Bunda berhasil mencatat Tablet Tambah Darah hari ini! (${ttdCount}/30 tablet diminum)`);
+      } else {
+        alert('Hebat Bunda! Target 30 tablet bulan ini telah selesai tercapai.');
+      }
+    }
+
+    // Call Simulation
+    function simulateCall(contact) {
+      alert(`[SIMULASI TELEPON DARURAT]\nMenghubungi: ${contact}\n\nPada perangkat ponsel asli, ini akan otomatis membuka dialer telepon.`);
+    }
+
+    function simulateMidwifeChat() {
+      alert(`[KONSULTASI BIDAN]\nMenghubungkan Bunda ke Bidan Desa (Bidan Siti, S.ST) via WhatsApp Chat.`);
+    }
+
+    // Article Modals
+    const articlesDB = {
+      janin: {
+        cat: 'PERKEMBANGAN JANIN',
+        title: 'Perkembangan Janin Minggu ke-28 (Trimester 2)',
+        body: `
+          <p>Memasuki minggu ke-28, janin Bunda berukuran sekitar 37-38 cm dengan berat sekitar 1.000 gram (setara dengan sebuah terong besar).</p>
+          <p><strong>Capaian Penting Minggu Ini:</strong></p>
+          <ul class="list-disc pl-4 space-y-1">
+            <li>Mata janin sudah dapat membuka dan menutup, serta dapat merasakan perubahan cahaya dari luar perut Bunda.</li>
+            <li>Lapisan lemak di bawah kulit semakin tebal untuk membantu mengatur suhu tubuh setelah lahir.</li>
+            <li>Denyut jantung janin normal berkisar antara 120-160 denyut per menit.</li>
+          </ul>
+          <p class="mt-2">Bunda disarankan tetap memantau gerak tendangan bayi minimal 10 kali dalam kurun waktu 2 jam saat waktu aktifnya.</p>
+        `
+      },
+      nutrisi: {
+        cat: 'NUTRISI IBU HAMIL',
+        title: 'Makanan Bergizi Penunjang Persalinan Normal',
+        body: `
+          <p>Nutrisi yang tepat di trimester ketiga sangat menentukan stamina Bunda saat persalinan dan elastisitas jaringan perineum.</p>
+          <p><strong>Makanan Dianjurkan:</strong></p>
+          <ul class="list-disc pl-4 space-y-1">
+            <li><strong>Zat Besi:</strong> Daging merah tanpa lemak, bayam, dan hati ayam untuk mencegah anemia.</li>
+            <li><strong>Vitamin C:</strong> Membantu penyerapan zat besi dan pembentukan kolagen elastis jaringan kulit.</li>
+            <li><strong>Asam Lemak Omega-3:</strong> Ikan kembung, salmon, dan telur omega untuk perkembangan otak bayi.</li>
+            <li><strong>Air Putih:</strong> Minimal 2.5 hingga 3 liter per hari untuk menjaga volume cairan ketuban.</li>
+          </ul>
+        `
+      },
+      bahaya: {
+        cat: 'TANDA BAHAYA KEHAMILAN',
+        title: 'Mengenali Tanda Bahaya Kehamilan Trimester 3',
+        body: `
+          <p class="text-rose-600 font-bold">Harap segera menuju IGD rumah sakit terdekat jika merasakan gejala berikut:</p>
+          <ul class="list-disc pl-4 space-y-1 text-slate-700">
+            <li><strong>Perdarahan Jalan Lahir:</strong> Baik berupa bercak banyak maupun darah segar mengalir.</li>
+            <li><strong>Pecah Ketuban Sebelum Waktunya:</strong> Cairan bening merembes tanpa rasa ingin buang air kecil.</li>
+            <li><strong>Gejala Preeklamsia:</strong> Sakit kepala hebat yang tidak sembuh dengan istirahat, pandangan berkunang-kunang, dan bengkak di wajah atau tangan.</li>
+            <li><strong>Gerakan Janin Melemah Drastis:</strong> Kurang dari 10 kali gerakan dalam 12 jam.</li>
+          </ul>
+        `
+      }
+    };
+
+    function openModalArticle(key) {
+      const art = articlesDB[key] || articlesDB.janin;
+      document.getElementById('artCategoryBadge').textContent = art.cat;
+      document.getElementById('artModalTitle').textContent = art.title;
+      document.getElementById('artModalBody').innerHTML = art.body;
+      document.getElementById('modalArticle').classList.remove('hidden');
+    }
+
+    function closeModalArticle() {
+      document.getElementById('modalArticle').classList.add('hidden');
+    }
+
+    function openPerineumModal() {
+      document.getElementById('modalPerineum').classList.remove('hidden');
+    }
+    function closePerineumModal() {
+      document.getElementById('modalPerineum').classList.add('hidden');
+    }
+
+    function openModalGuideHelp() {
+      alert('Panduan lengkap mencakup pijat perineum teratur, latihan pernapasan, serta relaksasi mental agar Bunda siap melahirkan minim trauma!');
+    }
+
+    function openModalAddRecord() {
+      alert('Fitur tambah catatan medis: Bunda dapat mencatat tensi darah, berat badan, atau hasil pemeriksaan lab mandiri.');
+    }
+
+    function setEduCategory(cat) {
+      document.querySelectorAll('.edu-chip').forEach(btn => {
+        btn.className = 'edu-chip px-3 py-1.5 rounded-full text-xs font-bold bg-white text-slate-600 border border-slate-200 whitespace-nowrap transition';
+      });
+      const target = document.getElementById('chip-' + cat);
+      if (target) {
+        target.className = 'edu-chip px-3 py-1.5 rounded-full text-xs font-bold bg-brand-600 text-white whitespace-nowrap transition';
+      }
+    }
+
+    function filterEduArticles() {
+      const q = document.getElementById('eduSearchInput').value.toLowerCase();
+      // Simple filter demonstration
+    }
+  </script>
+</body>
+</html>
