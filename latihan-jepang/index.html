@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NihonGo! — Latihan Soal Bahasa Jepang JLPT N5 - N1</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            jp: ['"Noto Sans JP"', '"Plus Jakarta Sans"', 'sans-serif']
+          },
+          colors: {
+            sakura: {
+              50: '#fff1f2', 100: '#ffe4e6', 200: '#fecdd3', 300: '#fda4af',
+              400: '#fb7185', 500: '#f43f5e', 600: '#e11d48', 700: '#be123c',
+              800: '#9f1239', 900: '#881337'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased font-sans min-h-screen flex flex-col">
+
+  <!-- ================= HEADER TOP BAR ================= -->
+  <header class="bg-slate-900 text-white sticky top-0 z-40 shadow-md">
+    <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="../index.html" class="text-xs text-slate-400 hover:text-white flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span class="hidden sm:inline">Portofolio</span>
+        </a>
+        <span class="text-slate-600">|</span>
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-lg bg-sakura-600 text-white flex items-center justify-center font-bold text-xs shadow-sm">
+            日
+          </div>
+          <span class="font-extrabold text-sm tracking-tight text-white font-jp">NihonGo! <span class="text-[11px] font-sans font-medium text-sakura-300 hidden sm:inline">— Latihan JLPT N5-N1</span></span>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs: Kuis & Histori Siswa -->
+      <div class="flex items-center bg-slate-800 p-1 rounded-xl text-xs font-bold">
+        <button onclick="switchMainTab('quiz')" id="tabBtn-quiz" class="px-3 py-1.5 rounded-lg bg-sakura-600 text-white transition flex items-center gap-1.5">
+          <i class="fa-solid fa-pen-nib"></i>
+          <span>Latihan Kuis</span>
+        </button>
+        <button onclick="switchMainTab('history')" id="tabBtn-history" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>Histori Siswa</span>
+          <span id="badgeHistoryCount" class="w-4 h-4 rounded-full bg-sakura-500 text-white text-[10px] flex items-center justify-center font-extrabold">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= MAIN CONTAINER ================= -->
+  <main class="max-w-5xl w-full mx-auto p-4 sm:p-6 flex-1 flex flex-col">
+
+    <!-- ================= VIEW 1: QUIZ SECTION ================= -->
+    <div id="section-quiz" class="space-y-6 flex-1 flex flex-col">
+
+      <!-- STEP 1: PILIH LEVEL (N5 - N1) -->
+      <div id="quizStep-select" class="space-y-6">
+        <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-6 text-white shadow-lg relative overflow-hidden">
+          <div class="absolute -right-6 -bottom-8 text-8xl text-white/5 font-jp font-black select-none pointer-events-none">日本語</div>
+          <div class="max-w-xl">
+            <span class="px-2.5 py-0.5 rounded-full bg-sakura-500/20 text-sakura-300 border border-sakura-500/30 text-[10px] font-extrabold uppercase tracking-wider">
+              JLPT PREPARATION PORTAL
+            </span>
+            <h1 class="text-xl sm:text-2xl font-black mt-2 font-jp">Uji Kemampuan Bahasa Jepang Anda</h1>
+            <p class="text-xs sm:text-sm text-slate-300 mt-1 leading-relaxed">
+              Pilih tingkat kesulitan JLPT dari N5 (pemula) hingga N1 (mahir), lalu tentukan kategori soal yang ingin Anda latih. Histori latihan akan otomatis tersimpan.
+            </p>
+          </div>
+        </div>
+
+        <!-- 5 Level Cards -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <h2 class="font-extrabold text-sm text-slate-800 flex items-center gap-2">
+              <span class="w-5 h-5 rounded-full bg-sakura-600 text-white text-[11px] font-extrabold flex items-center justify-center">1</span>
+              <span>Pilih Tingkat Kesulitan (Level JLPT):</span>
+            </h2>
+            <span class="text-xs text-slate-400">N5 paling dasar → N1 paling mahir</span>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-3" id="levelCardsContainer">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- 4 Kategori Cards -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <h2 class="font-extrabold text-sm text-slate-800 flex items-center gap-2">
+              <span class="w-5 h-5 rounded-full bg-sakura-600 text-white text-[11px] font-extrabold flex items-center justify-center">2</span>
+              <span>Pilih Kategori Tes:</span>
+            </h2>
+            <span class="text-xs text-slate-400">Fokus materi latihan</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3" id="categoryCardsContainer">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Student Name & Start Button -->
+        <div class="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="w-full sm:w-auto flex-1">
+            <label class="block text-xs font-bold text-slate-600 mb-1">Nama Siswa / Pembelajar (Untuk Histori):</label>
+            <input type="text" id="studentNameInput" placeholder="Masukkan nama Anda (Contoh: Budi Santoso)" class="w-full max-w-md px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold focus:ring-2 focus:ring-sakura-500 focus:outline-none">
+          </div>
+
+          <button onclick="startQuizSession()" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-sakura-600 hover:bg-sakura-700 active:scale-[0.99] text-white font-extrabold text-xs shadow-md shadow-sakura-600/25 transition flex items-center justify-center gap-2 shrink-0">
+            <i class="fa-solid fa-play"></i>
+            <span>Mulai Latihan Soal Sekarang</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- STEP 2: ACTIVE QUIZ VIEW -->
+      <div id="quizStep-active" class="space-y-4 hidden flex-1 flex flex-col">
+        <!-- Progress & Info Bar -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs flex items-center justify-between gap-3 text-xs">
+          <div class="flex items-center gap-2">
+            <span id="activeLevelBadge" class="px-2.5 py-0.5 rounded-full bg-sakura-100 text-sakura-800 font-extrabold text-[11px]">N5</span>
+            <span id="activeCategoryBadge" class="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 font-bold text-[11px]">Kanji</span>
+          </div>
+
+          <div class="flex items-center gap-4">
+            <div class="font-bold text-slate-500">
+              Soal: <span id="currentQuestionNum" class="text-slate-900 font-extrabold">1</span> / <span id="totalQuestionsNum">5</span>
+            </div>
+            <div class="flex items-center gap-1.5 font-mono font-bold text-sakura-700 bg-sakura-50 px-2.5 py-1 rounded-lg border border-sakura-200">
+              <i class="fa-regular fa-clock text-xs"></i>
+              <span id="quizTimerDisplay">00:00</span>
+            </div>
+            <button onclick="quitQuizConfirm()" class="text-slate-400 hover:text-rose-600 font-bold text-xs" title="Batalkan Kuis">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Question Card -->
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm flex-1 flex flex-col justify-between space-y-6">
+          <div class="space-y-4">
+            <div class="text-[11px] font-bold tracking-wider text-slate-400 uppercase" id="qSubHeader">PERTANYAAN</div>
+
+            <!-- Reading Passage if Dokkai -->
+            <div id="passageContainer" class="p-4 rounded-2xl bg-amber-50/70 border border-amber-200 text-xs text-slate-800 leading-relaxed font-jp hidden">
+              <div class="font-bold text-amber-900 mb-1 text-[11px]">Bacaan / 本文:</div>
+              <p id="passageText"></p>
+            </div>
+
+            <!-- Main Question Text (JP font large) -->
+            <h3 id="questionText" class="font-jp text-lg sm:text-2xl font-bold text-slate-900 leading-relaxed">
+              <!-- Rendered by JS -->
+            </h3>
+            <p id="questionHint" class="text-xs text-slate-500 leading-relaxed">
+              <!-- Rendered by JS -->
+            </p>
+          </div>
+
+          <!-- Options Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="optionsContainer">
+            <!-- Rendered by JS -->
+          </div>
+
+          <!-- Explanation Box (Appears after answer) -->
+          <div id="explanationBox" class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs hidden space-y-1.5">
+            <div class="flex items-center gap-2 font-bold" id="explanationStatus">
+              <!-- Correct or Incorrect -->
+            </div>
+            <p id="explanationText" class="text-slate-600 leading-relaxed font-jp"></p>
+          </div>
+
+          <!-- Footer Next / Submit Button -->
+          <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-xs text-slate-400" id="quizHintFooter">Pilih salah satu jawaban di atas</span>
+            <button onclick="handleNextQuestion()" id="btnNextQuestion" disabled class="px-5 py-2.5 rounded-xl bg-slate-200 text-slate-400 font-extrabold text-xs transition cursor-not-allowed flex items-center gap-1.5">
+              <span>Lanjut ke Soal Berikutnya</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3: RESULT VIEW -->
+      <div id="quizStep-result" class="space-y-6 hidden">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm text-center space-y-6 max-w-xl mx-auto">
+          <div id="resultIcon" class="w-20 h-20 rounded-full flex items-center justify-center text-4xl mx-auto shadow-inner">
+            <!-- Icon by JS -->
+          </div>
+
+          <div>
+            <span id="resultBadgeLevel" class="px-3 py-1 rounded-full text-xs font-extrabold bg-sakura-100 text-sakura-800">
+              JLPT N5 • KANJI
+            </span>
+            <h2 id="resultTitle" class="text-2xl font-black text-slate-900 mt-2 font-jp">Latihan Selesai!</h2>
+            <p id="resultSubtitle" class="text-xs text-slate-500 mt-1">Hasil latihan telah otomatis tersimpan ke Histori Siswa.</p>
+          </div>
+
+          <!-- Score Card -->
+          <div class="grid grid-cols-3 gap-2.5 p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs">
+            <div>
+              <div class="text-[10px] text-slate-400 font-bold">Skor Akhir</div>
+              <div id="resFinalScore" class="text-xl font-black text-sakura-600 mt-0.5">80%</div>
+            </div>
+            <div>
+              <div class="text-[10px] text-slate-400 font-bold">Benar / Total</div>
+              <div id="resCorrectCount" class="text-xl font-black text-slate-900 mt-0.5">4 / 5</div>
+            </div>
+            <div>
+              <div class="text-[10px] text-slate-400 font-bold">Durasi Waktu</div>
+              <div id="resDuration" class="text-xl font-black text-slate-900 mt-0.5">01:45</div>
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="flex flex-col sm:flex-row gap-2.5 pt-2">
+            <button onclick="startQuizSession()" class="flex-1 py-3 rounded-xl bg-sakura-600 hover:bg-sakura-700 text-white font-extrabold text-xs shadow-md transition flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-rotate-right"></i>
+              <span>Coba Lagi Kategori Ini</span>
+            </button>
+            <button onclick="backToQuizSelect()" class="flex-1 py-3 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-extrabold text-xs transition">
+              Pilih Level / Kategori Lain
+            </button>
+          </div>
+
+          <button onclick="switchMainTab('history')" class="text-xs font-bold text-sakura-600 hover:underline">
+            Lihat Rekap Lengkap di Histori Siswa →
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ================= VIEW 2: HISTORY SECTION ================= -->
+    <div id="section-history" class="space-y-6 hidden">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <span class="px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-700 text-[10px] font-extrabold uppercase tracking-wider">
+            REKAP PRESTASI
+          </span>
+          <h1 class="text-xl sm:text-2xl font-black text-slate-900 mt-1 font-jp">Histori Latihan Siswa</h1>
+          <p class="text-xs text-slate-500">Catatan riwayat nilai, persentase kelulusan, dan perkembangan belajar.</p>
+        </div>
+
+        <button onclick="clearHistoryConfirm()" class="px-3 py-1.5 rounded-xl border border-rose-200 text-rose-600 hover:bg-rose-50 text-xs font-bold transition flex items-center gap-1.5">
+          <i class="fa-solid fa-trash-can text-[11px]"></i>
+          <span>Hapus Riwayat</span>
+        </button>
+      </div>
+
+      <!-- Stats Summary Cards -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs">
+          <div class="text-[10px] font-bold text-slate-400 uppercase">Total Sesi Latihan</div>
+          <div id="histStatTotal" class="text-2xl font-black text-slate-900 mt-1">0</div>
+        </div>
+        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs">
+          <div class="text-[10px] font-bold text-slate-400 uppercase">Rata-rata Skor</div>
+          <div id="histStatAvg" class="text-2xl font-black text-sakura-600 mt-1">0%</div>
+        </div>
+        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs">
+          <div class="text-[10px] font-bold text-slate-400 uppercase">Soal Terjawab Benar</div>
+          <div id="histStatCorrect" class="text-2xl font-black text-emerald-600 mt-1">0</div>
+        </div>
+        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs">
+          <div class="text-[10px] font-bold text-slate-400 uppercase">Level Tertinggi</div>
+          <div id="histStatMaxLevel" class="text-2xl font-black text-slate-900 mt-1">N5</div>
+        </div>
+      </div>
+
+      <!-- History Records Table -->
+      <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-xs">
+        <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+          <h2 class="font-extrabold text-sm text-slate-900">Riwayat Sesi Latihan</h2>
+          <span class="text-xs text-slate-400">Tersimpan otomatis di browser</span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
+              <tr>
+                <th class="p-3">Waktu & Siswa</th>
+                <th class="p-3">Level JLPT</th>
+                <th class="p-3">Kategori</th>
+                <th class="p-3">Benar / Total</th>
+                <th class="p-3">Skor</th>
+                <th class="p-3">Durasi</th>
+                <th class="p-3 text-right">Status</th>
+              </tr>
+            </thead>
+            <tbody id="historyTableBody" class="divide-y divide-slate-100">
+              <!-- Rendered by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ================= JAVASCRIPT DATABASE & LOGIC ================= -->
+  <script>
+    // 1. DATA MASTER LEVEL
+    const LEVELS = [
+      { id: 'N5', name: 'JLPT N5', desc: 'Pemula Dasar', kanjiCount: '~100 Kanji', color: 'emerald' },
+      { id: 'N4', name: 'JLPT N4', desc: 'Pra-Menengah', kanjiCount: '~300 Kanji', color: 'blue' },
+      { id: 'N3', name: 'JLPT N3', desc: 'Menengah', kanjiCount: '~650 Kanji', color: 'indigo' },
+      { id: 'N2', name: 'JLPT N2', desc: 'Menengah Atas', kanjiCount: '~1.000 Kanji', color: 'amber' },
+      { id: 'N1', name: 'JLPT N1', desc: 'Mahir / Bisnis', kanjiCount: '~2.000 Kanji', color: 'rose' }
+    ];
+
+    const CATEGORIES = [
+      { id: 'kanji', name: 'Latihan Kanji (漢字)', icon: 'fa-font', desc: 'Cara baca & arti kanji dalam kalimat' },
+      { id: 'particle', name: 'Latihan Partikel (助詞)', icon: 'fa-puzzle-piece', desc: 'Penggunaan partikel は, が, を, に, で, dll' },
+      { id: 'grammar', name: 'Pola Kalimat (文法)', icon: 'fa-book-bookmark', desc: 'Tata bahasa standar sesuai level JLPT' },
+      { id: 'story', name: 'Soal Cerita (読解 Dokkai)', icon: 'fa-newspaper', desc: 'Pemahaman isi bacaan paragraf' }
+    ];
+
+    // BANK SOAL (Lengkap untuk seluruh 5 Level x 4 Kategori)
+    const QUESTION_BANK = {
+      // ----------------- N5 -----------------
+      'N5-kanji': [
+        {
+          q: 'きのう、本を【読みました】。Cara baca kanji dalam tanda kurung adalah:',
+          hint: 'Pilihlah cara baca yang tepat untuk kata membaca (lampau).',
+          options: ['よみました (yomimashita)', 'のみました (nomimashita)', 'かきました (kakimashita)', 'みせました (misemashita)'],
+          answer: 0,
+          exp: 'Kanji 【読】 dibaca "yo" (よむ = membaca). Bentuk sopan lampaunya adalah よみました (yomimashita).'
+        },
+        {
+          q: '毎朝、７時に【起きます】。Cara baca kanji ini adalah:',
+          hint: 'Kanji untuk bangun tidur.',
+          options: ['ねます (nemasu)', 'おきます (okimasu)', 'いきます (ikimasu)', 'きます (kimasu)'],
+          answer: 1,
+          exp: 'Kanji 【起】 pada kata 【起きます】 dibaca おきます (okimasu = bangun tidur).'
+        },
+        {
+          q: 'わたしの部屋には大きな【窓】があります。Arti kata kanji tersebut:',
+          hint: 'Bagian dari ruangan untuk sirkulasi udara / cahaya.',
+          options: ['Pintu', 'Jendela', 'Meja', 'Lemari'],
+          answer: 1,
+          exp: 'Kanji 【窓】 (mado) berarti jendela.'
+        }
+      ],
+      'N5-particle': [
+        {
+          q: 'わたしは バス（　）学校へ いきます。Partikel yang tepat:',
+          hint: 'Partikel penunjuk alat/kendaraan atau sarana.',
+          options: ['に (ni)', 'で (de)', 'を (o)', 'へ (e)'],
+          answer: 1,
+          exp: 'Partikel で (de) digunakan untuk menunjukkan sarana/alat transportasi yang dipakai (バスで = dengan naik bus).'
+        },
+        {
+          q: '机の上に りんご（　）３つ あります。',
+          hint: 'Partikel penunjuk keberadaan benda mati (ある).',
+          options: ['が (ga)', 'を (o)', 'は (wa)', 'に (ni)'],
+          answer: 0,
+          exp: 'Pola kalimat keberadaan: [Benda] が あります. Menggunakan partikel が.'
+        },
+        {
+          q: '日曜日に ともだち（　）あいます。',
+          hint: 'Kata kerja 会います (bertemu) selalu berpasangan dengan partikel ini.',
+          options: ['を (o)', 'に (ni)', 'で (de)', 'へ (e)'],
+          answer: 1,
+          exp: 'Kata kerja 会う (bertemu orang) menggunakan partikel に (ともだちに会います).'
+        }
+      ],
+      'N5-grammar': [
+        {
+          q: 'あした 雨が（　）、ピクニックに 行きません。',
+          hint: 'Bentuk pengandaian "jika hujan turun" (~たら).',
+          options: ['ふったら (futtara)', 'ふると (furuto)', 'ふるなら (furunara)', 'ふれば (fureba)'],
+          answer: 0,
+          exp: 'Pola N5 umum untuk kalimat pengandaian sehari-hari adalah bentuk lampau + ら (ふったら = jika hujan).'
+        },
+        {
+          q: 'すみません、写真を（　）もいいですか。',
+          hint: 'Meminta izin secara sopan (~てもいいですか).',
+          options: ['とって (totte)', 'とる (toru)', 'とり (tori)', 'とった (totta)'],
+          answer: 0,
+          exp: 'Pola meminta izin memakai bentuk Te: V-て + もいいですか (写真をとってもいいですか = bolehkah saya mengambil foto?).'
+        },
+        {
+          q: '日本料理のなかで、すしが いちばん（　）。',
+          hint: 'Superlatif (paling enak).',
+          options: ['おいしいです', 'おいしかったです', 'おいしくないです', 'おいしいでした'],
+          answer: 0,
+          exp: 'Pola kalimat perbandingan superlatif: A が いちばん [Kata Sifat] です (すしが いちばん おいしいです).'
+        }
+      ],
+      'N5-story': [
+        {
+          passage: '田中さんは まいあさ ６時におきて、パンと たまごを たべます。それから、７時半の 電車で 会社へ いきます。会社は ８時半から ５時までです。きのうは ざんぎょうがありましたから、８時に うちへ かえりました。',
+          q: 'Pertanyaan: 田中さんは いつも 何時に 電車に のりますか。(Pukul berapa Tanaka-san naik kereta?)',
+          hint: 'Cermati kalimat kedua pada bacaan.',
+          options: ['６時 (06:00)', '７時半 (07:30)', '８時 (08:00)', '８時半 (08:30)'],
+          answer: 1,
+          exp: 'Teks menyebutkan: "７時半の 電車で 会社へ いきます" (Pergi ke kantor dengan kereta pukul 07:30).'
+        },
+        {
+          passage: 'きのうの日曜日は 天気が よかったですから、家族と 公園へ いきました。公園で サッカーを して、アイスクリームを たべました。とても たのしかったです。',
+          q: 'Pertanyaan: 日曜日に 何を しましたか。(Apa yang dilakukan pada hari Minggu?)',
+          hint: 'Perhatikan aktivitas di taman.',
+          options: ['Belajar di rumah', 'Bermain sepak bola dan makan es krim bersama keluarga', 'Pergi ke bioskop', 'Bekerja lembur'],
+          answer: 1,
+          exp: 'Teks menyebutkan bermain sepak bola (サッカーをして) dan makan es krim (アイスクリームをたべました) di taman bersama keluarga.'
+        }
+      ],
+
+      // ----------------- N4 -----------------
+      'N4-kanji': [
+        {
+          q: '来週の会議の【場所】を教えてください。Cara baca kanji:',
+          hint: 'Kanji yang berarti lokasi / tempat.',
+          options: ['ばしょ (basho)', 'じむしょ (jimusho)', 'きんじょ (kinjo)', 'ばあい (baai)'],
+          answer: 0,
+          exp: 'Kanji 【場所】 dibaca ばしょ (basho = tempat / lokasi).'
+        },
+        {
+          q: 'この問題はとても【複雑】です。Arti kanji tersebut:',
+          hint: 'Lawan kata dari sederhana (kantan).',
+          options: ['Mudah', 'Rumit / Kompleks', 'Berbahaya', 'Membosankan'],
+          answer: 1,
+          exp: '【複雑】 (fukuzatsu) berarti rumit, kompleks, berbelit-belit.'
+        }
+      ],
+      'N4-particle': [
+        {
+          q: '田中さんは 歌（　）じょうずです。',
+          hint: 'Partikel penunjuk objek kemahiran (じょうず / へた / すき / きらい).',
+          options: ['を (o)', 'が (ga)', 'に (ni)', 'で (de)'],
+          answer: 1,
+          exp: 'Kata sifat yang menyatakan kemahiran atau kesukaan selalu didahului partikel が (歌がじょうずです).'
+        },
+        {
+          q: 'この薬は １日（　）３回 飲んでください。',
+          hint: 'Frekuensi dalam rentang waktu tertentu.',
+          options: ['に (ni)', 'で (de)', 'を (o)', 'へ (e)'],
+          answer: 0,
+          exp: 'Pola frekuensi waktu menggunakan partikel に (１日に３回 = 3 kali dalam sehari).'
+        }
+      ],
+      'N4-grammar': [
+        {
+          q: '日本語が（　）ように、毎日 勉強しています。',
+          hint: 'Pola ~ように (agar bisa / supaya bisa berbicara).',
+          options: ['話せる (hanaseru)', '話す (hanasu)', '話したい (hanashitai)', '話した (hanashita)'],
+          answer: 0,
+          exp: 'Pola [V-kanoukei / bentuk potensi] + ように: 話せるように (agar bisa berbicara).'
+        },
+        {
+          q: '風邪をひいたので、今日は 早く（　）ほうがいいです。',
+          hint: 'Pemberian saran yang kuat (~たほうがいい).',
+          options: ['寝た (neta)', '寝る (neru)', '寝て (nete)', '寝ない (nenai)'],
+          answer: 0,
+          exp: 'Pola memberi saran: V-ta ほうがいい (寝たほうがいい = sebaiknya tidur lebih awal).'
+        }
+      ],
+      'N4-story': [
+        {
+          passage: '最近、日本のコンビニでは 外国人の 店員が ふえています。みんな 日本語が じょうずで、ていねいに せっきゃく してくれます。分からないことが あっても、しんせつに 教えてくれるので、とても あんしんです。',
+          q: 'Pertanyaan: なぜ「とても あんしん」ですか。(Mengapa penulis merasa sangat tenang/nyaman?)',
+          hint: 'Cari alasan pada kalimat terakhir.',
+          options: ['Harga barang di minimarket murah', 'Pegawai bersikap ramah dan menjelaskan saat ada hal yang tidak dimengerti', 'Minimarket buka 24 jam', 'Banyak barang impor yang dijual'],
+          answer: 1,
+          exp: 'Penulis merasa tenang karena pegawainya ramah dan bersedia menjelaskan jika ada hal yang belum dimengerti (分からないことがあっても、しんせつに教えてくれるので).'
+        }
+      ],
+
+      // ----------------- N3 -----------------
+      'N3-kanji': [
+        {
+          q: '明日の出発時間を【確認】してください。Cara baca kanji:',
+          hint: 'Kanji yang berarti mengonfirmasi / memastikan.',
+          options: ['かくにん (kakunin)', 'けってい (kettei)', 'しょうにん (shounin)', 'てんけん (tenken)'],
+          answer: 0,
+          exp: '【確認】 dibaca かくにん (kakunin = konfirmasi / pengecekan).'
+        },
+        {
+          q: '自然災害に【備えて】非常食を準備する。Cara baca:',
+          hint: 'Mempersiapkan diri menghadapi bencana.',
+          options: ['そなえて (sonaete)', 'かまえて (kamaete)', 'たくわえて (takuwaete)', 'おさえて (osaete)'],
+          answer: 0,
+          exp: '【備えて】 berasal dari kata kerja 備える (sonaeru = bersiap / mengantisipasi).'
+        }
+      ],
+      'N3-particle': [
+        {
+          q: 'この映画は、実際の事件（　）もとづいて 作られました。',
+          hint: 'Pola ~にもとづいて (berdasarkan pada).',
+          options: ['に (ni)', 'を (o)', 'で (de)', 'と (to)'],
+          answer: 0,
+          exp: 'Pola tata bahasa N3: [Kata Benda] にもとづいて (berdasarkan / berlandaskan pada).'
+        }
+      ],
+      'N3-grammar': [
+        {
+          q: 'どんなに 忙しく（　）、家族と夕食を食べるようにしている。',
+          hint: 'Pola "bagaimanapun sibuknya..." (どんなに～ても).',
+          options: ['ても (temo)', 'たら (tara)', 'なら (nara)', 'のに (noni)'],
+          answer: 0,
+          exp: 'Pola: どんなに + [Kata Sifat -te] + も (どんなに忙しくても = betapapun sibuknya).'
+        }
+      ],
+      'N3-story': [
+        {
+          passage: 'ペーパーレス化が進む現代においても、紙の手帳を使う人は少なくない。予定を自分の手で書き込むことで記憶に残りやすく、ふと思いついたアイデアを自由にメモできる利点があるからだ。デジタルツールの便利さとアナログの良さを使い分けることが大切である。',
+          q: 'Pertanyaan: 筆者が考える「紙の手帳」の利点は何ですか。(Apa kelebihan agenda kertas menurut penulis?)',
+          hint: 'Perhatikan kalimat kedua.',
+          options: ['Mudah dibawa dan tidak membutuhkan baterai', 'Lebih mudah diingat karena ditulis tangan dan bebas mencatat ide', 'Harganya jauh lebih murah daripada smartphone', 'Bisa terhubung otomatis dengan kalender internet'],
+          answer: 1,
+          exp: 'Keunggulan yang disebut adalah: menulis dengan tangan membantu mengingat jadwal dan bebas mencatat ide seketika (予定を自分の手で書き込むことで記憶に残りやすく、自由にメモできる).'
+        }
+      ],
+
+      // ----------------- N2 -----------------
+      'N2-kanji': [
+        {
+          q: '地球温暖化の【影響】が世界各地で現れている。Cara baca kanji:',
+          hint: 'Kanji yang berarti pengaruh / dampak.',
+          options: ['えいきょう (eikyou)', 'きょうえい (kyouei)', 'えいきゅう (eikyuu)', 'おうしょう (oushou)'],
+          answer: 0,
+          exp: '【影響】 dibaca えいきょう (eikyou = dampak / pengaruh).'
+        }
+      ],
+      'N2-particle': [
+        {
+          q: '結果はともかく（　）、最後まで全力で挑んだことに意義がある。',
+          hint: 'Pola ~はともかくとして.',
+          options: ['として (toshite)', 'について (nitsuite)', 'に対して (nitaishite)', 'によって (niyotte)'],
+          answer: 0,
+          exp: 'Pola N2: [KB] はともかく（として） = terlepas dari / menyampingkan hasilnya.'
+        }
+      ],
+      'N2-grammar': [
+        {
+          q: '新製品の発表会は、来週月曜日に（　）行われます。',
+          hint: 'Pola resmi "bertempat di / diadakan di" (~において).',
+          options: ['おいて (oite)', '沿って (sotte)', 'めぐって (megutte)', '通して (tooshite)'],
+          answer: 0,
+          exp: 'Pola N2: [Tempat/Waktu] において = bertempat di / pada (bentuk formal dari で).'
+        }
+      ],
+      'N2-story': [
+        {
+          passage: 'AIの急速な発展により、従来人間が行ってきた定型的な業務は自動化されつつある。しかし、他者への共感や創造性、状況に応じた臨機応変な意思決定といった領域においては、依然として人間の役割が不可欠である。今後は「AIをどう使いこなし、人間ならではの価値を発揮するか」が問われている。',
+          q: 'Pertanyaan: 本文の内容と最も一致するものはどれか。(Pernyataan yang paling sesuai dengan bacaan?)',
+          hint: 'Lihat peran unik manusia dibanding AI.',
+          options: ['Semua pekerjaan manusia akan sepenuhnya digantikan AI dalam waktu dekat', 'Empati dan kreativitas manusia tetap tidak tergantikan oleh kecerdasan buatan', 'Pekerjaan rutin tidak perlu diotomatisasi', 'AI sudah mampu mengambil keputusan dengan empati tinggi'],
+          answer: 1,
+          exp: 'Teks menyatakan bahwa empati, kreativitas, dan fleksibilitas manusia tetap tidak tergantikan (他者への共感や創造性...依然として人間の役割が不可欠).'
+        }
+      ],
+
+      // ----------------- N1 -----------------
+      'N1-kanji': [
+        {
+          q: '政府は景気回復に向けて財政出動を【躊躇】してはならない。Cara baca:',
+          hint: 'Kanji tingkat tinggi yang berarti ragu-ragu / bimbang.',
+          options: ['ちゅうちょ (chuucho)', 'ちゅうじょ (chuujo)', 'とうちょ (toucho)', 'しゃくじょ (shakujo)'],
+          answer: 0,
+          exp: '【躊躇】 dibaca ちゅうちょ (chuucho = ragu-ragu / hesitation).'
+        }
+      ],
+      'N1-particle': [
+        {
+          q: '彼の功績は、賞賛される（　）値する。',
+          hint: 'Pola ~に値する (layak untuk / patut untuk).',
+          options: ['に (ni)', 'を (o)', 'で (de)', 'と (to)'],
+          answer: 0,
+          exp: 'Pola N1: [Kata Kerja Kamus / KB] に値する (ni ataisuru = layak / bernilai untuk mendapatkan pujian).'
+        }
+      ],
+      'N1-grammar': [
+        {
+          q: '国民の信頼を損なうような不正行為は、断じて許される（　）。',
+          hint: 'Pola formal penolakan mutlak "sama sekali tidak boleh..." (~まじき / ~べからず / ~ものではない).',
+          options: ['べきではない (bekide wa nai)', 'わけがない (wake ga nai)', 'はずがない (hazu ga nai)', 'きりがない (kiri ga nai)'],
+          answer: 0,
+          exp: 'Pola penegasan larangan moral formal: 断じて [V] べきではない (sama sekali tidak boleh diizinkan).'
+        }
+      ],
+      'N1-story': [
+        {
+          passage: '真の教養とは、単なる知識の蓄積にとどまらず、未知の事象に直面した際に自らの頭で思考し、多角的な視点から本質を見極める力のことである。情報が氾濫する情報化社会においてこそ、批判的吟味を怠らず、自律的な判断を下す精神的強靭さが求められている。',
+          q: 'Pertanyaan: 筆者が述べる「真の教養」とは何か。(Apa yang dimaksud "pendidikan/kebijaksanaan sejati" menurut penulis?)',
+          hint: 'Lihat definisi di kalimat pertama.',
+          options: ['Kemampuan menghafal ribuan data dan informasi faktual di internet', 'Kemampuan berpikir mandiri dan melihat esensi masalah dari berbagai sudut pandang', 'Keahlian berdebat untuk memenangkan argumen', 'Kepatuhan terhadap norma masyarakat tanpa mempertanyakannya'],
+          answer: 1,
+          exp: 'Penulis menegaskan bahwa keilmuan sejati adalah kemampuan berpikir sendiri saat menghadapi hal baru dan melihat hakikat persoalan dari berbagai perspektif (自らの頭で思考し、多角的な視点から本質を見極める力).'
+        }
+      ]
+    };
+
+    // STATE
+    let selectedLevel = 'N5';
+    let selectedCategory = 'kanji';
+    let activeQuizQuestions = [];
+    let currentQIdx = 0;
+    let userAnswers = [];
+    let quizTimerInterval = null;
+    let quizSeconds = 0;
+    let quizStartTime = null;
+
+    // STORAGE KEY
+    const STORAGE_KEY = 'nihongo_history_db_v1';
+    function getHistory() {
+      const data = localStorage.getItem(STORAGE_KEY);
+      if (!data) return [];
+      try { return JSON.parse(data); } catch(e) { return []; }
+    }
+    function saveHistory(list) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+      updateHistoryBadge();
+    }
+
+    // INIT
+    window.addEventListener('DOMContentLoaded', () => {
+      renderLevelCards();
+      renderCategoryCards();
+      updateHistoryBadge();
+
+      // Default sample if empty
+      if (getHistory().length === 0) {
+        seedSampleHistory();
+      }
+    });
+
+    // RENDER LEVELS
+    function renderLevelCards() {
+      const container = document.getElementById('levelCardsContainer');
+      container.innerHTML = LEVELS.map(lvl => {
+        const isSel = lvl.id === selectedLevel;
+        return `
+          <button onclick="selectLevel('${lvl.id}')" class="p-3 sm:p-4 rounded-2xl border-2 text-left transition ${isSel ? 'border-sakura-600 bg-sakura-50/80 ring-2 ring-sakura-200' : 'border-slate-200 bg-white hover:border-slate-300'} flex flex-col justify-between">
+            <div class="flex items-center justify-between">
+              <span class="font-jp font-black text-base text-slate-900">${lvl.id}</span>
+              <span class="w-2.5 h-2.5 rounded-full ${isSel ? 'bg-sakura-600' : 'bg-slate-300'}"></span>
+            </div>
+            <div class="mt-2">
+              <div class="font-bold text-xs text-slate-800">${lvl.desc}</div>
+              <div class="text-[10px] text-slate-400 mt-0.5">${lvl.kanjiCount}</div>
+            </div>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function selectLevel(id) {
+      selectedLevel = id;
+      renderLevelCards();
+    }
+
+    // RENDER CATEGORIES
+    function renderCategoryCards() {
+      const container = document.getElementById('categoryCardsContainer');
+      container.innerHTML = CATEGORIES.map(cat => {
+        const isSel = cat.id === selectedCategory;
+        return `
+          <button onclick="selectCategory('${cat.id}')" class="p-4 rounded-2xl border-2 text-left transition ${isSel ? 'border-sakura-600 bg-sakura-50/80 ring-2 ring-sakura-200' : 'border-slate-200 bg-white hover:border-slate-300'} flex items-start gap-3">
+            <div class="w-10 h-10 rounded-xl ${isSel ? 'bg-sakura-600 text-white' : 'bg-slate-100 text-slate-600'} flex items-center justify-center text-sm shrink-0">
+              <i class="fa-solid ${cat.icon}"></i>
+            </div>
+            <div>
+              <div class="font-bold text-xs text-slate-900">${cat.name}</div>
+              <div class="text-[11px] text-slate-500 mt-1 leading-snug">${cat.desc}</div>
+            </div>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function selectCategory(id) {
+      selectedCategory = id;
+      renderCategoryCards();
+    }
+
+    // TAB SWITCHER
+    function switchMainTab(tab) {
+      const btnQuiz = document.getElementById('tabBtn-quiz');
+      const btnHist = document.getElementById('tabBtn-history');
+      const secQuiz = document.getElementById('section-quiz');
+      const secHist = document.getElementById('section-history');
+
+      if (tab === 'quiz') {
+        btnQuiz.className = 'px-3 py-1.5 rounded-lg bg-sakura-600 text-white transition flex items-center gap-1.5';
+        btnHist.className = 'px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5';
+        secQuiz.classList.remove('hidden');
+        secHist.classList.add('hidden');
+      } else {
+        btnHist.className = 'px-3 py-1.5 rounded-lg bg-sakura-600 text-white transition flex items-center gap-1.5';
+        btnQuiz.className = 'px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5';
+        secQuiz.classList.add('hidden');
+        secHist.classList.remove('hidden');
+        renderHistorySection();
+      }
+    }
+
+    // START QUIZ
+    function startQuizSession() {
+      const bankKey = `${selectedLevel}-${selectedCategory}`;
+      const questions = QUESTION_BANK[bankKey];
+
+      if (!questions || questions.length === 0) {
+        alert('Soal untuk kombinasi ini sedang disiapkan.');
+        return;
+      }
+
+      activeQuizQuestions = JSON.parse(JSON.stringify(questions));
+      currentQIdx = 0;
+      userAnswers = [];
+      quizSeconds = 0;
+      quizStartTime = new Date();
+
+      // UI Switch
+      document.getElementById('quizStep-select').classList.add('hidden');
+      document.getElementById('quizStep-result').classList.add('hidden');
+      document.getElementById('quizStep-active').classList.remove('hidden');
+
+      // Update Header Badges
+      const catObj = CATEGORIES.find(c => c.id === selectedCategory);
+      document.getElementById('activeLevelBadge').textContent = `JLPT ${selectedLevel}`;
+      document.getElementById('activeCategoryBadge').textContent = catObj ? catObj.name.split('(')[0].trim() : selectedCategory;
+      document.getElementById('totalQuestionsNum').textContent = activeQuizQuestions.length;
+
+      // Start Timer
+      clearInterval(quizTimerInterval);
+      updateTimerDisplay();
+      quizTimerInterval = setInterval(() => {
+        quizSeconds++;
+        updateTimerDisplay();
+      }, 1000);
+
+      renderCurrentQuestion();
+    }
+
+    function updateTimerDisplay() {
+      const mins = String(Math.floor(quizSeconds / 60)).padStart(2, '0');
+      const secs = String(quizSeconds % 60).padStart(2, '0');
+      document.getElementById('quizTimerDisplay').textContent = `${mins}:${secs}`;
+    }
+
+    // RENDER CURRENT QUESTION
+    function renderCurrentQuestion() {
+      const q = activeQuizQuestions[currentQIdx];
+      document.getElementById('currentQuestionNum').textContent = currentQIdx + 1;
+      document.getElementById('qSubHeader').textContent = `SOAL PILIHAN GANDA (${currentQIdx + 1} DARI ${activeQuizQuestions.length})`;
+
+      // Passage if Dokkai
+      const passageBox = document.getElementById('passageContainer');
+      if (q.passage) {
+        document.getElementById('passageText').textContent = q.passage;
+        passageBox.classList.remove('hidden');
+      } else {
+        passageBox.classList.add('hidden');
+      }
+
+      document.getElementById('questionText').textContent = q.q;
+      document.getElementById('questionHint').textContent = q.hint || '';
+
+      // Reset explanation & button
+      document.getElementById('explanationBox').classList.add('hidden');
+      const nextBtn = document.getElementById('btnNextQuestion');
+      nextBtn.disabled = true;
+      nextBtn.className = 'px-5 py-2.5 rounded-xl bg-slate-200 text-slate-400 font-extrabold text-xs transition cursor-not-allowed flex items-center gap-1.5';
+      nextBtn.innerHTML = (currentQIdx === activeQuizQuestions.length - 1) ? `<span>Selesai & Lihat Skor</span> <i class="fa-solid fa-flag-checkered"></i>` : `<span>Lanjut ke Soal Berikutnya</span> <i class="fa-solid fa-arrow-right"></i>`;
+
+      document.getElementById('quizHintFooter').textContent = 'Pilih salah satu jawaban di atas';
+
+      // Options
+      const optContainer = document.getElementById('optionsContainer');
+      optContainer.innerHTML = q.options.map((opt, idx) => {
+        const letters = ['A', 'B', 'C', 'D'];
+        return `
+          <button onclick="handleSelectOption(${idx})" id="optBtn-${idx}" class="opt-btn p-4 rounded-2xl border-2 border-slate-200 hover:border-sakura-400 bg-white text-left transition flex items-center gap-3">
+            <span class="w-7 h-7 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center shrink-0">
+              ${letters[idx]}
+            </span>
+            <span class="font-jp font-semibold text-xs sm:text-sm text-slate-800">${opt}</span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    // SELECT OPTION
+    function handleSelectOption(choiceIdx) {
+      const q = activeQuizQuestions[currentQIdx];
+      const isCorrect = choiceIdx === q.answer;
+
+      // Lock other buttons
+      document.querySelectorAll('.opt-btn').forEach(btn => btn.disabled = true);
+
+      // Highlight selected
+      const selectedBtn = document.getElementById(`optBtn-${choiceIdx}`);
+      const correctBtn = document.getElementById(`optBtn-${q.answer}`);
+
+      if (isCorrect) {
+        selectedBtn.className = 'opt-btn p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50/80 text-left transition flex items-center gap-3';
+      } else {
+        selectedBtn.className = 'opt-btn p-4 rounded-2xl border-2 border-rose-500 bg-rose-50/80 text-left transition flex items-center gap-3';
+        correctBtn.className = 'opt-btn p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-50/80 text-left transition flex items-center gap-3';
+      }
+
+      // Record answer
+      userAnswers.push({
+        questionIdx: currentQIdx,
+        choice: choiceIdx,
+        isCorrect: isCorrect
+      });
+
+      // Show Explanation
+      const expBox = document.getElementById('explanationBox');
+      const expStatus = document.getElementById('explanationStatus');
+      const expText = document.getElementById('explanationText');
+
+      if (isCorrect) {
+        expStatus.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-600 text-base"></i> <span class="text-emerald-700">Benar! 正解です (Seikai desu)</span>`;
+      } else {
+        expStatus.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-600 text-base"></i> <span class="text-rose-700">Kurang Tepat! Jawaban yang benar adalah opsi ${['A','B','C','D'][q.answer]}</span>`;
+      }
+      expText.textContent = q.exp;
+      expBox.classList.remove('hidden');
+
+      // Enable Next Button
+      const nextBtn = document.getElementById('btnNextQuestion');
+      nextBtn.disabled = false;
+      nextBtn.className = 'px-5 py-2.5 rounded-xl bg-sakura-600 hover:bg-sakura-700 active:scale-[0.99] text-white font-extrabold text-xs shadow-md transition flex items-center gap-1.5 cursor-pointer';
+      document.getElementById('quizHintFooter').textContent = 'Klik tombol di kanan untuk melanjutkan';
+    }
+
+    function handleNextQuestion() {
+      if (currentQIdx < activeQuizQuestions.length - 1) {
+        currentQIdx++;
+        renderCurrentQuestion();
+      } else {
+        finishQuizSession();
+      }
+    }
+
+    function quitQuizConfirm() {
+      if (confirm('Batalkan latihan soal ini dan kembali ke menu pemilihan?')) {
+        clearInterval(quizTimerInterval);
+        backToQuizSelect();
+      }
+    }
+
+    function backToQuizSelect() {
+      document.getElementById('quizStep-active').classList.add('hidden');
+      document.getElementById('quizStep-result').classList.add('hidden');
+      document.getElementById('quizStep-select').classList.remove('hidden');
+    }
+
+    // FINISH QUIZ
+    function finishQuizSession() {
+      clearInterval(quizTimerInterval);
+
+      const total = activeQuizQuestions.length;
+      const correctCount = userAnswers.filter(a => a.isCorrect).length;
+      const scorePct = Math.round((correctCount / total) * 100);
+      const studentName = document.getElementById('studentNameInput').value.trim() || 'Siswa Mandiri';
+      const catObj = CATEGORIES.find(c => c.id === selectedCategory);
+      const categoryLabel = catObj ? catObj.name : selectedCategory;
+
+      const mins = String(Math.floor(quizSeconds / 60)).padStart(2, '0');
+      const secs = String(quizSeconds % 60).padStart(2, '0');
+      const durationStr = `${mins}:${secs}`;
+
+      // Save to Histori DB
+      const record = {
+        id: 'HIST-' + Math.floor(1000 + Math.random() * 9000),
+        date: new Date().toLocaleString('id-ID'),
+        studentName: studentName,
+        level: selectedLevel,
+        category: categoryLabel,
+        categoryId: selectedCategory,
+        totalQuestions: total,
+        correctCount: correctCount,
+        score: scorePct,
+        duration: durationStr,
+        passed: scorePct >= 60
+      };
+
+      const historyList = getHistory();
+      historyList.unshift(record);
+      saveHistory(historyList);
+
+      // Render Result UI
+      document.getElementById('resultBadgeLevel').textContent = `JLPT ${selectedLevel} • ${categoryLabel.split('(')[0]}`;
+      document.getElementById('resFinalScore').textContent = `${scorePct}%`;
+      document.getElementById('resCorrectCount').textContent = `${correctCount} / ${total}`;
+      document.getElementById('resDuration').textContent = durationStr;
+
+      const resIcon = document.getElementById('resultIcon');
+      const resTitle = document.getElementById('resultTitle');
+
+      if (scorePct >= 80) {
+        resIcon.className = 'w-20 h-20 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-4xl mx-auto shadow-inner';
+        resIcon.innerHTML = '<i class="fa-solid fa-trophy"></i>';
+        resTitle.textContent = 'Hebat Sekali! 大変よくできました！';
+      } else if (scorePct >= 60) {
+        resIcon.className = 'w-20 h-20 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-4xl mx-auto shadow-inner';
+        resIcon.innerHTML = '<i class="fa-solid fa-circle-check"></i>';
+        resTitle.textContent = 'Lulus! 合格です (Goukaku desu)';
+      } else {
+        resIcon.className = 'w-20 h-20 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-4xl mx-auto shadow-inner';
+        resIcon.innerHTML = '<i class="fa-solid fa-lightbulb"></i>';
+        resTitle.textContent = 'Perlu Latihan Lagi (がんばって！)';
+      }
+
+      document.getElementById('quizStep-active').classList.add('hidden');
+      document.getElementById('quizStep-result').classList.remove('hidden');
+    }
+
+    // RENDER HISTORY SECTION
+    function renderHistorySection() {
+      const list = getHistory();
+      const tbody = document.getElementById('historyTableBody');
+
+      // Stats
+      const totalSessions = list.length;
+      const totalCorrect = list.reduce((acc, c) => acc + c.correctCount, 0);
+      const avgScore = totalSessions > 0 ? Math.round(list.reduce((acc, c) => acc + c.score, 0) / totalSessions) : 0;
+
+      // Max level achieved
+      const levelRank = { 'N5': 1, 'N4': 2, 'N3': 3, 'N2': 4, 'N1': 5 };
+      let maxLvl = 'N5';
+      let maxVal = 0;
+      list.forEach(item => {
+        if (levelRank[item.level] && levelRank[item.level] > maxVal) {
+          maxVal = levelRank[item.level];
+          maxLvl = item.level;
+        }
+      });
+
+      document.getElementById('histStatTotal').textContent = totalSessions;
+      document.getElementById('histStatAvg').textContent = `${avgScore}%`;
+      document.getElementById('histStatCorrect').textContent = totalCorrect;
+      document.getElementById('histStatMaxLevel').textContent = maxLvl;
+
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-slate-400">Belum ada riwayat latihan soal. Mulai latihan sekarang!</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(item => {
+        const isPass = item.score >= 60;
+        return `
+          <tr class="hover:bg-slate-50 transition">
+            <td class="p-3">
+              <span class="font-extrabold text-slate-900">${item.studentName}</span>
+              <div class="text-[10px] text-slate-400">${item.date}</div>
+            </td>
+            <td class="p-3">
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-slate-100 text-slate-800 border border-slate-200">
+                ${item.level}
+              </span>
+            </td>
+            <td class="p-3 font-semibold text-slate-700">${item.category.split('(')[0]}</td>
+            <td class="p-3 font-bold">${item.correctCount} / ${item.totalQuestions}</td>
+            <td class="p-3">
+              <span class="font-extrabold text-sm ${isPass ? 'text-emerald-600' : 'text-rose-600'}">${item.score}%</span>
+            </td>
+            <td class="p-3 text-slate-500 font-mono">${item.duration}</td>
+            <td class="p-3 text-right">
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold ${isPass ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                ${isPass ? 'Lulus' : 'Belum Lulus'}
+              </span>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function updateHistoryBadge() {
+      const count = getHistory().length;
+      document.getElementById('badgeHistoryCount').textContent = count;
+    }
+
+    function clearHistoryConfirm() {
+      if (confirm('Apakah Anda yakin ingin menghapus seluruh histori latihan siswa?')) {
+        saveHistory([]);
+        renderHistorySection();
+      }
+    }
+
+    function seedSampleHistory() {
+      const sample = [
+        {
+          id: 'HIST-8812',
+          date: '28/10/2026, 09:15',
+          studentName: 'Budi Santoso',
+          level: 'N5',
+          category: 'Latihan Kanji (漢字)',
+          categoryId: 'kanji',
+          totalQuestions: 3,
+          correctCount: 3,
+          score: 100,
+          duration: '01:10',
+          passed: true
+        },
+        {
+          id: 'HIST-8811',
+          date: '27/10/2026, 16:40',
+          studentName: 'Siti Rahma',
+          level: 'N4',
+          category: 'Pola Kalimat (文法)',
+          categoryId: 'grammar',
+          totalQuestions: 2,
+          correctCount: 1,
+          score: 50,
+          duration: '02:05',
+          passed: false
+        }
+      ];
+      saveHistory(sample);
+    }
+  </script>
+</body>
+</html>
