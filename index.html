@@ -127,6 +127,31 @@ tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter','sans-serif'
       </div>
     </article>
 
+    <!-- JASA-RENANG CARD -->
+    <article class="project-card group bg-white rounded-[24px] border border-slate-100 overflow-hidden hover:shadow-xl hover:border-sky-100 transition flex flex-col" data-project="jasa-renang">
+      <div class="relative h-48 overflow-hidden bg-sky-950">
+        <img src="https://images.unsplash.com/photo-1530549387789-4c1017266635?w=700&q=80" loading="lazy" alt="SwimPro Jasa Kursus Renang thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+        <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-sky-600 text-white text-[11px] font-bold tracking-widest">NEW • SERVICE</span>
+        <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur text-sky-800 text-[11px] font-bold">END-TO-END FLOW</span>
+      </div>
+      <div class="p-6 flex-1 flex flex-col">
+        <div class="text-xs font-bold tracking-widest text-sky-600">SWIMPRO • JASA KURSUS RENANG</div>
+        <h3 class="font-display font-extrabold text-[18px] leading-tight mt-1">SwimPro — Jasa & Pelatihan Renang Profesional</h3>
+        <p class="text-sm text-slate-500 leading-6 mt-2 flex-1">Alur pemesanan lengkap: Pelanggan pilih paket → jadwal → instruktur bersertifikat PRSI → bayar QRIS/Transfer → Admin konfirmasi → Instruktur menerima jadwal & murid → Selesai melatih.</p>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <span class="px-2.5 py-1 rounded-full bg-sky-50 border border-sky-200 text-xs font-semibold text-sky-700">Booking Wizard</span>
+          <span class="px-2.5 py-1 rounded-full bg-amber-50 border border-amber-200 text-xs font-semibold text-amber-700">Admin Verifikasi</span>
+          <span class="px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-semibold text-emerald-700">Portal Instruktur</span>
+        </div>
+        <div class="mt-5 grid grid-cols-2 gap-2">
+          <a href="jasa-renang/index.html" target="_blank" rel="noopener" data-action="preview" data-url="jasa-renang/index.html" data-title="SwimPro — Jasa Kursus Renang" class="inline-flex justify-center items-center gap-2 py-2.5 rounded-full bg-sky-600 text-white text-sm font-bold hover:bg-sky-700 transition"><i class="fa-solid fa-eye text-xs"></i> Live Preview</a>
+          <button data-action="detail" data-project="jasa-renang" class="inline-flex justify-center items-center gap-2 py-2.5 rounded-full border border-slate-200 text-sm font-bold hover:bg-slate-50 transition"><i class="fa-solid fa-circle-info text-xs"></i> Detail</button>
+        </div>
+        <a href="jasa-renang/index.html" target="_blank" rel="noopener" class="mt-2 inline-flex justify-center items-center gap-2 py-2.5 rounded-full bg-sky-50 border border-sky-200 text-sky-700 text-sm font-bold hover:bg-sky-100 transition"><i class="fa-solid fa-arrow-up-right-from-square text-xs"></i> Kunjungi</a>
+        <a href="https://github.com/arijayacloud/prototype-web-android/tree/main/jasa-renang" target="_blank" rel="noopener" class="mt-1 inline-flex justify-center items-center gap-2 py-2 rounded-full text-xs font-semibold text-slate-500 hover:text-slate-900"><i class="fa-brands fa-github"></i> Lihat Kode — jasa-renang/</a>
+      </div>
+    </article>
+
     <!-- PERILAX-BUMIL CARD (ANDROID PROTOTYPE) -->
     <article class="project-card group bg-white rounded-[24px] border border-slate-100 overflow-hidden hover:shadow-xl hover:border-rose-100 transition flex flex-col" data-project="perilax-bumil">
       <div class="relative h-48 overflow-hidden bg-rose-950">
@@ -735,6 +760,20 @@ menuBtn?.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
 
 // project data for detail modal
 const PROJECTS = {
+  'jasa-renang': {
+    title: 'SwimPro — Jasa & Pelatihan Renang Profesional',
+    url: 'jasa-renang/index.html',
+    codeUrl: 'https://github.com/arijayacloud/prototype-web-android/tree/main/jasa-renang',
+    thumbnail: 'https://images.unsplash.com/photo-1530549387789-4c1017266635?w=700&q=80',
+    background: 'Aplikasi layanan pemesanan kursus & jasa pelatih renang privat/reguler dengan alur multi-role end-to-end terintegrasi antara Pelanggan, Admin, dan Instruktur.',
+    problem: 'Proses reservasi pelatih renang seringkali terhambat koordinasi jadwal manual, ketidakjelasan status bayar, dan instruktur tidak menerima rekap profil kondisi murid secara langsung.',
+    features: ['Alur lengkap: Pilih Paket → Pilih Jadwal/Venue → Pilih Instruktur PRSI → Pembayaran QRIS/Transfer → Admin Konfirmasi → Instruktur Terima Jadwal → Selesai', 'Pilihan paket kursus: Kids Water Safety, Pemula Dewasa, Private VIP 1-on-1', 'Dashboard Admin: Verifikasi pembayaran dan auto-assign ke pelatih', 'Portal Instruktur: Cek murid, rincian keluhan/target, direct WhatsApp, & tombol Selesai Latihan', 'Multi-role switcher instan di bilah navigasi atas'],
+    stack: ['HTML', 'Tailwind CDN', 'Font Awesome', 'Vanilla JS (localStorage DB)'],
+    links: [
+      { label: 'Live Demo', href: 'jasa-renang/index.html' },
+      { label: 'Source di GitHub', href: 'https://github.com/arijayacloud/prototype-web-android/tree/main/jasa-renang' }
+    ]
+  },
   'nota-a4': {
     title: 'NotaKilat A4 — Pembuat Nota & Invoice Cepat Kertas A4',
     url: 'nota-a4/index.html',

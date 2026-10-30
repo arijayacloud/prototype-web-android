@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SwimPro — Jasa & Kursus Renang Profesional</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
+          colors: {
+            ocean: {
+              50: '#f0f9ff', 100: '#e0f2fe', 200: '#bae6fd', 300: '#7dd3fc',
+              400: '#38bdf8', 500: '#0ea5e9', 600: '#0284c7', 700: '#0369a1',
+              800: '#075985', 900: '#0c4a6e'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased font-sans min-h-screen flex flex-col">
+
+  <!-- ================= TOP ROLE SWITCHER ================= -->
+  <header class="bg-slate-900 text-white sticky top-0 z-50 shadow-md">
+    <div class="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="../index.html" class="text-xs text-slate-400 hover:text-white flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span class="hidden sm:inline">Portofolio</span>
+        </a>
+        <span class="text-slate-600">|</span>
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-lg bg-ocean-500 flex items-center justify-center text-white text-xs">
+            <i class="fa-solid fa-person-swimming"></i>
+          </div>
+          <span class="font-extrabold text-sm tracking-tight text-white">SwimPro</span>
+        </div>
+      </div>
+
+      <!-- Role Tabs -->
+      <div class="flex items-center bg-slate-800 p-1 rounded-xl text-xs font-bold">
+        <button onclick="switchRole('customer')" id="roleBtn-customer" class="px-3 py-1.5 rounded-lg bg-ocean-600 text-white transition flex items-center gap-1.5">
+          <i class="fa-solid fa-user"></i>
+          <span>Pelanggan</span>
+        </button>
+        <button onclick="switchRole('admin')" id="roleBtn-admin" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>Admin</span>
+          <span id="badgePendingCount" class="w-4 h-4 rounded-full bg-amber-500 text-slate-900 text-[10px] flex items-center justify-center font-extrabold hidden">0</span>
+        </button>
+        <button onclick="switchRole('instructor')" id="roleBtn-instructor" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5">
+          <i class="fa-solid fa-id-card-clip"></i>
+          <span>Instruktur</span>
+          <span id="badgeInstCount" class="w-4 h-4 rounded-full bg-ocean-400 text-slate-900 text-[10px] flex items-center justify-center font-extrabold hidden">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= SUB-FLOW PROGRESS BAR ================= -->
+  <div class="bg-white border-b border-slate-200 py-3 px-4 shadow-xs">
+    <div class="max-w-6xl mx-auto flex items-center justify-between text-xs text-slate-500 overflow-x-auto gap-3">
+      <div class="font-bold text-slate-700 flex items-center gap-2 whitespace-nowrap">
+        <i class="fa-solid fa-diagram-project text-ocean-600"></i>
+        <span>Alur Pemesanan:</span>
+      </div>
+      <div class="flex items-center gap-2 whitespace-nowrap">
+        <span class="step-pill px-2.5 py-1 rounded-full bg-ocean-50 text-ocean-700 font-bold border border-ocean-200">1. Pilih Paket</span>
+        <i class="fa-solid fa-angle-right text-[10px] text-slate-300"></i>
+        <span class="step-pill px-2.5 py-1 rounded-full bg-slate-100 text-slate-500 font-medium">2. Jadwal & Lokasi</span>
+        <i class="fa-solid fa-angle-right text-[10px] text-slate-300"></i>
+        <span class="step-pill px-2.5 py-1 rounded-full bg-slate-100 text-slate-500 font-medium">3. Pilih Instruktur</span>
+        <i class="fa-solid fa-angle-right text-[10px] text-slate-300"></i>
+        <span class="step-pill px-2.5 py-1 rounded-full bg-slate-100 text-slate-500 font-medium">4. Bayar</span>
+        <i class="fa-solid fa-angle-right text-[10px] text-slate-300"></i>
+        <span class="step-pill px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 font-medium border border-amber-200">5. Konfirmasi Admin</span>
+        <i class="fa-solid fa-angle-right text-[10px] text-slate-300"></i>
+        <span class="step-pill px-2.5 py-1 rounded-full bg-sky-50 text-sky-700 font-medium border border-sky-200">6. Instruktur Melatih</span>
+        <i class="fa-solid fa-angle-right text-[10px] text-slate-300"></i>
+        <span class="step-pill px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 font-medium border border-emerald-200">7. Selesai</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MAIN CONTAINER ================= -->
+  <main class="max-w-6xl w-full mx-auto p-4 sm:p-6 flex-1">
+
+    <!-- ================= VIEW 1: CUSTOMER VIEW ================= -->
+    <div id="view-customer" class="space-y-6">
+
+      <!-- Customer Tabs: Booking Baru / Status Pesanan Saya -->
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-xl sm:text-2xl font-black text-slate-900">Pemesanan Kursus Renang</h1>
+          <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Pilih paket, atur waktu latihan, dan pilih pelatih renang bersertifikat.</p>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="setCustomerTab('book')" id="custTabBtn-book" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-ocean-600 text-white shadow-xs">
+            Form Pemesanan
+          </button>
+          <button onclick="setCustomerTab('myorders')" id="custTabBtn-myorders" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50">
+            Pesanan Saya (<span id="myOrdersCount">0</span>)
+          </button>
+        </div>
+      </div>
+
+      <!-- TAB A: BOOKING WIZARD -->
+      <div id="custContent-book" class="space-y-6">
+
+        <!-- STEP 1: PILIH PAKET -->
+        <section class="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+            <div class="flex items-center gap-2.5">
+              <span class="w-6 h-6 rounded-full bg-ocean-600 text-white text-xs font-extrabold flex items-center justify-center">1</span>
+              <h2 class="font-extrabold text-sm sm:text-base text-slate-900">Pilih Paket Kursus Renang</h2>
+            </div>
+            <span class="text-xs text-slate-400">Pilihan paket fleksibel</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3" id="packagesContainer">
+            <!-- Rendered by JS -->
+          </div>
+        </section>
+
+        <!-- STEP 2: JADWAL & LOKASI -->
+        <section class="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+            <div class="flex items-center gap-2.5">
+              <span class="w-6 h-6 rounded-full bg-ocean-600 text-white text-xs font-extrabold flex items-center justify-center">2</span>
+              <h2 class="font-extrabold text-sm sm:text-base text-slate-900">Pilih Jadwal Latihan & Lokasi Kolam</h2>
+            </div>
+            <span class="text-xs text-slate-400">Atur sesuai kenyamanan Bunda/Bapak</span>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1.5">Tanggal Mulai Latihan</label>
+              <input type="date" id="inputDate" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-800 font-medium focus:ring-2 focus:ring-ocean-500 focus:outline-none">
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1.5">Slot Jam Latihan</label>
+              <select id="inputSlot" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-800 font-medium focus:ring-2 focus:ring-ocean-500 focus:outline-none">
+                <option value="Pagi (07:00 - 08:30 WIB)">Pagi: 07:00 - 08:30 WIB (Segar)</option>
+                <option value="Pagi (09:00 - 10:30 WIB)">Pagi: 09:00 - 10:30 WIB</option>
+                <option value="Sore (15:30 - 17:00 WIB)">Sore: 15:30 - 17:00 WIB (Favorit Anak)</option>
+                <option value="Malam (18:30 - 20:00 WIB)">Malam: 18:30 - 20:00 WIB (Dewasa/Kerja)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1.5">Lokasi Kolam Renang</label>
+              <select id="inputVenue" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-800 font-medium focus:ring-2 focus:ring-ocean-500 focus:outline-none">
+                <option value="Kolam Renang Olympic Senayan (Mitra)">Kolam Renang Olympic Senayan (Mitra)</option>
+                <option value="Kolam Renang Tirta Cilandak (Mitra)">Kolam Renang Tirta Cilandak (Mitra)</option>
+                <option value="Kolam Renang Villa / Rumah Pribadi (Home Service)">Kolam Pribadi Rumah Siswa (Home Service)</option>
+                <option value="Apartemen / Kolam Club House">Apartemen / Club House Siswa</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <!-- STEP 3: PILIH INSTRUKTUR -->
+        <section class="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+            <div class="flex items-center gap-2.5">
+              <span class="w-6 h-6 rounded-full bg-ocean-600 text-white text-xs font-extrabold flex items-center justify-center">3</span>
+              <h2 class="font-extrabold text-sm sm:text-base text-slate-900">Pilih Instruktur Bersertifikasi</h2>
+            </div>
+            <span class="text-xs text-slate-400">Lisensi PRSI & Ramah Anak</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3" id="instructorsContainer">
+            <!-- Rendered by JS -->
+          </div>
+        </section>
+
+        <!-- STEP 4: DATA SISWA & PEMBAYARAN -->
+        <section class="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+            <div class="flex items-center gap-2.5">
+              <span class="w-6 h-6 rounded-full bg-ocean-600 text-white text-xs font-extrabold flex items-center justify-center">4</span>
+              <h2 class="font-extrabold text-sm sm:text-base text-slate-900">Data Pemesan & Pembayaran</h2>
+            </div>
+            <span class="text-xs text-slate-400">Verifikasi instan via Admin</span>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="space-y-3">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Nama Lengkap Siswa</label>
+                <input type="text" id="custName" placeholder="Contoh: Rian Pratama" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-ocean-500 focus:outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Nomor WhatsApp</label>
+                <input type="tel" id="custPhone" placeholder="Contoh: 08123456789" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-ocean-500 focus:outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Catatan / Kondisi Fisik</label>
+                <input type="text" id="custNotes" placeholder="Contoh: Pemula belum bisa mengapung" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-ocean-500 focus:outline-none">
+              </div>
+            </div>
+
+            <!-- Ringkasan Paket & Biaya -->
+            <div class="p-4 rounded-2xl bg-ocean-50 border border-ocean-100 flex flex-col justify-between">
+              <div>
+                <div class="text-[11px] font-bold text-ocean-700 uppercase tracking-wider">Ringkasan Pilihan</div>
+                <div class="mt-2 space-y-1.5 text-xs text-slate-700">
+                  <div class="flex justify-between">
+                    <span class="text-slate-500">Paket:</span>
+                    <span id="summaryPackage" class="font-bold text-slate-900">-</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-slate-500">Jumlah Sesi:</span>
+                    <span id="summarySessions" class="font-bold text-slate-900">-</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-slate-500">Instruktur:</span>
+                    <span id="summaryInstructor" class="font-bold text-slate-900">-</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span class="text-slate-500">Lokasi:</span>
+                    <span id="summaryVenue" class="font-bold text-slate-900 truncate max-w-[140px]">-</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-3 border-t border-ocean-200 mt-3 flex items-center justify-between">
+                <span class="text-xs font-bold text-slate-600">Total Biaya:</span>
+                <span id="summaryPrice" class="font-black text-base text-ocean-700">Rp 0</span>
+              </div>
+            </div>
+
+            <!-- Metode Pembayaran -->
+            <div class="space-y-3 flex flex-col justify-between">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Metode Pembayaran</label>
+                <div class="space-y-2 text-xs">
+                  <label class="flex items-center gap-2 p-2 rounded-xl border border-slate-200 bg-white cursor-pointer hover:border-ocean-400">
+                    <input type="radio" name="payMethod" value="QRIS" checked class="text-ocean-600">
+                    <span class="font-bold">QRIS Instant</span>
+                    <span class="text-[10px] text-slate-400 ml-auto">(Gopay/OVO/ShopeePay/BCA)</span>
+                  </label>
+                  <label class="flex items-center gap-2 p-2 rounded-xl border border-slate-200 bg-white cursor-pointer hover:border-ocean-400">
+                    <input type="radio" name="payMethod" value="Transfer Bank BCA" class="text-ocean-600">
+                    <span class="font-bold">Transfer Bank BCA</span>
+                    <span class="text-[10px] text-slate-400 ml-auto">Rek. 8830-192-881</span>
+                  </label>
+                </div>
+              </div>
+
+              <button onclick="submitBookingOrder()" class="w-full py-3 rounded-xl bg-ocean-600 hover:bg-ocean-700 active:scale-[0.99] text-white font-extrabold text-xs shadow-md shadow-ocean-600/20 transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-lock"></i>
+                <span>Konfirmasi & Bayar Sekarang</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- TAB B: PESANAN SAYA -->
+      <div id="custContent-myorders" class="space-y-4 hidden">
+        <div id="myOrdersList" class="space-y-3">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ================= VIEW 2: ADMIN VIEW ================= -->
+    <div id="view-admin" class="space-y-6 hidden">
+      <div class="flex items-center justify-between">
+        <div>
+          <span class="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-extrabold uppercase tracking-wider">PORTAL OPERASIONAL</span>
+          <h1 class="text-xl sm:text-2xl font-black text-slate-900 mt-1">Dashboard Konfirmasi Admin</h1>
+          <p class="text-xs text-slate-500">Verifikasi pembayaran masuk dan otomatis teruskan jadwal ke instruktur renang terkait.</p>
+        </div>
+        <button onclick="seedSampleData()" class="px-3 py-1.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-600 hover:bg-slate-100 transition">
+          <i class="fa-solid fa-rotate text-[11px] mr-1"></i> Muat Data Contoh
+        </button>
+      </div>
+
+      <!-- Admin Stat Cards -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div class="p-4 rounded-2xl bg-white border border-slate-200">
+          <div class="text-[11px] font-bold text-slate-400 uppercase">Perlu Konfirmasi</div>
+          <div id="statPending" class="text-2xl font-black text-amber-600 mt-1">0</div>
+        </div>
+        <div class="p-4 rounded-2xl bg-white border border-slate-200">
+          <div class="text-[11px] font-bold text-slate-400 uppercase">Jadwal Berjalan</div>
+          <div id="statConfirmed" class="text-2xl font-black text-ocean-600 mt-1">0</div>
+        </div>
+        <div class="p-4 rounded-2xl bg-white border border-slate-200">
+          <div class="text-[11px] font-bold text-slate-400 uppercase">Sesi Selesai</div>
+          <div id="statCompleted" class="text-2xl font-black text-emerald-600 mt-1">0</div>
+        </div>
+        <div class="p-4 rounded-2xl bg-white border border-slate-200">
+          <div class="text-[11px] font-bold text-slate-400 uppercase">Total Omzet</div>
+          <div id="statRevenue" class="text-2xl font-black text-slate-900 mt-1">Rp 0</div>
+        </div>
+      </div>
+
+      <!-- Orders Table -->
+      <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
+        <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+          <h2 class="font-extrabold text-sm text-slate-900">Daftar Semua Pesanan Kursus Renang</h2>
+          <span class="text-xs text-slate-400">Aksi konfirmasi otomatis memutakhirkan jadwal instruktur</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
+              <tr>
+                <th class="p-3">ID & Waktu</th>
+                <th class="p-3">Pelanggan & Siswa</th>
+                <th class="p-3">Paket & Sesi</th>
+                <th class="p-3">Jadwal & Lokasi</th>
+                <th class="p-3">Instruktur</th>
+                <th class="p-3">Status</th>
+                <th class="p-3 text-right">Aksi Admin</th>
+              </tr>
+            </thead>
+            <tbody id="adminOrdersTable" class="divide-y divide-slate-100">
+              <!-- Rendered by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VIEW 3: INSTRUCTOR VIEW ================= -->
+    <div id="view-instructor" class="space-y-6 hidden">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <span class="px-2.5 py-0.5 rounded-full bg-ocean-100 text-ocean-800 text-[10px] font-extrabold uppercase tracking-wider">PORTAL PELATIH RENANG</span>
+          <h1 class="text-xl sm:text-2xl font-black text-slate-900 mt-1">Jadwal & Pelaksanaan Sesi Renang</h1>
+          <p class="text-xs text-slate-500">Menerima jadwal yang disetujui admin dan menandai sesi setelah selesai melatih.</p>
+        </div>
+
+        <!-- Instructor Filter -->
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-bold text-slate-600">Pilih Profil Pelatih:</span>
+          <select id="selectInstFilter" onchange="renderInstructorView()" class="px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-bold bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-ocean-500">
+            <option value="Coach Bayu (Spesialis Gaya Dada & Bebas)">Coach Bayu (Pria)</option>
+            <option value="Coach Sarah (Kids & Water Safety)">Coach Sarah (Wanita/Kids)</option>
+            <option value="Coach Dimas (Private & Terapi Skoliosis)">Coach Dimas (VIP/Terapi)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- Profile summary -->
+        <div class="bg-white rounded-2xl p-5 border border-slate-200 space-y-4">
+          <div class="flex items-center gap-3">
+            <div id="instAvatar" class="w-12 h-12 rounded-2xl bg-ocean-100 text-ocean-700 flex items-center justify-center text-xl font-black">
+              <i class="fa-solid fa-person-swimming"></i>
+            </div>
+            <div>
+              <div id="instNameDisplay" class="font-extrabold text-sm text-slate-900">Coach Bayu</div>
+              <div class="text-[11px] text-ocean-600 font-bold">Lisensi PRSI Level 2</div>
+            </div>
+          </div>
+          <div class="text-xs text-slate-500 space-y-1">
+            <div>Pengalaman: <strong>6+ Tahun</strong></div>
+            <div>Spesialis: <strong>Pernapasan, Gaya Bebas, Water Confidence</strong></div>
+            <div>Rating: <strong>⭐ 4.9 (140+ siswa)</strong></div>
+          </div>
+          <div class="p-3 rounded-xl bg-slate-50 text-xs text-slate-600">
+            Pastikan membawa peralatan bantu (kickboard, pull buoy) dan cek keselamatan air sebelum memulai latihan.
+          </div>
+        </div>
+
+        <!-- Schedule Cards List -->
+        <div class="md:col-span-2 space-y-3">
+          <div class="flex items-center justify-between">
+            <h2 class="font-extrabold text-sm text-slate-900">Daftar Jadwal Mengajar Aktif</h2>
+            <span class="text-xs text-slate-400">Otomatis muncul setelah dikonfirmasi admin</span>
+          </div>
+          <div id="instructorScheduleList" class="space-y-3">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ================= MODAL BUKTI PEMBAYARAN / DETAIL ================= -->
+  <div id="modalPayment" class="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-xs hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl">
+      <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl mx-auto">
+        <i class="fa-solid fa-receipt"></i>
+      </div>
+      <div>
+        <h3 class="font-extrabold text-base text-slate-900">Pesanan Berhasil Dibuat!</h3>
+        <p class="text-xs text-slate-500 mt-1">Silakan selesaikan pembayaran. Admin akan memverifikasi pesanan Anda.</p>
+      </div>
+
+      <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-left text-xs space-y-1.5 font-medium">
+        <div class="flex justify-between">
+          <span class="text-slate-500">ID Pesanan:</span>
+          <span id="modalOrderId" class="font-bold text-slate-800">#SWIM-001</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-500">Total Nominal:</span>
+          <span id="modalOrderAmount" class="font-extrabold text-ocean-700">Rp 0</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-500">Metode:</span>
+          <span id="modalOrderMethod" class="font-bold text-slate-800">QRIS</span>
+        </div>
+      </div>
+
+      <div class="pt-2 space-y-2">
+        <button onclick="goToAdminToConfirm()" class="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-900 font-extrabold text-xs transition flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span>Buka Panel Admin & Konfirmasi Sekarang</span>
+        </button>
+        <button onclick="closeModalPayment()" class="w-full py-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold text-xs transition">
+          Lihat Pesanan Saya
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    // 1. DATA MASTER
+    const PACKAGES = [
+      {
+        id: 'pkg-kids',
+        name: 'Kids & Water Safety',
+        sessions: 4,
+        price: 750000,
+        badge: 'Favorit Balita',
+        desc: 'Untuk anak 4-10 tahun. Fokus adaptasi air, melatih pernapasan, dan mengapung tanpa panik.',
+        icon: 'fa-child-reaching',
+        color: 'rose'
+      },
+      {
+        id: 'pkg-beginner',
+        name: 'Pemula Dewasa (Gaya Dada)',
+        sessions: 6,
+        price: 950000,
+        badge: 'Paling Populer',
+        desc: 'Dari nol sampai bisa menyeberang kolam. Menguasai gaya dada santai & teknik ambil napas benar.',
+        icon: 'fa-person-swimming',
+        color: 'ocean'
+      },
+      {
+        id: 'pkg-vip',
+        name: 'Private VIP 1-on-1',
+        sessions: 8,
+        price: 1600000,
+        badge: 'Eksklusif Privat',
+        desc: 'Pendampingan privat intensif. Pilihan kolam rumah / apartemen, target gaya bebas, punggung & dada.',
+        icon: 'fa-crown',
+        color: 'amber'
+      }
+    ];
+
+    const INSTRUCTORS = [
+      {
+        id: 'inst-bayu',
+        name: 'Coach Bayu (Spesialis Gaya Dada & Bebas)',
+        gender: 'Pria',
+        exp: '6 Tahun',
+        license: 'PRSI Level 2',
+        rating: '⭐ 4.9',
+        tag: 'Dewasa & Pemula'
+      },
+      {
+        id: 'inst-sarah',
+        name: 'Coach Sarah (Kids & Water Safety)',
+        gender: 'Wanita / Hijab-friendly',
+        exp: '5 Tahun',
+        license: 'Water Safety Certified',
+        rating: '⭐ 5.0',
+        tag: 'Anak & Muslimah'
+      },
+      {
+        id: 'inst-dimas',
+        name: 'Coach Dimas (Private & Terapi Skoliosis)',
+        gender: 'Pria',
+        exp: '8 Tahun',
+        license: 'Hydrotherapy & PRSI',
+        rating: '⭐ 4.9',
+        tag: 'VIP & Terapi Fisik'
+      }
+    ];
+
+    // STATE
+    let currentRole = 'customer';
+    let customerTab = 'book';
+    let selectedPackageId = 'pkg-beginner';
+    let selectedInstructorId = 'inst-bayu';
+    let lastCreatedOrderId = null;
+
+    // LOCAL STORAGE DATABASE
+    const STORAGE_KEY = 'swimpro_orders_db_v1';
+    function getOrders() {
+      const data = localStorage.getItem(STORAGE_KEY);
+      if (!data) return [];
+      try { return JSON.parse(data); } catch(e) { return []; }
+    }
+    function saveOrders(orders) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(orders));
+      updateBadges();
+    }
+
+    // INIT
+    window.addEventListener('DOMContentLoaded', () => {
+      // Set default date tomorrow
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      document.getElementById('inputDate').value = tomorrow.toISOString().split('T')[0];
+
+      renderPackages();
+      renderInstructors();
+      updateBookingSummary();
+      updateBadges();
+
+      // Listeners for live summary
+      document.getElementById('inputSlot').addEventListener('change', updateBookingSummary);
+      document.getElementById('inputVenue').addEventListener('change', updateBookingSummary);
+
+      // Seed if empty
+      if (getOrders().length === 0) {
+        seedSampleData();
+      }
+    });
+
+    // RENDER PACKAGES
+    function renderPackages() {
+      const container = document.getElementById('packagesContainer');
+      container.innerHTML = PACKAGES.map(p => {
+        const isSelected = p.id === selectedPackageId;
+        return `
+          <div onclick="selectPackage('${p.id}')" class="cursor-pointer p-4 rounded-2xl border-2 transition ${isSelected ? 'border-ocean-600 bg-ocean-50/60 ring-2 ring-ocean-200' : 'border-slate-200 bg-white hover:border-slate-300'} flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between">
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-ocean-100 text-ocean-800">${p.badge}</span>
+                <i class="fa-solid ${p.icon} text-ocean-600 text-base"></i>
+              </div>
+              <h3 class="font-extrabold text-sm text-slate-900 mt-2">${p.name}</h3>
+              <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">${p.desc}</p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+              <div>
+                <span class="text-[10px] text-slate-400">Total ${p.sessions} Sesi</span>
+                <div class="font-extrabold text-sm text-slate-900">Rp ${p.price.toLocaleString('id-ID')}</div>
+              </div>
+              <div class="w-5 h-5 rounded-full border-2 ${isSelected ? 'border-ocean-600 bg-ocean-600' : 'border-slate-300'} flex items-center justify-center">
+                ${isSelected ? '<i class="fa-solid fa-check text-white text-[10px]"></i>' : ''}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectPackage(id) {
+      selectedPackageId = id;
+      renderPackages();
+      updateBookingSummary();
+    }
+
+    // RENDER INSTRUCTORS
+    function renderInstructors() {
+      const container = document.getElementById('instructorsContainer');
+      container.innerHTML = INSTRUCTORS.map(i => {
+        const isSelected = i.id === selectedInstructorId;
+        return `
+          <div onclick="selectInstructor('${i.id}')" class="cursor-pointer p-4 rounded-2xl border-2 transition ${isSelected ? 'border-ocean-600 bg-ocean-50/60 ring-2 ring-ocean-200' : 'border-slate-200 bg-white hover:border-slate-300'} flex flex-col justify-between">
+            <div class="flex items-start gap-3">
+              <div class="w-10 h-10 rounded-xl bg-ocean-100 text-ocean-700 flex items-center justify-center text-sm font-black shrink-0">
+                <i class="fa-solid fa-user-tie"></i>
+              </div>
+              <div>
+                <h4 class="font-extrabold text-xs text-slate-900">${i.name}</h4>
+                <div class="text-[10px] text-ocean-600 font-semibold mt-0.5">${i.license} • ${i.exp}</div>
+                <div class="text-[10px] text-slate-500 mt-1">${i.tag}</div>
+              </div>
+            </div>
+            <div class="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between text-xs">
+              <span class="font-bold text-amber-500 text-[11px]">${i.rating}</span>
+              <span class="text-[11px] font-bold ${isSelected ? 'text-ocean-700' : 'text-slate-400'}">${isSelected ? 'Dipilih' : 'Pilih Ini'}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectInstructor(id) {
+      selectedInstructorId = id;
+      renderInstructors();
+      updateBookingSummary();
+    }
+
+    // UPDATE SUMMARY
+    function updateBookingSummary() {
+      const pkg = PACKAGES.find(p => p.id === selectedPackageId) || PACKAGES[0];
+      const inst = INSTRUCTORS.find(i => i.id === selectedInstructorId) || INSTRUCTORS[0];
+      const venue = document.getElementById('inputVenue').value;
+
+      document.getElementById('summaryPackage').textContent = pkg.name;
+      document.getElementById('summarySessions').textContent = `${pkg.sessions} Sesi Pertemuan`;
+      document.getElementById('summaryInstructor').textContent = inst.name.split('(')[0];
+      document.getElementById('summaryVenue').textContent = venue;
+      document.getElementById('summaryPrice').textContent = `Rp ${pkg.price.toLocaleString('id-ID')}`;
+    }
+
+    // ROLE SWITCHER
+    function switchRole(role) {
+      currentRole = role;
+      ['customer', 'admin', 'instructor'].forEach(r => {
+        const btn = document.getElementById('roleBtn-' + r);
+        const view = document.getElementById('view-' + r);
+        if (r === role) {
+          btn.className = 'px-3 py-1.5 rounded-lg bg-ocean-600 text-white transition flex items-center gap-1.5 font-bold';
+          view.classList.remove('hidden');
+        } else {
+          btn.className = 'px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5 font-bold';
+          view.classList.add('hidden');
+        }
+      });
+
+      if (role === 'admin') renderAdminView();
+      if (role === 'instructor') renderInstructorView();
+      if (role === 'customer') {
+        renderMyOrders();
+        updateBookingSummary();
+      }
+    }
+
+    // CUSTOMER TAB SWITCHER
+    function setCustomerTab(tab) {
+      customerTab = tab;
+      const btnBook = document.getElementById('custTabBtn-book');
+      const btnOrders = document.getElementById('custTabBtn-myorders');
+      const contentBook = document.getElementById('custContent-book');
+      const contentOrders = document.getElementById('custContent-myorders');
+
+      if (tab === 'book') {
+        btnBook.className = 'px-3.5 py-2 rounded-xl text-xs font-bold bg-ocean-600 text-white shadow-xs';
+        btnOrders.className = 'px-3.5 py-2 rounded-xl text-xs font-bold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50';
+        contentBook.classList.remove('hidden');
+        contentOrders.classList.add('hidden');
+      } else {
+        btnOrders.className = 'px-3.5 py-2 rounded-xl text-xs font-bold bg-ocean-600 text-white shadow-xs';
+        btnBook.className = 'px-3.5 py-2 rounded-xl text-xs font-bold bg-white text-slate-600 border border-slate-200 hover:bg-slate-50';
+        contentBook.classList.add('hidden');
+        contentOrders.classList.remove('hidden');
+        renderMyOrders();
+      }
+    }
+
+    // SUBMIT BOOKING
+    function submitBookingOrder() {
+      const name = document.getElementById('custName').value.trim() || 'Ahmad Fauzi';
+      const phone = document.getElementById('custPhone').value.trim() || '0812-9988-7766';
+      const notes = document.getElementById('custNotes').value.trim() || 'Pemula belum bisa mengapung';
+      const date = document.getElementById('inputDate').value;
+      const slot = document.getElementById('inputSlot').value;
+      const venue = document.getElementById('inputVenue').value;
+      const payMethod = document.querySelector('input[name="payMethod"]:checked').value;
+
+      const pkg = PACKAGES.find(p => p.id === selectedPackageId) || PACKAGES[0];
+      const inst = INSTRUCTORS.find(i => i.id === selectedInstructorId) || INSTRUCTORS[0];
+
+      const newOrder = {
+        id: 'SWIM-' + Math.floor(1000 + Math.random() * 9000),
+        createdAt: new Date().toLocaleString('id-ID'),
+        customerName: name,
+        customerPhone: phone,
+        notes: notes,
+        packageId: pkg.id,
+        packageName: pkg.name,
+        sessions: pkg.sessions,
+        price: pkg.price,
+        startDate: date,
+        slot: slot,
+        venue: venue,
+        instructorId: inst.id,
+        instructorName: inst.name,
+        payMethod: payMethod,
+        status: 'MENUNGGU_KONFIRMASI_ADMIN' // Statuses: MENUNGGU_KONFIRMASI_ADMIN -> DIKONFIRMASI_ADMIN -> SEDANG_BERLANGSUNG -> SELESAI
+      };
+
+      const orders = getOrders();
+      orders.unshift(newOrder);
+      saveOrders(orders);
+      lastCreatedOrderId = newOrder.id;
+
+      // Show Payment Modal
+      document.getElementById('modalOrderId').textContent = '#' + newOrder.id;
+      document.getElementById('modalOrderAmount').textContent = `Rp ${newOrder.price.toLocaleString('id-ID')}`;
+      document.getElementById('modalOrderMethod').textContent = newOrder.payMethod;
+      document.getElementById('modalPayment').classList.remove('hidden');
+
+      // Reset form
+      document.getElementById('custName').value = '';
+      document.getElementById('custPhone').value = '';
+      document.getElementById('custNotes').value = '';
+    }
+
+    function closeModalPayment() {
+      document.getElementById('modalPayment').classList.add('hidden');
+      setCustomerTab('myorders');
+    }
+
+    function goToAdminToConfirm() {
+      document.getElementById('modalPayment').classList.add('hidden');
+      switchRole('admin');
+    }
+
+    // RENDER MY ORDERS
+    function renderMyOrders() {
+      const orders = getOrders();
+      document.getElementById('myOrdersCount').textContent = orders.length;
+      const list = document.getElementById('myOrdersList');
+
+      if (orders.length === 0) {
+        list.innerHTML = `
+          <div class="p-8 text-center bg-white rounded-2xl border border-slate-200">
+            <i class="fa-solid fa-calendar-xmark text-3xl text-slate-300 mb-2"></i>
+            <p class="text-xs text-slate-500 font-bold">Belum ada pesanan kursus renang.</p>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = orders.map(o => {
+        let badgeColor = 'bg-amber-100 text-amber-800 border-amber-200';
+        let statusText = 'Menunggu Konfirmasi Admin';
+        let stepText = '1. Menunggu Admin cek pembayaran';
+
+        if (o.status === 'DIKONFIRMASI_ADMIN') {
+          badgeColor = 'bg-ocean-100 text-ocean-800 border-ocean-200';
+          statusText = 'Terkonfirmasi • Terjadwal';
+          stepText = '2. Jadwal dikirim ke instruktur, siap latihan';
+        } else if (o.status === 'SELESAI') {
+          badgeColor = 'bg-emerald-100 text-emerald-800 border-emerald-200';
+          statusText = 'Kursus Selesai';
+          stepText = '3. Seluruh sesi berhasil dituntaskan';
+        }
+
+        return `
+          <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-3">
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-2.5">
+              <div>
+                <span class="font-extrabold text-xs text-slate-900">#${o.id}</span>
+                <span class="text-[10px] text-slate-400 ml-2">${o.createdAt}</span>
+              </div>
+              <span class="px-2.5 py-0.5 rounded-full border text-[10px] font-extrabold ${badgeColor}">
+                ${statusText}
+              </span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+              <div>
+                <div class="text-[10px] text-slate-400">Paket & Biaya:</div>
+                <div class="font-bold text-slate-800">${o.packageName} (${o.sessions} Sesi)</div>
+                <div class="text-ocean-700 font-extrabold">Rp ${o.price.toLocaleString('id-ID')} • ${o.payMethod}</div>
+              </div>
+              <div>
+                <div class="text-[10px] text-slate-400">Jadwal & Lokasi:</div>
+                <div class="font-bold text-slate-800">${o.startDate} • ${o.slot}</div>
+                <div class="text-slate-500 truncate">${o.venue}</div>
+              </div>
+              <div>
+                <div class="text-[10px] text-slate-400">Instruktur:</div>
+                <div class="font-bold text-slate-800">${o.instructorName}</div>
+                <div class="text-[11px] text-slate-500">Siswa: <strong>${o.customerName}</strong> (${o.customerPhone})</div>
+              </div>
+            </div>
+
+            <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
+              <span>Alur: <strong>${stepText}</strong></span>
+              ${o.status === 'MENUNGGU_KONFIRMASI_ADMIN' ? `
+                <button onclick="switchRole('admin')" class="text-amber-600 font-bold hover:underline flex items-center gap-1">
+                  <span>Lihat di Admin</span>
+                  <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                </button>
+              ` : `
+                <button onclick="switchRole('instructor')" class="text-ocean-600 font-bold hover:underline flex items-center gap-1">
+                  <span>Lihat Jadwal Instruktur</span>
+                  <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                </button>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // RENDER ADMIN VIEW
+    function renderAdminView() {
+      const orders = getOrders();
+      const tbody = document.getElementById('adminOrdersTable');
+
+      // Calc stats
+      const pending = orders.filter(o => o.status === 'MENUNGGU_KONFIRMASI_ADMIN').length;
+      const confirmed = orders.filter(o => o.status === 'DIKONFIRMASI_ADMIN').length;
+      const completed = orders.filter(o => o.status === 'SELESAI').length;
+      const revenue = orders.filter(o => o.status !== 'MENUNGGU_KONFIRMASI_ADMIN').reduce((acc, cur) => acc + cur.price, 0);
+
+      document.getElementById('statPending').textContent = pending;
+      document.getElementById('statConfirmed').textContent = confirmed;
+      document.getElementById('statCompleted').textContent = completed;
+      document.getElementById('statRevenue').textContent = `Rp ${revenue.toLocaleString('id-ID')}`;
+
+      if (orders.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-slate-400">Tidak ada pesanan.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = orders.map(o => {
+        let statusBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-100 text-amber-800">Menunggu Verifikasi</span>`;
+        if (o.status === 'DIKONFIRMASI_ADMIN') {
+          statusBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-ocean-100 text-ocean-800">Terkonfirmasi (Jadwal Aktif)</span>`;
+        } else if (o.status === 'SELESAI') {
+          statusBadge = `<span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800">Selesai</span>`;
+        }
+
+        return `
+          <tr class="hover:bg-slate-50 transition">
+            <td class="p-3 font-bold text-slate-900">#${o.id}<br><span class="text-[10px] font-normal text-slate-400">${o.createdAt}</span></td>
+            <td class="p-3"><strong>${o.customerName}</strong><br><span class="text-[10px] text-slate-500">${o.customerPhone}</span></td>
+            <td class="p-3"><strong>${o.packageName}</strong><br><span class="text-ocean-700 font-extrabold">Rp ${o.price.toLocaleString('id-ID')}</span></td>
+            <td class="p-3">${o.startDate}<br><span class="text-[10px] text-slate-500">${o.slot}</span></td>
+            <td class="p-3"><strong>${o.instructorName.split('(')[0]}</strong><br><span class="text-[10px] text-slate-400">${o.venue.slice(0, 20)}...</span></td>
+            <td class="p-3">${statusBadge}</td>
+            <td class="p-3 text-right">
+              ${o.status === 'MENUNGGU_KONFIRMASI_ADMIN' ? `
+                <button onclick="adminConfirmOrder('${o.id}')" class="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-[11px] shadow-xs transition">
+                  <i class="fa-solid fa-check mr-1"></i> Konfirmasi Pembayaran
+                </button>
+              ` : `
+                <span class="text-[10px] font-bold text-slate-400">Telah Diverifikasi</span>
+              `}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function adminConfirmOrder(orderId) {
+      const orders = getOrders();
+      const target = orders.find(o => o.id === orderId);
+      if (target) {
+        target.status = 'DIKONFIRMASI_ADMIN';
+        saveOrders(orders);
+        renderAdminView();
+        alert(`Pesanan #${orderId} berhasil dikonfirmasi!\n\nJadwal otomatis dikirimkan ke ${target.instructorName}.`);
+      }
+    }
+
+    // RENDER INSTRUCTOR VIEW
+    function renderInstructorView() {
+      const filterInstName = document.getElementById('selectInstFilter').value;
+      const orders = getOrders().filter(o => o.instructorName === filterInstName && o.status !== 'MENUNGGU_KONFIRMASI_ADMIN');
+      const container = document.getElementById('instructorScheduleList');
+
+      // Update avatar & title
+      document.getElementById('instNameDisplay').textContent = filterInstName.split('(')[0];
+
+      if (orders.length === 0) {
+        container.innerHTML = `
+          <div class="p-8 text-center bg-white rounded-2xl border border-slate-200">
+            <i class="fa-solid fa-clipboard-check text-3xl text-slate-300 mb-2"></i>
+            <p class="text-xs text-slate-500 font-bold">Belum ada jadwal mengajar terkonfirmasi untuk pelatih ini.</p>
+            <p class="text-[11px] text-slate-400 mt-1">Pastikan ada pesanan yang sudah disetujui Admin pada portal Admin.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = orders.map(o => {
+        const isDone = o.status === 'SELESAI';
+        return `
+          <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+              <span class="font-extrabold text-xs text-slate-900">ID Sesi: #${o.id}</span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold ${isDone ? 'bg-emerald-100 text-emerald-800' : 'bg-ocean-100 text-ocean-800'}">
+                ${isDone ? 'Sesi Selesai' : 'Jadwal Aktif'}
+              </span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div>
+                <div class="text-[10px] text-slate-400">Murid & Kontak:</div>
+                <div class="font-bold text-slate-900">${o.customerName}</div>
+                <a href="https://wa.me/62${o.customerPhone.replace(/[^0-9]/g, '')}" target="_blank" class="text-[11px] text-emerald-600 font-bold hover:underline flex items-center gap-1 mt-0.5">
+                  <i class="fa-brands fa-whatsapp"></i>
+                  <span>Hubungi Murid (${o.customerPhone})</span>
+                </a>
+                <div class="text-[10px] text-slate-500 mt-1">Catatan: "${o.notes}"</div>
+              </div>
+
+              <div>
+                <div class="text-[10px] text-slate-400">Waktu & Tempat:</div>
+                <div class="font-bold text-slate-900">${o.startDate} • ${o.slot}</div>
+                <div class="text-slate-600 mt-0.5">${o.venue}</div>
+                <div class="text-ocean-700 font-bold text-[11px] mt-1">${o.packageName} (${o.sessions} Sesi)</div>
+              </div>
+            </div>
+
+            <div class="pt-2 border-t border-slate-100 flex items-center justify-between">
+              <span class="text-[10px] text-slate-400">Status Alur: <strong>${isDone ? 'Sesi telah ditutup' : 'Siap Latihan'}</strong></span>
+              ${!isDone ? `
+                <button onclick="instructorFinishSession('${o.id}')" class="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-xs transition flex items-center gap-1.5">
+                  <i class="fa-solid fa-flag-checkered"></i>
+                  <span>Tandai Selesai Melatih</span>
+                </button>
+              ` : `
+                <span class="text-xs font-bold text-emerald-600 flex items-center gap-1">
+                  <i class="fa-solid fa-circle-check"></i> Selesai
+                </span>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function instructorFinishSession(orderId) {
+      if (confirm(`Apakah sesi kursus #${orderId} telah selesai dilaksanakan?`)) {
+        const orders = getOrders();
+        const target = orders.find(o => o.id === orderId);
+        if (target) {
+          target.status = 'SELESAI';
+          saveOrders(orders);
+          renderInstructorView();
+          alert(`Sesi #${orderId} berhasil ditandai Selesai!\nLaporan langsung diperbarui.`);
+        }
+      }
+    }
+
+    // BADGES UPDATE
+    function updateBadges() {
+      const orders = getOrders();
+      const pendingCount = orders.filter(o => o.status === 'MENUNGGU_KONFIRMASI_ADMIN').length;
+      const confirmedCount = orders.filter(o => o.status === 'DIKONFIRMASI_ADMIN').length;
+
+      const badgePending = document.getElementById('badgePendingCount');
+      if (badgePending) {
+        if (pendingCount > 0) {
+          badgePending.textContent = pendingCount;
+          badgePending.classList.remove('hidden');
+        } else {
+          badgePending.classList.add('hidden');
+        }
+      }
+
+      const badgeInst = document.getElementById('badgeInstCount');
+      if (badgeInst) {
+        if (confirmedCount > 0) {
+          badgeInst.textContent = confirmedCount;
+          badgeInst.classList.remove('hidden');
+        } else {
+          badgeInst.classList.add('hidden');
+        }
+      }
+    }
+
+    // SEED SAMPLE DATA
+    function seedSampleData() {
+      const samples = [
+        {
+          id: 'SWIM-1021',
+          createdAt: '28/10/2026, 08:30',
+          customerName: 'Bima Santoso',
+          customerPhone: '0813-8822-1100',
+          notes: 'Fobia air, butuh pelatih sabar',
+          packageId: 'pkg-beginner',
+          packageName: 'Pemula Dewasa (Gaya Dada)',
+          sessions: 6,
+          price: 950000,
+          startDate: '2026-10-30',
+          slot: 'Pagi (07:00 - 08:30 WIB)',
+          venue: 'Kolam Renang Olympic Senayan (Mitra)',
+          instructorId: 'inst-bayu',
+          instructorName: 'Coach Bayu (Spesialis Gaya Dada & Bebas)',
+          payMethod: 'QRIS',
+          status: 'MENUNGGU_KONFIRMASI_ADMIN'
+        },
+        {
+          id: 'SWIM-1020',
+          createdAt: '27/10/2026, 14:15',
+          customerName: 'Ibu Citra (Anak: Kenzo 6 thn)',
+          customerPhone: '0812-7711-3322',
+          notes: 'Anak aktif, latihan water safety',
+          packageId: 'pkg-kids',
+          packageName: 'Kids & Water Safety',
+          sessions: 4,
+          price: 750000,
+          startDate: '2026-10-29',
+          slot: 'Sore (15:30 - 17:00 WIB)',
+          venue: 'Kolam Renang Tirta Cilandak (Mitra)',
+          instructorId: 'inst-sarah',
+          instructorName: 'Coach Sarah (Kids & Water Safety)',
+          payMethod: 'Transfer Bank BCA',
+          status: 'DIKONFIRMASI_ADMIN'
+        }
+      ];
+      saveOrders(samples);
+      if (currentRole === 'admin') renderAdminView();
+      if (currentRole === 'instructor') renderInstructorView();
+      if (currentRole === 'customer') renderMyOrders();
+    }
+  </script>
+</body>
+</html>
