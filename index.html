@@ -102,6 +102,31 @@ tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter','sans-serif'
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
+    <!-- PEMANTAUAN-JENTIK CARD -->
+    <article class="project-card group bg-white rounded-[24px] border border-slate-100 overflow-hidden hover:shadow-xl hover:border-emerald-100 transition flex flex-col" data-project="pemantauan-jentik">
+      <div class="relative h-48 overflow-hidden bg-slate-900">
+        <img src="https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?w=700&q=80" loading="lazy" alt="Si-Jentik Pemantauan Jentik Kelurahan thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+        <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-emerald-600 text-white text-[11px] font-bold tracking-widest">NEW • HEALTH</span>
+        <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur text-emerald-800 text-[11px] font-bold">ABJ ≥ 95%</span>
+      </div>
+      <div class="p-6 flex-1 flex flex-col">
+        <div class="text-xs font-bold tracking-widest text-emerald-600">SI-JENTIK • PEMERIKSAAN JENTIK BERKALA</div>
+        <h3 class="font-display font-extrabold text-[18px] leading-tight mt-1">Si-Jentik Desa — Sistem Pemantauan Jentik & ABJ</h3>
+        <p class="text-sm text-slate-500 leading-6 mt-2 flex-1">Aplikasi Jumantik tingkat kelurahan/desa untuk mendata tempat penampungan air (TPA) rumah penduduk, menghitung Angka Bebas Jentik (ABJ) otomatis, pemetaan zona DBD per RW/RT, dan intervensi PSN 3M Plus.</p>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <span class="px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-semibold text-emerald-700">Hitung ABJ Otomatis</span>
+          <span class="px-2.5 py-1 rounded-full bg-teal-50 border border-teal-200 text-xs font-semibold text-teal-700">Checklist TPA & Abate</span>
+          <span class="px-2.5 py-1 rounded-full bg-blue-50 border border-blue-200 text-xs font-semibold text-blue-700">Peta RW/RT</span>
+        </div>
+        <div class="mt-5 grid grid-cols-2 gap-2">
+          <a href="pemantauan-jentik/index.html" target="_blank" rel="noopener" data-action="preview" data-url="pemantauan-jentik/index.html" data-title="Si-Jentik — Pemantauan Jentik Kelurahan" class="inline-flex justify-center items-center gap-2 py-2.5 rounded-full bg-emerald-600 text-white text-sm font-bold hover:bg-emerald-700 transition"><i class="fa-solid fa-eye text-xs"></i> Live Preview</a>
+          <button data-action="detail" data-project="pemantauan-jentik" class="inline-flex justify-center items-center gap-2 py-2.5 rounded-full border border-slate-200 text-sm font-bold hover:bg-slate-50 transition"><i class="fa-solid fa-circle-info text-xs"></i> Detail</button>
+        </div>
+        <a href="pemantauan-jentik/index.html" target="_blank" rel="noopener" class="mt-2 inline-flex justify-center items-center gap-2 py-2.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm font-bold hover:bg-emerald-100 transition"><i class="fa-solid fa-arrow-up-right-from-square text-xs"></i> Kunjungi</a>
+        <a href="https://github.com/arijayacloud/prototype-web-android/tree/main/pemantauan-jentik" target="_blank" rel="noopener" class="mt-1 inline-flex justify-center items-center gap-2 py-2 rounded-full text-xs font-semibold text-slate-500 hover:text-slate-900"><i class="fa-brands fa-github"></i> Lihat Kode — pemantauan-jentik/</a>
+      </div>
+    </article>
+
     <!-- NOTA-A4 CARD (FAST INVOICE & A4 PRINT) -->
     <article class="project-card group bg-white rounded-[24px] border border-slate-100 overflow-hidden hover:shadow-xl hover:border-blue-100 transition flex flex-col" data-project="nota-a4">
       <div class="relative h-48 overflow-hidden bg-slate-900">
@@ -785,6 +810,20 @@ menuBtn?.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
 
 // project data for detail modal
 const PROJECTS = {
+  'pemantauan-jentik': {
+    title: 'Si-Jentik Desa — Sistem Pemantauan Jentik & ABJ',
+    url: 'pemantauan-jentik/index.html',
+    codeUrl: 'https://github.com/arijayacloud/prototype-web-android/tree/main/pemantauan-jentik',
+    thumbnail: 'https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?w=700&q=80',
+    background: 'Aplikasi pencatatan dan evaluasi Pemeriksaan Jentik Berkala (PJB) digital untuk kader Jumantik di tingkat kelurahan/desa untuk mencegah penyebaran Demam Berdarah Dengue (DBD).',
+    problem: 'Pencatatan jentik nyamuk manual dengan kertas sering lambat diolah, sulit memantau Angka Bebas Jentik (ABJ) secara real-time, dan respon fogging atau larvasida terlambat.',
+    features: ['Kalkulasi ABJ (Angka Bebas Jentik) otomatis standar Kemenkes RI (Target ≥95%)', 'Formulir input lapangan Jumantik dengan checklist TPA dalam & luar rumah', 'Pencatatan intervensi PSN: Larvasidasi abate, pengurasan, dan penutupan kontainer', 'Pemetaan zonasi DBD dan rekapitulasi data per RW/RT', 'Format cetak laporan kelurahan & rekap bulanan Puskesmas'],
+    stack: ['HTML', 'Tailwind CDN', 'Font Awesome', 'Vanilla JS (localStorage DB)'],
+    links: [
+      { label: 'Live Demo', href: 'pemantauan-jentik/index.html' },
+      { label: 'Source di GitHub', href: 'https://github.com/arijayacloud/prototype-web-android/tree/main/pemantauan-jentik' }
+    ]
+  },
   'latihan-jepang': {
     title: 'NihonGo! — Latihan Soal Bahasa Jepang JLPT N5 - N1',
     url: 'latihan-jepang/index.html',
