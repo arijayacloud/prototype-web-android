@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#0f5b3a">
+<title>Catatan Hajatan — Buku Tamu Digital</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script>
+tailwind.config={theme:{extend:{fontFamily:{sans:['"Plus Jakarta Sans"','sans-serif']},colors:{g:{50:'#ecf7f0',100:'#d3eedc',200:'#a8dcba',500:'#1f8a58',600:'#157046',700:'#0f5b3a',800:'#0a452c',900:'#06301e'},gold:{400:'#dcb75e',500:'#c9a24b',600:'#a9842f'}}}}}
+</script>
+<style>
+body{background:#d9e6dd}
+#shell{max-width:430px;margin:0 auto;min-height:100vh;background:#f4f8f5;position:relative;box-shadow:0 0 40px rgba(0,0,0,.15)}
+.inp{width:100%;border:1px solid #cfe0d5;border-radius:12px;padding:10px 12px;font-size:14px;background:#fff}
+.inp:focus{outline:2px solid #8fd1ac;border-color:#1f8a58}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 16px;border-radius:12px;font-weight:700;font-size:14px}
+.btn-p{background:#0f5b3a;color:#fff}.btn-p:active{background:#0a452c}
+.btn-o{border:1px solid #cfe0d5;background:#fff;color:#0f5b3a}
+.btn-r{background:#fee2e2;color:#b91c1c}
+.card{background:#fff;border-radius:18px;box-shadow:0 1px 4px rgba(15,91,58,.08)}
+.bdg{display:inline-block;padding:2px 10px;border-radius:99px;font-size:11px;font-weight:700}
+.putra{background:#dbeafe;color:#1d4ed8}.putri{background:#fce7f3;color:#be185d}
+.batik{background-image:radial-gradient(circle at 20% 20%,rgba(220,183,94,.18) 0 18px,transparent 19px),radial-gradient(circle at 80% 70%,rgba(220,183,94,.14) 0 26px,transparent 27px)}
+@media print{body *{visibility:hidden}#printArea,#printArea *{visibility:visible}#printArea{position:absolute;left:0;top:0;width:100%}}
+@keyframes up{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}.up{animation:up .25s ease}
+</style>
+</head>
+<body class="font-sans text-slate-800 antialiased">
+<div id="shell"><div id="app"></div></div>
+<div id="modalRoot"></div>
+<div id="toast" class="fixed bottom-24 left-1/2 -translate-x-1/2 z-[100] hidden px-4 py-2.5 rounded-xl bg-g-900 text-white text-sm font-semibold shadow-xl whitespace-nowrap"></div>
+
+<script>
+const KEY='catatan_hajatan_v1';
+const rp=n=>'Rp '+Math.round(n||0).toLocaleString('id-ID');
+const num=n=>(n||0).toLocaleString('id-ID');
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $=id=>document.getElementById(id);
+const uid=()=>'g'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const MN=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+const fdate=s=>{if(!s)return'-';const d=new Date(s+'T00:00:00');return d.getDate()+' '+MN[d.getMonth()]+' '+d.getFullYear()};
+const todayStr=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+function toast(m){const t=$('toast');t.textContent=m;t.classList.remove('hidden');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.add('hidden'),2200)}
+const RELS=['Tetangga','Keluarga','Teman','Rekan Kerja','Lainnya'];
+
+function seed(){
+  const nm=['Ahmad Bayanudin','Siti Aminah','Budi Santoso','Rusdi Hartono','Wawan Setiawan','Joko Purnomo','Sugeng Prasetyo','Slamet Riyadi','Dwi Lestari','Sri Wahyuni','Heri Kurniawan','Tarmiji','Nur Hidayati','Eko Prasetyo','Yanto','Sumarni','Bambang Susilo','Endang Sulastri','Agus Salim','Lilik Mulyani','Paijo','Sukarti','Darmanto','Wiwik Handayani','Fitri Rahayu','Suyatno','Mulyono','Kasmini','Rohmat','Tri Wahyuni','Imam Syafi\'i','Nia Kurnia','Hasan Basri','Zainal','Aisyah','Rina Marlina','Kholid','Sulis','Tukiman','Partini'];
+  const ad=['Rajan','Gedongan','Ngijoan','Kauman','Tegalrejo','Krajan','Sumberejo','Dukuh'];
+  let r=7;const rnd=()=>(r=(r*9301+49297)%233280)/233280;
+  const am=[0,20000,50000,50000,100000,100000,150000,200000,300000];
+  return{set:{owner:'Bapak Sujagar & Ibu Sriatun S.Pd',loc:'Pelaksana: Rajan · Gedongan · Ngijoan',date:'2026-11-08',event:'Pernikahan'},
+    guests:nm.map((n,i)=>{const putri=['Siti','Dwi','Sri','Nur','Endang','Lilik','Sukarti','Wiwik','Fitri','Kasmini','Tri','Nia','Aisyah','Rina','Sulis','Partini','Sumarni'].some(x=>n.startsWith(x));
+      const a=am[Math.floor(rnd()*am.length)];return{id:'g'+i,name:n,addr:ad[Math.floor(rnd()*ad.length)],cat:putri?'Putri':'Putra',rel:RELS[Math.floor(rnd()*4)],amount:a,item:a===0?'Beras 5 kg':'',note:'',date:i<24?'2026-11-07':'2026-11-08',ts:i}})}}
+let DB=(()=>{try{const x=JSON.parse(localStorage.getItem(KEY));if(x&&x.guests)return x}catch(e){}return seed()})();
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){}};
+const S={screen:'splash',q:'',tab:'Semua',limit:30,rep:'tamu',fmt:'pdf'};
+
+/* ===== stats ===== */
+function stats(list=DB.guests){const p=list.filter(g=>g.cat==='Putra'),q=list.filter(g=>g.cat==='Putri'),s=a=>a.reduce((x,g)=>x+(+g.amount||0),0);
+  return{putra:p.length,putri:q.length,total:list.length,upPutra:s(p),upPutri:s(q),upTotal:s(list),barang:list.filter(g=>g.item).length}}
+
+/* ===== nav ===== */
+const NAVI=[['home','Beranda','house'],['tamu','Data Tamu','book'],['rekap','Rekap','chart-column'],['laporan','Laporan','file-lines'],['set','Setelan','gear']];
+function go(s){S.screen=s;S.q='';render();window.scrollTo(0,0)}
+function render(){
+  const a=$('app'),sc=S.screen;
+  if(sc==='splash'){a.innerHTML=splash();return}
+  const body={home:home,tamu:tamu,rekap:rekap,laporan:laporan,set:setelan}[sc]();
+  const ae=document.activeElement,id=ae&&ae.id,pos=ae&&ae.selectionStart;
+  a.innerHTML=`<div class="pb-24 up">${body}</div><nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-white border-t border-g-100 grid grid-cols-5 z-30">${NAVI.map(n=>`<button onclick="go('${n[0]}')" class="py-2.5 flex flex-col items-center gap-0.5 text-[10px] font-bold ${sc===n[0]?'text-g-700':'text-slate-400'}"><i class="fa-solid fa-${n[2]} text-lg"></i>${n[1]}</button>`).join('')}</nav>`;
+  if(id){const e=$(id);if(e){e.focus();try{e.setSelectionRange(pos,pos)}catch(x){}}}
+}
+const head=(t,sub='')=>`<div class="bg-g-700 text-white px-4 pt-5 pb-4 rounded-b-3xl batik"><div class="flex items-center gap-3"><button onclick="go('home')" class="w-9 h-9 rounded-full bg-white/15"><i class="fa-solid fa-chevron-left"></i></button><div><div class="font-extrabold text-lg leading-tight">${t}</div>${sub?`<div class="text-[11px] text-g-100">${sub}</div>`:''}</div></div></div>`;
+
+/* ===== screens ===== */
+function splash(){return`<div onclick="go('home')" class="min-h-screen bg-gradient-to-b from-g-800 to-g-900 batik text-white flex flex-col items-center justify-center text-center px-8 cursor-pointer"><div class="w-28 h-28 rounded-[28px] bg-g-600 border-4 border-gold-400 flex items-center justify-center shadow-2xl"><i class="fa-solid fa-book-open-reader text-5xl text-white"></i></div><h1 class="text-3xl font-extrabold mt-6">Catatan Hajatan</h1><div class="text-gold-400 text-sm font-bold tracking-widest mt-1">Mudah • Cepat • Lengkap</div><p class="text-g-100 text-sm mt-6 max-w-[260px]">Catat setiap tamu, abadikan setiap silaturahmi.</p><div class="absolute bottom-10 text-xs text-g-200 animate-pulse">Ketuk untuk mulai</div></div>`}
+
+function home(){const s=stats(),st=DB.set;
+  const menu=[['tamu','Data Tamu','Catat & kelola tamu','users'],['rekap','Rekapitulasi','Total tamu & uang','chart-column'],['laporan','Laporan','Cetak & export','file-lines'],['set','Pengaturan','Data hajatan & cadangan','gear']];
+  return`<div class="relative"><div class="bg-gradient-to-br from-g-700 to-g-900 batik text-white px-5 pt-8 pb-14 rounded-b-[36px]"><div class="text-[11px] tracking-widest text-gold-400 font-bold">CATATAN HAJATAN · ${esc(st.event).toUpperCase()}</div><div class="font-extrabold text-xl mt-1 leading-tight">${esc(st.owner)}</div><div class="text-xs text-g-100 mt-1">${esc(st.loc)}</div><div class="text-xs text-gold-400 mt-1"><i class="fa-regular fa-calendar mr-1"></i>${fdate(st.date)}</div></div>
+  <div class="px-4 -mt-9"><div class="card p-4 grid grid-cols-3 text-center"><div><div class="text-xl font-extrabold text-g-700">${num(s.total)}</div><div class="text-[10px] text-slate-500">Total Tamu</div></div><div class="border-x border-slate-100"><div class="text-xl font-extrabold text-blue-600">${num(s.putra)}</div><div class="text-[10px] text-slate-500">Putra</div></div><div><div class="text-xl font-extrabold text-pink-600">${num(s.putri)}</div><div class="text-[10px] text-slate-500">Putri</div></div></div>
+  <div class="grid grid-cols-2 gap-3 mt-4">${menu.map(m=>`<button onclick="go('${m[0]}')" class="card p-4 text-left active:scale-95 transition"><div class="w-12 h-12 rounded-2xl bg-g-50 text-g-700 flex items-center justify-center text-xl"><i class="fa-solid fa-${m[3]}"></i></div><div class="font-extrabold mt-3">${m[1]}</div><div class="text-[11px] text-slate-500">${m[2]}</div></button>`).join('')}</div>
+  <button onclick="guestForm()" class="btn btn-p w-full mt-4 py-3.5"><i class="fa-solid fa-plus"></i>Catat Tamu Baru</button>
+  <div class="card p-4 mt-4"><div class="font-extrabold text-sm mb-2">Tamu Terakhir Dicatat</div>${DB.guests.slice().sort((a,b)=>b.ts-a.ts).slice(0,4).map(g=>`<div class="flex items-center justify-between py-2 border-b border-slate-50 last:border-0 text-sm"><div><b>${esc(g.name)}</b><div class="text-[11px] text-slate-400">${esc(g.addr)}</div></div><span class="bdg ${g.cat.toLowerCase()}">${g.cat}</span></div>`).join('')||'<div class="text-xs text-slate-400">Belum ada tamu.</div>'}</div>
+  <div class="grid grid-cols-4 gap-2 mt-4 text-center text-[10px] font-bold text-g-700">${[['shield-halved','Data Aman'],['bolt','Ringan'],['cloud-arrow-down','Bisa Offline'],['print','Siap Cetak']].map(x=>`<div class="bg-g-50 rounded-xl py-2.5"><i class="fa-solid fa-${x[0]} text-base block mb-1"></i>${x[1]}</div>`).join('')}</div><div class="text-center text-[11px] text-slate-400 italic my-5">Catat Setiap Tamu, Abadikan Setiap Silaturahmi</div></div></div>`}
+
+function filtered(){const q=S.q.toLowerCase();return DB.guests.filter(g=>(S.tab==='Semua'||g.cat===S.tab)&&(!q||(g.name+g.addr).toLowerCase().includes(q))).sort((a,b)=>b.ts-a.ts)}
+function tamu(){const l=filtered(),shown=l.slice(0,S.limit),s=stats();
+  return`${head('Data Tamu',num(l.length)+' tamu ditampilkan')}<div class="px-4 mt-4"><div class="relative"><i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-sm"></i><input id="q" class="inp !pl-10" placeholder="Cari nama atau alamat tamu…" value="${esc(S.q)}" oninput="S.q=this.value;S.limit=30;render()"></div>
+  <div class="grid grid-cols-3 gap-2 mt-3">${[['Semua',s.total],['Putra',s.putra],['Putri',s.putri]].map(t=>`<button onclick="S.tab='${t[0]}';S.limit=30;render()" class="py-2 rounded-xl text-sm font-bold ${S.tab===t[0]?'bg-g-700 text-white':'bg-white text-g-700 border border-g-100'}">${t[0]} <span class="text-[11px] opacity-80">${t[1]}</span></button>`).join('')}</div>
+  <div class="card mt-3 overflow-hidden"><div class="grid grid-cols-[28px_1fr_auto] gap-2 px-3 py-2 bg-g-50 text-[11px] font-extrabold text-g-800"><span>No</span><span>Nama Tamu / Alamat</span><span>Kategori</span></div>${shown.map((g,i)=>`<button onclick="guestForm('${g.id}')" class="w-full grid grid-cols-[28px_1fr_auto] gap-2 px-3 py-2.5 border-t border-slate-50 items-center text-left active:bg-g-50"><span class="text-xs text-slate-400">${i+1}</span><span class="min-w-0"><b class="text-sm block truncate">${esc(g.name)}</b><span class="text-[11px] text-slate-400">${esc(g.addr)}${g.amount?' · '+rp(g.amount):g.item?' · '+esc(g.item):''}</span></span><span class="bdg ${g.cat.toLowerCase()}">${g.cat}</span></button>`).join('')||'<div class="p-6 text-center text-sm text-slate-400">Tidak ada data tamu.</div>'}</div>
+  ${l.length>shown.length?`<button onclick="S.limit+=30;render()" class="btn btn-o w-full mt-3">Muat lebih banyak (${l.length-shown.length})</button>`:''}</div>
+  <button onclick="guestForm()" class="fixed bottom-20 z-30 w-14 h-14 rounded-full bg-g-700 text-white text-2xl shadow-xl active:scale-95" style="right:max(16px,calc(50% - 199px))"><i class="fa-solid fa-plus"></i></button>`}
+
+function guestForm(id){const g=id?DB.guests.find(x=>x.id===id):{cat:'Putra',rel:'Tetangga',amount:'',item:'',addr:DB.guests[DB.guests.length-1]?.addr||''};
+  const adds=[...new Set(DB.guests.map(x=>x.addr))];
+  modal(id?'Ubah Data Tamu':'Catat Tamu Baru',`<form onsubmit="return saveGuest(event,'${id||''}')" class="space-y-3"><div class="grid grid-cols-2 gap-2">${['Putra','Putri'].map(c=>`<label class="cursor-pointer"><input type="radio" name="cat" value="${c}" class="peer hidden" ${g.cat===c?'checked':''}><div class="text-center py-2.5 rounded-xl border-2 border-slate-200 font-bold text-sm ${c==='Putra'?'peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:text-blue-700':'peer-checked:border-pink-500 peer-checked:bg-pink-50 peer-checked:text-pink-700'}">${c==='Putra'?'<i class="fa-solid fa-mars mr-1"></i>':'<i class="fa-solid fa-venus mr-1"></i>'}${c}</div></label>`).join('')}</div>
+  <label class="block text-xs font-bold text-slate-600">Nama Tamu<input class="inp mt-1 font-normal" name="name" value="${esc(g.name)}" required autofocus></label>
+  <label class="block text-xs font-bold text-slate-600">Alamat / Dusun<input class="inp mt-1 font-normal" name="addr" value="${esc(g.addr)}" list="adl" required><datalist id="adl">${adds.map(a=>`<option value="${esc(a)}">`).join('')}</datalist></label>
+  <div class="grid grid-cols-2 gap-2"><label class="block text-xs font-bold text-slate-600">Uang (Rp)<input class="inp mt-1 font-normal" name="amount" type="number" min="0" step="1000" inputmode="numeric" value="${g.amount}"></label><label class="block text-xs font-bold text-slate-600">Hubungan<select class="inp mt-1 font-normal" name="rel">${RELS.map(r=>`<option ${g.rel===r?'selected':''}>${r}</option>`).join('')}</select></label></div>
+  <div class="flex gap-1.5 flex-wrap">${[20000,50000,100000,200000].map(v=>`<button type="button" class="bdg bg-g-50 text-g-700 border border-g-100" onclick="document.querySelector('[name=amount]').value=${v}">${num(v)}</button>`).join('')}</div>
+  <label class="block text-xs font-bold text-slate-600">Sumbangan barang (opsional)<input class="inp mt-1 font-normal" name="item" value="${esc(g.item)}" placeholder="mis. Beras 5 kg"></label>
+  <label class="block text-xs font-bold text-slate-600">Catatan<input class="inp mt-1 font-normal" name="note" value="${esc(g.note)}"></label>
+  <div class="flex gap-2 pt-1">${id?`<button type="button" class="btn btn-r" onclick="delGuest('${id}')"><i class="fa-solid fa-trash"></i></button>`:''}<button class="btn btn-p flex-1">Simpan</button></div></form>`)}
+function saveGuest(e,id){e.preventDefault();const o=Object.fromEntries(new FormData(e.target).entries());o.amount=+o.amount||0;o.name=o.name.trim();
+  if(id){Object.assign(DB.guests.find(x=>x.id===id),o);toast('Data tamu diperbarui')}
+  else{DB.guests.push({id:uid(),...o,date:DB.set.date,ts:Date.now()});toast('Tamu dicatat ✓');S.tab='Semua'}
+  save();closeModal();render();return false}
+function delGuest(id){if(!confirm('Hapus tamu ini?'))return;DB.guests=DB.guests.filter(x=>x.id!==id);save();closeModal();render();toast('Tamu dihapus')}
+
+function rekap(){const s=stats(),st=DB.set;const byRel=RELS.map(r=>({r,n:DB.guests.filter(g=>g.rel===r).length}));const mx=Math.max(1,...byRel.map(x=>x.n));
+  const byAddr={};DB.guests.forEach(g=>{byAddr[g.addr]=(byAddr[g.addr]||0)+1});
+  return`${head('Rekapitulasi','Total tamu & sumbangan')}<div class="px-4 mt-4 space-y-3"><div class="card p-3 flex items-center gap-3"><div class="w-11 h-11 rounded-full bg-g-100 text-g-700 flex items-center justify-center"><i class="fa-solid fa-house-chimney"></i></div><div class="text-sm"><b>${esc(st.owner)}</b><div class="text-[11px] text-slate-500">${esc(st.loc)}</div></div></div>
+  <div class="grid grid-cols-2 gap-3"><div class="rounded-2xl bg-blue-600 text-white p-4"><div class="text-[11px] opacity-90">Tamu Putra</div><div class="text-3xl font-extrabold">${num(s.putra)}</div></div><div class="rounded-2xl bg-pink-600 text-white p-4"><div class="text-[11px] opacity-90">Tamu Putri</div><div class="text-3xl font-extrabold">${num(s.putri)}</div></div></div>
+  <div class="card p-4 text-center border-2 border-gold-400"><div class="text-xs text-slate-500">Total Tamu</div><div class="text-4xl font-extrabold text-g-700">${num(s.total)}</div><div class="text-[11px] text-slate-400">${s.barang} tamu membawa sumbangan barang</div></div>
+  <div class="grid grid-cols-2 gap-3"><div class="card p-3"><div class="text-[11px] text-slate-500">Uang Putra</div><div class="font-extrabold text-blue-700">${rp(s.upPutra)}</div></div><div class="card p-3"><div class="text-[11px] text-slate-500">Uang Putri</div><div class="font-extrabold text-pink-700">${rp(s.upPutri)}</div></div></div>
+  <div class="rounded-2xl bg-gradient-to-r from-gold-500 to-gold-400 text-g-900 p-4"><div class="text-xs font-bold">Total Uang Sumbangan</div><div class="text-2xl font-extrabold">${rp(s.upTotal)}</div><div class="text-[11px] mt-0.5">Rata-rata ${rp(s.total?s.upTotal/s.total:0)} / tamu</div></div>
+  <div class="card p-4"><div class="font-extrabold text-sm mb-3">Tamu per Hubungan</div>${byRel.map(x=>`<div class="mb-2"><div class="flex justify-between text-xs mb-1"><span>${x.r}</span><b>${x.n}</b></div><div class="h-2 bg-slate-100 rounded-full"><div class="h-full bg-g-500 rounded-full" style="width:${x.n*100/mx}%"></div></div></div>`).join('')}</div>
+  <div class="card p-4"><div class="font-extrabold text-sm mb-2">Tamu per Alamat</div>${Object.entries(byAddr).sort((a,b)=>b[1]-a[1]).map(([a,n])=>`<div class="flex justify-between text-sm py-1 border-b border-slate-50 last:border-0"><span>${esc(a)}</span><b>${n}</b></div>`).join('')}</div>
+  <div class="text-xs text-slate-500 text-center">Tanggal hajatan: ${fdate(st.date)}</div><button onclick="go('laporan')" class="btn btn-p w-full">Lihat Detail Laporan</button></div>`}
+
+function laporan(){const T=[['tamu','Laporan Tamu','Daftar semua tamu','users'],['rekap','Rekapitulasi','Ringkasan total','chart-pie'],['kategori','Detail Per Kategori','Putra, Putri & hubungan','layer-group'],['harian','Laporan Harian','Per tanggal pencatatan','calendar-day']];
+  const F=[['pdf','PDF','file-pdf','text-red-600'],['xls','Excel','file-excel','text-green-600'],['img','Gambar','image','text-blue-600']];
+  return`${head('Laporan & Export','Pilih jenis laporan dan format')}<div class="px-4 mt-4 space-y-3"><div class="font-extrabold text-sm">Pilih Jenis Laporan</div>${T.map(t=>`<button onclick="S.rep='${t[0]}';render()" class="card p-3 w-full flex items-center gap-3 text-left border-2 ${S.rep===t[0]?'border-g-600 bg-g-50':'border-transparent'}"><span class="w-10 h-10 rounded-xl bg-g-100 text-g-700 flex items-center justify-center"><i class="fa-solid fa-${t[3]}"></i></span><span class="flex-1"><b class="text-sm block">${t[1]}</b><span class="text-[11px] text-slate-500">${t[2]}</span></span>${S.rep===t[0]?'<i class="fa-solid fa-circle-check text-g-600"></i>':''}</button>`).join('')}
+  <div class="font-extrabold text-sm pt-1">Format Export</div><div class="grid grid-cols-3 gap-2">${F.map(f=>`<button onclick="S.fmt='${f[0]}';render()" class="card py-3 text-center border-2 ${S.fmt===f[0]?'border-g-600 bg-g-50':'border-transparent'}"><i class="fa-solid fa-${f[2]} text-2xl ${f[3]}"></i><div class="text-xs font-bold mt-1">${f[1]}</div></button>`).join('')}</div>
+  <button onclick="doExport()" class="btn btn-p w-full py-3.5"><i class="fa-solid fa-download"></i>Export Sekarang</button><button onclick="previewReport()" class="btn btn-o w-full">Pratinjau Laporan</button></div>`}
+
+/* ===== report builder ===== */
+function buildReport(type){const st=DB.set,s=stats(),L=DB.guests.slice().sort((a,b)=>a.name.localeCompare(b.name));
+  const base={sub:st.owner+' — '+st.loc,date:fdate(st.date)};
+  if(type==='tamu')return{...base,title:'Laporan Data Tamu',head:['No','Nama Tamu','Alamat','Kategori','Hubungan','Uang (Rp)','Barang'],rows:L.map((g,i)=>[i+1,g.name,g.addr,g.cat,g.rel,g.amount||0,g.item||'-']),foot:['','TOTAL '+s.total+' tamu','','','',s.upTotal,'']};
+  if(type==='rekap')return{...base,title:'Rekapitulasi Hajatan',head:['Keterangan','Jumlah'],rows:[['Tamu Putra',num(s.putra)],['Tamu Putri',num(s.putri)],['Total Tamu',num(s.total)],['Uang Putra',rp(s.upPutra)],['Uang Putri',rp(s.upPutri)],['Total Uang',rp(s.upTotal)],['Tamu bawa barang',num(s.barang)]],foot:null};
+  if(type==='kategori'){const rows=[];['Putra','Putri'].forEach(c=>RELS.forEach(r=>{const l=DB.guests.filter(g=>g.cat===c&&g.rel===r);if(l.length)rows.push([c,r,l.length,l.reduce((a,g)=>a+(+g.amount||0),0)])}));return{...base,title:'Detail Per Kategori',head:['Kategori','Hubungan','Jumlah Tamu','Total Uang (Rp)'],rows,foot:['TOTAL','',s.total,s.upTotal]}}
+  const d={};DB.guests.forEach(g=>{(d[g.date]=d[g.date]||[]).push(g)});const rows=Object.keys(d).sort().map(k=>[fdate(k),d[k].length,d[k].filter(g=>g.cat==='Putra').length,d[k].filter(g=>g.cat==='Putri').length,d[k].reduce((a,g)=>a+(+g.amount||0),0)]);
+  return{...base,title:'Laporan Harian',head:['Tanggal','Tamu','Putra','Putri','Uang (Rp)'],rows,foot:['TOTAL',s.total,s.putra,s.putri,s.upTotal]}}
+const cell=v=>typeof v==='number'&&v>=1000?num(v):v;
+function reportHtml(R){return`<div id="printArea" style="font-family:sans-serif"><div class="text-center border-b-2 border-slate-800 pb-2 mb-3"><div class="font-extrabold text-base">${esc(R.title)}</div><div class="text-xs">${esc(R.sub)}</div><div class="text-[11px] text-slate-500">Tanggal hajatan: ${R.date}</div></div><table class="w-full text-[11px] border-collapse"><thead><tr>${R.head.map(h=>`<th class="border border-slate-400 bg-slate-100 px-1.5 py-1 text-left">${h}</th>`).join('')}</tr></thead><tbody>${R.rows.map(r=>`<tr>${r.map(c=>`<td class="border border-slate-300 px-1.5 py-1">${esc(cell(c))}</td>`).join('')}</tr>`).join('')}${R.foot?`<tr class="font-bold">${R.foot.map(c=>`<td class="border border-slate-400 bg-slate-50 px-1.5 py-1">${esc(cell(c))}</td>`).join('')}</tr>`:''}</tbody></table></div>`}
+function previewReport(){modal('Pratinjau Laporan',reportHtml(buildReport(S.rep))+`<button class="btn btn-p w-full mt-3" onclick="window.print()"><i class="fa-solid fa-print"></i>Cetak / Simpan PDF</button>`,true)}
+function download(name,blob){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000)}
+function doExport(){const R=buildReport(S.rep),fn='catatan-hajatan-'+S.rep;
+  if(S.fmt==='pdf'){previewReport();toast('Pilih "Simpan sebagai PDF" pada dialog cetak');return}
+  if(S.fmt==='xls'){const rows=[R.head,...R.rows,...(R.foot?[R.foot]:[])];const csv='﻿'+[[R.title],[R.sub],[]].concat(rows).map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\r\n');download(fn+'.csv',new Blob([csv],{type:'text/csv;charset=utf-8'}));toast('File Excel (CSV) diunduh');return}
+  const rows=[R.head,...R.rows,...(R.foot?[R.foot]:[])],cw=[...R.head.map((h,i)=>Math.max(...rows.map(r=>String(cell(r[i])).length))*9+24)],W=Math.max(600,cw.reduce((a,b)=>a+b,0)+40),H=130+rows.length*30+30,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');
+  x.fillStyle='#fff';x.fillRect(0,0,W,H);x.fillStyle='#0f5b3a';x.fillRect(0,0,W,86);x.fillStyle='#fff';x.font='bold 24px sans-serif';x.fillText(R.title,20,36);x.font='14px sans-serif';x.fillText(R.sub,20,60);x.fillText('Tanggal hajatan: '+R.date,20,78);
+  rows.forEach((r,ri)=>{let px=20;const y=110+ri*30;if(ri===0){x.fillStyle='#d3eedc';x.fillRect(10,y-18,W-20,28)}else if(R.foot&&ri===rows.length-1){x.fillStyle='#f1f5f9';x.fillRect(10,y-18,W-20,28)}x.fillStyle='#0f172a';x.font=(ri===0||(R.foot&&ri===rows.length-1)?'bold ':'')+'13px sans-serif';r.forEach((v,i)=>{x.fillText(String(cell(v)),px,y);px+=cw[i]});x.fillStyle='#e2e8f0';x.fillRect(10,y+9,W-20,1)});
+  c.toBlob(b=>{download(fn+'.png',b);toast('Gambar laporan diunduh')})}
+
+function setelan(){const st=DB.set;
+  return`${head('Pengaturan','Data hajatan & cadangan')}<div class="px-4 mt-4 space-y-3"><form class="card p-4 space-y-3" onsubmit="event.preventDefault();Object.assign(DB.set,Object.fromEntries(new FormData(this)));save();toast('Pengaturan disimpan');render()"><div class="font-extrabold text-sm">Data Hajatan</div>${[['Nama Pemilik Hajat','owner',st.owner],['Pelaksana / Lokasi','loc',st.loc],['Jenis Acara','event',st.event]].map(f=>`<label class="block text-xs font-bold text-slate-600">${f[0]}<input class="inp mt-1 font-normal" name="${f[1]}" value="${esc(f[2])}" required></label>`).join('')}<label class="block text-xs font-bold text-slate-600">Tanggal<input type="date" class="inp mt-1 font-normal" name="date" value="${st.date}"></label><button class="btn btn-p w-full">Simpan</button></form>
+  <div class="card p-4 space-y-2"><div class="font-extrabold text-sm">Cadangan Data (Offline)</div><p class="text-[11px] text-slate-500">Data tersimpan di perangkat ini tanpa internet. Buat cadangan berkala agar aman.</p><button class="btn btn-o w-full" onclick="backup()"><i class="fa-solid fa-cloud-arrow-down"></i>Unduh Cadangan (JSON)</button><label class="btn btn-o w-full cursor-pointer"><i class="fa-solid fa-cloud-arrow-up"></i>Pulihkan dari Cadangan<input type="file" accept=".json" class="hidden" onchange="restore(this)"></label></div>
+  <div class="card p-4 space-y-2"><div class="font-extrabold text-sm">Data Tamu</div><button class="btn btn-o w-full" onclick="if(confirm('Muat ulang data contoh? Data saat ini akan diganti.')){DB=seed();save();render();toast('Data contoh dimuat')}">Muat Data Contoh</button><button class="btn btn-r w-full" onclick="if(confirm('Hapus SEMUA data tamu? Tindakan ini tidak bisa dibatalkan.')){DB.guests=[];save();render();toast('Semua data tamu dihapus')}">Hapus Semua Tamu</button></div>
+  <div class="text-center text-[11px] text-slate-400">Catatan Hajatan v1.0 · Prototype</div></div>`}
+function backup(){download('cadangan-catatan-hajatan.json',new Blob([JSON.stringify(DB)],{type:'application/json'}));toast('Cadangan diunduh')}
+function restore(el){const f=el.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);if(!x.guests||!x.set)throw 0;DB=x;save();render();toast('Data dipulihkan ('+x.guests.length+' tamu)')}catch(e){toast('File cadangan tidak valid')}};r.readAsText(f)}
+
+function modal(title,body,wide){$('modalRoot').innerHTML=`<div class="fixed inset-0 z-50 bg-black/55 flex items-end justify-center" onclick="if(event.target===this)closeModal()"><div class="up bg-white w-full max-w-[430px] max-h-[92vh] overflow-y-auto rounded-t-3xl"><div class="sticky top-0 bg-white flex items-center justify-between px-5 py-3 border-b border-slate-100 z-10"><h3 class="font-extrabold">${title}</h3><button onclick="closeModal()" class="w-8 h-8 rounded-full hover:bg-slate-100"><i class="fa-solid fa-xmark"></i></button></div><div class="p-5">${body}</div></div></div>`}
+const closeModal=()=>{$('modalRoot').innerHTML=''};
+render();
+</script>
+</body>
+</html>
