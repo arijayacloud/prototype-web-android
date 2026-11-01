@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b1530">
+<title>Buku Kas Kantor — Pencatatan Kas & Barang</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script>
+tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],mono:['"JetBrains Mono"','monospace']}}}}
+</script>
+<style>
+body{background:#eef2f7}
+.side{background:#0b1530}
+.lbl{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#64748b}
+.inp{width:100%;border:1px solid #d5dde8;border-radius:10px;padding:9px 11px;font-size:14px;background:#fff}
+.inp:focus{outline:2px solid #93b4f8;border-color:#2563eb}.inp:disabled{background:#f1f5f9;color:#94a3b8}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:9px 14px;border-radius:10px;font-weight:600;font-size:13px;white-space:nowrap}
+.btn-p{background:#2563eb;color:#fff}.btn-p:hover{background:#1d4ed8}
+.btn-o{background:#fff;border:1px solid #d5dde8;color:#1e293b}.btn-o:hover{background:#f1f5f9}
+.btn-r{background:#fee2e2;color:#b91c1c}
+.card{background:#fff;border:1px solid #e3e9f1;border-radius:16px}
+.mono{font-family:'JetBrains Mono',monospace}
+table.t{width:100%;font-size:13px;border-collapse:collapse}
+table.t th{text-align:left;padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#64748b;border-bottom:1px solid #e3e9f1;background:#f8fafc;white-space:nowrap}
+table.t td{padding:11px 12px;border-bottom:1px solid #eef2f7;white-space:nowrap}
+table.t tbody tr{cursor:pointer}table.t tbody tr:hover td{background:#f8fafc}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:2px 10px;border-radius:99px;font-size:11.5px;font-weight:600}
+.scroll-x{overflow-x:auto}
+#printArea{background:#fff;color:#111}
+.thermal{width:58mm;font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.35;padding:2mm}
+@media print{body *{visibility:hidden}#printArea,#printArea *{visibility:visible}#printArea{position:absolute;left:0;top:0;width:100%}.thermal{width:58mm}}
+@keyframes pop{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}.pop{animation:pop .2s ease}
+</style>
+<style id="pageStyle"></style>
+</head>
+<body class="font-sans text-slate-800 antialiased">
+<div id="app"></div><div id="modalRoot"></div>
+<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] hidden px-4 py-2.5 rounded-xl bg-slate-900 text-white text-sm font-semibold shadow-xl"></div>
+<script>
+const KEY='kas_kantor_v1';
+const rp=n=>(n<0?'-':'')+'Rp '+Math.abs(Math.round(n||0)).toLocaleString('id-ID');
+const num=n=>(n||0).toLocaleString('id-ID');
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $=id=>document.getElementById(id);
+const uid=()=>'t'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+const MN=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+const todayStr=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const fd=s=>{const[y,m,d]=s.split('-');return d+' '+MN[+m-1]+' '+y};
+const fm=m=>MN[+m.slice(5)-1]+' '+m.slice(0,4);
+function toast(m){const t=$('toast');t.textContent=m;t.classList.remove('hidden');clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.add('hidden'),2300)}
+
+/* jenis transaksi */
+const TYPES={
+  masuk:{cat:'uang',label:'Uang Masuk',sign:1},keluar:{cat:'uang',label:'Pengeluaran',sign:-1},
+  pembelian:{cat:'barang',label:'Pembelian',sign:-1},pengembalian:{cat:'barang',label:'Pengembalian',sign:1},kirim:{cat:'barang',label:'Kirim Barang',sign:0}};
+const typesOf=c=>Object.entries(TYPES).filter(([k,v])=>v.cat===c);
+const total=t=>t.qty*t.val, eff=t=>total(t)*TYPES[t.type].sign;
+
+function seed(){const T=(d,type,desc,qty,val,note='')=>({id:uid(),ts:Math.random(),date:d,cat:TYPES[type].cat,type,desc,qty,val,note});
+  return{set:{user:'Asep',office:'Kantor Pusat',opening:0},tx:[
+    T('2026-10-26','masuk','Dana operasional dari pusat',1,25000000,'Transfer bulan Oktober'),
+    T('2026-10-26','masuk','Setoran kas awal bulan',1,20594630),
+    T('2026-10-27','keluar','Bayar listrik & internet',1,3250000),
+    T('2026-10-27','pembelian','Kertas HVS A4',20,58000),
+    T('2026-10-27','pembelian','Tinta printer',6,95000),
+    T('2026-10-28','keluar','Gaji staf harian',1,12500000),
+    T('2026-10-28','pembelian','Toner fotokopi',4,850000),
+    T('2026-10-28','pengembalian','Tinta printer',1,95000,'Retur: warna cacat'),
+    T('2026-10-29','kirim','Kertas HVS A4',5,58000,'Dikirim ke Cabang Bandung'),
+    T('2026-10-29','keluar','Konsumsi rapat bulanan',1,1450000),
+    T('2026-10-30','pembelian','Meja lipat',3,1250000),
+    T('2026-10-30','keluar','Perbaikan AC ruang meeting',1,4300000)]}}
+let DB=(()=>{try{const x=JSON.parse(localStorage.getItem(KEY));if(x&&x.tx)return x}catch(e){}return seed()})();
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(DB))}catch(e){}};
+const S={page:'kas',q:'',tab:'semua',per:'all',limit:25};
+
+/* ledger */
+function ledger(){const l=DB.tx.slice().sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:a.ts-b.ts);let s=+DB.set.opening||0;return l.map((t,i)=>{s+=eff(t);return{...t,no:i+1,saldo:s}})}
+function totals(l){const inc=l.filter(t=>eff(t)>0).reduce((a,t)=>a+eff(t),0),out=l.filter(t=>eff(t)<0).reduce((a,t)=>a-eff(t),0);return{inc,out,saldo:(+DB.set.opening||0)+inc-out,n:l.length}}
+const periods=()=>[...new Set(DB.tx.map(t=>t.date.slice(0,7)))].sort().reverse();
+function view(){const q=S.q.toLowerCase();return ledger().filter(t=>(S.tab==='semua'||t.cat===S.tab)&&(S.per==='all'||t.date.startsWith(S.per))&&(!q||(t.desc+t.note+TYPES[t.type].label).toLowerCase().includes(q))).reverse()}
+
+/* ===== shell ===== */
+const NAV=[['kas','Buku kas','landmark'],['barang','Barang','boxes-stacked'],['set','Setelan','gear']];
+function render(){
+  const ae=document.activeElement,id=ae&&ae.id,pos=ae&&ae.selectionStart;
+  $('app').innerHTML=`<div class="flex min-h-screen"><aside class="side w-[68px] sm:w-[84px] shrink-0 flex flex-col items-center py-4 gap-2 sticky top-0 h-screen"><div class="w-10 h-10 rounded-xl bg-slate-700/60 text-blue-200 flex items-center justify-center mb-2"><i class="fa-solid fa-landmark"></i></div>${NAV.map(n=>`<button onclick="S.page='${n[0]}';S.q='';render();window.scrollTo(0,0)" class="w-[56px] sm:w-[68px] py-2.5 rounded-xl text-[10.5px] font-semibold flex flex-col items-center gap-1 ${S.page===n[0]?'bg-slate-700/70 text-white':'text-slate-400 hover:text-white'}"><i class="fa-solid fa-${n[2]} text-base"></i>${n[1]}</button>`).join('')}<a href="../index.html" class="mt-auto text-slate-500 hover:text-white text-[10px] text-center" title="Portofolio"><i class="fa-solid fa-arrow-left block text-sm mb-0.5"></i>Portofolio</a></aside>
+  <main class="flex-1 min-w-0 p-4 sm:p-7 max-w-5xl">${{kas:kasPage,barang:barangPage,set:setPage}[S.page]()}</main></div>`;
+  if(id){const e=$(id);if(e){e.focus();try{e.setSelectionRange(pos,pos)}catch(x){}}}
+}
+
+function kasPage(){const t=totals(ledger()),l=view(),shown=l.slice(0,S.limit);const bar=n=>`<div class="h-1.5 rounded-full bg-slate-700 mt-3 overflow-hidden"><div class="h-full bg-emerald-400" style="width:${n}%"></div></div>`;
+  return`<div class="lbl">Buku kas / ringkasan</div><h1 class="text-3xl font-extrabold tracking-tight mt-2">Rekap transaksi</h1><div class="text-sm text-slate-500 mt-1">Halo, ${esc(DB.set.user)} · ${esc(DB.set.office)}</div>
+  <div class="flex flex-wrap gap-2 mt-4"><button class="btn btn-o" onclick="reportA4()"><i class="fa-regular fa-file-pdf text-red-500"></i>PDF / A4</button><button class="btn btn-o" onclick="reportThermal()"><i class="fa-solid fa-receipt text-slate-500"></i>Thermal</button></div>
+  <button class="btn btn-p mt-3 px-5 py-3" onclick="txForm()"><i class="fa-solid fa-plus"></i>Tambah transaksi</button>
+  <div class="rounded-2xl bg-[#0b1530] text-white p-6 mt-5 shadow-lg"><div class="lbl !text-blue-300"><i class="fa-solid fa-circle-dollar-to-slot mr-1.5"></i>Posisi kas saat ini</div><div class="text-4xl sm:text-5xl font-extrabold mt-3 tracking-tight">${rp(t.saldo)}</div><div class="text-xs text-slate-400 mt-2">Saldo berjalan dari seluruh transaksi</div>
+  <div class="grid sm:grid-cols-3 gap-0 mt-5 border-t border-slate-700">${[['Uang masuk','+'+rp(t.inc),'text-emerald-400'],['Pengeluaran','-'+rp(t.out),'text-rose-400'],['Total entri',num(t.n)+' transaksi','text-white']].map(x=>`<div class="py-4 sm:pr-4 border-b sm:border-b-0 sm:border-r last:border-0 border-slate-700"><div class="text-xs text-slate-400">${x[0]}</div><div class="mono font-bold text-lg mt-1 ${x[2]}">${x[1]}</div></div>`).join('')}</div>${t.inc?bar(Math.min(100,t.saldo*100/t.inc)):''}${t.inc?`<div class="text-[11px] text-slate-400 mt-1.5">Sisa kas ${Math.max(0,Math.round(t.saldo*100/t.inc))}% dari total uang masuk</div>`:''}</div>
+  <div class="lbl mt-8">Catatan aktivitas</div><h2 class="text-2xl font-extrabold mt-1">Jurnal kas & barang</h2>
+  <div class="card mt-3 p-3 sm:p-4"><div class="flex flex-wrap gap-2"><button class="btn btn-o" onclick="exportCsv()"><i class="fa-solid fa-file-csv text-emerald-600"></i>Export CSV</button><select class="inp !w-auto" onchange="S.per=this.value;S.limit=25;render()"><option value="all">Semua periode</option>${periods().map(p=>`<option value="${p}" ${S.per===p?'selected':''}>${fm(p)}</option>`).join('')}</select></div>
+  <div class="relative mt-3"><i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-sm"></i><input id="q" class="inp !pl-10" placeholder="Cari keterangan atau jenis…" value="${esc(S.q)}" oninput="S.q=this.value;S.limit=25;render()"></div>
+  <div class="flex gap-5 mt-3 border-b border-slate-200 text-sm font-semibold">${[['semua','Semua'],['barang','Barang'],['uang','Uang']].map(x=>`<button onclick="S.tab='${x[0]}';S.limit=25;render()" class="pb-2 -mb-px border-b-2 ${S.tab===x[0]?'border-blue-600 text-blue-600':'border-transparent text-slate-500'}">${x[1]}</button>`).join('')}</div>
+  <div class="scroll-x mt-1"><table class="t"><thead><tr><th>No</th><th>Tanggal</th><th>Kategori</th><th>Jenis</th><th>Keterangan</th><th class="text-right">Qty</th><th class="text-right">Nilai</th><th class="text-right">Total</th><th class="text-right">Saldo</th></tr></thead><tbody>${shown.map(r=>{const e=eff(r);return`<tr onclick="txForm('${r.id}')"><td class="mono text-slate-400">${String(r.no).padStart(2,'0')}</td><td class="mono"><i class="fa-regular fa-calendar text-slate-400 mr-1.5"></i>${r.date}</td><td>${r.cat==='uang'?'<span class="chip bg-blue-50 text-blue-600"><i class="fa-solid fa-coins text-[10px]"></i>Uang</span>':'<span class="chip bg-amber-50 text-amber-700"><i class="fa-solid fa-box text-[10px]"></i>Barang</span>'}</td><td>${TYPES[r.type].label}</td><td class="max-w-[220px] truncate">${esc(r.desc)}${r.note?`<div class="text-[11px] text-slate-400 truncate">${esc(r.note)}</div>`:''}</td><td class="mono text-right">${r.cat==='barang'?r.qty:'-'}</td><td class="mono text-right">${r.val?num(r.val):'-'}</td><td class="mono text-right font-bold ${e>0?'text-emerald-600':e<0?'text-rose-600':'text-slate-400'}">${e>0?'+':''}${e===0?'0':num(e)}</td><td class="mono text-right font-bold">${num(r.saldo)}</td></tr>`}).join('')||'<tr><td colspan="9" class="text-center text-slate-400 py-8">Belum ada transaksi.</td></tr>'}</tbody></table></div>
+  ${l.length>shown.length?`<button class="btn btn-o w-full mt-3" onclick="S.limit+=25;render()">Tampilkan lebih banyak (${l.length-shown.length})</button>`:''}<div class="text-[11px] text-slate-400 mt-3">Ketuk baris untuk mengubah atau menghapus transaksi.</div></div>`}
+
+function barangPage(){const g={};ledger().filter(t=>t.cat==='barang').forEach(t=>{const x=g[t.desc]=g[t.desc]||{beli:0,retur:0,kirim:0,biaya:0,bq:0};if(t.type==='pembelian'){x.beli+=t.qty;x.biaya+=total(t);x.bq+=t.qty}else if(t.type==='pengembalian')x.retur+=t.qty;else x.kirim+=t.qty});
+  const rows=Object.entries(g).map(([n,x])=>({n,...x,sisa:x.beli-x.retur-x.kirim,avg:x.bq?x.biaya/x.bq:0}));
+  const nilai=rows.reduce((a,r)=>a+Math.max(0,r.sisa)*r.avg,0),kirims=ledger().filter(t=>t.type==='kirim').reverse();
+  return`<div class="lbl">Buku kas / barang</div><h1 class="text-3xl font-extrabold tracking-tight mt-2">Rekap barang</h1><div class="text-sm text-slate-500 mt-1">Stok dihitung dari pembelian − pengembalian − kirim barang.</div>
+  <div class="grid grid-cols-2 gap-3 mt-5"><div class="card p-4"><div class="lbl">Jenis barang</div><div class="text-2xl font-extrabold mt-1">${rows.length}</div></div><div class="card p-4"><div class="lbl">Estimasi nilai stok</div><div class="text-2xl font-extrabold mt-1 mono">${rp(nilai)}</div></div></div>
+  <div class="card mt-4 scroll-x"><table class="t"><thead><tr><th>Barang</th><th class="text-right">Dibeli</th><th class="text-right">Dikembalikan</th><th class="text-right">Dikirim</th><th class="text-right">Sisa</th><th class="text-right">Rata² harga</th></tr></thead><tbody>${rows.map(r=>`<tr style="cursor:default"><td class="font-semibold">${esc(r.n)}</td><td class="mono text-right">${r.beli}</td><td class="mono text-right">${r.retur}</td><td class="mono text-right">${r.kirim}</td><td class="mono text-right font-bold ${r.sisa<=2?'text-rose-600':''}">${r.sisa}</td><td class="mono text-right">${num(r.avg)}</td></tr>`).join('')||'<tr><td colspan="6" class="text-center py-8 text-slate-400">Belum ada data barang.</td></tr>'}</tbody></table></div>
+  <div class="lbl mt-8">Daftar pengiriman</div><div class="card mt-2">${kirims.map(k=>`<div class="flex justify-between gap-3 px-4 py-3 border-b border-slate-100 last:border-0 text-sm"><div><b>${esc(k.desc)}</b> <span class="text-slate-500">×${k.qty}</span><div class="text-[11px] text-slate-400">${esc(k.note||'-')}</div></div><span class="mono text-xs text-slate-500">${k.date}</span></div>`).join('')||'<div class="p-4 text-sm text-slate-400">Belum ada pengiriman.</div>'}</div>`}
+
+function setPage(){const s=DB.set;
+  return`<div class="lbl">Buku kas / setelan</div><h1 class="text-3xl font-extrabold tracking-tight mt-2">Setelan</h1>
+  <form class="card p-5 mt-5 space-y-3 max-w-md" onsubmit="event.preventDefault();const o=Object.fromEntries(new FormData(this));DB.set={user:o.user,office:o.office,opening:+o.opening||0};save();render();toast('Setelan disimpan')">${[['Nama pengguna','user',s.user,'text'],['Nama kantor','office',s.office,'text'],['Saldo awal kas (Rp)','opening',s.opening,'number']].map(f=>`<label class="block text-xs font-semibold text-slate-600">${f[0]}<input class="inp mt-1 font-normal" name="${f[1]}" type="${f[3]}" value="${esc(f[2])}" required></label>`).join('')}<button class="btn btn-p w-full">Simpan</button></form>
+  <div class="card p-5 mt-4 space-y-2 max-w-md"><div class="font-bold text-sm">Data</div><button class="btn btn-o w-full" onclick="backup()"><i class="fa-solid fa-cloud-arrow-down"></i>Unduh cadangan (JSON)</button><label class="btn btn-o w-full cursor-pointer"><i class="fa-solid fa-cloud-arrow-up"></i>Pulihkan cadangan<input type="file" accept=".json" class="hidden" onchange="restore(this)"></label><button class="btn btn-o w-full" onclick="if(confirm('Muat data contoh? Data saat ini diganti.')){DB=seed();save();render();toast('Data contoh dimuat')}">Muat data contoh</button><button class="btn btn-r w-full" onclick="if(confirm('Hapus SEMUA transaksi?')){DB.tx=[];save();render();toast('Semua transaksi dihapus')}">Hapus semua transaksi</button></div>`}
+
+/* ===== form ===== */
+function txForm(id){const t=id?DB.tx.find(x=>x.id===id):{date:todayStr(),cat:'barang',type:'pembelian',desc:'',qty:1,val:'',note:''};
+  modal(id?'Ubah transaksi':'Tambah transaksi',`<div class="lbl">Entri baru</div><form id="txf" onsubmit="return saveTx(event,'${id||''}')" class="space-y-3 mt-2">
+  <div class="grid grid-cols-2 gap-2"><label class="block text-xs font-semibold text-slate-600">Kategori<select class="inp mt-1 font-normal" name="cat" onchange="fmSync(true)"><option value="barang" ${t.cat==='barang'?'selected':''}>Barang</option><option value="uang" ${t.cat==='uang'?'selected':''}>Uang</option></select></label><label class="block text-xs font-semibold text-slate-600">Jenis transaksi<select class="inp mt-1 font-normal" name="type" onchange="fmSync()"></select></label></div>
+  <label class="block text-xs font-semibold text-slate-600">Tanggal<input class="inp mt-1 font-normal" type="date" name="date" value="${t.date}" required></label>
+  <label class="block text-xs font-semibold text-slate-600">Keterangan<input class="inp mt-1 font-normal" name="desc" value="${esc(t.desc)}" placeholder="Pembelian barang" required></label>
+  <div class="grid grid-cols-2 gap-2"><label class="block text-xs font-semibold text-slate-600">Qty<input class="inp mt-1 font-normal" type="number" name="qty" min="1" value="${t.qty}" oninput="fmSync()"></label><label class="block text-xs font-semibold text-slate-600">Nilai uang<input class="inp mt-1 font-normal" type="number" name="val" min="0" value="${t.val}" placeholder="0" oninput="fmSync()"></label></div>
+  <label class="block text-xs font-semibold text-slate-600">Catatan (opsional)<input class="inp mt-1 font-normal" name="note" value="${esc(t.note)}" placeholder="mis. tujuan pengiriman / nomor nota"></label>
+  <div class="rounded-xl border border-slate-200 p-3 flex justify-between items-center text-sm"><span>Total transaksi</span><span><b id="tot" class="mono text-base">Rp 0</b> <span id="eff" class="text-[11px] text-emerald-600 ml-1"></span></span></div>
+  <div class="flex gap-2">${id?`<button type="button" class="btn btn-r" onclick="delTx('${id}')"><i class="fa-solid fa-trash"></i></button>`:''}<button class="btn btn-p flex-1 py-3">Simpan transaksi</button></div></form>`);
+  fmSync(true,t.type)}
+function fmSync(reset,keep){const f=$('txf');if(!f)return;const cat=f.cat.value,sel=f.type;
+  if(reset){const cur=keep||sel.value;sel.innerHTML=typesOf(cat).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('');sel.value=typesOf(cat).some(x=>x[0]===cur)?cur:typesOf(cat)[0][0];f.desc.placeholder=cat==='uang'?'Keterangan uang':'Pembelian barang'}
+  const ty=sel.value,isKirim=ty==='kirim';f.qty.disabled=cat==='uang';if(cat==='uang')f.qty.value=1;f.val.disabled=isKirim;if(isKirim)f.val.value=0;
+  const tot=(+f.qty.value||0)*(+f.val.value||0);$('tot').textContent=rp(tot);const sg=TYPES[ty].sign;const e=$('eff');e.textContent=sg>0?'Menambah saldo kas':sg<0?'Mengurangi saldo kas':'Tidak memengaruhi kas';e.className='text-[11px] ml-1 '+(sg>0?'text-emerald-600':sg<0?'text-rose-600':'text-slate-400')}
+function saveTx(e,id){e.preventDefault();const f=e.target,o={date:f.date.value,cat:f.cat.value,type:f.type.value,desc:f.desc.value.trim(),qty:f.cat.value==='uang'?1:Math.max(1,+f.qty.value||1),val:f.type.value==='kirim'?0:+f.val.value||0,note:f.note.value.trim()};
+  if(id)Object.assign(DB.tx.find(x=>x.id===id),o);else DB.tx.push({id:uid(),ts:Date.now(),...o});save();closeModal();render();toast(id?'Transaksi diperbarui':'Transaksi disimpan ✓');return false}
+function delTx(id){if(!confirm('Hapus transaksi ini?'))return;DB.tx=DB.tx.filter(x=>x.id!==id);save();closeModal();render();toast('Transaksi dihapus')}
+
+/* ===== export / print ===== */
+function download(name,blob){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000)}
+function exportCsv(){const rows=[['No','Tanggal','Kategori','Jenis','Keterangan','Qty','Nilai','Total','Saldo','Catatan'],...ledger().map(t=>[t.no,t.date,t.cat,TYPES[t.type].label,t.desc,t.qty,t.val,eff(t),t.saldo,t.note])];
+  download('buku-kas.csv',new Blob(['﻿'+rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'}));toast('CSV diunduh')}
+function reportA4(){const L=ledger().filter(t=>S.per==='all'||t.date.startsWith(S.per)),t=totals(ledger()),kir=L.filter(x=>x.type==='kirim');
+  $('pageStyle').textContent='@page{size:A4;margin:12mm}';
+  modal('PDF / A4',`<div id="printArea" style="font-size:11px;padding:6px"><div style="display:flex;justify-content:space-between;border-bottom:2px solid #111;padding-bottom:6px"><div><div style="font-size:16px;font-weight:800">Laporan Buku Kas</div><div>${esc(DB.set.office)} · ${S.per==='all'?'Semua periode':fm(S.per)}</div></div><div style="text-align:right">Dicetak ${fd(todayStr())}<br>Oleh ${esc(DB.set.user)}</div></div>
+  <div style="margin:10px 0;padding:8px;border:1px solid #bbb"><div style="font-size:10px;color:#555">POSISI KAS SAAT INI</div><div style="font-size:20px;font-weight:800">${rp(t.saldo)}</div><div style="display:flex;gap:24px;margin-top:4px"><span>Uang masuk: <b>${rp(t.inc)}</b></span><span>Pengeluaran: <b>${rp(t.out)}</b></span><span>Total entri: <b>${t.n}</b></span></div></div>
+  <div style="font-weight:800;margin:8px 0 4px">Lembar Kas & Barang</div><table style="width:100%;border-collapse:collapse;font-size:10px"><thead><tr>${['No','Tanggal','Kategori','Jenis','Keterangan','Qty','Nilai','Total','Saldo'].map(h=>`<th style="border:1px solid #999;background:#eee;padding:3px 4px;text-align:left">${h}</th>`).join('')}</tr></thead><tbody>${L.map(r=>`<tr>${[r.no,r.date,r.cat,TYPES[r.type].label,r.desc,r.cat==='barang'?r.qty:'-',num(r.val),num(eff(r)),num(r.saldo)].map(c=>`<td style="border:1px solid #ccc;padding:3px 4px">${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table>
+  <div style="font-weight:800;margin:12px 0 4px">Daftar pengiriman</div>${kir.length?`<table style="width:100%;border-collapse:collapse;font-size:10px">${kir.map(k=>`<tr><td style="border:1px solid #ccc;padding:3px 4px">${k.date}</td><td style="border:1px solid #ccc;padding:3px 4px">${esc(k.desc)} ×${k.qty}</td><td style="border:1px solid #ccc;padding:3px 4px">${esc(k.note||'-')}</td></tr>`).join('')}</table>`:'<div>Tidak ada pengiriman.</div>'}
+  <div style="display:flex;justify-content:space-between;margin-top:28px"><div>Dibuat oleh,<br><br><br><b>${esc(DB.set.user)}</b></div><div style="text-align:right">Mengetahui,<br><br><br><b>( ............ )</b></div></div></div>
+  <button class="btn btn-p w-full mt-3" onclick="window.print()"><i class="fa-solid fa-print"></i>Cetak / Simpan PDF</button>`,true)}
+function reportThermal(){const t=totals(ledger()),last=ledger().slice(-8).reverse(),line='-'.repeat(32);
+  $('pageStyle').textContent='@page{size:58mm auto;margin:0}';
+  modal('Cetak Thermal 58mm',`<div class="flex justify-center bg-slate-100 rounded-xl p-3"><div id="printArea" class="thermal shadow"><div style="text-align:center;font-weight:700;font-size:12px">${esc(DB.set.office)}</div><div style="text-align:center">LAPORAN KAS</div><div style="text-align:center">${fd(todayStr())}</div><div>${line}</div><div>POSISI KAS</div><div style="font-size:14px;font-weight:700">${rp(t.saldo)}</div><div>${line}</div><div style="display:flex;justify-content:space-between"><span>Masuk</span><span>${num(t.inc)}</span></div><div style="display:flex;justify-content:space-between"><span>Keluar</span><span>${num(t.out)}</span></div><div style="display:flex;justify-content:space-between"><span>Entri</span><span>${t.n}</span></div><div>${line}</div><div>TRANSAKSI TERAKHIR</div>${last.map(r=>`<div style="margin-top:2px">${r.date.slice(5)} ${esc(r.desc).slice(0,20)}</div><div style="display:flex;justify-content:space-between"><span>${TYPES[r.type].label}${r.cat==='barang'?' x'+r.qty:''}</span><span>${eff(r)>0?'+':''}${num(eff(r))}</span></div>`).join('')}<div>${line}</div><div style="text-align:center">Terima kasih</div><div style="text-align:center">Admin: ${esc(DB.set.user)}</div></div></div><button class="btn btn-p w-full mt-3" onclick="window.print()"><i class="fa-solid fa-print"></i>Cetak ke printer thermal</button>`)}
+function backup(){download('cadangan-buku-kas.json',new Blob([JSON.stringify(DB)],{type:'application/json'}));toast('Cadangan diunduh')}
+function restore(el){const f=el.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);if(!x.tx||!x.set)throw 0;DB=x;save();render();toast('Data dipulihkan ('+x.tx.length+' transaksi)')}catch(e){toast('File cadangan tidak valid')}};r.readAsText(f)}
+
+function modal(title,body,wide){$('modalRoot').innerHTML=`<div class="fixed inset-0 z-50 bg-slate-900/60 flex items-end sm:items-center justify-center sm:p-4" onclick="if(event.target===this)closeModal()"><div class="pop bg-white w-full ${wide?'sm:max-w-3xl':'sm:max-w-md'} max-h-[92vh] overflow-y-auto rounded-t-3xl sm:rounded-2xl shadow-2xl"><div class="sticky top-0 bg-white flex items-center justify-between px-5 py-3 border-b border-slate-100 z-10"><h3 class="font-extrabold">${title}</h3><button onclick="closeModal()" class="w-8 h-8 rounded-full hover:bg-slate-100"><i class="fa-solid fa-xmark"></i></button></div><div class="p-5">${body}</div></div></div>`}
+const closeModal=()=>{$('modalRoot').innerHTML=''};
+render();
+</script>
+</body>
+</html>
