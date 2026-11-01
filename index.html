@@ -102,6 +102,31 @@ tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter','sans-serif'
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
+    <!-- BIMBEL-INGGRIS CARD -->
+    <article class="project-card group bg-white rounded-[24px] border border-slate-100 overflow-hidden hover:shadow-xl hover:border-blue-100 transition flex flex-col" data-project="bimbel-inggris">
+      <div class="relative h-48 overflow-hidden bg-slate-900">
+        <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=700&q=80" loading="lazy" alt="Briton & Oxford Academy bimbel bahasa inggris thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+        <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-blue-700 text-white text-[11px] font-bold tracking-widest">NEW • EDUCATION</span>
+        <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur text-blue-800 text-[11px] font-bold">5 Peran • 4 Cabang</span>
+      </div>
+      <div class="p-6 flex-1 flex flex-col">
+        <div class="text-xs font-bold tracking-widest text-blue-600">BRITON & OXFORD • BIMBEL MULTI-CABANG</div>
+        <h3 class="font-display font-extrabold text-[18px] leading-tight mt-1">Manajemen Bimbel Bahasa Inggris Multi-Cabang</h3>
+        <p class="text-sm text-slate-500 leading-6 mt-2 flex-1">Absensi tutor & siswa, SPP otomatis + pengingat WhatsApp, pembayaran online, rapor speaking, payroll tutor, dan analitik per cabang dengan hak akses Owner, Admin Pusat, Admin Cabang, Tutor, dan Orang Tua.</p>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <span class="px-2.5 py-1 rounded-full bg-blue-50 border border-blue-200 text-xs font-semibold text-blue-700">Role-Based Access</span>
+          <span class="px-2.5 py-1 rounded-full bg-amber-50 border border-amber-200 text-xs font-semibold text-amber-700">Payroll Tutor</span>
+          <span class="px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-semibold text-emerald-700">SPP & WhatsApp</span>
+        </div>
+        <div class="mt-5 grid grid-cols-2 gap-2">
+          <a href="bimbel-inggris/index.html" target="_blank" rel="noopener" data-action="preview" data-url="bimbel-inggris/index.html" data-title="Briton & Oxford — Bimbel Bahasa Inggris" class="inline-flex justify-center items-center gap-2 py-2.5 rounded-full bg-blue-700 text-white text-sm font-bold hover:bg-blue-800 transition"><i class="fa-solid fa-eye text-xs"></i> Live Preview</a>
+          <button data-action="detail" data-project="bimbel-inggris" class="inline-flex justify-center items-center gap-2 py-2.5 rounded-full border border-slate-200 text-sm font-bold hover:bg-slate-50 transition"><i class="fa-solid fa-circle-info text-xs"></i> Detail</button>
+        </div>
+        <a href="bimbel-inggris/index.html" target="_blank" rel="noopener" class="mt-2 inline-flex justify-center items-center gap-2 py-2.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-sm font-bold hover:bg-blue-100 transition"><i class="fa-solid fa-arrow-up-right-from-square text-xs"></i> Kunjungi</a>
+        <a href="https://github.com/arijayacloud/prototype-web-android/tree/main/bimbel-inggris" target="_blank" rel="noopener" class="mt-1 inline-flex justify-center items-center gap-2 py-2 rounded-full text-xs font-semibold text-slate-500 hover:text-slate-900"><i class="fa-brands fa-github"></i> Lihat Kode — bimbel-inggris/</a>
+      </div>
+    </article>
+
     <!-- PEMANTAUAN-JENTIK CARD -->
     <article class="project-card group bg-white rounded-[24px] border border-slate-100 overflow-hidden hover:shadow-xl hover:border-emerald-100 transition flex flex-col" data-project="pemantauan-jentik">
       <div class="relative h-48 overflow-hidden bg-slate-900">
@@ -810,6 +835,20 @@ menuBtn?.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
 
 // project data for detail modal
 const PROJECTS = {
+  'bimbel-inggris': {
+    title: 'Briton & Oxford Academy — Manajemen Bimbel Bahasa Inggris Multi-Cabang',
+    url: 'bimbel-inggris/index.html',
+    codeUrl: 'https://github.com/arijayacloud/prototype-web-android/tree/main/bimbel-inggris',
+    thumbnail: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=700&q=80',
+    background: 'Sistem manajemen bimbel Bahasa Inggris dengan beberapa cabang dalam satu dashboard, namun setiap admin hanya mengakses data cabangnya.',
+    problem: 'Absensi, tagihan SPP, laporan belajar, dan honor tutor dicatat manual di banyak cabang sehingga tunggakan sulit dipantau dan owner tidak punya gambaran menyeluruh.',
+    features: ['Hak akses 5 peran: Owner, Admin Pusat, Admin Cabang, Tutor, Orang Tua/Siswa', 'Absensi tutor (jam masuk, keterlambatan) dan siswa dengan rekap', 'Tagihan SPP otomatis, jatuh tempo, pengingat WhatsApp, verifikasi bukti bayar, pembayaran QRIS/VA, kupon', 'Rapor perkembangan: materi tiap pertemuan, nilai, speaking progress, perkiraan wisuda', 'Payroll honor tutor dari kehadiran dengan aturan gaji yang bisa diatur', 'Analitik siswa aktif/baru/keluar, rekap per cabang, stok buku, booking, pusat informasi'],
+    stack: ['HTML', 'Tailwind CDN', 'Font Awesome', 'Vanilla JS (localStorage DB)', 'SVG Charts'],
+    links: [
+      { label: 'Live Demo', href: 'bimbel-inggris/index.html' },
+      { label: 'Source di GitHub', href: 'https://github.com/arijayacloud/prototype-web-android/tree/main/bimbel-inggris' }
+    ]
+  },
   'pemantauan-jentik': {
     title: 'Si-Jentik Desa — Sistem Pemantauan Jentik & ABJ',
     url: 'pemantauan-jentik/index.html',
