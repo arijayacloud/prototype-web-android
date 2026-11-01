@@ -211,6 +211,8 @@ const wa=(phone,msg)=>`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
 /* ============ AUTH ============ */
 function login(email,pass){const u=DB.users.find(x=>x.email===email.trim().toLowerCase());if(!u||pass!=='demo123'){toast('Email atau password salah');return}doLogin(u.id)}
 function doLogin(id){SESS={uid:id};saveS();const u=U();UI.view=NAV[u.role][0];UI.branch='all';UI.child=u.students?.[0]||null;UI.tab={};render()}
+const DEMO_ACC={owner:'u_owner',pusat:'u_pusat',cabang:'u_ab2',tutor:'u_t1',parent:'u_p0'};
+function switchRole(r){if(U().role!==r)doLogin(DEMO_ACC[r])}
 function logout(){SESS={};saveS();UI.notif=false;render()}
 function resetDemo(){if(!confirm('Reset semua data demo ke kondisi awal?'))return;localStorage.removeItem(KEY);DB=seed();save();logout();toast('Data demo direset')}
 function register(o){
@@ -243,10 +245,11 @@ function render(){
 function shell(u){
   const nl=myNotifs(),unread=nl.filter(n=>!n.read[u.id]).length;
   const branchSel=(u.role==='owner'||u.role==='pusat')?`<select class="bg-white/10 text-white text-xs rounded-lg px-2 py-1.5 border border-white/20" onchange="UI.branch=this.value;render()"><option value="all" class="text-slate-900">Semua Cabang</option>${DB.branches.map(b=>`<option value="${b.id}" class="text-slate-900" ${UI.branch===b.id?'selected':''}>${b.name}</option>`).join('')}</select>`:u.role==='cabang'?`<span class="text-xs bg-white/10 border border-white/20 rounded-lg px-2.5 py-1.5"><i class="fa-solid fa-lock text-[10px] mr-1"></i>${bn(u.branch)}</span>`:'';
+  const roleSel=`<select class="bg-amber-400 text-brand-900 font-bold text-xs rounded-lg px-2 py-1.5" title="Ganti peran (demo)" onchange="switchRole(this.value)">${Object.keys(ROLE_L).map(r=>`<option value="${r}" ${u.role===r?'selected':''}>${ROLE_L[r]}</option>`).join('')}</select>`;
   const fn=VIEW_FN[UI.view]||VIEW_FN.dash;
   return`<header class="bg-brand-900 text-white sticky top-0 z-40 shadow-lg"><div class="max-w-7xl mx-auto px-3 sm:px-5 h-14 flex items-center justify-between gap-2">
     <div class="flex items-center gap-2.5 min-w-0"><a href="../index.html" class="text-slate-300 hover:text-white text-xs" title="Portofolio"><i class="fa-solid fa-arrow-left"></i></a><div class="w-8 h-8 rounded-lg bg-amber-400 text-brand-900 flex items-center justify-center font-black text-sm">B</div><div class="leading-tight min-w-0"><div class="font-extrabold text-sm truncate">Briton & Oxford Academy</div><div class="text-[10px] text-blue-200 hidden sm:block">Manajemen Bimbel Bahasa Inggris Multi-Cabang</div></div></div>
-    <div class="flex items-center gap-2">${branchSel}
+    <div class="flex items-center gap-2">${roleSel}${branchSel}
       <div class="relative"><button onclick="UI.notif=!UI.notif;render()" class="w-9 h-9 rounded-lg bg-white/10 hover:bg-white/20 relative"><i class="fa-solid fa-bell"></i>${unread?`<span class="absolute -top-1 -right-1 bg-red-500 text-[10px] font-bold rounded-full min-w-[17px] h-[17px] flex items-center justify-center">${unread}</span>`:''}</button>
       ${UI.notif?`<div class="absolute right-0 mt-2 w-80 max-w-[88vw] bg-white text-slate-800 rounded-2xl shadow-2xl border border-slate-200 overflow-hidden"><div class="px-4 py-2.5 border-b font-extrabold text-sm flex justify-between">Notifikasi<button class="text-xs text-brand-600" onclick="markRead()">Tandai dibaca</button></div><div class="max-h-80 overflow-y-auto">${nl.length?nl.slice(0,12).map(n=>`<div class="px-4 py-2.5 border-b border-slate-50 flex gap-2.5 text-xs ${n.read[u.id]?'':'bg-brand-50'}"><i class="fa-solid fa-${n.icon} text-brand-600 mt-0.5"></i><div><div>${esc(n.text)}</div><div class="text-[10px] text-slate-400 mt-0.5">${n.time}</div></div></div>`).join(''):'<div class="p-4 text-xs text-slate-500">Belum ada notifikasi.</div>'}</div></div>`:''}</div>
       <div class="flex items-center gap-2 pl-2 border-l border-white/20"><div class="text-right leading-tight hidden sm:block"><div class="text-xs font-bold">${esc(u.name)}</div><div class="text-[10px] text-amber-300">${ROLE_L[u.role]}${u.branch?' · '+bn(u.branch):''}</div></div><button onclick="logout()" class="w-9 h-9 rounded-lg bg-white/10 hover:bg-red-500/80" title="Keluar"><i class="fa-solid fa-right-from-bracket"></i></button></div></div></div>
