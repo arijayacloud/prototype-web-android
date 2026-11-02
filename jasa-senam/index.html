@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SenamPro — Sistem Pemesanan Paket Senam Online</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Plus Jakarta+Sans"', 'sans-serif'] },
+          colors: {
+            senam: {
+              50: '#f0f9ff', 100: '#e0f2fe', 200: '#bae6fd', 300: '#7dd3fc',
+              400: '#38bdf8', 500: '#0ea5e9', 600: '#0284c7', 700: '#0369a1',
+              800: '#075985', 900: '#0c3d66'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased font-sans min-h-screen flex flex-col">
+
+  <!-- ================= TOP HEADER ================= -->
+  <header class="bg-slate-900 text-white sticky top-0 z-40 shadow-md">
+    <div class="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="../index.html" class="text-xs text-slate-400 hover:text-white flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-arrow-left"></i>
+          <span class="hidden sm:inline">Portofolio</span>
+        </a>
+        <span class="text-slate-600">|</span>
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-lg bg-blue-500 text-white flex items-center justify-center font-bold text-xs shadow-sm">
+            <i class="fa-solid fa-person-walking"></i>
+          </div>
+          <span class="font-black text-sm tracking-tight text-white">SenamPro <span class="text-[11px] font-medium text-blue-400 hidden sm:inline">— Booking Senam Online</span></span>
+        </div>
+      </div>
+
+      <!-- Navigation tabs -->
+      <div class="flex items-center bg-slate-800 p-1 rounded-xl text-xs font-bold">
+        <button onclick="switchTab('home')" id="tabBtn-home" class="px-3 py-1.5 rounded-lg bg-blue-600 text-white transition flex items-center gap-1.5">
+          <i class="fa-solid fa-house"></i>
+          <span class="hidden sm:inline">Beranda</span>
+        </button>
+        <button onclick="switchTab('book')" id="tabBtn-book" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5">
+          <i class="fa-solid fa-calendar-check"></i>
+          <span>Pesan</span>
+        </button>
+        <button onclick="switchTab('my')" id="tabBtn-my" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5">
+          <i class="fa-solid fa-receipt"></i>
+          <span>Riwayat (<span id="badgeCount">0</span>)</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= MAIN CONTENT ================= -->
+  <main class="max-w-6xl w-full mx-auto p-4 sm:p-6 flex-1 space-y-6">
+
+    <!-- ================= TAB 1: BERANDA & KATALOG PAKET ================= -->
+    <div id="view-home" class="space-y-6">
+
+      <!-- Hero Banner -->
+      <div class="rounded-3xl p-6 text-white shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-6 bg-gradient-to-r from-blue-600 to-cyan-600">
+        <div class="space-y-2">
+          <span class="px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur text-[10px] font-black uppercase tracking-wider">
+            FITNESS • KELAS SENAM KOMUNITAS
+          </span>
+          <h1 class="text-2xl sm:text-3xl font-black">Pesan Kelas Senam Impianmu</h1>
+          <p class="text-xs sm:text-sm text-blue-100 leading-relaxed max-w-xl">
+            Zumba, Aerobik, Yoga, Body Combat, dan lebih banyak lagi. Pilih paket, jadwal, dan instruktur favorit Anda sekarang juga!
+          </p>
+        </div>
+
+        <div class="bg-white/10 backdrop-blur border border-white/20 rounded-2xl p-4 flex flex-col items-center justify-center min-w-[160px] text-center shadow-inner">
+          <span class="text-[10px] font-bold text-white/80 uppercase">PROMO SPESIAL</span>
+          <div class="font-black text-lg mt-1 text-white uppercase">DISKON 20%</div>
+          <span class="text-[11px] text-white/90 mt-0.5">Kode: SENAM20</span>
+        </div>
+      </div>
+
+      <!-- Katalog Paket Grid -->
+      <div class="space-y-3">
+        <h2 class="text-lg font-black text-slate-900">Pilih Paket Senam</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="packagesGrid">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ================= TAB 2: FORM PEMESANAN (3-STEP) ================= -->
+    <div id="view-book" class="space-y-6 hidden">
+      <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs space-y-6 max-w-3xl mx-auto">
+        <div class="border-b border-slate-100 pb-3">
+          <span class="px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 text-[10px] font-black uppercase">
+            ALUR PEMESANAN 3-STEP
+          </span>
+          <h2 class="text-lg sm:text-xl font-black text-slate-900 mt-1">Pemesanan Paket Senam</h2>
+          <p class="text-xs text-slate-500">Paket → Jadwal & Instruktur → Pembayaran & Konfirmasi</p>
+        </div>
+
+        <!-- Progress Indicator -->
+        <div class="flex items-center justify-between mb-4">
+          <div id="step1-badge" class="flex items-center gap-2 step-badge" data-step="1">
+            <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs">1</div>
+            <span class="text-[11px] font-bold text-blue-700">Paket</span>
+          </div>
+          <div class="h-0.5 flex-1 bg-slate-200 mx-2"></div>
+          <div id="step2-badge" class="flex items-center gap-2 step-badge" data-step="2">
+            <div class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-bold text-xs">2</div>
+            <span class="text-[11px] font-bold text-slate-500">Jadwal</span>
+          </div>
+          <div class="h-0.5 flex-1 bg-slate-200 mx-2"></div>
+          <div id="step3-badge" class="flex items-center gap-2 step-badge" data-step="3">
+            <div class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-bold text-xs">3</div>
+            <span class="text-[11px] font-bold text-slate-500">Bayar</span>
+          </div>
+        </div>
+
+        <form id="bookingForm" onsubmit="handleSubmit(event)" class="space-y-5">
+
+          <!-- STEP 1: Pilih Paket -->
+          <div id="step1-content" class="space-y-4">
+            <label class="block text-xs font-bold text-slate-700 mb-1">1. Pilih Paket Senam *</label>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="packagesStep1">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+          <!-- STEP 2: Jadwal & Instruktur -->
+          <div id="step2-content" class="space-y-4 hidden">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">2a. Hari & Jam Jadwal *</label>
+                <select id="fSchedule" required class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                  <option value="">Pilih jadwal...</option>
+                  <option>Senin • 06.00 - 07.00</option>
+                  <option>Selasa • 18.30 - 19.30</option>
+                  <option>Rabu • 06.00 - 07.00</option>
+                  <option>Kamis • 18.30 - 19.30</option>
+                  <option>Jumat • 06.00 - 07.00</option>
+                  <option>Sabtu • 09.00 - 10.00</option>
+                  <option>Minggu • 09.00 - 10.00</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">2b. Pilih Instruktur *</label>
+                <select id="fInstructor" required class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                  <option value="">Pilih instruktur...</option>
+                  <option>Ibu Maya (Zumba Master)</option>
+                  <option>Bpk. Andi (Aerobik Coach)</option>
+                  <option>Ibu Ratna (Yoga Trainer)</option>
+                  <option>Bpk. Yudi (Combat Instructor)</option>
+                  <option>Ibu Lisa (Personal Trainer)</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">2c. Nama Peserta *</label>
+              <input type="text" id="fName" required placeholder="Cth: Budi Santoso" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none">
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">2d. Nomor WhatsApp *</label>
+              <input type="tel" id="fPhone" required placeholder="Cth: 081234567890" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none">
+            </div>
+          </div>
+
+          <!-- STEP 3: Pembayaran & Konfirmasi -->
+          <div id="step3-content" class="space-y-4 hidden">
+            <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4">
+              <h3 class="font-bold text-sm text-blue-900 flex items-center gap-2">
+                <i class="fa-solid fa-receipt"></i>
+                Ringkasan Pesanan
+              </h3>
+              <div class="mt-2 text-xs text-blue-800 space-y-1">
+                <div class="flex justify-between"><span class="font-bold">Paket:</span> <span id="summaryPkg">-</span></div>
+                <div class="flex justify-between"><span class="font-bold">Jadwal:</span> <span id="summarySched">-</span></div>
+                <div class="flex justify-between"><span class="font-bold">Instruktur:</span> <span id="summaryInst">-</span></div>
+                <div class="flex justify-between border-t border-blue-200 pt-1 mt-1"><span class="font-bold">Harga:</span> <span id="summaryPrice" class="text-blue-700 font-black">Rp 0</span></div>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">3a. Metode Pembayaran *</label>
+              <select id="fPayment" required class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                <option value="">Pilih metode...</option>
+                <option>QRIS</option>
+                <option>Transfer Bank (BCA/Mandiri/BNI)</option>
+                <option>E-Wallet (OVO/GoPay/DANA)</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">3b. Email (untuk bukti invoice) *</label>
+              <input type="email" id="fEmail" required placeholder="email@example.com" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none">
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">3c. Catatan Tambahan</label>
+              <textarea id="fNotes" placeholder="Cth: Pemula, saya belum pernah senam..." rows="2" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none"></textarea>
+            </div>
+          </div>
+
+          <!-- Navigation & Submit -->
+          <div class="pt-4 border-t border-slate-100 flex gap-3">
+            <button type="button" id="btnPrev" onclick="prevStep()" class="px-5 py-3 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 font-bold text-xs transition flex items-center gap-2 hidden">
+              <i class="fa-solid fa-arrow-left"></i> Kembali
+            </button>
+            <button type="button" id="btnNext" onclick="nextStep()" class="px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition flex items-center gap-2 flex-1 justify-center">
+              <span>Lanjut</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+            <button type="submit" id="btnSubmit" class="px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition flex items-center gap-2 flex-1 justify-center hidden">
+              <i class="fa-solid fa-paper-plane"></i>
+              <span>Pesan Sekarang</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ================= TAB 3: RIWAYAT PESANAN ================= -->
+    <div id="view-my" class="space-y-4 hidden">
+      <div>
+        <h2 class="font-black text-lg text-slate-900">Riwayat Pesanan Saya</h2>
+        <p class="text-xs text-slate-500">Status: Menunggu Konfirmasi Admin / Dikonfirmasi / Ditolak</p>
+      </div>
+
+      <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-xs">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
+              <tr>
+                <th class="p-3">Kode Booking</th>
+                <th class="p-3">Paket</th>
+                <th class="p-3">Jadwal & Instruktur</th>
+                <th class="p-3">Harga</th>
+                <th class="p-3">Status</th>
+                <th class="p-3 text-right">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="bookingsTable" class="divide-y divide-slate-100">
+              <!-- Rendered by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ================= JAVASCRIPT ================= -->
+  <script>
+    const STORAGE_KEY = 'senampro_v1';
+    let bookings = [];
+    let currentStep = 1;
+
+    const PACKAGES = [
+      { id: 'zumba', name: 'Zumba Dance', price: 150000, icon: 'fa-music', color: 'from-pink-500 to-rose-500' },
+      { id: 'aerobik', name: 'Aerobik Low Impact', price: 120000, icon: 'fa-person-walking', color: 'from-blue-500 to-cyan-500' },
+      { id: 'yoga', name: 'Yoga & Stretching', price: 100000, icon: 'fa-spa', color: 'from-purple-500 to-indigo-500' },
+      { id: 'combat', name: 'Body Combat', price: 180000, icon: 'fa-fist-raised', color: 'from-red-500 to-orange-500' },
+      { id: 'personal', name: 'Personal Trainer', price: 350000, icon: 'fa-user-tie', color: 'from-amber-500 to-yellow-500' },
+      { id: 'family', name: 'Family Fitness', price: 250000, icon: 'fa-users', color: 'from-emerald-500 to-teal-500' }
+    ];
+
+    function getStorage() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch(e) { return []; }
+    }
+
+    function saveStorage(arr) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+      updateBadge();
+    }
+
+    function updateBadge() {
+      bookings = getStorage();
+      document.getElementById('badgeCount').textContent = bookings.length;
+    }
+
+    function switchTab(tab) {
+      ['home', 'book', 'my'].forEach(t => {
+        const btn = document.getElementById('tabBtn-' + t);
+        const view = document.getElementById('view-' + t);
+        if (t === tab) {
+          btn.className = 'px-3 py-1.5 rounded-lg bg-blue-600 text-white transition flex items-center gap-1.5';
+          view.classList.remove('hidden');
+        } else {
+          btn.className = 'px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition flex items-center gap-1.5';
+          view.classList.add('hidden');
+        }
+      });
+
+      if (tab === 'home') renderHome();
+      if (tab === 'my') renderBookings();
+    }
+
+    function renderHome() {
+      document.getElementById('packagesGrid').innerHTML = PACKAGES.map(p => `
+        <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs hover:shadow-md transition flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-3">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br ${p.color} text-white flex items-center justify-center shadow-md">
+              <i class="fa-solid ${p.icon} text-lg"></i>
+            </div>
+            <span class="text-[10px] font-bold text-slate-400">PAKET</span>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-slate-900">${p.name}</h3>
+            <div class="text-sm font-black text-slate-900 mt-2">Rp ${p.price.toLocaleString('id-ID')}</div>
+          </div>
+          <button onclick="selectPackage('${p.id}')" class="mt-3 w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition">
+            Pesan Sekarang
+          </button>
+        </div>
+      `).join('');
+
+      document.getElementById('packagesStep1').innerHTML = PACKAGES.map(p => `
+        <label class="flex items-center gap-2 p-3 rounded-xl border border-slate-200 cursor-pointer hover:border-blue-500">
+          <input type="radio" name="package" value="${p.id}" data-name="${p.name}" data-price="${p.price}" class="rounded text-blue-600" onchange="updatePackageDisplay()">
+          <div class="flex-1">
+            <div class="font-bold text-xs text-slate-800">${p.name}</div>
+            <div class="text-[10px] text-slate-400">Rp ${p.price.toLocaleString('id-ID')}</div>
+          </div>
+        </label>
+      `).join('');
+    }
+
+    function selectPackage(id) {
+      document.querySelector(`input[value="${id}"]`).checked = true;
+      updatePackageDisplay();
+      switchTab('book');
+    }
+
+    function updatePackageDisplay() {
+      const checked = document.querySelector('input[name="package"]:checked');
+      if (checked) {
+        document.querySelectorAll('label:has(input[name="package"])').forEach(l => {
+          if (l.querySelector('input').value === checked.value) {
+            l.className = 'flex items-center gap-2 p-3 rounded-xl border-2 border-blue-500 bg-blue-50 cursor-pointer';
+          } else {
+            l.className = 'flex items-center gap-2 p-3 rounded-xl border border-slate-200 cursor-pointer hover:border-blue-500';
+          }
+        });
+      }
+    }
+
+    function nextStep() {
+      if (currentStep === 1) {
+        const pkg = document.querySelector('input[name="package"]:checked');
+        if (!pkg) {
+          alert('Pilih paket terlebih dahulu!');
+          return;
+        }
+      } else if (currentStep === 2) {
+        if (!document.getElementById('fSchedule').value || !document.getElementById('fInstructor').value || !document.getElementById('fName').value || !document.getElementById('fPhone').value) {
+          alert('Lengkapi semua data jadwal dan peserta!');
+          return;
+        }
+        // Update summary
+        const pkg = PACKAGES.find(p => p.id === document.querySelector('input[name="package"]:checked').value);
+        document.getElementById('summaryPkg').textContent = pkg.name;
+        document.getElementById('summarySched').textContent = document.getElementById('fSchedule').value;
+        document.getElementById('summaryInst').textContent = document.getElementById('fInstructor').value;
+        document.getElementById('summaryPrice').textContent = 'Rp ' + pkg.price.toLocaleString('id-ID');
+      }
+
+      if (currentStep < 3) {
+        currentStep++;
+        updateStepDisplay();
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 1) {
+        currentStep--;
+        updateStepDisplay();
+      }
+    }
+
+    function updateStepDisplay() {
+      ['1', '2', '3'].forEach(s => {
+        const badge = document.getElementById('step' + s + '-badge');
+        const content = document.getElementById('step' + s + '-content');
+        const isActive = parseInt(s) === currentStep;
+
+        badge.querySelector('div').className = isActive
+          ? 'w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs'
+          : parseInt(s) < currentStep
+            ? 'w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs'
+            : 'w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-bold text-xs';
+
+        badge.querySelector('span').className = isActive || parseInt(s) < currentStep
+          ? 'text-[11px] font-bold text-blue-700'
+          : 'text-[11px] font-bold text-slate-500';
+
+        content.classList.toggle('hidden', !isActive);
+      });
+
+      document.getElementById('btnPrev').classList.toggle('hidden', currentStep === 1);
+      document.getElementById('btnNext').classList.toggle('hidden', currentStep === 3);
+      document.getElementById('btnSubmit').classList.toggle('hidden', currentStep !== 3);
+    }
+
+    function handleSubmit(e) {
+      e.preventDefault();
+
+      const pkg = PACKAGES.find(p => p.id === document.querySelector('input[name="package"]:checked').value);
+      const booking = {
+        id: 'SEN-' + Math.floor(1000 + Math.random() * 9000),
+        date: new Date().toLocaleString('id-ID'),
+        package: pkg.name,
+        schedule: document.getElementById('fSchedule').value,
+        instructor: document.getElementById('fInstructor').value,
+        name: document.getElementById('fName').value,
+        phone: document.getElementById('fPhone').value,
+        email: document.getElementById('fEmail').value,
+        payment: document.getElementById('fPayment').value,
+        price: pkg.price,
+        notes: document.getElementById('fNotes').value || '-',
+        status: 'MENUNGGU KONFIRMASI ADMIN'
+      };
+
+      bookings.unshift(booking);
+      saveStorage(bookings);
+
+      alert(`Pesanan untuk ${booking.name} berhasil!\n\nKode Booking: ${booking.id}\nHarga: Rp ${booking.price.toLocaleString('id-ID')}\n\nSilakan lakukan pembayaran & admin akan mengkonfirmasi dalam 1x24 jam.`);
+
+      document.getElementById('bookingForm').reset();
+      currentStep = 1;
+      updateStepDisplay();
+      switchTab('my');
+    }
+
+    function renderBookings() {
+      bookings = getStorage();
+      const tbody = document.getElementById('bookingsTable');
+
+      if (bookings.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="p-6 text-center text-slate-400 font-bold">Belum ada pesanan.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = bookings.map(b => {
+        const statusBg = b.status === 'MENUNGGU KONFIRMASI ADMIN' ? 'bg-amber-100 text-amber-800 border-amber-200' :
+                        b.status === 'DIKONFIRMASI' ? 'bg-emerald-100 text-emerald-800 border-emerald-200' :
+                        'bg-rose-100 text-rose-800 border-rose-200';
+
+        return `
+          <tr class="hover:bg-slate-50">
+            <td class="p-3"><span class="font-extrabold text-slate-900">#${b.id}</span><div class="text-[10px] text-slate-400">${b.date}</div></td>
+            <td class="p-3 font-bold text-slate-900">${b.package}</td>
+            <td class="p-3"><div class="text-[11px] text-slate-700">${b.schedule}</div><div class="text-[10px] text-slate-400">${b.instructor}</div></td>
+            <td class="p-3 font-bold text-slate-900">Rp ${b.price.toLocaleString('id-ID')}</td>
+            <td class="p-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-black border ${statusBg}">${b.status}</span></td>
+            <td class="p-3 text-right"><button onclick="contactWA('${b.phone}', '${b.name}')" class="text-slate-400 hover:text-emerald-600 transition"><i class="fa-brands fa-whatsapp text-lg"></i></button></td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function contactWA(phone, name) {
+      const msg = `Halo, saya ${name} ingin konfirmasi pesanan kelas senam saya. Terima kasih!`;
+      window.open(`https://wa.me/62${phone.replace(/^0/, '')}?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      updateBadge();
+      renderHome();
+    });
+  </script>
+</body>
+</html>
