@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zigma English Course — Belajar Bahasa Inggris Terarah & Percaya Diri</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
+          colors: {
+            zigma: {
+              50: '#f8fafc', 100: '#f1f5f9', 200: '#e2e8f0',
+              600: '#002d52', 700: '#001f39', 800: '#000f1a', 900: '#000000'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-white text-slate-800 antialiased font-sans">
+
+  <!-- ================= NAVBAR ================= -->
+  <nav class="sticky top-0 z-40 bg-white border-b border-slate-100 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-600 to-blue-800 text-white flex items-center justify-center font-black text-lg">
+          <i class="fa-solid fa-book"></i>
+        </div>
+        <span class="font-black text-sm tracking-tight hidden sm:inline text-blue-900">ZIGMA<br><span class="text-[10px] font-bold text-yellow-500">ENGLISH COURSE</span></span>
+      </div>
+
+      <!-- Desktop Menu -->
+      <div class="hidden md:flex items-center gap-1 text-xs font-bold">
+        <a href="#beranda" class="px-4 py-2 rounded-lg text-blue-700 hover:bg-blue-50 transition">Beranda</a>
+        <a href="#tentang" class="px-4 py-2 rounded-lg text-blue-700 hover:bg-blue-50 transition">Tentang Kami</a>
+        <a href="#keunggulan" class="px-4 py-2 rounded-lg text-blue-700 hover:bg-blue-50 transition">Keunggulan</a>
+        <a href="#program" class="px-4 py-2 rounded-lg text-blue-700 hover:bg-blue-50 transition">Program</a>
+        <a href="#biaya" class="px-4 py-2 rounded-lg text-blue-700 hover:bg-blue-50 transition">Biaya</a>
+        <a href="#faq" class="px-4 py-2 rounded-lg text-blue-700 hover:bg-blue-50 transition">FAQ</a>
+        <a href="#kontak" class="px-4 py-2 rounded-lg text-blue-700 hover:bg-blue-50 transition">Kontak</a>
+      </div>
+
+      <!-- CTA & Mobile -->
+      <div class="flex items-center gap-3">
+        <button onclick="scrollToKontak()" class="px-4 py-2 rounded-lg bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-black text-xs transition shadow-md">
+          Daftar Sekarang
+        </button>
+        <button onclick="toggleMenu()" class="md:hidden w-8 h-8 rounded-lg border border-slate-200 flex items-center justify-center">
+          <i class="fa-solid fa-bars text-blue-900"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-slate-100 px-4 py-3 space-y-2">
+      <a href="#beranda" class="block px-3 py-2 rounded-lg text-blue-700 hover:bg-blue-50 font-bold text-xs">Beranda</a>
+      <a href="#tentang" class="block px-3 py-2 rounded-lg text-blue-700 hover:bg-blue-50 font-bold text-xs">Tentang Kami</a>
+      <a href="#keunggulan" class="block px-3 py-2 rounded-lg text-blue-700 hover:bg-blue-50 font-bold text-xs">Keunggulan</a>
+      <a href="#program" class="block px-3 py-2 rounded-lg text-blue-700 hover:bg-blue-50 font-bold text-xs">Program</a>
+      <a href="#biaya" class="block px-3 py-2 rounded-lg text-blue-700 hover:bg-blue-50 font-bold text-xs">Biaya</a>
+      <a href="#faq" class="block px-3 py-2 rounded-lg text-blue-700 hover:bg-blue-50 font-bold text-xs">FAQ</a>
+      <a href="#kontak" class="block px-3 py-2 rounded-lg text-blue-700 hover:bg-blue-50 font-bold text-xs">Kontak</a>
+    </div>
+  </nav>
+
+  <!-- ================= HERO SECTION ================= -->
+  <section id="beranda" class="bg-gradient-to-br from-blue-900 to-blue-700 text-white py-16 sm:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8 items-center">
+      <div class="space-y-6">
+        <div class="space-y-2">
+          <span class="text-yellow-400 font-black text-xs tracking-wider uppercase">LKP Terakreditasi Kemendikbudristek</span>
+          <h1 class="text-4xl sm:text-5xl font-black leading-tight">
+            Belajar Lebih Terarah<br>
+            <span class="text-yellow-400">Tumbuh Lebih Percaya Diri</span>
+          </h1>
+          <p class="text-sm text-blue-100 max-w-md">Empowering minds, connecting worlds — Kursus Bahasa Inggris profesional dengan native speaker, sertifikasi internasional, dan metode pembelajaran komunikatif.</p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button onclick="scrollToKontak()" class="px-6 py-3 rounded-full bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-black text-sm transition shadow-lg">
+            <i class="fa-solid fa-arrow-right"></i> Daftar Sekarang
+          </button>
+          <a href="#program" class="px-6 py-3 rounded-full bg-white/20 hover:bg-white/30 text-white font-bold text-sm transition border border-white/30 flex items-center gap-2">
+            <i class="fa-solid fa-book"></i> Lihat Program
+          </a>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="grid grid-cols-2 gap-4">
+        <div class="bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/20 text-center">
+          <div class="text-3xl font-black text-yellow-400">500+</div>
+          <div class="text-xs text-blue-100 mt-1">Siswa Aktif</div>
+        </div>
+        <div class="bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/20 text-center">
+          <div class="text-3xl font-black text-yellow-400">10+</div>
+          <div class="text-xs text-blue-100 mt-1">Tutor Bersertifikat</div>
+        </div>
+        <div class="bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/20 text-center">
+          <div class="text-3xl font-black text-yellow-400">3</div>
+          <div class="text-xs text-blue-100 mt-1">Cabang Tersedia</div>
+        </div>
+        <div class="bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/20 text-center">
+          <div class="text-3xl font-black text-yellow-400">98%</div>
+          <div class="text-xs text-blue-100 mt-1">Kepuasan Siswa</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TENTANG KAMI ================= -->
+  <section id="tentang" class="py-16 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-black text-blue-900 mb-8 text-center">Tentang <span class="text-yellow-500">Zigma English Course</span></h2>
+      <div class="grid lg:grid-cols-3 gap-6">
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs">
+          <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-lg mb-3">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <h3 class="font-black text-sm text-blue-900 mb-2">Terakreditasi Resmi</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">Lembaga Kursus dan Pelatihan (LKP) terdaftar dan terakreditasi oleh Kemendikbudristek dengan standar pembelajaran internasional.</p>
+        </div>
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs">
+          <div class="w-12 h-12 rounded-xl bg-yellow-100 text-yellow-700 flex items-center justify-center text-lg mb-3">
+            <i class="fa-solid fa-users"></i>
+          </div>
+          <h3 class="font-black text-sm text-blue-900 mb-2">Tutor Native Speaker</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">Belajar dari native speaker bersertifikat TESOL/CELTA dengan pengalaman mengajar puluhan tahun di berbagai negara.</p>
+        </div>
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs">
+          <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg mb-3">
+            <i class="fa-solid fa-certificate"></i>
+          </div>
+          <h3 class="font-black text-sm text-blue-900 mb-2">Sertifikat Internasional</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">Dapatkan sertifikat terdaftar yang diakui secara internasional untuk meningkatkan CV dan peluang karir Anda.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= KEUNGGULAN ================= -->
+  <section id="keunggulan" class="py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-black text-blue-900 mb-8 text-center">Keunggulan <span class="text-yellow-500">Kami</span></h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="flex gap-3 p-4 rounded-xl bg-blue-50 border border-blue-200">
+          <i class="fa-solid fa-check-circle text-yellow-500 text-lg flex-shrink-0 mt-0.5"></i>
+          <div>
+            <h4 class="font-black text-xs text-blue-900">Metode Komunikatif</h4>
+            <p class="text-[11px] text-slate-600 mt-1">Fokus pada percakapan aktif & penggunaan bahasa real-world.</p>
+          </div>
+        </div>
+        <div class="flex gap-3 p-4 rounded-xl bg-blue-50 border border-blue-200">
+          <i class="fa-solid fa-check-circle text-yellow-500 text-lg flex-shrink-0 mt-0.5"></i>
+          <div>
+            <h4 class="font-black text-xs text-blue-900">Free Placement Test</h4>
+            <p class="text-[11px] text-slate-600 mt-1">Tes penempatan gratis untuk menentukan level yang tepat.</p>
+          </div>
+        </div>
+        <div class="flex gap-3 p-4 rounded-xl bg-blue-50 border border-blue-200">
+          <i class="fa-solid fa-check-circle text-yellow-500 text-lg flex-shrink-0 mt-0.5"></i>
+          <div>
+            <h4 class="font-black text-xs text-blue-900">Native Speaker Session</h4>
+            <p class="text-[11px] text-slate-600 mt-1">Sesi langsung dengan native speaker setiap minggu.</p>
+          </div>
+        </div>
+        <div class="flex gap-3 p-4 rounded-xl bg-blue-50 border border-blue-200">
+          <i class="fa-solid fa-check-circle text-yellow-500 text-lg flex-shrink-0 mt-0.5"></i>
+          <div>
+            <h4 class="font-black text-xs text-blue-900">Garansi Skor</h4>
+            <p class="text-[11px] text-slate-600 mt-1">Jaminan kenaikan skor atau uang kembali 50%.</p>
+          </div>
+        </div>
+        <div class="flex gap-3 p-4 rounded-xl bg-blue-50 border border-blue-200">
+          <i class="fa-solid fa-check-circle text-yellow-500 text-lg flex-shrink-0 mt-0.5"></i>
+          <div>
+            <h4 class="font-black text-xs text-blue-900">Jadwal Fleksibel</h4>
+            <p class="text-[11px] text-slate-600 mt-1">Kelas reguler, privat, atau semi-privat sesuai kebutuhan.</p>
+          </div>
+        </div>
+        <div class="flex gap-3 p-4 rounded-xl bg-blue-50 border border-blue-200">
+          <i class="fa-solid fa-check-circle text-yellow-500 text-lg flex-shrink-0 mt-0.5"></i>
+          <div>
+            <h4 class="font-black text-xs text-blue-900">Learning Tracker</h4>
+            <p class="text-[11px] text-slate-600 mt-1">Pantau progres belajar & laporan berkala dari tutor.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PROGRAM KURSUS ================= -->
+  <section id="program" class="py-16 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-black text-blue-900 mb-8 text-center">Program <span class="text-yellow-500">Kursus</span></h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="bg-white rounded-2xl p-6 border-2 border-blue-200 shadow-xs hover:shadow-lg transition">
+          <div class="text-3xl mb-2">👧</div>
+          <h3 class="font-black text-sm text-blue-900">English for Kids</h3>
+          <p class="text-xs text-slate-600 mt-2">Kelas untuk anak usia 5-12 tahun dengan metode fun & interactive.</p>
+          <div class="mt-3 text-xs font-bold text-yellow-600">Level: Beginner</div>
+        </div>
+        <div class="bg-white rounded-2xl p-6 border-2 border-blue-200 shadow-xs hover:shadow-lg transition">
+          <div class="text-3xl mb-2">👦</div>
+          <h3 class="font-black text-sm text-blue-900">Teens Booster</h3>
+          <p class="text-xs text-slate-600 mt-2">Program SMP & SMA dengan fokus grammar, speaking, & test prep.</p>
+          <div class="mt-3 text-xs font-bold text-yellow-600">Level: Elementary - Intermediate</div>
+        </div>
+        <div class="bg-white rounded-2xl p-6 border-2 border-blue-200 shadow-xs hover:shadow-lg transition">
+          <div class="text-3xl mb-2">💼</div>
+          <h3 class="font-black text-sm text-blue-900">General English</h3>
+          <p class="text-xs text-slate-600 mt-2">Kelas umum untuk dewasa dari basic hingga advanced conversation.</p>
+          <div class="mt-3 text-xs font-bold text-yellow-600">Level: All Levels</div>
+        </div>
+        <div class="bg-white rounded-2xl p-6 border-2 border-blue-200 shadow-xs hover:shadow-lg transition">
+          <div class="text-3xl mb-2">📚</div>
+          <h3 class="font-black text-sm text-blue-900">TOEFL/IELTS Prep</h3>
+          <p class="text-xs text-slate-600 mt-2">Persiapan intensif untuk test TOEFL IBT & IELTS dengan target skor.</p>
+          <div class="mt-3 text-xs font-bold text-yellow-600">Level: Intermediate - Advanced</div>
+        </div>
+        <div class="bg-white rounded-2xl p-6 border-2 border-blue-200 shadow-xs hover:shadow-lg transition">
+          <div class="text-3xl mb-2">🎤</div>
+          <h3 class="font-black text-sm text-blue-900">Business English</h3>
+          <p class="text-xs text-slate-600 mt-2">Business communication, presentation, & corporate English untuk profesional.</p>
+          <div class="mt-3 text-xs font-bold text-yellow-600">Level: Intermediate - Advanced</div>
+        </div>
+        <div class="bg-white rounded-2xl p-6 border-2 border-blue-200 shadow-xs hover:shadow-lg transition">
+          <div class="text-3xl mb-2">👤</div>
+          <h3 class="font-black text-sm text-blue-900">Private Executive</h3>
+          <p class="text-xs text-slate-600 mt-2">Kursus privat one-on-one dengan tutor pilihan sesuai kebutuhan.</p>
+          <div class="mt-3 text-xs font-bold text-yellow-600">Level: Custom</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= BIAYA ================= -->
+  <section id="biaya" class="py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-black text-blue-900 mb-8 text-center">Paket <span class="text-yellow-500">Biaya</span></h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 border-2 border-blue-300 text-center">
+          <h3 class="font-black text-sm text-blue-900 mb-2">REGULER</h3>
+          <div class="text-2xl font-black text-blue-700 mb-1">Rp 400K</div>
+          <p class="text-[10px] text-slate-600">per bulan (4x kelas)</p>
+          <ul class="text-xs text-slate-700 mt-3 space-y-1 text-left">
+            <li>✓ 4 kali per bulan</li>
+            <li>✓ Durasi 90 menit</li>
+            <li>✓ 4-6 siswa/kelas</li>
+          </ul>
+        </div>
+        <div class="bg-gradient-to-br from-amber-50 to-amber-100 rounded-2xl p-6 border-2 border-amber-300 text-center">
+          <h3 class="font-black text-sm text-blue-900 mb-2">SEMI-PRIVAT</h3>
+          <div class="text-2xl font-black text-amber-700 mb-1">Rp 600K</div>
+          <p class="text-[10px] text-slate-600">per bulan (4x kelas)</p>
+          <ul class="text-xs text-slate-700 mt-3 space-y-1 text-left">
+            <li>✓ 4 kali per bulan</li>
+            <li>✓ Durasi 90 menit</li>
+            <li>✓ 2-3 siswa/kelas</li>
+          </ul>
+        </div>
+        <div class="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-2xl p-6 border-2 border-yellow-300 text-center">
+          <h3 class="font-black text-sm text-blue-900 mb-2">INTENSIF</h3>
+          <div class="text-2xl font-black text-yellow-700 mb-1">Rp 900K</div>
+          <p class="text-[10px] text-slate-600">per bulan (8x kelas)</p>
+          <ul class="text-xs text-slate-700 mt-3 space-y-1 text-left">
+            <li>✓ 8 kali per bulan</li>
+            <li>✓ Durasi 90 menit</li>
+            <li>✓ 4-6 siswa/kelas</li>
+          </ul>
+        </div>
+        <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-2xl p-6 border-2 border-emerald-300 text-center">
+          <h3 class="font-black text-sm text-blue-900 mb-2">PRIVATE</h3>
+          <div class="text-2xl font-black text-emerald-700 mb-1">Rp 250K</div>
+          <p class="text-[10px] text-slate-600">per sesi (1 jam)</p>
+          <ul class="text-xs text-slate-700 mt-3 space-y-1 text-left">
+            <li>✓ Fleksibel jadwal</li>
+            <li>✓ Durasi 60 menit</li>
+            <li>✓ 1 siswa / tutor pilihan</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FAQ ================= -->
+  <section id="faq" class="py-16 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-black text-blue-900 mb-8 text-center">Tanya Jawab <span class="text-yellow-500">Umum</span></h2>
+      <div class="space-y-3">
+        <details class="bg-white rounded-xl border border-slate-200 p-4 group cursor-pointer">
+          <summary class="font-black text-xs text-blue-900 flex justify-between items-center select-none">
+            Apa saja persyaratan untuk mendaftar?
+            <i class="fa-solid fa-chevron-down text-slate-400 group-open:rotate-180 transition"></i>
+          </summary>
+          <p class="text-xs text-slate-600 mt-3 leading-relaxed">Tidak ada persyaratan khusus. Siapa saja bisa mendaftar mulai dari anak-anak hingga dewasa. Kami akan melakukan free placement test untuk menentukan level yang sesuai.</p>
+        </details>
+
+        <details class="bg-white rounded-xl border border-slate-200 p-4 group cursor-pointer">
+          <summary class="font-black text-xs text-blue-900 flex justify-between items-center select-none">
+            Berapa lama waktu belajar untuk mencapai sertifikat?
+            <i class="fa-solid fa-chevron-down text-slate-400 group-open:rotate-180 transition"></i>
+          </summary>
+          <p class="text-xs text-slate-600 mt-3 leading-relaxed">Tergantung level awal dan program yang diambil. Untuk regular class, rata-rata 6-12 bulan untuk mencapai satu level. Program intensif bisa lebih cepat (3-6 bulan).</p>
+        </details>
+
+        <details class="bg-white rounded-xl border border-slate-200 p-4 group cursor-pointer">
+          <summary class="font-black text-xs text-blue-900 flex justify-between items-center select-none">
+            Apakah ada cicilan atau diskon untuk paket tahunan?
+            <i class="fa-solid fa-chevron-down text-slate-400 group-open:rotate-180 transition"></i>
+          </summary>
+          <p class="text-xs text-slate-600 mt-3 leading-relaxed">Ya, kami menyediakan opsi cicilan tanpa bunga hingga 12 bulan. Untuk paket tahunan, dapatkan diskon hingga 15% + gratis konsultasi karir.</p>
+        </details>
+
+        <details class="bg-white rounded-xl border border-slate-200 p-4 group cursor-pointer">
+          <summary class="font-black text-xs text-blue-900 flex justify-between items-center select-none">
+            Bagaimana jika saya tidak puas dengan progress belajar?
+            <i class="fa-solid fa-chevron-down text-slate-400 group-open:rotate-180 transition"></i>
+          </summary>
+          <p class="text-xs text-slate-600 mt-3 leading-relaxed">Kami memberikan garansi: jika tidak ada peningkatan signifikan dalam 3 bulan, kami akan memberikan kelas tambahan gratis atau refund 50%.</p>
+        </details>
+
+        <details class="bg-white rounded-xl border border-slate-200 p-4 group cursor-pointer">
+          <summary class="font-black text-xs text-blue-900 flex justify-between items-center select-none">
+            Apakah ada kelas online atau hanya offline?
+            <i class="fa-solid fa-chevron-down text-slate-400 group-open:rotate-180 transition"></i>
+          </summary>
+          <p class="text-xs text-slate-600 mt-3 leading-relaxed">Kami menyediakan kedua opsi: offline di 3 cabang kami atau online via Zoom. Anda bisa mengkombinasikan keduanya sesuai kebutuhan.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= KONTAK & FORM DAFTAR ================= -->
+  <section id="kontak" class="py-16">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-black text-blue-900 mb-8 text-center">Hubungi & <span class="text-yellow-500">Daftar</span></h2>
+
+      <div class="grid sm:grid-cols-3 gap-4 mb-8">
+        <a href="tel:+62812345678" class="bg-blue-50 border-2 border-blue-300 rounded-2xl p-6 text-center hover:shadow-lg transition">
+          <i class="fa-solid fa-phone text-2xl text-blue-700 mb-2"></i>
+          <div class="font-black text-xs text-blue-900">Telepon</div>
+          <div class="text-[11px] text-slate-600 mt-1">+62 812 3456 7890</div>
+        </a>
+        <a href="https://wa.me/6281234567890" target="_blank" class="bg-green-50 border-2 border-green-300 rounded-2xl p-6 text-center hover:shadow-lg transition">
+          <i class="fa-brands fa-whatsapp text-2xl text-green-700 mb-2"></i>
+          <div class="font-black text-xs text-green-900">WhatsApp</div>
+          <div class="text-[11px] text-slate-600 mt-1">Chat konsultasi gratis</div>
+        </a>
+        <a href="mailto:info@zigmaenglish.com" class="bg-amber-50 border-2 border-amber-300 rounded-2xl p-6 text-center hover:shadow-lg transition">
+          <i class="fa-solid fa-envelope text-2xl text-amber-700 mb-2"></i>
+          <div class="font-black text-xs text-amber-900">Email</div>
+          <div class="text-[11px] text-slate-600 mt-1">info@zigmaenglish.com</div>
+        </a>
+      </div>
+
+      <!-- Form Daftar -->
+      <div class="bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-300 rounded-3xl p-6 sm:p-8">
+        <h3 class="font-black text-base text-blue-900 mb-4 text-center">Form Pendaftaran Siswa Baru</h3>
+        <form onsubmit="handleSubmit(event)" class="space-y-4">
+          <div class="grid sm:grid-cols-2 gap-3">
+            <input type="text" placeholder="Nama Lengkap" required class="px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <input type="email" placeholder="Email" required class="px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
+          </div>
+          <div class="grid sm:grid-cols-2 gap-3">
+            <input type="tel" placeholder="No. WhatsApp" required class="px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <select required class="px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <option value="">Pilih Program</option>
+              <option>English for Kids</option>
+              <option>Teens Booster</option>
+              <option>General English</option>
+              <option>TOEFL/IELTS Prep</option>
+              <option>Business English</option>
+              <option>Private Executive</option>
+            </select>
+          </div>
+          <textarea placeholder="Pesan / Pertanyaan tambahan" rows="2" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+          <button type="submit" class="w-full py-3 rounded-full bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-black text-sm transition shadow-lg">
+            <i class="fa-solid fa-paper-plane"></i> Kirim Pendaftaran
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-blue-900 text-white py-8 border-t-4 border-yellow-400">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid sm:grid-cols-3 gap-6 mb-6">
+        <div>
+          <h4 class="font-black text-sm mb-2">ZIGMA ENGLISH COURSE</h4>
+          <p class="text-xs text-blue-100">Empowering minds, connecting worlds — Kursus Bahasa Inggris profesional dengan standar internasional.</p>
+        </div>
+        <div>
+          <h4 class="font-black text-xs mb-2 uppercase">Lokasi Cabang</h4>
+          <ul class="text-xs text-blue-200 space-y-1">
+            <li>📍 Pusat: Jl. Merdeka No. 100</li>
+            <li>📍 Cabang Utara: Jl. Sudirman No. 200</li>
+            <li>📍 Cabang Selatan: Jl. Ahmad Yani No. 300</li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-black text-xs mb-2 uppercase">Jam Operasional</h4>
+          <p class="text-xs text-blue-200">Senin - Jumat: 09.00 - 20.00<br>Sabtu - Minggu: 09.00 - 17.00</p>
+        </div>
+      </div>
+      <div class="border-t border-blue-800 pt-4 text-center text-xs text-blue-200">
+        <p>&copy; 2026 Zigma English Course — Lembaga Kursus dan Pelatihan Terakreditasi Kemendikbudristek</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= JAVASCRIPT ================= -->
+  <script>
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('hidden');
+    }
+
+    function scrollToKontak() {
+      document.getElementById('kontak').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      alert('Terima kasih! Pendaftaran Anda akan diproses dalam 1x24 jam. Kami akan menghubungi Anda melalui WhatsApp segera.');
+      e.target.reset();
+    }
+
+    // Close mobile menu when clicking nav links
+    document.querySelectorAll('#mobileMenu a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById('mobileMenu').classList.add('hidden');
+      });
+    });
+  </script>
+</body>
+</html>
