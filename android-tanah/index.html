@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AndroidTanah — Manajemen Properti & Akad Tanah</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
+          colors: {
+            android: {
+              50: '#ecfdf5', 100: '#d1fae5', 200: '#a7f3d0', 300: '#6ee7b7',
+              400: '#34d399', 500: '#10b981', 600: '#059669', 700: '#047857',
+              800: '#065f46', 900: '#064e3b'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-white text-slate-800 antialiased font-sans">
+
+  <!-- ================= NAVBAR ================= -->
+  <nav class="sticky top-0 z-40 bg-white border-b border-slate-100 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-600 to-green-800 text-white flex items-center justify-center font-black text-lg">
+          <i class="fa-solid fa-house"></i>
+        </div>
+        <span class="font-black text-sm tracking-tight hidden sm:inline text-green-900">ANDROID<br><span class="text-[10px] font-bold text-green-500">TANAH</span></span>
+      </div>
+
+      <!-- Desktop Menu -->
+      <div class="hidden md:flex items-center gap-1 text-xs font-bold">
+        <a href="#beranda" class="px-4 py-2 rounded-lg text-green-700 hover:bg-green-50 transition">Beranda</a>
+        <a href="#properti" class="px-4 py-2 rounded-lg text-green-700 hover:bg-green-50 transition">Katalog Properti</a>
+        <a href="#akad" class="px-4 py-2 rounded-lg text-green-700 hover:bg-green-50 transition">Manajemen Akad</a>
+        <a href="#progress" class="px-4 py-2 rounded-lg text-green-700 hover:bg-green-50 transition">Timeline Progress</a>
+        <a href="#absensi" class="px-4 py-2 rounded-lg text-green-700 hover:bg-green-50 transition">Absensi Lapangan</a>
+        <a href="#laporan" class="px-4 py-2 rounded-lg text-green-700 hover:bg-green-50 transition">Laporan</a>
+      </div>
+
+      <!-- CTA & Mobile -->
+      <div class="flex items-center gap-3">
+        <button onclick="scrollToKontak()" class="px-4 py-2 rounded-lg bg-green-500 hover:bg-green-600 text-white font-black text-xs transition shadow-md">
+          Daftar Sekarang
+        </button>
+        <button onclick="toggleMenu()" class="md:hidden w-8 h-8 rounded-lg border border-slate-200 flex items-center justify-center">
+          <i class="fa-solid fa-bars text-green-900"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-slate-100 px-4 py-3 space-y-2">
+      <a href="#beranda" class="block px-3 py-2 rounded-lg text-green-700 hover:bg-green-50 font-bold text-xs">Beranda</a>
+      <a href="#properti" class="block px-3 py-2 rounded-lg text-green-700 hover:bg-green-50 font-bold text-xs">Katalog Properti</a>
+      <a href="#akad" class="block px-3 py-2 rounded-lg text-green-700 hover:bg-green-50 font-bold text-xs">Manajemen Akad</a>
+      <a href="#progress" class="block px-3 py-2 rounded-lg text-green-700 hover:bg-green-50 font-bold text-xs">Timeline Progress</a>
+      <a href="#absensi" class="block px-3 py-2 rounded-lg text-green-700 hover:bg-green-50 font-bold text-xs">Absensi Lapangan</a>
+      <a href="#laporan" class="block px-3 py-2 rounded-lg text-green-700 hover:bg-green-50 font-bold text-xs">Laporan</a>
+    </div>
+  </nav>
+
+  <!-- ================= HERO SECTION ================= -->
+  <section id="beranda" class="bg-gradient-to-br from-green-900 to-green-700 text-white py-16 sm:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8 items-center">
+      <div class="space-y-6">
+        <div class="space-y-2">
+          <span class="text-green-400 font-black text-xs tracking-wider uppercase">Aplikasi Manajemen Properti Terintegrasi</span>
+          <h1 class="text-4xl sm:text-5xl font-black leading-tight">
+            Kelola Proyek<br>
+            <span class="text-green-400">Tanah & Properti</span>
+          </h1>
+          <p class="text-sm text-green-100 max-w-md">Dapatkan kontrol penuh atas progress akad, notaris, tanggal jatuh tempo, & notifikasi terjadwal. Semua data tersimpan di lokal, sinkronisasi aman ke cloud.</p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button onclick="scrollToKontak()" class="px-6 py-3 rounded-full bg-green-500 hover:bg-green-600 text-white font-black text-sm transition shadow-lg">
+            <i class="fa-solid fa-download"></i> Unduh di Play Store
+          </button>
+          <a href="#properti" class="px-6 py-3 rounded-full bg-white/20 hover:bg-white/30 text-white font-bold text-sm transition border border-white/30 flex items-center gap-2">
+            <i class="fa-solid fa-eye"></i> Lihat Fitur
+          </a>
+        </div>
+      </div>
+
+      <!-- Dashboard Preview -->
+      <div class="space-y-4">
+        <div class="bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/20 text-center">
+          <div class="text-3xl font-black text-green-300">1,234</div>
+          <div class="text-xs text-green-200 mt-1">Proyek Aktif</div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="bg-white/10 backdrop-blur rounded-xl p-3 border border-white/20 text-center">
+            <div class="text-2xl font-black text-green-300">45</div>
+            <div class="text-[10px] text-green-200">Akad Berjalan</div>
+          </div>
+          <div class="bg-white/10 backdrop-blur rounded-xl p-3 border border-white/20 text-center">
+            <div class="text-2xl font-black text-green-300">89%</div>
+            <div class="text-[10px] text-green-200">Progress Rata-rata</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= KATALOG PROPERTI ================= -->
+  <section id="properti" class="py-16 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-black text-green-900 mb-8 text-center">Katalog <span class="text-green-500">Properti</span></h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white rounded-2xl p-5 border-2 border-green-200 shadow-xs hover:shadow-lg transition">
+          <div class="text-3xl mb-2">🏠</div>
+          <h3 class="font-black text-sm text-green-900">Rumah Siap Pakai</h3>
+          <div class="text-xs text-slate-600 mt-2">Harga mulai Rp 800 juta</div>
+          <div class="mt-3 text-xs font-bold text-green-600">Lokasi: Jakarta</div>
+          <button onclick="scrollToKontak()" class="mt-3 w-full py-2 rounded-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs transition">
+            Pesan Konsultasi
+          </button>
+        </div>
+        <div class="bg-white rounded-2xl p-5 border-2 border-green-200 shadow-xs hover:shadow-lg transition">
+          <div class="text-3xl mb-2">🏢</div>
+          <h3 class="font-black text-sm text-green-900">Kantor Komersial</h3>
+          <div class="text-xs text-slate-600 mt-2">Harga mulai Rp 1,2 miliar</div>
+          <div class="mt-3 text-xs font-bold text-green-600">Lokasi: Bekasi</div>
+          <button onclick="scrollToKontak()" class="mt-3 w-full py-2 rounded-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs transition">
+            Pesan Konsultasi
+          </button>
+        </div>
+        <div class="bg-white rounded-2xl p-5 border-2 border-green-200 shadow-xs hover:shadow-lg transition">
+          <div class="text-3xl mb-2">🏘️</div>
+          <h3 class="font-black text-sm text-green-900">Perumahan</h3>
+          <div class="text-xs text-slate-600 mt-2">Harga mulai Rp 500 juta</div>
+          <div class="mt-3 text-xs font-bold text-green-600">Lokasi: Depok</div>
+          <button onclick="scrollToKontak()" class="mt-3 w-full py-2 rounded-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs transition">
+            Pesan Konsultasi
+          </button>
+        </div>
+        <div class="bg-white rounded-2xl p-5 border-2 border-green-200 shadow-xs hover:shadow-lg transition">
+          <div class="text-3xl mb-2">🏖️</div>
+          <h3 class="font-black text-sm text-green-900">Kavling Tanah</h3>
+          <div class="text-xs text-slate-600 mt-2">Harga mulai Rp 200 juta</div>
+          <div class="mt-3 text-xs font-bold text-green-600">Lokasi: Bogor</div>
+          <button onclick="scrollToKontak()" class="mt-3 w-full py-2 rounded-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs transition">
+            Pesan Konsultasi
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MANAJEMEN AKAD ================= -->
+  <section id="akad" class="py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-black text-green-900 mb-8 text-center">Manajemen <span class="text-green-500">Akad</span></h2>
+      <div class="grid lg:grid-cols-3 gap-6">
+        <div class="bg-green-50 rounded-2xl p-6 border-2 border-green-200">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 rounded-xl bg-green-100 text-green-700 flex items-center justify-center">
+              <i class="fa-solid fa-file-signature"></i>
+            </div>
+            <h3 class="font-black text-lg text-green-900">Data Transaksi</h3>
+          </div>
+          <ul class="text-xs text-slate-600 space-y-2">
+            <li>✓ Kode Akad unik (AKD-2026-001)</li>
+            <li>✓ Tanggal surat & tandatangan</li>
+            <li>✓ Detail notaris (nama, kontak)</li>
+            <li>✓ Status pembayaran</li>
+          </ul>
+        </div>
+        <div class="bg-green-50 rounded-2xl p-6 border-2 border-green-200">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 rounded-xl bg-green-100 text-green-700 flex items-center justify-center">
+              <i class="fa-solid fa-camera"></i>
+            </div>
+            <h3 class="font-black text-lg text-green-900">Bukti Pendukung</h3>
+          </div>
+          <ul class="text-xs text-slate-600 space-y-2">
+            <li>✓ Upload foto servey</li>
+            <li>✓ Surat kesediaan</li>
+            <li>✓ Foto tandatangan</li>
+            <li>✓ Bukti transfer</li>
+          </ul>
+        </div>
+        <div class="bg-green-50 rounded-2xl p-6 border-2 border-green-200">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 rounded-xl bg-green-100 text-green-700 flex items-center justify-center">
+              <i class="fa-solid fa-bell"></i>
+            </div>
+            <h3 class="font-black text-lg text-green-900">Timeline</h3>
+          </div>
+          <ul class="text-xs text-slate-600 space-y-2">
+            <li>✓ Notifikasi jatuh tempo</li>
+            <li>✓ Reminder progres</li>
+            <li>✓ Alert pembaruan bukti</li>
+            <li>✓ Pengingat surat</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TIMELINE PROGRESS ================= -->
+  <section id="progress" class="py-16 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-black text-green-900 mb-8 text-center">Timeline <span class="text-green-500">Progres</span></h2>
+
+      <div class="relative border-l-2 border-green-300 ml-4 pl-8 space-y-8">
+        <div class="relative">
+          <div class="absolute -left-10 top-0 w-6 h-6 rounded-full bg-green-500 border-4 border-white shadow"></div>
+          <div class="bg-white rounded-2xl p-5 border border-slate-200">
+            <div class="font-black text-sm text-green-900 mb-2">Pembelian (AKAD)</div>
+            <div class="text-xs text-slate-600 mb-2">23 Maret 2026 – <span class="font-bold text-green-700">Selesai</span></div>
+            <ul class="text-[11px] text-slate-600 space-y-1">
+              <li>• Surat tandatangan selesai</li>
+              <li>• Bukti servey & kesediaan diupload</li>
+              <li>• Pembayaran DP 30% diproses</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="relative">
+          <div class="absolute -left-10 top-0 w-6 h-6 rounded-full bg-yellow-500 border-4 border-white shadow"></div>
+          <div class="bg-white rounded-2xl p-5 border border-slate-200">
+            <div class="font-black text-sm text-green-900 mb-2">PPJB (Perjanjian Pengikatan Jual Beli)</div>
+            <div class="text-xs text-slate-600 mb-2">15 April 2026 – <span class="font-bold text-yellow-600">Berjalan (60%)</span></div>
+            <ul class="text-[11px] text-slate-600 space-y-1">
+              <li>• Draft legal selesai</li>
+              <li>• Menunggu tandatangan bersama</li>
+              <li>• Update bukti + deadline 25 April</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="relative">
+          <div class="absolute -left-10 top-0 w-6 h-6 rounded-full bg-blue-500 border-4 border-white shadow"></div>
+          <div class="bg-white rounded-2xl p-5 border border-slate-200">
+            <div class="font-black text-sm text-green-900 mb-2">AJB (Akta Jual Beli)</div>
+            <div class="text-xs text-slate-600 mb-2">– <span class="font-bold text-blue-600">Menunggu Akad</span></div>
+            <ul class="text-[11px] text-slate-600 space-y-1">
+              <li>• Persiapan dokumen & jatuh tempo 30 April</li>
+              <li>• Notaris akan melakukan pengecekan</li>
+              <li>• Notifikasi jatuh tempo aktif</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="relative">
+          <div class="absolute -left-10 top-0 w-6 h-6 rounded-full bg-emerald-500 border-4 border-white shadow"></div>
+          <div class="bg-white rounded-2xl p-5 border border-slate-200">
+            <div class="font-black text-sm text-green-900 mb-2">Serah Terima & Lunas</div>
+            <div class="text-xs text-slate-600 mb-2">– <span class="font-bold text-emerald-600">Menunggu</span></div>
+            <ul class="text-[11px] text-slate-600 space-y-1">
+              <li>• Tanggal target 15 Mei 2026</li>
+              <li>→ Reminder dimulai hari ini</li>
+              <li>→ Selesaikan semua pelunasan</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ABSENSI LAPANGAN ================= -->
+  <section id="absensi" class="py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-black text-green-900 mb-8 text-center">Absensi & <span class="text-green-500">Catatan</span></h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-green-50 rounded-2xl p-4 border border-green-200">
+          <div class="text-2xl font-black text-green-700 mb-1">98</div>
+          <div class="text-xs text-slate-600">Kunjungan Hari Ini</div>
+        </div>
+        <div class="bg-green-50 rounded-2xl p-4 border border-green-200">
+          <div class="text-2xl font-black text-green-700 mb-1">342</div>
+          <div class="text-xs text-slate-600">Total Progres</div>
+        </div>
+        <div class="bg-green-50 rounded-2xl p-4 border border-green-200">
+          <div class="text-2xl font-black text-green-700 mb-1">12</div>
+          <div class="text-xs text-slate-600">Belum Selesai</div>
+        </div>
+        <div class="bg-green-50 rounded-2xl p-4 border border-green-200">
+          <div class="text-2xl font-black text-green-700 mb-1">89%</div>
+          <div class="text-xs text-slate-600">Target Progres</div>
+        </div>
+      </div>
+
+      <div class="mt-8 bg-white rounded-2xl border border-slate-200 p-6">
+        <h3 class="font-black text-lg text-green-900 mb-4">Log Absensi Terbaru</h3>
+        <div class="space-y-3">
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-full bg-green-100 text-green-700 flex items-center justify-center text-xs font-bold">
+              A001
+            </div>
+            <div class="flex-1">
+              <div class="text-xs font-black text-slate-900">Check-in: Lokasi Kavling Depok (08:15)</div>
+              <div class="text-[11px] text-slate-600">Pemantauan progres, foto batas tanah, catatan: Lokasi sesuai koordinat.</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-full bg-green-100 text-green-700 flex items-center justify-center text-xs font-bold">
+              B004
+            </div>
+            <div class="flex-1">
+              <div class="text-xs font-black text-slate-900">Check-in: Notaris Jakarta (09:00)</div>
+              <div class="text-[11px] text-slate-600">Verifikasi berkas, upload bukti servey. Lanjut ke review dokumen.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= LAPORAN & ANALITIK ================= -->
+  <section id="laporan" class="py-16 bg-slate-50 border-t border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-black text-green-900 mb-8 text-center">Laporan & <span class="text-green-500">Analitik</span></h2>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div class="bg-white rounded-2xl p-5 border border-slate-200">
+          <div class="text-xs font-bold text-slate-600 mb-2">OMZET PER BULAN</div>
+          <div class="text-2xl font-black text-green-700">Rp 2,8 Miliar</div>
+          <div class="text-xs text-slate-500 mt-1">+15% vs bulan lalu</div>
+        </div>
+        <div class="bg-white rounded-2xl p-5 border border-slate-200">
+          <div class="text-xs font-bold text-slate-600 mb-2">PROGRES AKAD TERCEPAT</div>
+          <div class="text-2xl font-black text-green-700">89%</div>
+          <div class="text-xs text-slate-500 mt-1">Target: 95%</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= KONTAK & DOWNLOAD ================= -->
+  <section id="kontak" class="py-16">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-black text-green-900 mb-8 text-center">Hubungi & <span class="text-green-500">Unduh</span></h2>
+
+      <div class="grid sm:grid-cols-3 gap-4 mb-8">
+        <a href="mailto:info@androidtanah.com" class="bg-green-50 border-2 border-green-300 rounded-2xl p-6 text-center hover:shadow-lg transition">
+          <i class="fa-solid fa-envelope text-2xl text-green-700 mb-2"></i>
+          <div class="font-black text-xs text-green-900">Email</div>
+          <div class="text-[11px] text-slate-600 mt-1">info@androidtanah.com</div>
+        </a>
+        <a href="tel:+62812345678" class="bg-green-50 border-2 border-green-300 rounded-2xl p-6 text-center hover:shadow-lg transition">
+          <i class="fa-solid fa-phone text-2xl text-green-700 mb-2"></i>
+          <div class="font-black text-xs text-green-900">Telepon</div>
+          <div class="text-[11px] text-slate-600 mt-1">+62 812 3456 7890</div>
+        </a>
+        <a href="https://wa.me/6281234567890" target="_blank" class="bg-green-50 border-2 border-green-300 rounded-2xl p-6 text-center hover:shadow-lg transition">
+          <i class="fa-brands fa-whatsapp text-2xl text-green-700 mb-2"></i>
+          <div class="font-black text-xs text-green-900">WhatsApp</div>
+          <div class="text-[11px] text-slate-600 mt-1">Chat cepat</div>
+        </a>
+      </div>
+
+      <div class="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-300 rounded-3xl p-6 sm:p-8">
+        <h3 class="font-black text-base text-green-900 mb-4 text-center">Form Request Download Aplikasi</h3>
+        <form onsubmit="handleSubmit(event)" class="space-y-4">
+          <div class="grid sm:grid-cols-2 gap-3">
+            <input type="text" placeholder="Nama Lengkap" required class="px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-green-500">
+            <input type="email" placeholder="Email" required class="px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-green-500">
+          </div>
+          <div class="grid sm:grid-cols-2 gap-3">
+            <input type="tel" placeholder="No. HP" required class="px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-green-500">
+            <select required class="px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-green-500">
+              <option value="">Jenis Perangkat</option>
+              <option>Android Smartphone</option>
+              <option>Android Tablet</option>
+              <option>Both</option>
+            </select>
+          </div>
+          <textarea placeholder="Pesan / Kebutuhan khusus" rows="2" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-green-500 resize-none"></textarea>
+          <button type="submit" class="w-full py-3 rounded-full bg-green-600 hover:bg-green-700 text-white font-black text-sm transition shadow-lg">
+            <i class="fa-solid fa-download"></i> Request Link Download
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-green-900 text-white py-8 border-t-4 border-green-400">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid sm:grid-cols-3 gap-6 mb-6">
+        <div>
+          <h4 class="font-black text-sm mb-2">ANDROID TANAH</h4>
+          <p class="text-xs text-green-100">Aplikasi manajemen properti & akad terintegrasi untuk agen, notaris, dan pemilik.</p>
+        </div>
+        <div>
+          <h4 class="font-black text-xs mb-2 uppercase">Fitur Utama</h4>
+          <ul class="text-xs text-green-200 space-y-1">
+            <li>• Manajemen Akad Digital</li>
+            <li>• Timeline Progress</li>
+            <li>• Notifikasi Jatuh Tempo</li>
+            <li>• Absensi Lapangan</li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-black text-xs mb-2 uppercase">Jam Operasional</h4>
+          <p class="text-xs text-green-200">Senin - Jumat: 09.00 - 18.00<br>Sabtu - Minggu: 10.00 - 16.00</p>
+        </div>
+      </div>
+      <div class="border-t border-green-800 pt-4 text-center text-xs text-green-300">
+        <p>&copy; 2026 AndroidTanah — Aplikasi Android Native</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= JAVASCRIPT ================= -->
+  <script>
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('hidden');
+    }
+
+    function scrollToKontak() {
+      document.getElementById('kontak').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      alert('Terima kasih! Link download akan dikirimkan segera ke email Anda. Silakan periksa folder spam jika tidak menerima.');
+      e.target.reset();
+    }
+
+    // Close mobile menu when clicking nav links
+    document.querySelectorAll('#mobileMenu a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById('mobileMenu').classList.add('hidden');
+      });
+    });
+  </script>
+</body>
+</html>
