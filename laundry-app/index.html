@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LaundryApp — Aplikasi Laundry Kilat Online</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
+          colors: {
+            laundry: {
+              50: '#f0fdf4', 100: '#dcfce7', 200: '#bbf7d0', 300: '#86efac',
+              400: '#4ade80', 500: '#22c55e', 600: '#16a34a', 700: '#15803d',
+              800: '#166534', 900: '#14532d'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased font-sans">
+
+  <!-- ================= NAVBAR ================= -->
+  <nav class="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-green-700 text-white flex items-center justify-center font-black text-lg">
+          <i class="fa-solid fa-shirt"></i>
+        </div>
+        <span class="font-black text-sm tracking-tight hidden sm:inline text-green-900">LAUNDRY<br><span class="text-[10px] font-bold text-green-500">APP</span></span>
+      </div>
+
+      <!-- Desktop Menu -->
+      <div class="hidden md:flex items-center gap-1 text-xs font-bold">
+        <a href="#beranda" class="px-4 py-2 rounded-lg text-green-700 hover:bg-green-50 transition">Beranda</a>
+        <a href="#katalog" class="px-4 py-2 rounded-lg text-green-700 hover:bg-green-50 transition">Katalog</a>
+        <a href="#keranjang" class="px-4 py-2 rounded-lg text-green-700 hover:bg-green-50 transition">Keranjang</a>
+        <a href="#chat" class="px-4 py-2 rounded-lg text-green-700 hover:bg-green-50 transition">Chat Admin</a>
+        <a href="#kupon" class="px-4 py-2 rounded-lg text-green-700 hover:bg-green-50 transition">Kupon</a>
+        <a href="#laporan" class="px-4 py-2 rounded-lg text-green-700 hover:bg-green-50 transition">Laporan</a>
+      </div>
+
+      <!-- CTA & Mobile -->
+      <div class="flex items-center gap-3">
+        <button onclick="scrollToKontak()" class="px-4 py-2 rounded-lg bg-green-500 hover:bg-green-600 text-white font-black text-xs transition shadow-md">
+          Login / Daftar
+        </button>
+        <button onclick="toggleMenu()" class="md:hidden w-8 h-8 rounded-lg border border-slate-200 flex items-center justify-center">
+          <i class="fa-solid fa-bars text-green-900"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-slate-200 px-4 py-3 space-y-2">
+      <a href="#beranda" class="block px-3 py-2 rounded-lg text-green-700 hover:bg-green-50 font-bold text-xs">Beranda</a>
+      <a href="#katalog" class="block px-3 py-2 rounded-lg text-green-700 hover:bg-green-50 font-bold text-xs">Katalog</a>
+      <a href="#keranjang" class="block px-3 py-2 rounded-lg text-green-700 hover:bg-green-50 font-bold text-xs">Keranjang</a>
+      <a href="#chat" class="block px-3 py-2 rounded-lg text-green-700 hover:bg-green-50 font-bold text-xs">Chat Admin</a>
+      <a href="#kupon" class="block px-3 py-2 rounded-lg text-green-700 hover:bg-green-50 font-bold text-xs">Kupon</a>
+      <a href="#laporan" class="block px-3 py-2 rounded-lg text-green-700 hover:bg-green-50 font-bold text-xs">Laporan</a>
+    </div>
+  </nav>
+
+  <!-- ================= HERO SECTION ================= -->
+  <section id="beranda" class="bg-gradient-to-br from-green-900 to-green-700 text-white py-16 sm:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8 items-center">
+      <div class="space-y-6">
+        <div class="space-y-2">
+          <span class="text-green-400 font-black text-xs tracking-wider uppercase">Kilat • Hemat • Bersih</span>
+          <h1 class="text-4xl sm:text-5xl font-black leading-tight">
+            Laundry Kilat Online<br>
+            <span class="text-green-400">Cepat & Mudah</span>
+          </h1>
+          <p class="text-sm text-green-100 max-w-md">Pilih layanan, berat cucian, jadwal, dan dapatkan estimasi biaya instan. Admin siap membantu via WhatsApp.</p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button onclick="scrollToKontak()" class="px-6 py-3 rounded-full bg-green-500 hover:bg-green-600 text-white font-black text-sm transition shadow-lg">
+            <i class="fa-solid fa-download"></i> Unduh di Play Store
+          </button>
+          <a href="#katalog" class="px-6 py-3 rounded-full bg-white/20 hover:bg-white/30 text-white font-bold text-sm transition border border-white/30 flex items-center gap-2">
+            <i class="fa-solid fa-eye"></i> Lihat Katalog
+          </a>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="space-y-4">
+        <div class="bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/20 text-center">
+          <div class="text-3xl font-black text-green-300">10,456</div>
+          <div class="text-xs text-green-200 mt-1">Pelanggan Puas</div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="bg-white/10 backdrop-blur rounded-xl p-3 border border-white/20 text-center">
+            <div class="text-2xl font-black text-green-300">5,234</div>
+            <div class="text-[10px] text-green-200">Pesanan Hari Ini</div>
+          </div>
+          <div class="bg-white/10 backdrop-blur rounded-xl p-3 border border-white/20 text-center">
+            <div class="text-2xl font-black text-green-300">98%</div>
+            <div class="text-[10px] text-green-200">Kepuasan Pelanggan</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= KATALOG PAKET ================= -->
+  <section id="katalog" class="py-16 bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-black text-green-900 mb-8 text-center">Katalog <span class="text-green-500">Paket Laundry</span></h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-green-50 rounded-2xl p-6 border-2 border-green-300 hover:shadow-lg transition">
+          <div class="text-3xl mb-2">👕</div>
+          <h3 class="font-black text-sm text-green-900">Cuci Biasa</h3>
+          <div class="text-xs text-slate-600 mt-2">Cuci reguler, 2 jam</div>
+          <div class="text-sm font-black text-green-700 mt-3">Rp 15.000/kg</div>
+          <button onclick="addToCart('Cuci Biasa', 15000, 2)" class="mt-3 w-full py-2 rounded-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs transition">
+            Tambah ke Keranjang
+          </button>
+        </div>
+        <div class="bg-green-50 rounded-2xl p-6 border-2 border-green-300 hover:shadow-lg transition">
+          <div class="text-3xl mb-2">👔</div>
+          <h3 class="font-black text-sm text-green-900">Setrika Saja</h3>
+          <div class="text-xs text-slate-600 mt-2">Setrika pakaian</div>
+          <div class="text-sm font-black text-green-700 mt-3">Rp 10.000/kg</div>
+          <button onclick="addToCart('Setrika Saja', 10000, 1)" class="mt-3 w-full py-2 rounded-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs transition">
+            Tambah ke Keranjang
+          </button>
+        </div>
+        <div class="bg-green-50 rounded-2xl p-6 border-2 border-green-300 hover:shadow-lg transition">
+          <div class="text-3xl mb-2">🧺</div>
+          <h3 class="font-black text-sm text-green-900">Cuci + Setrika</h3>
+          <div class="text-xs text-slate-600 mt-2">Lengkap, 3 jam</div>
+          <div class="text-sm font-black text-green-700 mt-3">Rp 20.000/kg</div>
+          <button onclick="addToCart('Cuci + Setrika', 20000, 3)" class="mt-3 w-full py-2 rounded-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs transition">
+            Tambah ke Keranjang
+          </button>
+        </div>
+        <div class="bg-green-50 rounded-2xl p-6 border-2 border-green-300 hover:shadow-lg transition">
+          <div class="text-3xl mb-2">⚡</div>
+          <h3 class="font-black text-sm text-green-900">Express 2 Jam</h3>
+          <div class="text-xs text-slate-600 mt-2">Kilat, 2 jam</div>
+          <div class="text-sm font-black text-green-700 mt-3">Rp 30.000/kg</div>
+          <button onclick="addToCart('Express 2 Jam', 30000, 2)" class="mt-3 w-full py-2 rounded-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs transition">
+            Tambah ke Keranjang
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= KERANJANG BELANJA ================= -->
+  <section id="keranjang" class="py-16 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-black text-green-900 mb-8 text-center">Keranjang <span class="text-green-500">Belanja</span></h2>
+      <div class="bg-white rounded-3xl border border-slate-200 p-6">
+        <div id="cartItems" class="space-y-3">
+          <!-- Cart items rendered by JS -->
+        </div>
+        <div class="mt-6 pt-4 border-t border-slate-200">
+          <div class="flex justify-between text-sm font-bold text-slate-900 mb-2">
+            <span>Subtotal:</span>
+            <span id="cartSubtotal">Rp 0</span>
+          </div>
+          <div class="flex justify-between text-xs text-slate-600 mb-4">
+            <span>Pajak (10%):</span>
+            <span id="cartTax">Rp 0</span>
+          </div>
+          <div class="flex justify-between text-lg font-black text-green-700 border-t border-slate-200 pt-2">
+            <span>Total:</span>
+            <span id="cartTotal">Rp 0</span>
+          </div>
+        </div>
+        <button onclick="goToCheckout()" class="mt-6 w-full py-3 rounded-full bg-green-600 hover:bg-green-700 text-white font-black text-sm transition shadow-lg">
+          Lanjutkan ke Checkout
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CHAT ADMIN ================= -->
+  <section id="chat" class="py-16 bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-black text-green-900 mb-8 text-center">Chat Admin <span class="text-green-500">WhatsApp</span></h2>
+      <div class="bg-green-50 rounded-3xl p-6 border-2 border-green-300">
+        <div class="text-center mb-6">
+          <div class="w-16 h-16 rounded-full bg-green-600 text-white flex items-center justify-center mx-auto mb-3">
+            <i class="fa-brands fa-whatsapp text-2xl"></i>
+          </div>
+          <h3 class="font-black text-lg text-green-900">Kami Siap Membantu!</h3>
+          <p class="text-xs text-slate-600 mt-2">Konsultasi, fast order, atau pertanyaan? Chat kami via WhatsApp.</p>
+        </div>
+        <div class="space-y-3">
+          <button onclick="openWhatsApp('halo admin, saya ingin konsultasi layanan laundry')" class="w-full px-4 py-3 rounded-xl bg-white border border-green-300 hover:bg-green-100 transition text-left">
+            <i class="fa-brands fa-whatsapp text-green-600 mr-2"></i> Konsultasi Layanan
+          </button>
+          <button onclick="openWhatsApp('admin, saya ingin pesan laundry kilat segera')" class="w-full px-4 py-3 rounded-xl bg-white border border-green-300 hover:bg-green-100 transition text-left">
+            <i class="fa-brands fa-whatsapp text-green-600 mr-2"></i> Pesan Kilat Sekarang
+          </button>
+          <button onclick="openWhatsApp('admin, tanya promo & kupon terbaru')" class="w-full px-4 py-3 rounded-xl bg-white border border-green-300 hover:bg-green-100 transition text-left">
+            <i class="fa-brands fa-whatsapp text-green-600 mr-2"></i> Tanya Promo & Kupon
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= KUpon & PROMO ================= -->
+  <section id="kupon" class="py-16 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-black text-green-900 mb-8 text-center">Kupon & <span class="text-green-500">Promo</span></h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="bg-white rounded-2xl p-5 border-2 border-green-200 hover:shadow-lg transition">
+          <div class="text-xs font-bold text-green-600 mb-2">DISKON 50%</div>
+          <h3 class="font-black text-sm text-green-900">Promo Hemat Minggu Ini</h3>
+          <p class="text-xs text-slate-600 mt-2">Kupon diskon 50% untuk semua layanan</p>
+          <div class="text-xs text-red-600 mt-2">Berlaku hingga 31 Maret</div>
+          <button onclick="applyCoupon('HEMAT50', 50)" class="mt-3 w-full py-2 rounded-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs transition">
+            Gunakan Kupon
+          </button>
+        </div>
+        <div class="bg-white rounded-2xl p-5 border-2 border-green-200 hover:shadow-lg transition">
+          <div class="text-xs font-bold text-green-600 mb-2">GRATIS ONGKIR</div>
+          <h3 class="font-black text-sm text-green-900">Kupon Ongkir</h3>
+          <p class="text-xs text-slate-600 mt-2">Gratis ongkir untuk semua layanan</p>
+          <div class="text-xs text-red-600 mt-2">Berlaku hingga 30 April</div>
+          <button onclick="applyCoupon('GRATISONGKIR', 0)" class="mt-3 w-full py-2 rounded-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs transition">
+            Gunakan Kupon
+          </button>
+        </div>
+        <div class="bg-white rounded-2xl p-5 border-2 border-green-200 hover:shadow-lg transition">
+          <div class="text-xs font-bold text-green-600 mb-2">REFERAL 10%</div>
+          <h3 class="font-black text-sm text-green-900">Kupon Referral</h3>
+          <p class="text-xs text-slate-600 mt-2">Dapatkan 10% cashback untuk setiap teman yang bergabung</p>
+          <div class="text-xs text-red-600 mt-2">Berlaku seumur hidup</div>
+          <button onclick="applyCoupon('REFERAL10', 10)" class="mt-3 w-full py-2 rounded-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs transition">
+            Gunakan Kupon
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= LAPORAN & ANALITIK ================= -->
+  <section id="laporan" class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-black text-green-900 mb-8 text-center">Laporan & <span class="text-green-500">Analitik</span></h2>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div class="bg-green-50 rounded-2xl p-6 border border-green-300">
+          <div class="text-xs font-bold text-slate-600 mb-2">PEMASUKAN HARIAN</div>
+          <div class="text-2xl font-black text-green-700">Rp 12.500.000</div>
+          <div class="text-xs text-slate-500 mt-1">+15% vs kemarin</div>
+        </div>
+        <div class="bg-green-50 rounded-2xl p-6 border border-green-300">
+          <div class="text-xs font-bold text-slate-600 mb-2">PESANAN TERPOPULER</div>
+          <div class="text-2xl font-black text-green-700">Cuci + Setrika</div>
+          <div class="text-xs text-slate-500 mt-1">62 pesanan hari ini</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= KONTAK & DOWNLOAD ================= -->
+  <section id="kontak" class="py-16">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-black text-green-900 mb-8 text-center">Hubungi & <span class="text-green-500">Unduh</span></h2>
+
+      <div class="grid sm:grid-cols-3 gap-4 mb-8">
+        <a href="mailto:info@laundryapp.com" class="bg-green-50 border-2 border-green-300 rounded-2xl p-6 text-center hover:shadow-lg transition">
+          <i class="fa-solid fa-envelope text-2xl text-green-700 mb-2"></i>
+          <div class="font-black text-xs text-green-900">Email</div>
+          <div class="text-[11px] text-slate-600 mt-1">info@laundryapp.com</div>
+        </a>
+        <a href="tel:+62812345678" class="bg-green-50 border-2 border-green-300 rounded-2xl p-6 text-center hover:shadow-lg transition">
+          <i class="fa-solid fa-phone text-2xl text-green-700 mb-2"></i>
+          <div class="font-black text-xs text-green-900">Telepon</div>
+          <div class="text-[11px] text-slate-600 mt-1">+62 812 3456 7890</div>
+        </a>
+        <a href="https://wa.me/6281234567890" target="_blank" class="bg-green-50 border-2 border-green-300 rounded-2xl p-6 text-center hover:shadow-lg transition">
+          <i class="fa-brands fa-whatsapp text-2xl text-green-700 mb-2"></i>
+          <div class="font-black text-xs text-green-900">WhatsApp</div>
+          <div class="text-[11px] text-slate-600 mt-1">Chat cepat</div>
+        </a>
+      </div>
+
+      <div class="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-300 rounded-3xl p-6 sm:p-8">
+        <h3 class="font-black text-base text-green-900 mb-4 text-center">Form Request Download Aplikasi</h3>
+        <form onsubmit="handleSubmit(event)" class="space-y-4">
+          <div class="grid sm:grid-cols-2 gap-3">
+            <input type="text" placeholder="Nama Lengkap" required class="px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-green-500">
+            <input type="email" placeholder="Email" required class="px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-green-500">
+          </div>
+          <div class="grid sm:grid-cols-2 gap-3">
+            <input type="tel" placeholder="No. HP" required class="px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-green-500">
+            <select required class="px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-green-500">
+              <option value="">Jenis Perangkat</option>
+              <option>Android Smartphone</option>
+              <option>Android Tablet</option>
+              <option>Both</option>
+            </select>
+          </div>
+          <textarea placeholder="Pesan / Kebutuhan khusus" rows="2" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-green-500 resize-none"></textarea>
+          <button type="submit" class="w-full py-3 rounded-full bg-green-600 hover:bg-green-700 text-white font-black text-sm transition shadow-lg">
+            <i class="fa-solid fa-download"></i> Request Link Download
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-green-900 text-white py-8 border-t-4 border-green-400">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid sm:grid-cols-3 gap-6 mb-6">
+        <div>
+          <h4 class="font-black text-sm mb-2">LAUNDRYAPP</h4>
+          <p class="text-xs text-green-100">Aplikasi laundry kilat online untuk layanan cuci, setrika, dan express cepat dengan admin siap membantu.</p>
+        </div>
+        <div>
+          <h4 class="font-black text-xs mb-2 uppercase">Fitur Utama</h4>
+          <ul class="text-xs text-green-200 space-y-1">
+            <li>• Katalog Layanan</li>
+            <li>• Keranjang & Checkout</li>
+            <li>• Chat WhatsApp</li>
+            <li>• Kupon & Promo</li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-black text-xs mb-2 uppercase">Jam Operasional</h4>
+          <p class="text-xs text-green-200">Senin - Minggu: 08.00 - 21.00<br>Layanan 24/7 untuk Express</p>
+        </div>
+      </div>
+      <div class="border-t border-green-800 pt-4 text-center text-xs text-green-300">
+        <p>&copy; 2026 LaundryApp — Laundry Online Kilat</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= JAVASCRIPT ================= -->
+  <script>
+    let cart = [];
+
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('hidden');
+    }
+
+    function scrollToKontak() {
+      document.getElementById('kontak').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function addToCart(name, price, duration) {
+      cart.push({ name, price, duration });
+      renderCart();
+      alert(`${name} ditambahkan ke keranjang!`);
+    }
+
+    function renderCart() {
+      const container = document.getElementById('cartItems');
+      if (cart.length === 0) {
+        container.innerHTML = '<div class="text-center py-8 text-slate-500">Keranjang belanja masih kosong</div>';
+        return;
+      }
+      container.innerHTML = cart.map((item, index) => `
+        <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl">
+          <div>
+            <div class="font-bold text-sm text-slate-900">${item.name}</div>
+            <div class="text-xs text-slate-600">Durasi: ${item.duration} jam</div>
+          </div>
+          <div class="text-right">
+            <div class="font-bold text-sm text-green-700">Rp ${item.price.toLocaleString('id-ID')}</div>
+            <button onclick="removeFromCart(${index})" class="text-xs text-red-600 hover:text-red-800">Hapus</button>
+          </div>
+        </div>
+      `).join('');
+      updateCartSummary();
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      renderCart();
+    }
+
+    function updateCartSummary() {
+      const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+      const tax = Math.round(subtotal * 0.1);
+      const total = subtotal + tax;
+      document.getElementById('cartSubtotal').textContent = `Rp ${subtotal.toLocaleString('id-ID')}`;
+      document.getElementById('cartTax').textContent = `Rp ${tax.toLocaleString('id-ID')}`;
+      document.getElementById('cartTotal').textContent = `Rp ${total.toLocaleString('id-ID')}`;
+    }
+
+    function goToCheckout() {
+      if (cart.length === 0) {
+        alert('Keranjang belanja masih kosong!');
+        return;
+      }
+      alert('Checkout: Total pembayaran ' + document.getElementById('cartTotal').textContent);
+    }
+
+    function openWhatsApp(message) {
+      const phone = '6281234567890';
+      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    function applyCoupon(code, discount) {
+      alert(`Kupon ${code} diterapkan! Diskon ${discount}% akan dihitung di checkout.`);
+    }
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      alert('Terima kasih! Link download akan segera dikirim ke email Anda.');
+      e.target.reset();
+    }
+
+    // Close mobile menu when clicking nav links
+    document.querySelectorAll('#mobileMenu a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById('mobileMenu').classList.add('hidden');
+      });
+    });
+  </script>
+</body>
+</html>
