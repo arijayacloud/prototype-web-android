@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Flipbook — E-paper / E-book dari Gambar</title>
+<meta name="description" content="Ubah gambar jadi e-paper/e-book dengan efek halaman, musik, dan link yang bisa dibagikan.">
+<style>
+:root{--bg:#0b1020;--panel:#141a2e;--line:#26304a;--txt:#e8ecf6;--dim:#8e9bb5;--acc:#e11d48}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--txt);-webkit-tap-highlight-color:transparent}
+button,input,textarea{font:inherit;color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:clamp(24px,4vw,38px);margin:0 0 6px;letter-spacing:-.02em}
+.sub{color:var(--dim);font-size:14px;margin:0 0 24px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:16px}
+label{display:block;font-size:11px;font-weight:800;letter-spacing:.14em;color:var(--dim);margin-bottom:8px;text-transform:uppercase}
+input[type=text],input[type=url],textarea{width:100%;background:#0e1424;border:1px solid var(--line);border-radius:12px;padding:11px 13px;outline:none;font-size:14px}
+input:focus,textarea:focus{border-color:var(--acc)}
+textarea{resize:vertical;min-height:70px;font-size:13px}
+.row{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+@media(max-width:640px){.row{grid-template-columns:1fr}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line);background:#1b2440;color:var(--txt);padding:11px 18px;border-radius:999px;font-weight:700;font-size:14px;cursor:pointer;transition:.15s}
+.btn:hover{background:#232e52}
+.btn.primary{background:var(--acc);border-color:var(--acc)}
+.btn.primary:hover{filter:brightness(1.1)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.drop{border:2px dashed var(--line);border-radius:16px;padding:26px;text-align:center;color:var(--dim);font-size:14px;cursor:pointer;transition:.15s}
+.drop.on{border-color:var(--acc);background:rgba(225,29,72,.07);color:var(--txt)}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px;margin-top:14px}
+.thumb{position:relative;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:#0e1424;aspect-ratio:3/4}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb .n{position:absolute;left:5px;top:5px;background:rgba(0,0,0,.65);border-radius:6px;font-size:10px;font-weight:800;padding:2px 6px}
+.thumb .x{position:absolute;right:4px;top:4px;background:rgba(0,0,0,.65);border:0;border-radius:6px;width:22px;height:22px;cursor:pointer;font-size:12px;line-height:1}
+.thumb .mv{position:absolute;left:4px;bottom:4px;display:flex;gap:3px}
+.thumb .mv button{background:rgba(0,0,0,.65);border:0;border-radius:6px;width:22px;height:20px;font-size:10px;cursor:pointer;line-height:1}
+.hint{font-size:12px;color:var(--dim);margin-top:10px;line-height:1.6}
+/* ---------- READER ---------- */
+#reader{position:fixed;inset:0;display:none;flex-direction:column;background:radial-gradient(120% 90% at 50% 0%,#1a2136 0%,#07090f 70%)}
+#reader.on{display:flex}
+.bar{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(8,11,20,.6);backdrop-filter:blur(8px);z-index:5}
+.bar .ttl{flex:1;min-width:0;font-weight:700;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar .ttl small{display:block;font-weight:500;font-size:11px;color:var(--dim);overflow:hidden;text-overflow:ellipsis}
+.icobtn{width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);cursor:pointer;display:grid;place-items:center;flex:0 0 auto}
+.icobtn:hover{background:rgba(255,255,255,.14)}
+.icobtn.playing{background:var(--acc);border-color:var(--acc)}
+.stage{flex:1;display:grid;place-items:center;perspective:2400px;padding:12px;overflow:hidden;touch-action:pan-y}
+.book{position:relative;width:min(88vw,560px);height:min(78vh,760px);transform-style:preserve-3d;filter:drop-shadow(0 26px 48px rgba(0,0,0,.6))}
+.page{position:absolute;inset:0;transform-origin:left center;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.4,.05,.2,1);will-change:transform}
+.face{position:absolute;inset:0;backface-visibility:hidden;border-radius:6px;overflow:hidden;background:#f7f4ee}
+.face img{width:100%;height:100%;object-fit:contain;display:block;background:#fff}
+.face.back{transform:rotateY(180deg);background:linear-gradient(105deg,#efe9df,#fbf8f2 35%,#e9e1d5)}
+.face.back::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.14),transparent 12%)}
+.spine{position:absolute;left:50%;top:0;bottom:0;width:2px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.35),transparent);pointer-events:none;z-index:1}
+.empty{color:var(--dim);text-align:center;font-size:14px}
+.nav{display:flex;align-items:center;gap:14px;justify-content:center;padding:10px 14px 18px}
+.nav button{width:52px;height:52px;border-radius:50%;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.08);font-size:18px;cursor:pointer}
+.nav button:disabled{opacity:.3}
+.count{font-variant-numeric:tabular-nums;font-size:13px;color:var(--dim);min-width:80px;text-align:center}
+.linkout{display:none;margin-top:12px}
+.linkout.on{display:block}
+.linkout textarea{font-size:12px;word-break:break-all;min-height:88px;font-family:ui-monospace,monospace}
+.badge{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.1em;color:#fff;background:var(--acc);padding:3px 8px;border-radius:999px;margin-bottom:12px}
+.toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);background:#fff;color:#111;padding:10px 18px;border-radius:999px;font-size:13px;font-weight:700;opacity:0;pointer-events:none;transition:.25s;z-index:99}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+
+<div class="wrap" id="editor">
+  <span class="badge">FLIPBOOK</span>
+  <h1>Gambar → E-paper / E-book</h1>
+  <p class="sub">Upload gambar halaman, tambah musik, lalu bagikan link-nya. Semua jalan di browser.</p>
+
+  <div class="card">
+    <div class="row">
+      <div><label>Judul buku</label><input id="tTitle" type="text" placeholder="Misal: Katalog Produk 2026"></div>
+      <div><label>Penulis / Penerbit</label><input id="tAuthor" type="text" placeholder="Nama kamu"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <label>Halaman (gambar)</label>
+    <div class="drop" id="drop">Klik atau tarik gambar ke sini<br><span style="font-size:12px">JPG / PNG / WEBP — urutkan sesuai keinginan</span></div>
+    <input id="file" type="file" accept="image/*" multiple hidden>
+    <div class="thumbs" id="thumbs"></div>
+    <div class="hint" id="sizeHint"></div>
+  </div>
+
+  <div class="card">
+    <label>Musik latar (URL mp3, satu per baris — opsional)</label>
+    <textarea id="tMusic" placeholder="https://contoh.com/lagu.mp3"></textarea>
+    <div class="hint">Link musik ikut terkirim saat kamu bagikan. File musik lokal tidak bisa dibagikan lewat link.</div>
+  </div>
+
+  <div style="display:flex;gap:10px;flex-wrap:wrap">
+    <button class="btn primary" id="btnPreview">Baca / Pratinjau</button>
+    <button class="btn" id="btnShare">Buat link bagikan</button>
+    <button class="btn" id="btnReset">Kosongkan</button>
+  </div>
+
+  <div class="linkout" id="linkout">
+    <div class="card" style="margin-top:16px">
+      <label>Link buku (bisa dibuka siapa saja)</label>
+      <textarea id="outLink" readonly></textarea>
+      <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+        <button class="btn primary" id="btnCopy">Salin link</button>
+        <a class="btn" id="btnOpen" target="_blank" rel="noopener">Buka</a>
+        <button class="btn" id="btnWa">Kirim WhatsApp</button>
+      </div>
+      <div class="hint">Link memuat gambar terkompresi di dalamnya. Kalau terlalu panjang (&gt;1.5 MB), kurangi jumlah halaman atau kecilkan gambar.</div>
+    </div>
+  </div>
+</div>
+
+<div id="reader">
+  <div class="bar">
+    <button class="icobtn" id="rBack" title="Kembali">✕</button>
+    <div class="ttl" id="rTitle"></div>
+    <button class="icobtn" id="rMusic" title="Musik" style="display:none">♪</button>
+    <button class="icobtn" id="rFull" title="Layar penuh">⛶</button>
+  </div>
+  <div class="stage" id="stage"><div class="book" id="book"></div></div>
+  <div class="nav">
+    <button id="rPrev" title="Halaman sebelumnya">‹</button>
+    <span class="count" id="rCount">0 / 0</span>
+    <button id="rNext" title="Halaman berikutnya">›</button>
+  </div>
+</div>
+
+<audio id="bgm" loop preload="none"></audio>
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const MAXW = 900, Q = .72, BUDGET = 1.5e6;
+let pages = [], music = [], cur = 0, res = null, playlist = 0;
+
+/* ---------- helpers ---------- */
+const toast = m => { const t=$('toast'); t.textContent=m; t.classList.add('on'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('on'),2200); };
+const b64 = u8 => { let s=''; for(let i=0;i<u8.length;i+=0x8000) s+=String.fromCharCode.apply(null,u8.subarray(i,i+0x8000)); return btoa(s); };
+const unb64 = s => { const b=atob(s), u=new Uint8Array(b.length); for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i); return u; };
+
+async function pack(obj){
+  const raw = new TextEncoder().encode(JSON.stringify(obj));
+  if (!window.CompressionStream) return 'r' + b64(raw);
+  const c = new Blob([raw]).stream().pipeThrough(new CompressionStream('deflate-raw'));
+  return 'z' + b64(new Uint8Array(await new Response(c).arrayBuffer()));
+}
+async function unpack(str){
+  const kind = str[0], data = unb64(str.slice(1));
+  if (kind === 'r') return JSON.parse(new TextDecoder().decode(data));
+  const d = new Blob([data]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+  return JSON.parse(new TextDecoder().decode(await new Response(d).arrayBuffer()));
+}
+
+document.addEventListener('keydown', e => {
+  if (!$('reader').classList.contains('on')) return;
+  if (e.key === 'ArrowRight') next(); else if (e.key === 'ArrowLeft') prev(); else if (e.key === 'Escape') closeReader();
+});
+
+/* ---------- image intake ---------- */
+function shrink(file){
+  return new Promise((res, rej) => {
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => {
+      const s = Math.min(1, MAXW / img.width), w = Math.round(img.width * s), h = Math.round(img.height * s);
+      const c = document.createElement('canvas'); c.width = w; c.height = h;
+      const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, w, h); x.drawImage(img, 0, 0, w, h);
+      URL.revokeObjectURL(url);
+      res(c.toDataURL('image/jpeg', Q));
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); rej(new Error('gagal baca gambar')); };
+    img.src = url;
+  });
+}
+
+async function addFiles(list){
+  const files = [...list].filter(f => /^image\//.test(f.type));
+  if (!files.length) return;
+  toast('Memproses ' + files.length + ' gambar…');
+  for (const f of files) { try { pages.push(await shrink(f)); } catch (e) { console.warn(e); } }
+  renderThumbs(); saveDraft();
+}
+
+/* ---------- editor ---------- */
+function renderThumbs(){
+  $('thumbs').innerHTML = pages.map((src, i) => `
+    <div class="thumb">
+      <img src="${src}" alt="Halaman ${i+1}">
+      <span class="n">${i+1}</span>
+      <button class="x" data-del="${i}" title="Hapus">✕</button>
+      <div class="mv"><button data-mv="${i},-1">◀</button><button data-mv="${i},1">▶</button></div>
+    </div>`).join('');
+  const bytes = pages.reduce((a, s) => a + s.length * 0.75, 0);
+  $('sizeHint').textContent = pages.length
+    ? `${pages.length} halaman • ± ${(bytes/1024/1024).toFixed(2)} MB data${bytes > BUDGET ? ' — terlalu besar untuk link, kurangi halaman' : ''}`
+    : '';
+  $('btnPreview').disabled = !pages.length;
+  $('btnShare').disabled = !pages.length;
+  saveDraft();
+}
+
+$('thumbs').addEventListener('click', e => {
+  const del = e.target.dataset.del, mv = e.target.dataset.mv;
+  if (del !== undefined) { pages.splice(+del, 1); renderThumbs(); }
+  if (mv) {
+    const [i, d] = mv.split(',').map(Number), j = i + d;
+    if (j < 0 || j >= pages.length) return;
+    [pages[i], pages[j]] = [pages[j], pages[i]]; renderThumbs();
+  }
+});
+
+$('drop').onclick = () => $('file').click();
+$('file').onchange = e => { addFiles(e.target.files); e.target.value = ''; };
+['dragenter','dragover'].forEach(ev => $('drop').addEventListener(ev, e => { e.preventDefault(); $('drop').classList.add('on'); }));
+['dragleave','drop'].forEach(ev => $('drop').addEventListener(ev, e => { e.preventDefault(); $('drop').classList.remove('on'); }));
+$('drop').addEventListener('drop', e => addFiles(e.dataTransfer.files));
+
+function saveDraft(){
+  try { localStorage.setItem('flipbook.draft', JSON.stringify({
+    t: $('tTitle').value, a: $('tAuthor').value, m: $('tMusic').value.split('\n').filter(Boolean), p: pages
+  })); } catch (e) { /* quota — draft terlewat, tidak fatal */ }
+}
+['tTitle','tAuthor','tMusic'].forEach(id => $(id).addEventListener('input', saveDraft));
+
+function loadDraft(){
+  let d; try { d = JSON.parse(localStorage.getItem('flipbook.draft') || 'null'); } catch (e) { return; }
+  if (!d) return;
+  $('tTitle').value = d.t || ''; $('tAuthor').value = d.a || '';
+  $('tMusic').value = (d.m || []).join('\n'); pages = d.p || [];
+  renderThumbs();
+}
+
+$('btnReset').onclick = () => {
+  if (!confirm('Hapus semua halaman dan isian?')) return;
+  pages = []; $('tTitle').value = ''; $('tAuthor').value = ''; $('tMusic').value = '';
+  renderThumbs(); $('linkout').classList.remove('on');
+};
+
+function bookData(){
+  return { t: $('tTitle').value.trim() || 'Flipbook', a: $('tAuthor').value.trim(), m: $('tMusic').value.split('\n').map(s => s.trim()).filter(Boolean), p: pages };
+}
+
+/* ---------- reader ---------- */
+function build(str){
+  res = str; const b = typeof str === 'string' ? null : str;
+  const d = b || res;
+  $('rTitle').innerHTML = `${esc(d.t)}<small>${esc(d.a || '')}${d.p.length ? ' • ' + d.p.length + ' halaman' : ''}</small>`;
+  music = d.m || []; playlist = 0;
+  cur = 0;
+  const book = $('book');
+  book.innerHTML = d.p.length
+    ? d.p.map((src, i) => `<div class="page" data-i="${i}"><div class="face front"><img src="${src}" alt="Halaman ${i+1}" draggable="false"></div><div class="face back"></div></div>`).join('') + '<div class="spine"></div>'
+    : '<div class="empty">Belum ada halaman.</div>';
+  paint();
+  $('reader').classList.add('on');
+  document.body.style.overflow = 'hidden';
+  $('rMusic').style.display = music.length ? 'grid' : 'none';
+  $('rMusic').classList.remove('playing');
+  $('bgm').pause();
+}
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function paint(){
+  const n = document.querySelectorAll('.page').length;
+  $('rCount').textContent = `${Math.min(cur + 1, n)} / ${n}`;
+  $('rPrev').disabled = cur <= 0;
+  $('rNext').disabled = cur >= n - 1;
+  document.querySelectorAll('.page').forEach(p => {
+    const i = +p.dataset.i, flipped = i < cur;
+    p.style.transform = flipped ? 'rotateY(-179deg)' : 'rotateY(0deg)';
+    p.style.zIndex = flipped ? i + 1 : n - i;
+  });
+}
+
+function next(){ if (cur < document.querySelectorAll('.page').length - 1) { cur++; paint(); } }
+function prev(){ if (cur > 0) { cur--; paint(); } }
+$('rNext').onclick = next; $('rPrev').onclick = prev;
+
+$('stage').addEventListener('click', e => {
+  if (e.target.closest('.spine')) return;
+  const r = $('stage').getBoundingClientRect();
+  (e.clientX - r.left) > r.width / 2 ? next() : prev();
+});
+
+let sx = 0, sy = 0;
+$('stage').addEventListener('touchstart', e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+$('stage').addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+  if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy)) dx < 0 ? next() : prev();
+}, { passive: true });
+
+$('rFull').onclick = () => {
+  if (document.fullscreenElement) document.exitFullscreen();
+  else $('reader').requestFullscreen?.().catch(() => toast('Layar penuh tidak didukung'));
+};
+
+$('rMusic').onclick = () => {
+  const a = $('bgm'), b = $('rMusic');
+  if (!music.length) return;
+  if (a.paused) {
+    a.src = music[playlist % music.length];
+    a.play().then(() => b.classList.add('playing')).catch(() => toast('Ketuk lagi untuk memutar musik'));
+  } else { a.pause(); b.classList.remove('playing'); }
+};
+$('bgm').onended = () => { if (!music.length) return; playlist++; $('bgm').src = music[playlist % music.length]; $('bgm').play().catch(() => {}); };
+
+function closeReader(){
+  $('reader').classList.remove('on');
+  document.body.style.overflow = '';
+  $('bgm').pause(); $('rMusic').classList.remove('playing');
+  if (location.hash.startsWith('#b=')) history.replaceState(null, '', location.pathname);
+}
+$('rBack').onclick = closeReader;
+
+/* ---------- share ---------- */
+$('btnPreview').onclick = () => { if (pages.length) build(bookData()); else toast('Tambahkan gambar dulu'); };
+
+$('btnShare').onclick = async () => {
+  const d = bookData();
+  if (!d.p.length) return toast('Tambahkan gambar dulu');
+  const btn = $('btnShare'); btn.disabled = true; btn.textContent = 'Membuat…';
+  try {
+    const hash = await pack(d);
+    const url = location.origin + location.pathname + '#b=' + hash;
+    $('outLink').value = url;
+    $('btnOpen').href = url;
+    $('linkout').classList.add('on');
+    $('btnWa').onclick = () => window.open('https://wa.me/?text=' + encodeURIComponent((d.t || 'Flipbook') + ' — ' + url), '_blank');
+    toast(url.length > BUDGET ? 'Link terlalu panjang, kurangi halaman' : 'Link siap dibagikan');
+  } catch (e) { console.error(e); toast('Gagal membuat link'); }
+  btn.disabled = false; btn.textContent = 'Buat link bagikan';
+};
+
+$('btnCopy').onclick = async () => {
+  try { await navigator.clipboard.writeText($('outLink').value); toast('Link disalin'); }
+  catch (e) { $('outLink').select(); document.execCommand('copy'); toast('Link disalin'); }
+};
+
+/* ---------- boot ---------- */
+(async () => {
+  const h = location.hash;
+  if (h.startsWith('#b=')) {
+    try { build(await unpack(h.slice(3))); return; }
+    catch (e) { console.error(e); toast('Link rusak atau tidak lengkap'); }
+  }
+  loadDraft();
+})();
+</script>
+</body>
+</html>

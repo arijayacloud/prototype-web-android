@@ -102,6 +102,31 @@ tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter','sans-serif'
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
+    <!-- FLIPBOOK CARD -->
+    <article class="project-card group bg-white rounded-[24px] border border-slate-100 overflow-hidden hover:shadow-xl hover:border-rose-100 transition flex flex-col" data-project="flipbook">
+      <div class="relative h-48 overflow-hidden bg-slate-900">
+        <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=700&q=80" loading="lazy" alt="Flipbook e-paper thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+        <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-rose-600 text-white text-[11px] font-bold tracking-widest">BARU • E-PAPER</span>
+        <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur text-rose-800 text-[11px] font-bold">E-BOOK</span>
+      </div>
+      <div class="p-6 flex-1 flex flex-col">
+        <div class="text-xs font-bold tracking-widest text-rose-600">FLIPBOOK • GAMBAR → E-PAPER • MUSIK</div>
+        <h3 class="font-display font-extrabold text-[18px] leading-tight mt-1">Flipbook — E-paper & E-book Interaktif</h3>
+        <p class="text-sm text-slate-500 leading-6 mt-2 flex-1">Upload gambar halaman, jadi buku dengan efek halaman bisa dibolak-balik, sisipkan musik latar, lalu bagikan link yang bisa dibuka siapa saja — tanpa server.</p>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <span class="px-2.5 py-1 rounded-full bg-rose-50 border border-rose-200 text-xs font-semibold text-rose-700">Efek Halaman</span>
+          <span class="px-2.5 py-1 rounded-full bg-violet-50 border border-violet-200 text-xs font-semibold text-violet-700">Musik Latar</span>
+          <span class="px-2.5 py-1 rounded-full bg-sky-50 border border-sky-200 text-xs font-semibold text-sky-700">Share Link</span>
+        </div>
+        <div class="mt-5 grid grid-cols-2 gap-2">
+          <a href="flipbook.html" target="_blank" rel="noopener" data-action="preview" data-url="flipbook.html" data-title="Flipbook — E-paper & E-book Interaktif" class="inline-flex justify-center items-center gap-2 py-2.5 rounded-full bg-rose-600 text-white text-sm font-bold hover:bg-rose-700 transition"><i class="fa-solid fa-eye text-xs"></i> Live Preview</a>
+          <button data-action="detail" data-project="flipbook" class="inline-flex justify-center items-center gap-2 py-2.5 rounded-full border border-slate-200 text-sm font-bold hover:bg-slate-50 transition"><i class="fa-solid fa-circle-info text-xs"></i> Detail</button>
+        </div>
+        <a href="flipbook.html" target="_blank" rel="noopener" class="mt-2 inline-flex justify-center items-center gap-2 py-2.5 rounded-full bg-rose-50 border border-rose-200 text-rose-700 text-sm font-bold hover:bg-rose-100 transition"><i class="fa-solid fa-arrow-up-right-from-square text-xs"></i> Kunjungi</a>
+        <a href="https://github.com/arijayacloud/prototype-web-android/tree/main/flipbook.html" target="_blank" rel="noopener" class="mt-1 inline-flex justify-center items-center gap-2 py-2 rounded-full text-xs font-semibold text-slate-500 hover:text-slate-900"><i class="fa-brands fa-github"></i> Lihat Kode — flipbook.html</a>
+      </div>
+    </article>
+
     <!-- KAS-KANTOR CARD -->
     <article class="project-card group bg-white rounded-[24px] border border-slate-100 overflow-hidden hover:shadow-xl hover:border-blue-100 transition flex flex-col" data-project="kas-kantor">
       <div class="relative h-48 overflow-hidden bg-slate-900">
@@ -1318,6 +1343,21 @@ const PROJECTS = {
       { label: 'Live Demo', href: 'kasir-utama/index.html' },
       { label: 'Kunjungi Langsung', href: 'kasir-utama/index.html' },
       { label: 'Source di GitHub', href: 'https://github.com/arijayacloud/prototype-web-android/tree/main/kasir-utama' }
+    ]
+  },
+  'flipbook': {
+    title: 'Flipbook — E-paper & E-book Interaktif',
+    url: 'flipbook.html',
+    codeUrl: 'https://github.com/arijayacloud/prototype-web-android/blob/main/flipbook.html',
+    thumbnail: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=700&q=80',
+    background: 'Aplikasi web untuk mengubah kumpulan gambar menjadi e-paper/e-book interaktif dengan efek halaman yang bisa dibolak-balik, musik latar, dan link yang bisa dibagikan.',
+    problem: 'Membuat katalog, brosur, atau buku digital biasanya butuh aplikasi desktop atau layanan berbayar. Di sini cukup upload gambar — jadi buku yang bisa dibaca siapa saja lewat satu link, tanpa server.',
+    features: ['Upload banyak gambar sekaligus, urutkan dan hapus halaman sesuai keinginan', 'Gambar dikompres otomatis di browser agar link tetap ringkas', 'Efek balik halaman 3D dengan animasi, bisa klik sisi kanan/kiri, tombol, keyboard, atau geser di layar sentuh', 'Musik latar dari URL mp3 dengan pemutar putar/jeda dan playlist berurutan', 'Membuat link berisi seluruh buku (terkompresi) — bisa dibuka online, di-share ke WhatsApp, tanpa backend', 'Draft buku tersimpan otomatis di localStorage'],
+    stack: ['HTML5', 'CSS 3D Transform', 'Vanilla JS', 'CompressionStream + Base64 (link berisi data)'],
+    links: [
+      { label: 'Live Demo', href: 'flipbook.html' },
+      { label: 'Buka Flipbook', href: 'flipbook.html' },
+      { label: 'Source di GitHub', href: 'https://github.com/arijayacloud/prototype-web-android/blob/main/flipbook.html' }
     ]
   }
 };
