@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tahfidz Pembinaan — Manajemen Koreksi Setoran Hafalan</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
+          colors: {
+            tahfidz: {
+              50: '#f0fdf4', 100: '#dcfce7', 200: '#bbf7d0', 300: '#86efac',
+              400: '#4ade80', 500: '#22c55e', 600: '#16a34a', 700: '#15803d',
+              800: '#166534', 900: '#14532d'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased font-sans">
+
+  <!-- ================= NAVBAR ================= -->
+  <nav class="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-600 to-green-800 text-white flex items-center justify-center font-black text-lg">
+          <i class="fa-solid fa-mosque"></i>
+        </div>
+        <span class="font-black text-sm tracking-tight hidden sm:inline text-green-900">TAHFIDZ<br><span class="text-[10px] font-bold text-green-500">PEMBINAAN</span></span>
+      </div>
+
+      <!-- Desktop Menu -->
+        <a href="#input-koreksi" class="px-4 py-2 rounded-lg text-green-700 hover:bg-green-50 transition">Input Koreksi</a>
+        <a href="#dashboard" class="px-4 py-2 rounded-lg text-green-700 hover:bg-green-50 transition">Dashboard</a>
+        <a href="#export" class="px-4 py-2 rounded-lg text-green-700 hover:bg-green-50 transition">Export</a>
+        <a href="#profil" class="px-4 py-2 rounded-lg text-green-700 hover:bg-green-50 transition">Profil</a>
+      </div>
+
+      <!-- CTA & Mobile -->
+      <div class="flex items-center gap-3">
+        <button onclick="scrollToKontak()" class="px-4 py-2 rounded-lg bg-green-500 hover:bg-green-600 text-white font-black text-xs transition shadow-md">
+          Login / Daftar
+        </button>
+        <button onclick="toggleMenu()" class="md:hidden w-8 h-8 rounded-lg border border-slate-200 flex items-center justify-center">
+          <i class="fa-solid fa-bars text-green-900"></i>
+        </button>
+      </div>
+    </div>
+
+      <!-- Mobile Menu -->
+      <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-slate-200 px-4 py-3 space-y-2">
+        <a href="#beranda" class="block px-3 py-2 rounded-lg text-green-700 hover:bg-green-50 font-bold text-xs">Beranda</a>
+        <a href="#input-koreksi" class="block px-3 py-2 rounded-lg text-green-700 hover:bg-green-50 font-bold text-xs">Input Koreksi</a>
+        <a href="#dashboard" class="block px-3 py-2 rounded-lg text-green-700 hover:bg-green-50 font-bold text-xs">Dashboard</a>
+        <a href="#export" class="block px-3 py-2 rounded-lg text-green-700 hover:bg-green-50 font-bold text-xs">Export</a>
+        <a href="#profil" class="block px-3 py-2 rounded-lg text-green-700 hover:bg-green-50 font-bold text-xs">Profil</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ================= HERO SECTION ================= -->
+  <section id="beranda" class="bg-gradient-to-br from-green-900 to-green-700 text-white py-16 sm:py-24">
+  <section id="beranda" class="bg-gradient-to-br from-green-900 to-green-700 text-white py-16 sm:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8 items-center">
+      <div class="space-y-6">
+        <div class="space-y-2">
+          <span class="text-green-400 font-black text-xs tracking-wider uppercase">Manajemen Tahfidz Terstruktur</span>
+          <h1 class="text-4xl sm:text-5xl font-black leading-tight">
+            Tahfidz Pembinaan<br>
+            <span class="text-green-400">Input & Koreksi Hafalan</span>
+          </h1>
+          <p class="text-sm text-green-100 max-w-md">Aplikasi manajemen hafalan terintegrasi untuk pondok pesantren & komunitas: input setoran, koreksi otomatis, dashboard progres, export laporan.</p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button onclick="scrollToKontak()" class="px-6 py-3 rounded-full bg-green-500 hover:bg-green-600 text-white font-black text-sm transition shadow-lg">
+            <i class="fa-solid fa-download"></i> Unduh di Play Store
+          </button>
+          <a href="#input-koreksi" class="px-6 py-3 rounded-full bg-white/20 hover:bg-white/30 text-white font-bold text-sm transition border border-white/30 flex items-center gap-2">
+            <i class="fa-solid fa-edit"></i> Input Koreksi
+          </a>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="space-y-4">
+        <div class="bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/20 text-center">
+          <div class="text-3xl font-black text-green-300">1,284</div>
+          <div class="text-xs text-green-200 mt-1">Siswa Aktif</div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="bg-white/10 backdrop-blur rounded-xl p-3 border border-white/20 text-center">
+            <div class="text-2xl font-black text-green-300">456</div>
+            <div class="text-[10px] text-green-200">Total Setoran</div>
+          </div>
+          <div class="bg-white/10 backdrop-blur rounded-xl p-3 border border-white/20 text-center">
+            <div class="text-2xl font-black text-green-300">89%</div>
+            <div class="text-[10px] text-green-200">Tingkat Keberhasilan</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= INPUT KOREKSI ================= -->
+  <section id="input-koreksi" class="py-16 bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-black text-green-900 mb-8 text-center">Input <span class="text-green-500">Koreksi</span></h2>
+      <div class="bg-green-50 rounded-3xl p-6 border-2 border-green-300">
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="space-y-4">
+            <div class="bg-white rounded-xl p-4 border border-green-200">
+              <h3 class="font-black text-sm text-green-900 mb-3">📋 Detail Setoran</h3>
+              <div class="space-y-3">
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1">Nama Siswa</label>
+                  <select class="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs">
+                    <option>Pilih Siswa</option>
+                    <option>Umar bin Khattab</option>
+                    <option>Aisyah binti Abu Bakar</option>
+                    <option>Abdullah bin Mas'ud</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1">Tanggal</label>
+                  <input type="date" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1">Juz / Halaman</label>
+                  <input type="text" placeholder="Juz 30, halaman 45" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1">Jenis Setoran</label>
+                  <select class="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs">
+                    <option>Pilih jenis</option>
+                    <option>Tilawah</option>
+                    <option>Murottal</option>
+                    <option>Sabq</option>
+                    <option>Musytarak</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-xl p-4 border border-green-200">
+              <h3 class="font-black text-sm text-green-900 mb-3">🎯 Koreksi Tahfidz</h3>
+              <div class="space-y-3">
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" class="w-4 h-4 text-green-600"> Tajwid
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" class="w-4 h-4 text-green-600"> Makhraj
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" class="w-4 h-4 text-green-600"> Kelancaran
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" class="w-4 h-4 text-green-600"> Hafalan
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" class="w-4 h-4 text-green-600"> Adab
+                </label>
+                <textarea placeholder="Catatan tambahan..." class="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs h-20 resize-none"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <div class="bg-green-100 rounded-xl p-4 border-2 border-green-400">
+              <h3 class="font-black text-sm text-green-900 mb-3">📊 Preview Skor</h3>
+              <div class="space-y-2">
+                <div class="flex justify-between text-xs">
+                  <span>Tajwid:</span>
+                  <span class="font-bold text-green-700">0</span>
+                </div>
+                <div class="flex justify-between text-xs">
+                  <span>Makhraj:</span>
+                  <span class="font-bold text-green-700">0</span>
+                </div>
+                <div class="flex justify-between text-xs">
+                  <span>Kelancaran:</span>
+                  <span class="font-bold text-green-700">0</span>
+                </div>
+                <div class="flex justify-between text-xs">
+                  <span>Hafalan:</span>
+                  <span class="font-bold text-green-700">0</span>
+                </div>
+                <div class="flex justify-between text-xs">
+                  <span>Adab:</span>
+                  <span class="font-bold text-green-700">0</span>
+                </div>
+                <div class="border-t border-green-300 pt-2 mt-2">
+                  <div class="flex justify-between text-sm font-black">
+                    <span>Total Skor:</span>
+                    <span class="text-green-800">0/50</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-xl p-4 border border-green-200">
+              <h3 class="font-black text-sm text-green-900 mb-3">💾 Aksi</h3>
+              <div class="space-y-2">
+                <button onclick="simpanKoreksi()" class="w-full py-3 rounded-full bg-green-600 hover:bg-green-700 text-white font-black text-sm transition">
+                  <i class="fa-solid fa-save"></i> Simpan Koreksi
+                </button>
+                <button onclick="previewSetoran()" class="w-full py-3 rounded-full bg-white border border-green-300 text-green-700 font-bold text-sm hover:bg-green-50 transition">
+                  <i class="fa-solid fa-eye"></i> Preview Setoran
+                </button>
+                <button onclick="shareWhatsApp()" class="w-full py-3 rounded-full bg-white border border-green-300 text-green-700 font-bold text-sm hover:bg-green-50 transition">
+                  <i class="fa-brands fa-whatsapp"></i> Bagikan ke WhatsApp
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= DASHBOARD ================= -->
+  <section id="dashboard" class="py-16 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-black text-green-900 mb-8 text-center">Dashboard <span class="text-green-500">Progres</span></h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="bg-white rounded-2xl p-6 border border-slate-200">
+          <div class="text-xs font-bold text-slate-600 mb-2">🏆 Skor per Siswa</div>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between p-3 rounded-lg bg-green-50">
+              <div class="text-xs font-bold">Umar bin Khattab</div>
+              <div class="text-xs font-black text-green-700">45/50</div>
+            </div>
+            <div class="flex items-center justify-between p-3 rounded-lg bg-green-50">
+              <div class="text-xs font-bold">Aisyah binti Abu Bakar</div>
+              <div class="text-xs font-black text-green-700">38/50</div>
+            </div>
+            <div class="flex items-center justify-between p-3 rounded-lg bg-green-50">
+              <div class="text-xs font-bold">Abdullah bin Mas'ud</div>
+              <div class="text-xs font-black text-green-700">42/50</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 border border-slate-200">
+          <div class="text-xs font-bold text-slate-600 mb-2">📈 Tren Mingguan</div>
+          <div class="h-32 flex items-end gap-2">
+            <div class="bg-green-200 w-8 rounded-t-sm" style="height: 60%"></div>
+            <div class="bg-green-400 w-8 rounded-t-sm" style="height: 80%"></div>
+            <div class="bg-green-600 w-8 rounded-t-sm" style="height: 45%"></div>
+            <div class="bg-green-800 w-8 rounded-t-sm" style="height: 70%"></div>
+            <div class="bg-green-900 w-8 rounded-t-sm" style="height: 90%"></div>
+          </div>
+          <div class="text-[10px] text-slate-600 mt-2">Minggu 1-5, 2026</div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 border border-slate-200">
+          <div class="text-xs font-bold text-slate-600 mb-2">📊 Statistik Keseluruhan</div>
+          <div class="space-y-2">
+            <div class="flex justify-between text-xs">
+              <span>Rata-rata:</span>
+              <span class="font-bold">41.7</span>
+            </div>
+            <div class="flex justify-between text-xs">
+              <span>Tinggi:</span>
+              <span class="font-bold">45</span>
+            </div>
+            <div class="flex justify-between text-xs">
+              <span>Rendah:</span>
+              <span class="font-bold">38</span>
+            </div>
+            <div class="flex justify-between text-xs">
+              <span>Selamat:</span>
+              <span class="font-bold text-green-600">60%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= EXPORT & LAPORAN ================= -->
+  <section id="export" class="py-16 bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-black text-green-900 mb-8 text-center">Export & <span class="text-green-500">Laporan</span></h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-green-50 rounded-2xl p-5 border-2 border-green-300 hover:shadow-lg transition">
+          <div class="text-2xl mb-2">📄</div>
+          <h3 class="font-black text-sm text-green-900">PDF Bulanan</h3>
+          <div class="text-xs text-slate-600 mt-2">Laporan rekap progres per bulan</div>
+          <button onclick="exportPDF()" class="mt-3 w-full py-2 rounded-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs transition">
+            Generate PDF
+          </button>
+        </div>
+        <div class="bg-green-50 rounded-2xl p-5 border-2 border-green-300 hover:shadow-lg transition">
+          <div class="text-2xl mb-2">📊</div>
+          <h3 class="font-black text-sm text-green-900">Excel</h3>
+          <div class="text-xs text-slate-600 mt-2">Data mentah per siswa & kelas</div>
+          <button onclick="exportExcel()" class="mt-3 w-full py-2 rounded-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs transition">
+            Generate Excel
+          </button>
+        </div>
+        <div class="bg-green-50 rounded-2xl p-5 border-2 border-green-300 hover:shadow-lg transition">
+          <div class="text-2xl mb-2">📱</div>
+          <h3 class="font-black text-sm text-green-900">WhatsApp</h3>
+          <div class="text-xs text-slate-600 mt-2">Bagikan ringkasan skor ke grup kelas</div>
+          <button onclick="exportWhatsApp()" class="mt-3 w-full py-2 rounded-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs transition">
+            Kirim via WA
+          </button>
+        </div>
+        <div class="bg-green-50 rounded-2xl p-5 border-2 border-green-300 hover:shadow-lg transition">
+          <div class="text-2xl mb-2">🖨️</div>
+          <h3 class="font-black text-sm text-green-900">Cetak</h3>
+          <div class="text-xs text-slate-600 mt-2">Laporan cetak untuk arsip</div>
+          <button onclick="exportPrint()" class="mt-3 w-full py-2 rounded-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs transition">
+            Cetak Laporan
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PROFIL & DOWNLOAD ================= -->
+  <section id="profil" class="py-16">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-black text-green-900 mb-8 text-center">Hubungi & <span class="text-green-500">Unduh</span></h2>
+
+      <div class="grid sm:grid-cols-3 gap-4 mb-8">
+        <a href="mailto:info@tahfidz-pembinaan.com" class="bg-green-50 border-2 border-green-300 rounded-2xl p-6 text-center hover:shadow-lg transition">
+          <i class="fa-solid fa-envelope text-2xl text-green-700 mb-2"></i>
+          <div class="font-black text-xs text-green-900">Email</div>
+          <div class="text-[11px] text-slate-600 mt-1">info@tahfidz-pembinaan.com</div>
+        </a>
+        <a href="tel:+62812345678" class="bg-green-50 border-2 border-green-300 rounded-2xl p-6 text-center hover:shadow-lg transition">
+          <i class="fa-solid fa-phone text-2xl text-green-700 mb-2"></i>
+          <div class="font-black text-xs text-green-900">Telepon</div>
+          <div class="text-[11px] text-slate-600 mt-1">+62 812 3456 7890</div>
+        </a>
+        <a href="https://wa.me/6281234567890" target="_blank" class="bg-green-50 border-2 border-green-300 rounded-2xl p-6 text-center hover:shadow-lg transition">
+          <i class="fa-brands fa-whatsapp text-2xl text-green-700 mb-2"></i>
+          <div class="font-black text-xs text-green-900">WhatsApp</div>
+          <div class="text-[11px] text-slate-600 mt-1">Chat cepat</div>
+        </a>
+      </div>
+
+      <div class="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-300 rounded-3xl p-6 sm:p-8">
+        <h3 class="font-black text-base text-green-900 mb-4 text-center">Form Request Akses Premium & Laporan</h3>
+        <form onsubmit="handleSubmit(event)" class="space-y-4">
+          <div class="grid sm:grid-cols-2 gap-3">
+            <input type="text" placeholder="Nama Lembaga/Pondok" required class="px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-green-500">
+            <input type="email" placeholder="Email Admin" required class="px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-green-500">
+          </div>
+          <div class="grid sm:grid-cols-2 gap-3">
+            <input type="tel" placeholder="No. HP" required class="px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-green-500">
+            <select required class="px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-green-500">
+              <option value="">Jenis Lembaga</option>
+              <option>Pondok Pesantren</option>
+              <option>Madrasah Diniyyah</option>
+              <option>Komunitas Tahfidz</option>
+              <option>Lainnya</option>
+            </select>
+          </div>
+          <textarea placeholder="Kebutuhan khusus (fitur premium, jumlah siswa, periode laporan)..." rows="2" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-green-500 resize-none"></textarea>
+          <button type="submit" class="w-full py-3 rounded-full bg-green-600 hover:bg-green-700 text-white font-black text-sm transition shadow-lg">
+            <i class="fa-solid fa-download"></i> Request Akses & Laporan
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-green-900 text-white py-8 border-t-4 border-green-400">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid sm:grid-cols-3 gap-6 mb-6">
+        <div>
+          <h4 class="font-black text-sm mb-2">TAHFIDZ PEMBINAAN</h4>
+          <p class="text-xs text-green-100">Aplikasi web & Android untuk manajemen setoran & koreksi hafalan Quran terstruktur untuk pondok pesantren dan komunitas Islami.</p>
+        </div>
+        <div>
+          <h4 class="font-black text-xs mb-2 uppercase">Fitur Utama</h4>
+          <ul class="text-xs text-green-200 space-y-1">
+            <li>• Input Setoran & Koreksi</li>
+            <li>• Skor Otomatis</li>
+            <li>• Dashboard Progres</li>
+            <li>• Export PDF/Excel/WhatsApp</li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-black text-xs mb-2 uppercase">Jam Operasional</h4>
+          <p class="text-xs text-green-200">Senin - Jumat: 08.00 - 20.00<br>Layanan 24/7 untuk akses laporan</p>
+        </div>
+      </div>
+      <div class="border-t border-green-800 pt-4 text-center text-xs text-green-300">
+        <p>&copy; 2026 Tahfidz Pembinaan — Aplikasi Manajemen Hafalan</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= JAVASCRIPT ================= -->
+  <script>
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('hidden');
+    }
+
+    function scrollToKontak() {
+      document.getElementById('profil').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function simpanKoreksi() {
+      alert('Koreksi berhasil disimpan!');
+    }
+
+    function previewSetoran() {
+      alert('Membuka preview setoran...');
+    }
+
+    function shareWhatsApp() {
+      window.open('https://wa.me/6281234567890?text=Koreksi tahfidz baru telah disimpan.', '_blank');
+    }
+
+    function exportPDF() {
+      alert('Generating PDF laporan bulanan...');
+    }
+
+    function exportExcel() {
+      alert('Mengunduh data Excel...');
+    }
+
+    function exportWhatsApp() {
+      window.open('https://wa.me/6281234567890?text=Hi, silakan lihat laporan progres tahfidz minggu ini.', '_blank');
+    }
+
+    function exportPrint() {
+      window.print();
+    }
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      alert('Permintaan akses premium telah dikirim. Tim kami akan menghubungi Anda segera.');
+      e.target.reset();
+    }
+
+    // Close mobile menu when clicking nav links
+    document.querySelectorAll('#mobileMenu a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById('mobileMenu').classList.add('hidden');
+      });
+    });
+  </script>
+</body>
+</html>

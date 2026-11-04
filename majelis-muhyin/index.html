@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Majelis Muhyin Nufuus — Manajemen Komunitas Islami</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
+          colors: {
+            islamic: {
+              50: '#f0fdf4', 100: '#dcfce7', 200: '#bbf7d0', 300: '#86efac',
+              400: '#4ade80', 500: '#22c55e', 600: '#16a34a', 700: '#15803d',
+              800: '#166534', 900: '#14532d'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-white text-slate-800 antialiased font-sans">
+
+  <!-- ================= NAVBAR ================= -->
+  <nav class="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-600 to-green-800 text-white flex items-center justify-center font-black text-lg">
+          <i class="fa-solid fa-mosque"></i>
+        </div>
+        <span class="font-black text-sm tracking-tight hidden sm:inline text-green-900">MAJELIS MUHYIN<br><span class="text-[10px] font-bold text-green-500">NU FUUS</span></span>
+      </div>
+
+      <!-- Desktop Menu -->
+      <div class="hidden md:flex items-center gap-1 text-xs font-bold">
+        <a href="#beranda" class="px-4 py-2 rounded-lg text-green-700 hover:bg-green-50 transition">Beranda</a>
+        <a href="#jadwal" class="px-4 py-2 rounded-lg text-green-700 hover:bg-green-50 transition">Jadwal</a>
+        <a href="#streaming" class="px-4 py-2 rounded-lg text-green-700 hover:bg-green-50 transition">Streaming</a>
+        <a href="#buku" class="px-4 py-2 rounded-lg text-green-700 hover:bg-green-50 transition">Kitab Digital</a>
+        <a href="#donasi" class="px-4 py-2 rounded-lg text-green-700 hover:bg-green-50 transition">Donasi</a>
+        <a href="#profil" class="px-4 py-2 rounded-lg text-green-700 hover:bg-green-50 transition">Profil</a>
+      </div>
+
+      <!-- CTA & Mobile -->
+      <div class="flex items-center gap-3">
+        <button onclick="scrollToKontak()" class="px-4 py-2 rounded-lg bg-green-500 hover:bg-green-600 text-white font-black text-xs transition shadow-md">
+          Login / Daftar
+        </button>
+        <button onclick="toggleMenu()" class="md:hidden w-8 h-8 rounded-lg border border-slate-200 flex items-center justify-center">
+          <i class="fa-solid fa-bars text-green-900"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-slate-200 px-4 py-3 space-y-2">
+      <a href="#beranda" class="block px-3 py-2 rounded-lg text-green-700 hover:bg-green-50 font-bold text-xs">Beranda</a>
+      <a href="#jadwal" class="block px-3 py-2 rounded-lg text-green-700 hover:bg-green-50 font-bold text-xs">Jadwal</a>
+      <a href="#streaming" class="block px-3 py-2 rounded-lg text-green-700 hover:bg-green-50 font-bold text-xs">Streaming</a>
+      <a href="#buku" class="block px-3 py-2 rounded-lg text-green-700 hover:bg-green-50 font-bold text-xs">Kitab Digital</a>
+      <a href="#donasi" class="block px-3 py-2 rounded-lg text-green-700 hover:bg-green-50 font-bold text-xs">Donasi</a>
+      <a href="#profil" class="block px-3 py-2 rounded-lg text-green-700 hover:bg-green-50 font-bold text-xs">Profil</a>
+    </div>
+  </nav>
+
+  <!-- ================= HERO SECTION ================= -->
+  <section id="beranda" class="bg-gradient-to-br from-green-900 to-green-700 text-white py-16 sm:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8 items-center">
+      <div class="space-y-6">
+        <div class="space-y-2">
+          <span class="text-green-400 font-black text-xs tracking-wider uppercase">Komunitas Islam Terintegrasi</span>
+          <h1 class="text-4xl sm:text-5xl font-black leading-tight">
+            Majelis Muhyin<br>
+            <span class="text-green-400">Nufuus</span>
+          </h1>
+          <p class="text-sm text-green-100 max-w-md">Aplikasi satu pintu untuk kegiatan majelis, buku digital, donasi, dan manajemen anggota komunitas Islami.</p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button onclick="scrollToKontak()" class="px-6 py-3 rounded-full bg-green-500 hover:bg-green-600 text-white font-black text-sm transition shadow-lg">
+            <i class="fa-solid fa-download"></i> Unduh di Play Store
+          </button>
+          <a href="#jadwal" class="px-6 py-3 rounded-full bg-white/20 hover:bg-white/30 text-white font-bold text-sm transition border border-white/30 flex items-center gap-2">
+            <i class="fa-solid fa-eye"></i> Jelajahi Fitur
+          </a>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="space-y-4">
+        <div class="bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/20 text-center">
+          <div class="text-3xl font-black text-green-300">12,456</div>
+          <div class="text-xs text-green-200 mt-1">Jemaah Terdaftar</div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="bg-white/10 backdrop-blur rounded-xl p-3 border border-white/20 text-center">
+            <div class="text-2xl font-black text-green-300">156</div>
+            <div class="text-[10px] text-green-200">Kegiatan Bulan Ini</div>
+          </div>
+          <div class="bg-white/10 backdrop-blur rounded-xl p-3 border border-white/20 text-center">
+            <div class="text-2xl font-black text-green-300">89%</div>
+            <div class="text-[10px] text-green-200">Partisipasi Member</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= KALENDER & LOKASI ================= -->
+  <section id="jadwal" class="py-16 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-black text-green-900 mb-8 text-center">Kalender & <span class="text-green-500">Lokasi</span></h2>
+      <div class="grid lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 bg-white rounded-3xl border border-slate-200 overflow-hidden">
+          <div class="p-6 border-b border-slate-200 bg-green-50">
+            <h3 class="font-black text-lg text-green-900">🗓️ Jadwal Kegiatan Majelis</h3>
+          </div>
+          <div class="p-6 space-y-4">
+            <div class="flex items-start gap-4 p-4 rounded-xl bg-green-50 border border-green-200">
+              <div class="w-12 h-12 rounded-lg bg-green-600 text-white flex items-center justify-center text-xs font-bold">
+                01/06
+              </div>
+              <div class="flex-1">
+                <div class="font-black text-sm text-green-900">Kajian Rutin Minggu</div>
+                <div class="text-xs text-slate-600 mt-1">📍 Masjid Al-Ikhlas, Jakarta Selatan</div>
+                <div class="text-xs text-slate-500 mt-1">🕐 08.00 - 10.00 | 👥 45 Jemaah</div>
+              </div>
+              <button class="px-3 py-1.5 rounded-lg bg-green-600 text-white text-xs font-bold">Ikuti</button>
+            </div>
+
+            <div class="flex items-start gap-4 p-4 rounded-xl bg-green-50 border border-green-200">
+              <div class="w-12 h-12 rounded-lg bg-green-600 text-white flex items-center justify-center text-xs font-bold">
+                02/06
+              </div>
+              <div class="flex-1">
+                <div class="font-black text-sm text-green-900">Tarawih Keliling</div>
+                <div class="text-xs text-slate-600 mt-1">📍 Masjid Baitul Hikmah, Bandung</div>
+                <div class="text-xs text-slate-500 mt-1">🕐 19.30 - 21.00 | 👥 78 Jemaah</div>
+              </div>
+              <button class="px-3 py-1.5 rounded-lg bg-green-600 text-white text-xs font-bold">Ikuti</button>
+            </div>
+
+            <div class="flex items-start gap-4 p-4 rounded-xl bg-green-50 border border-green-200">
+              <div class="w-12 h-12 rounded-lg bg-green-600 text-white flex items-center justify-center text-xs font-bold">
+                05/06
+              </div>
+              <div class="flex-1">
+                <div class="font-black text-sm text-green-900">Quran Akhad</div>
+                <div class="text-xs text-slate-600 mt-1">📍 Pondok Pesantren Al-Hikmah</div>
+                <div class="text-xs text-slate-500 mt-1">🕐 09.00 - 12.00 | 👥 32 Hafidz</div>
+              </div>
+              <button class="px-3 py-1.5 rounded-lg bg-green-600 text-white text-xs font-bold">Ikuti</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden">
+          <div class="p-6 border-b border-slate-200 bg-green-50">
+            <h3 class="font-black text-lg text-green-900">🗺️ Lokasi Majelis</h3>
+          </div>
+          <div class="p-6">
+            <div class="space-y-4">
+              <div class="flex items-center gap-3 p-3 rounded-lg bg-slate-50">
+                <div class="w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center">
+                  <i class="fa-solid fa-location-dot text-xs"></i>
+                </div>
+                <div>
+                  <div class="text-xs font-bold text-slate-900">Jakarta Selatan</div>
+                  <div class="text-[10px] text-slate-600">12 kegiatan, 456 jemaah</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-3 p-3 rounded-lg bg-slate-50">
+                <div class="w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center">
+                  <i class="fa-solid fa-location-dot text-xs"></i>
+                </div>
+                <div>
+                  <div class="text-xs font-bold text-slate-900">Bandung</div>
+                  <div class="text-[10px] text-slate-600">8 kegiatan, 234 jemaah</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-3 p-3 rounded-lg bg-slate-50">
+                <div class="w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center">
+                  <i class="fa-solid fa-location-dot text-xs"></i>
+                </div>
+                <div>
+                  <div class="text-xs font-bold text-slate-900">Surabaya</div>
+                  <div class="text-[10px] text-slate-600">6 kegiatan, 189 jemaah</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6">
+              <label class="block text-xs font-bold text-slate-700 mb-2">Filter Lokasi</label>
+              <select class="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs">
+                <option>Semua Wilayah</option>
+                <option>Jakarta</option>
+                <option>Bandung</option>
+                <option>Surabaya</option>
+                <option>Medan</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= STREAMING & VIDEO ================= -->
+  <section id="streaming" class="py-16 bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-black text-green-900 mb-8 text-center">Streaming & <span class="text-green-500">Konten Dakwah</span></h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-green-50 rounded-2xl p-5 border-2 border-green-300 hover:shadow-lg transition">
+          <div class="text-3xl mb-2">📹</div>
+          <h3 class="font-black text-sm text-green-900">Live Kajian</h3>
+          <div class="text-xs text-slate-600 mt-2">Siaran langsung kajian rutin mingguan</div>
+          <div class="mt-3 text-xs font-bold text-green-600">Setiap Minggu 08.00</div>
+          <button onclick="openLiveStream()" class="mt-3 w-full py-2 rounded-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs transition">
+            Tonton Live
+          </button>
+        </div>
+        <div class="bg-green-50 rounded-2xl p-5 border-2 border-green-300 hover:shadow-lg transition">
+          <div class="text-3xl mb-2">🎥</div>
+          <h3 class="font-black text-sm text-green-900">Video Library</h3>
+          <div class="text-xs text-slate-600 mt-2">Kumpulan video dakwah ribuan jam</div>
+          <div class="mt-3 text-xs font-bold text-green-600">Kategori: Tarawih, Hafidz, dll.</div>
+          <button onclick="openVideoLibrary()" class="mt-3 w-full py-2 rounded-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs transition">
+            Jelajahi Video
+          </button>
+        </div>
+        <div class="bg-green-50 rounded-2xl p-5 border-2 border-green-300 hover:shadow-lg transition">
+          <div class="text-3xl mb-2">🕋</div>
+          <h3 class="font-black text-sm text-green-900">Panduan Haji & Umrah</h3>
+          <div class="text-xs text-slate-600 mt-2">Panduan lengkap manasik haji & umrah</div>
+          <div class="mt-3 text-xs font-bold text-green-600">PDF + Video</div>
+          <button onclick="openHajiGuide()" class="mt-3 w-full py-2 rounded-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs transition">
+            Buka Panduan
+          </button>
+        </div>
+        <div class="bg-green-50 rounded-2xl p-5 border-2 border-green-300 hover:shadow-lg transition">
+          <div class="text-3xl mb-2">🎓</div>
+          <h3 class="font-black text-sm text-green-900">Akademi Quran</h3>
+          <div class="text-xs text-slate-600 mt-2">Program belajar Quran terstruktur</div>
+          <div class="mt-3 text-xs font-bold text-green-600">Level: Pemula - Mahir</div>
+          <button onclick="openQuranAcademy()" class="mt-3 w-full py-2 rounded-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs transition">
+            Daftar Akademi
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= KITAB DIGITAL ================= -->
+  <section id="buku" class="py-16 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-black text-green-900 mb-8 text-center">Kitab <span class="text-green-500">Digital</span></h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 hover:shadow-lg transition">
+          <div class="text-2xl mb-2">📖</div>
+          <h3 class="font-black text-sm text-green-900">Fiqh Ibadah</h3>
+          <div class="text-xs text-slate-600 mt-2">Ribu-an hukum sholat, zakat, haji, dll.</div>
+          <div class="mt-3 text-xs font-bold text-green-600">500+ halaman</div>
+          <button onclick="openBook('Fiqh Ibadah')" class="mt-3 w-full py-2 rounded-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs transition">
+            Baca Sekarang
+          </button>
+        </div>
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 hover:shadow-lg transition">
+          <div class="text-2xl mb-2">📚</div>
+          <h3 class="font-black text-sm text-green-900">Sejarah Islam</h3>
+          <div class="text-xs text-slate-600 mt-2">Perkembangan peradaban Islam global</div>
+          <div class="mt-3 text-xs font-bold text-green-600">300+ halaman</div>
+          <button onclick="openBook('Sejarah Islam')" class="mt-3 w-full py-2 rounded-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs transition">
+            Baca Sekarang
+          </button>
+        </div>
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 hover:shadow-lg transition">
+          <div class="text-2xl mb-2">📖</div>
+          <h3 class="font-black text-sm text-green-900">Akidah Ahlus Sunnah</h3>
+          <div class="text-xs text-slate-600 mt-2">Dasar aqidah sesuai Sunnah</div>
+          <div class="mt-3 text-xs font-bold text-green-600">200+ halaman</div>
+          <button onclick="openBook('Akidah Ahlus Sunnah')" class="mt-3 w-full py-2 rounded-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs transition">
+            Baca Sekarang
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= DONASI ================= -->
+  <section id="donasi" class="py-16 bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-black text-green-900 mb-8 text-center">Donasi & <span class="text-green-500">Celengan</span></h2>
+      <div class="grid lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 bg-green-50 rounded-3xl p-6 border-2 border-green-300">
+          <h3 class="font-black text-lg text-green-900 mb-4">💡 Kategori Donasi</h3>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div class="bg-white rounded-xl p-4 border border-green-200">
+              <div class="font-bold text-sm text-green-900">Infak Jumat</div>
+              <div class="text-xs text-slate-600 mt-1">Setiap Jumat pagi</div>
+              <div class="text-xs font-bold text-green-600 mt-2">Target: Rp 5.000.000</div>
+              <div class="text-xs text-slate-500">Terkumpul: Rp 2.750.000 (55%)</div>
+              <button onclick="donate('Infak Jumat')" class="mt-3 w-full py-2 rounded-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs transition">
+                Donasi Sekarang
+              </button>
+            </div>
+            <div class="bg-white rounded-xl p-4 border border-green-200">
+              <div class="font-bold text-sm text-green-900">Zakat Fitrah</div>
+              <div class="text-xs text-slate-600 mt-1">Untuk bulan Ramadhan</div>
+              <div class="text-xs font-bold text-green-600 mt-2">Target: Rp 10.000.000</div>
+              <div class="text-xs text-slate-500">Terkumpul: Rp 8.500.000 (85%)</div>
+              <button onclick="donate('Zakat Fitrah')" class="mt-3 w-full py-2 rounded-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs transition">
+                Donasi Sekarang
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl border border-slate-200 p-6">
+          <h3 class="font-black text-lg text-green-900 mb-4">💰 Donasi Terbaru</h3>
+          <div class="space-y-3">
+            <div class="flex items-center gap-3 p-3 rounded-lg bg-green-50">
+              <div class="w-10 h-10 rounded-full bg-green-100 text-green-700 flex items-center justify-center text-xs font-bold">
+                A001
+              </div>
+              <div class="flex-1">
+                <div class="text-xs font-black text-slate-900">Infak Jumat</div>
+                <div class="text-[10px] text-slate-600">20 Juni 2026</div>
+              </div>
+              <div class="text-xs font-bold text-green-700">Rp 100.000</div>
+            </div>
+            <div class="flex items-center gap-3 p-3 rounded-lg bg-green-50">
+              <div class="w-10 h-10 rounded-full bg-green-100 text-green-700 flex items-center justify-center text-xs font-bold">
+                B045
+              </div>
+              <div class="flex-1">
+                <div class="text-xs font-black text-slate-900">Zakat Fitrah</div>
+                <div class="text-[10px] text-slate-600">19 Juni 2026</div>
+              </div>
+              <div class="text-xs font-bold text-green-700">Rp 250.000</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PROFIL & STRUKTUR ================= -->
+  <section id="profil" class="py-16 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-black text-green-900 mb-8 text-center">Profil & <span class="text-green-500">Struktur</span></h2>
+      <div class="grid lg:grid-cols-2 gap-6">
+        <div class="bg-white rounded-3xl border border-slate-200 p-6">
+          <h3 class="font-black text-lg text-green-900 mb-4">🏢 Dewan Pengurus Pusat</h3>
+          <div class="space-y-3">
+            <div class="flex items-start gap-3 p-3 rounded-lg bg-green-50">
+              <div class="w-10 h-10 rounded-full bg-green-200 text-green-800 flex items-center justify-center text-xs font-bold">
+                DR
+              </div>
+              <div class="flex-1">
+                <div class="text-xs font-black text-slate-900">Dr. Ahmad Sukiman</div>
+                <div class="text-[10px] text-slate-600">Ketua Umum</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-3 p-3 rounded-lg bg-green-50">
+              <div class="w-10 h-10 rounded-full bg-green-200 text-green-800 flex items-center justify-center text-xs font-bold">
+                HW
+              </div>
+              <div class="flex-1">
+                <div class="text-xs font-black text-slate-900">H. Wawan Setiawan</div>
+                <div class="text-[10px] text-slate-600">Sekretaris Umum</div>
+              </div>
+            </div>
+            <div class="flex items-start gap-3 p-3 rounded-lg bg-green-50">
+              <div class="w-10 h-10 rounded-full bg-green-200 text-green-800 flex items-center justify-center text-xs font-bold">
+                AI
+              </div>
+              <div class="flex-1">
+                <div class="text-xs font-black text-slate-900">Aisyah Ilma</div>
+                <div class="text-[10px] text-slate-600">Bendahara Umum</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-3xl border border-slate-200 p-6">
+          <h3 class="font-black text-lg text-green-900 mb-4">🗺️ Struktur Wilayah</h3>
+          <div class="space-y-3">
+            <div class="flex items-center gap-3 p-3 rounded-lg bg-slate-50">
+              <div class="w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center">
+                <i class="fa-solid fa-map-marker-alt text-xs"></i>
+              </div>
+              <div>
+                <div class="text-xs font-bold text-slate-900">Wilayah Jakarta</div>
+                <div class="text-[10px] text-slate-600">45 majelis, 234 pengurus</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 p-3 rounded-lg bg-slate-50">
+              <div class="w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center">
+                <i class="fa-solid fa-map-marker-alt text-xs"></i>
+              </div>
+              <div>
+                <div class="text-xs font-bold text-slate-900">Wilayah Jawa Barat</div>
+                <div class="text-[10px] text-slate-600">32 majelis, 189 pengurus</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 p-3 rounded-lg bg-slate-50">
+              <div class="w-8 h-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center">
+                <i class="fa-solid fa-map-marker-alt text-xs"></i>
+              </div>
+              <div>
+                <div class="text-xs font-bold text-slate-900">Wilayah Jawa Timur</div>
+                <div class="text-[10px] text-slate-600">28 majelis, 156 pengurus</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= KONTAK & DOWNLOAD ================= -->
+  <section id="kontak" class="py-16">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-black text-green-900 mb-8 text-center">Hubungi & <span class="text-green-500">Unduh</span></h2>
+
+      <div class="grid sm:grid-cols-3 gap-4 mb-8">
+        <a href="mailto:info@mahyin.nufuus.com" class="bg-green-50 border-2 border-green-300 rounded-2xl p-6 text-center hover:shadow-lg transition">
+          <i class="fa-solid fa-envelope text-2xl text-green-700 mb-2"></i>
+          <div class="font-black text-xs text-green-900">Email</div>
+          <div class="text-[11px] text-slate-600 mt-1">info@mahyin.nufuus.com</div>
+        </a>
+        <a href="tel:+62812345678" class="bg-green-50 border-2 border-green-300 rounded-2xl p-6 text-center hover:shadow-lg transition">
+          <i class="fa-solid fa-phone text-2xl text-green-700 mb-2"></i>
+          <div class="font-black text-xs text-green-900">Telepon</div>
+          <div class="text-[11px] text-slate-600 mt-1">+62 812 3456 7890</div>
+        </a>
+        <a href="https://wa.me/6281234567890" target="_blank" class="bg-green-50 border-2 border-green-300 rounded-2xl p-6 text-center hover:shadow-lg transition">
+          <i class="fa-brands fa-whatsapp text-2xl text-green-700 mb-2"></i>
+          <div class="font-black text-xs text-green-900">WhatsApp</div>
+          <div class="text-[11px] text-slate-600 mt-1">Chat cepat</div>
+        </a>
+      </div>
+
+      <div class="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-300 rounded-3xl p-6 sm:p-8">
+        <h3 class="font-black text-base text-green-900 mb-4 text-center">Form Request Download Aplikasi</h3>
+        <form onsubmit="handleSubmit(event)" class="space-y-4">
+          <div class="grid sm:grid-cols-2 gap-3">
+            <input type="text" placeholder="Nama Lengkap" required class="px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-green-500">
+            <input type="email" placeholder="Email" required class="px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-green-500">
+          </div>
+          <div class="grid sm:grid-cols-2 gap-3">
+            <input type="tel" placeholder="No. HP" required class="px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-green-500">
+            <select required class="px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-green-500">
+              <option value="">Jenis Perangkat</option>
+              <option>Android Smartphone</option>
+              <option>Android Tablet</option>
+              <option>Both</option>
+            </select>
+          </div>
+          <textarea placeholder="Pesan / Kebutuhan khusus" rows="2" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-green-500 resize-none"></textarea>
+          <button type="submit" class="w-full py-3 rounded-full bg-green-600 hover:bg-green-700 text-white font-black text-sm transition shadow-lg">
+            <i class="fa-solid fa-download"></i> Request Link Download
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-green-900 text-white py-8 border-t-4 border-green-400">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid sm:grid-cols-3 gap-6 mb-6">
+        <div>
+          <h4 class="font-black text-sm mb-2">MAJELIS MUHYIN NUFUUS</h4>
+          <p class="text-xs text-green-100">Aplikasi manajemen komunitas Islami terintegrasi untuk kegiatan majelis, buku digital, donasi, dan koordinasi pengurus.</p>
+        </div>
+        <div>
+          <h4 class="font-black text-xs mb-2 uppercase">Fitur Utama</h4>
+          <ul class="text-xs text-green-200 space-y-1">
+            <li>• Kalender & Lokasi Interaktif</li>
+            <li>• Streaming Dakwah</li>
+            <li>• Kitab Digital</li>
+            <li>• Donasi Celengan</li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-black text-xs mb-2 uppercase">Jam Operasional</h4>
+          <p class="text-xs text-green-200">Senin - Minggu: 08.00 - 21.00<br>Layanan 24/7 untuk streaming & donasi</p>
+        </div>
+      </div>
+      <div class="border-t border-green-800 pt-4 text-center text-xs text-green-300">
+        <p>&copy; 2026 Majelis Muhyin Nufuus — Aplikasi Komunitas Islami</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= JAVASCRIPT ================= -->
+  <script>
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('hidden');
+    }
+
+    function scrollToKontak() {
+      document.getElementById('kontak').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function openLiveStream() {
+      alert('Membuka live stream Majelis Muhyin...');
+    }
+
+    function openVideoLibrary() {
+      alert('Membuka video library...');
+    }
+
+    function openHajiGuide() {
+      alert('Membuka panduan haji & umrah...');
+    }
+
+    function openQuranAcademy() {
+      alert('Membuka akademi Quran...');
+    }
+
+    function openBook(bookTitle) {
+      alert('Membuka kitab digital: ' + bookTitle);
+    }
+
+    function donate(category) {
+      alert('Membuka form donasi kategori: ' + category);
+    }
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      alert('Terima kasih! Link download akan segera dikirim ke email Anda.');
+      e.target.reset();
+    }
+
+    // Close mobile menu when clicking nav links
+    document.querySelectorAll('#mobileMenu a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById('mobileMenu').classList.add('hidden');
+      });
+    });
+  </script>
+</body>
+</html>
