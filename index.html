@@ -102,6 +102,31 @@ tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter','sans-serif'
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
+    <!-- KILAT-LAUNDRY CARD -->
+    <article class="project-card group bg-white rounded-[24px] border border-slate-100 overflow-hidden hover:shadow-xl hover:border-blue-100 transition flex flex-col" data-project="kilat-laundry">
+      <div class="relative h-48 overflow-hidden bg-slate-100">
+        <img src="https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=700&q=80" loading="lazy" alt="Kilat Laundry aplikasi laundry thumbnail" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+        <span class="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-blue-600 text-white text-[11px] font-bold tracking-widest">NEW • LAUNDRY</span>
+        <span class="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-white/90 backdrop-blur text-slate-700 text-[11px] font-bold">MVP</span>
+      </div>
+      <div class="p-6 flex-1 flex flex-col">
+        <div class="text-xs font-bold tracking-widest text-blue-600">KILAT-LAUNDRY • PELANGGAN • ADMIN • NOTIFIKASI</div>
+        <h3 class="font-display font-extrabold text-[18px] leading-tight mt-1">Kilat Laundry — Aplikasi Laundry MVP</h3>
+        <p class="text-sm text-slate-500 leading-6 mt-2 flex-1">Login pelanggan & admin, katalog layanan kiloan/satuan, paket laundry, keranjang & checkout antar-jemput, plus notifikasi otomatis tiap perubahan status pesanan.</p>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <span class="px-2.5 py-1 rounded-full bg-blue-50 border border-blue-200 text-xs font-semibold text-blue-700">Katalog & Paket</span>
+          <span class="px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-semibold text-emerald-700">Keranjang & Checkout</span>
+          <span class="px-2.5 py-1 rounded-full bg-amber-50 border border-amber-200 text-xs font-semibold text-amber-700">Notifikasi Status</span>
+        </div>
+        <div class="mt-5 grid grid-cols-2 gap-2">
+          <a href="kilat-laundry/index.html" target="_blank" rel="noopener" data-action="preview" data-url="kilat-laundry/index.html" data-title="Kilat Laundry — Aplikasi Laundry MVP" class="inline-flex justify-center items-center gap-2 py-2.5 rounded-full bg-slate-900 text-white text-sm font-bold hover:bg-blue-600 transition"><i class="fa-solid fa-eye text-xs"></i> Live Preview</a>
+          <button data-action="detail" data-project="kilat-laundry" class="inline-flex justify-center items-center gap-2 py-2.5 rounded-full border border-slate-200 text-sm font-bold hover:bg-slate-50 transition"><i class="fa-solid fa-circle-info text-xs"></i> Detail</button>
+        </div>
+        <a href="kilat-laundry/index.html" target="_blank" rel="noopener" class="mt-2 inline-flex justify-center items-center gap-2 py-2.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-sm font-bold hover:bg-blue-100 transition"><i class="fa-solid fa-arrow-up-right-from-square text-xs"></i> Kunjungi</a>
+        <a href="https://github.com/arijayacloud/prototype-web-android/tree/main/kilat-laundry" target="_blank" rel="noopener" class="mt-1 inline-flex justify-center items-center gap-2 py-2 rounded-full text-xs font-semibold text-slate-500 hover:text-slate-900"><i class="fa-brands fa-github"></i> Lihat Kode — kilat-laundry/</a>
+      </div>
+    </article>
+
     <!-- FLIPBOOK CARD -->
     <article class="project-card group bg-white rounded-[24px] border border-slate-100 overflow-hidden hover:shadow-xl hover:border-rose-100 transition flex flex-col" data-project="flipbook">
       <div class="relative h-48 overflow-hidden bg-slate-900">
@@ -961,6 +986,20 @@ menuBtn?.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
 
 // project data for detail modal
 const PROJECTS = {
+  'kilat-laundry': {
+    title: 'Kilat Laundry — Aplikasi Laundry MVP',
+    url: 'kilat-laundry/index.html',
+    codeUrl: 'https://github.com/arijayacloud/prototype-web-android/tree/main/kilat-laundry',
+    thumbnail: 'https://images.unsplash.com/photo-1545173168-9f1947eebb7f?w=700&q=80',
+    background: 'Aplikasi laundry sederhana (MVP) untuk pelanggan dan admin yang mencakup alur operasional harian: pilih layanan, pesan, lalu pantau status cucian sampai selesai.',
+    problem: 'Pesanan laundry biasanya masuk lewat chat WhatsApp, harga sering ditanyakan ulang, dan pelanggan harus bertanya berulang kali soal status cucian.',
+    features: ['Login & daftar akun pelanggan dan admin dengan validasi email, HP, dan kata sandi', 'Katalog layanan kiloan (cuci kering, cuci setrika, setrika) dan satuan (bed cover, sepatu, gorden, jas) dengan harga per kg/per item', 'Empat paket laundry: hemat, kiloan plus, setrika, dan express 6 jam', 'Keranjang dengan ubah jumlah, checkout antar-jemput, metode bayar, dan catatan pesanan', 'Notifikasi otomatis tiap perubahan status dan dashboard admin untuk memajukan status pesanan'],
+    stack: ['HTML', 'Tailwind CDN', 'Font Awesome', 'Vanilla JS (localStorage DB)'],
+    links: [
+      { label: 'Live Demo', href: 'kilat-laundry/index.html' },
+      { label: 'Source di GitHub', href: 'https://github.com/arijayacloud/prototype-web-android/tree/main/kilat-laundry' }
+    ]
+  },
   'kas-kantor': {
     title: 'Buku Kas Kantor — Uang, Barang & Saldo Berjalan',
     url: 'kas-kantor/index.html',

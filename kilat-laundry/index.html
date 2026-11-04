@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kilat Laundry — Cuci Kiloan, Satuan & Express</title>
+<meta name="description" content="Kilat Laundry: layanan cuci kiloan, satuan, dan express dengan antar-jemput. Pesan online, pantau status cucian, bayar saat antar.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧺</text></svg>">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script>
+tailwind.config = { theme: { extend: {
+  colors: { brand: { 50:'#EFF6FF',100:'#DBEAFE',200:'#BFDBFE',300:'#93C5FD',400:'#60A5FA',500:'#3B82F6',600:'#2563EB',700:'#1D4ED8',800:'#1E3A8A',900:'#172554' }, mint: { 400:'#34D399', 500:'#10B981', 600:'#059669' } },
+  fontFamily: { sans:['Plus Jakarta Sans','sans-serif'], display:['Outfit','sans-serif'] }
+} } }
+</script>
+<style>
+  .hero-bg{background:radial-gradient(1200px 500px at 85% -10%, #1D4ED8 0%, transparent 55%), radial-gradient(900px 400px at 0% 10%, #0EA5E9 0%, transparent 45%), #172554}
+  .card-hover{transition:transform .18s ease, box-shadow .18s ease}
+  .card-hover:hover{transform:translateY(-3px);box-shadow:0 18px 40px -22px rgba(23,37,84,.45)}
+  .no-spin::-webkit-outer-spin-button,.no-spin::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  @keyframes pop{0%{transform:translateY(12px);opacity:0}100%{transform:translateY(0);opacity:1}}
+  .pop{animation:pop .22s ease both}
+</style>
+</head>
+<body class="font-sans bg-slate-50 text-slate-800 antialiased">
+<header id="hdr" class="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-slate-200"></header>
+<main id="app"></main>
+<footer class="bg-brand-900 text-brand-100/80 mt-16">
+  <div class="max-w-6xl mx-auto px-5 py-10 grid gap-8 sm:grid-cols-3 text-sm">
+    <div>
+      <div class="font-display font-extrabold text-white text-lg mb-2">🧺 Kilat Laundry</div>
+      <p class="leading-relaxed">Laundry antar-jemput untuk cucian harian, bed cover, sampai sepatu. Bersih, wangi, tepat waktu.</p>
+    </div>
+    <div>
+      <div class="font-bold text-white mb-2">Layanan</div>
+      <ul class="space-y-1"><li>Cuci kiloan</li><li>Satuan (bed cover, sepatu)</li><li>Paket express 6 jam</li><li>Antar-jemput area kota</li></ul>
+    </div>
+    <div>
+      <div class="font-bold text-white mb-2">Kontak</div>
+      <ul class="space-y-1"><li><i class="fa-brands fa-whatsapp mr-1"></i> 0812-0000-0001</li><li><i class="fa-solid fa-location-dot mr-1"></i> Jl. Melati No. 12, Bandung</li><li><i class="fa-regular fa-clock mr-1"></i> 07.00 – 21.00</li></ul>
+    </div>
+  </div>
+  <div class="border-t border-white/10 py-4 text-center text-xs">© 2026 Kilat Laundry — prototype demo. Data tersimpan di browser Anda.</div>
+</footer>
+<div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 hidden"></div>
+<div id="modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-brand-900/60 p-4"></div>
+
+<script>
+/* ---------------- data ---------------- */
+const money = n => 'Rp ' + Number(n).toLocaleString('id-ID');
+const uid = () => Math.random().toString(36).slice(2, 9);
+const STATUS = ['Antrian', 'Dicuci', 'Disetrika', 'Siap Diambil', 'Selesai'];
+
+const SERVICES = [
+  { id:'s1', name:'Cuci Kering Lipat', group:'Kiloan', unit:'kg', price:7000,  icon:'fa-shirt',        desc:'Dicuci, dikeringkan, dilipat rapi.' },
+  { id:'s2', name:'Cuci Setrika',      group:'Kiloan', unit:'kg', price:9000,  icon:'fa-wind',         desc:'Paling laris: cuci + setrika + lipat.' },
+  { id:'s3', name:'Setrika Saja',      group:'Kiloan', unit:'kg', price:6000,  icon:'fa-temperature-half', desc:'Pakaian sudah bersih, tinggal disetrika.' },
+  { id:'s4', name:'Bed Cover',         group:'Satuan', unit:'pcs', price:25000, icon:'fa-bed',          desc:'Cuci + pengeringan khusus.' },
+  { id:'s5', name:'Selimut',           group:'Satuan', unit:'pcs', price:20000, icon:'fa-moon',         desc:'Bebas tungau, wangi.' },
+  { id:'s6', name:'Sepatu',            group:'Satuan', unit:'pasang', price:30000, icon:'fa-shoe-prints', desc:'Deep clean sol & upper.' },
+  { id:'s7', name:'Gorden',            group:'Satuan', unit:'pcs', price:15000, icon:'fa-columns',      desc:'Per lembar, cuci kering.' },
+  { id:'s8', name:'Jas / Gaun',        group:'Satuan', unit:'pcs', price:35000, icon:'fa-user-tie',     desc:'Dry clean, setrika uap.' }
+];
+
+const PACKAGES = [
+  { id:'p1', name:'Paket Hemat',      detail:'Cuci setrika 3 kg',       price:25000, eta:'3 hari',  icon:'fa-box-open',  tag:'' },
+  { id:'p2', name:'Paket Kiloan Plus',detail:'Cuci kering lipat 5 kg',  price:33000, eta:'2 hari',  icon:'fa-layer-group', tag:'Hemat 12%' },
+  { id:'p3', name:'Paket Setrika',    detail:'Setrika saja 4 kg',       price:22000, eta:'2 hari',  icon:'fa-temperature-half', tag:'' },
+  { id:'p4', name:'Paket Express',    detail:'Cuci setrika 3 kg, 6 jam',price:45000, eta:'6 jam',   icon:'fa-bolt', tag:'Tercepat' }
+];
+
+const KEY = 'kilatlaundry.v1';
+let db, state = { view:'home', authMode:'login', delivery:true, adminFilter:'Semua' };
+
+function seed(){
+  db = {
+    users:[
+      { id:'u1', name:'Admin Kilat', email:'admin@laundry.id', phone:'081200000001', password:'admin123', role:'admin' },
+      { id:'u2', name:'Dewi Lestari', email:'pelanggan@laundry.id', phone:'081200000002', password:'123456', role:'customer' }
+    ],
+    session:null, carts:{}, orders:[], notifs:[]
+  };
+  const add = (code, items, status, daysAgo) => {
+    const sub = items.reduce((a,i)=>a+i.qty*i.price,0);
+    const at = new Date(Date.now() - daysAgo*864e5).toISOString();
+    const o = { id:uid(), code, userId:'u2', items, subtotal:sub, delivery:5000, total:sub+5000,
+      address:'Jl. Melati No. 12, Bandung', phone:'081200000002', payment:'Tunai (COD)', note:'',
+      status, createdAt:at, timeline:[{ status:'Antrian', at }] };
+    const idx = STATUS.indexOf(status);
+    for (let i=1;i<=idx;i++) o.timeline.push({ status:STATUS[i], at:new Date(Date.now()-(daysAgo-i*0.5)*864e5).toISOString() });
+    db.orders.push(o);
+    db.notifs.push({ id:uid(), userId:'u2', text:`Pesanan ${code} berstatus "${status}".`, at:o.timeline.at(-1).at, read:false });
+  };
+  add('LDY-2401', [{ kind:'service', id:'s2', name:'Cuci Setrika', unit:'kg', price:9000, qty:4 }], 'Siap Diambil', 3);
+  add('LDY-2402', [{ kind:'package', id:'p4', name:'Paket Express', unit:'paket', price:45000, qty:1 }], 'Dicuci', 1);
+}
+function load(){
+  try { db = JSON.parse(localStorage.getItem(KEY)); } catch(e) { db = null; }
+  if (!db || !db.services) { seed(); db.services = SERVICES; db.packages = PACKAGES; save(); }
+}
+function save(){ localStorage.setItem(KEY, JSON.stringify(db)); }
+
+/* ---------------- helpers ---------------- */
+const user = () => db.users.find(u => u.id === db.session) || null;
+const isAdmin = () => (user()?.role === 'admin');
+function cart(){ const u = user(); return u ? (db.carts[u.id] ||= []) : []; }
+function line(it){
+  const src = (it.kind === 'service' ? db.services : db.packages).find(s => s.id === it.id) || {};
+  return { ...it, name: src.name, unit: src.unit || 'paket', price: src.price, sum: src.price * it.qty };
+}
+const subTotal = () => cart().reduce((a,it) => a + line(it).sum, 0);
+const cartCount = () => cart().reduce((a,it) => a + it.qty, 0);
+const myOrders = () => db.orders.filter(o => isAdmin() ? true : o.userId === db.session).sort((a,b) => b.createdAt.localeCompare(a.createdAt));
+const myNotifs = () => db.notifs.filter(n => n.userId === db.session).sort((a,b) => b.at.localeCompare(a.at));
+const unread = () => myNotifs().filter(n => !n.read).length;
+
+function toast(msg, kind='ok'){
+  const t = document.getElementById('toast');
+  t.className = 'fixed bottom-5 left-1/2 -translate-x-1/2 z-50 pop rounded-full px-5 py-3 text-sm font-semibold shadow-xl ' +
+    (kind === 'ok' ? 'bg-brand-900 text-white' : 'bg-rose-600 text-white');
+  t.textContent = msg; t.classList.remove('hidden');
+  clearTimeout(t._t); t._t = setTimeout(() => t.classList.add('hidden'), 2600);
+}
+function go(v){ state.view = v; window.scrollTo({ top:0, behavior:'smooth' }); render(); }
+
+/* ---------------- actions ---------------- */
+function addToCart(kind, id){
+  if (!user()) { state.authMode = 'login'; go('auth'); return toast('Masuk dulu untuk memesan', 'warn'); }
+  if (isAdmin()) return toast('Akun admin tidak memesan', 'warn');
+  const c = cart();
+  const found = c.find(i => i.kind === kind && i.id === id);
+  found ? found.qty++ : c.push({ kind, id, qty:1 });
+  save(); render(); toast('Ditambahkan ke keranjang');
+}
+function changeQty(kind, id, delta){
+  const c = cart(), it = c.find(i => i.kind === kind && i.id === id);
+  if (!it) return;
+  it.qty = Math.round((it.qty + delta) * 100) / 100;
+  if (it.qty <= 0) c.splice(c.indexOf(it), 1);
+  save(); render();
+}
+function removeItem(kind, id){ const c = cart(), i = c.findIndex(x => x.kind === kind && x.id === id); if (i > -1) { c.splice(i,1); save(); render(); } }
+
+function doLogin(e){
+  e.preventDefault();
+  const email = document.getElementById('li-email').value.trim().toLowerCase();
+  const pass = document.getElementById('li-pass').value;
+  const u = db.users.find(x => x.email === email && x.password === pass);
+  if (!u) return toast('Email atau kata sandi salah', 'warn');
+  db.session = u.id; save(); state.view = u.role === 'admin' ? 'admin' : 'home'; render();
+  toast('Selamat datang, ' + u.name.split(' ')[0] + '!');
+}
+function doRegister(e){
+  e.preventDefault();
+  const name = document.getElementById('rg-name').value.trim();
+  const email = document.getElementById('rg-email').value.trim().toLowerCase();
+  const phone = document.getElementById('rg-phone').value.trim();
+  const pass = document.getElementById('rg-pass').value;
+  if (name.length < 3) return toast('Nama minimal 3 karakter', 'warn');
+  if (!/^\S+@\S+\.\S+$/.test(email)) return toast('Format email tidak valid', 'warn');
+  if (!/^0\d{8,13}$/.test(phone)) return toast('Nomor HP harus diawali 0, 9–14 digit', 'warn');
+  if (pass.length < 6) return toast('Kata sandi minimal 6 karakter', 'warn');
+  if (db.users.some(u => u.email === email)) return toast('Email sudah terdaftar', 'warn');
+  const u = { id:uid(), name, email, phone, password:pass, role:'customer' };
+  db.users.push(u); db.session = u.id; save(); go('home'); toast('Akun berhasil dibuat');
+}
+function logout(){ db.session = null; save(); go('home'); toast('Anda sudah keluar'); }
+
+function checkout(e){
+  e.preventDefault();
+  const c = cart(); if (!c.length) return toast('Keranjang masih kosong', 'warn');
+  const address = document.getElementById('co-address').value.trim();
+  const phone = document.getElementById('co-phone').value.trim();
+  if (address.length < 10) return toast('Alamat terlalu singkat', 'warn');
+  if (!/^0\d{8,13}$/.test(phone)) return toast('Nomor HP tidak valid', 'warn');
+  const items = c.map(line).map(({ name, unit, price, qty }) => ({ name, unit, price, qty }));
+  const sub = items.reduce((a,i) => a + i.price * i.qty, 0);
+  const delivery = state.delivery ? 5000 : 0;
+  const code = 'LDY-' + String(Math.floor(Math.random()*9000) + 1000);
+  const o = { id:uid(), code, userId:db.session, items, subtotal:sub, delivery, total:sub + delivery,
+    address, phone, payment:document.getElementById('co-pay').value, note:document.getElementById('co-note').value.trim(),
+    status:'Antrian', createdAt:new Date().toISOString(), timeline:[{ status:'Antrian', at:new Date().toISOString() }] };
+  db.orders.push(o);
+  db.notifs.push({ id:uid(), userId:db.session, text:`Pesanan ${code} diterima dan masuk antrian.`, at:o.createdAt, read:false });
+  db.carts[db.session] = []; save(); go('orders'); toast('Pesanan ' + code + ' dibuat');
+}
+function advance(id){
+  const o = db.orders.find(x => x.id === id); if (!o) return;
+  const next = STATUS[STATUS.indexOf(o.status) + 1];
+  if (!next) return toast('Pesanan sudah selesai', 'warn');
+  o.status = next; o.timeline.push({ status:next, at:new Date().toISOString() });
+  db.notifs.push({ id:uid(), userId:o.userId, text:`Pesanan ${o.code} kini "${next}".`, at:new Date().toISOString(), read:false });
+  save(); render(); toast(`${o.code} → ${next}`);
+}
+function cancelOrder(id){
+  const o = db.orders.find(x => x.id === id); if (!o) return;
+  if (o.status === 'Selesai') return toast('Pesanan selesai tidak bisa dibatalkan', 'warn');
+  o.status = 'Dibatalkan'; o.timeline.push({ status:'Dibatalkan', at:new Date().toISOString() });
+  db.notifs.push({ id:uid(), userId:o.userId, text:`Pesanan ${o.code} dibatalkan.`, at:new Date().toISOString(), read:false });
+  save(); render(); toast(o.code + ' dibatalkan');
+}
+function readAll(){ myNotifs().forEach(n => n.read = true); save(); render(); }
+function openOrder(id){
+  const o = db.orders.find(x => x.id === id); if (!o) return;
+  const m = document.getElementById('modal');
+  m.innerHTML = `<div class="bg-white rounded-2xl max-w-lg w-full max-h-[85vh] overflow-auto p-6 pop">
+    <div class="flex items-start justify-between gap-4">
+      <div><div class="text-xs font-bold tracking-widest text-brand-600">PESANAN</div>
+        <h3 class="font-display text-2xl font-extrabold text-brand-900">${o.code}</h3></div>
+      <button onclick="closeModal()" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="mt-4 space-y-2 text-sm">
+      ${o.items.map(i => `<div class="flex justify-between border-b border-slate-100 pb-2"><span>${i.name} <span class="text-slate-500">· ${i.qty} ${i.unit}</span></span><b>${money(i.price*i.qty)}</b></div>`).join('')}
+      ${o.delivery ? `<div class="flex justify-between text-slate-600"><span>Antar-jemput</span><span>${money(o.delivery)}</span></div>` : ''}
+      <div class="flex justify-between text-base pt-1"><b>Total</b><b class="text-brand-700">${money(o.total)}</b></div>
+      <div class="text-slate-600 pt-2 leading-relaxed"><b>Alamat:</b> ${o.address}<br><b>HP:</b> ${o.phone}<br><b>Bayar:</b> ${o.payment}${o.note ? `<br><b>Catatan:</b> ${o.note}` : ''}</div>
+    </div>
+    <div class="mt-4 rounded-xl bg-slate-50 p-4">
+      <div class="text-xs font-bold tracking-widest text-slate-500 mb-2">RIWAYAT STATUS</div>
+      <ol class="space-y-2 text-sm">${o.timeline.map(t => `<li class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-brand-500"></span><b class="min-w-24">${t.status}</b><span class="text-slate-500">${new Date(t.at).toLocaleString('id-ID',{dateStyle:'medium',timeStyle:'short'})}</span></li>`).join('')}</ol>
+    </div>
+  </div>`;
+  m.classList.remove('hidden'); m.classList.add('flex');
+}
+function closeModal(){ const m = document.getElementById('modal'); m.classList.add('hidden'); m.classList.remove('flex'); }
+
+/* ---------------- views ---------------- */
+function header(){
+  const u = user();
+  const link = (v, label, extra='') => `<button onclick="go('${v}')" class="px-3 py-2 rounded-lg text-sm font-semibold ${state.view===v?'bg-brand-50 text-brand-700':'text-slate-600 hover:text-brand-700'} ${extra}">${label}</button>`;
+  return `<div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between gap-3">
+    <button onclick="go('home')" class="flex items-center gap-2 shrink-0">
+      <span class="w-9 h-9 rounded-xl bg-brand-700 text-white grid place-items-center text-lg">🧺</span>
+      <span class="font-display font-extrabold text-brand-900 tracking-tight">Kilat<span class="text-brand-500">Laundry</span></span>
+    </button>
+    <nav class="hidden md:flex items-center gap-1">
+      ${link('home','Beranda')}${link('katalog','Layanan & Harga')}${u && u.role==='customer' ? link('orders','Pesanan') : ''}${u && u.role==='admin' ? link('admin','Dashboard') : ''}
+    </nav>
+    <div class="flex items-center gap-2">
+      ${u ? `
+        ${u.role==='customer' ? `<button onclick="go('cart')" class="relative w-10 h-10 rounded-xl border border-slate-200 hover:bg-slate-50" title="Keranjang"><i class="fa-solid fa-basket-shopping text-slate-600"></i>
+          ${cartCount()?`<span class="absolute -top-1 -right-1 min-w-5 h-5 px-1 rounded-full bg-mint-500 text-white text-[11px] font-bold grid place-items-center">${cartCount()}</span>`:''}</button>` : ''}
+        <button onclick="go('notif')" class="relative w-10 h-10 rounded-xl border border-slate-200 hover:bg-slate-50" title="Notifikasi"><i class="fa-regular fa-bell text-slate-600"></i>
+          ${unread()?`<span class="absolute -top-1 -right-1 min-w-5 h-5 px-1 rounded-full bg-rose-500 text-white text-[11px] font-bold grid place-items-center">${unread()}</span>`:''}</button>
+        <div class="hidden sm:flex items-center gap-2 pl-2 border-l border-slate-200">
+          <div class="w-9 h-9 rounded-full bg-brand-100 text-brand-700 grid place-items-center font-bold text-sm">${u.name[0]}</div>
+          <div class="leading-tight"><div class="text-sm font-bold text-brand-900">${u.name.split(' ')[0]}</div><div class="text-[11px] text-slate-500 capitalize">${u.role==='admin'?'Admin':'Pelanggan'}</div></div>
+          <button onclick="logout()" class="ml-1 text-slate-400 hover:text-rose-600" title="Keluar"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+        </div>`
+      : `<button onclick="state.authMode='login';go('auth')" class="px-4 py-2 rounded-xl text-sm font-bold text-brand-700 hover:bg-brand-50">Masuk</button>
+         <button onclick="state.authMode='register';go('auth')" class="px-4 py-2 rounded-xl bg-brand-700 text-white text-sm font-bold hover:bg-brand-800">Daftar</button>`}
+    </div>
+  </div>
+  <div class="md:hidden border-t border-slate-200 bg-white px-3 py-2 flex gap-1 overflow-x-auto">
+    ${link('home','Beranda')}${link('katalog','Harga')}${u && u.role==='customer'?link('orders','Pesanan'):''}${u && u.role==='admin'?link('admin','Dashboard'):''}
+  </div>`;
+}
+
+function viewHome(){
+  const paket = db.packages.map(p => `
+    <div class="card-hover bg-white rounded-2xl border border-slate-200 p-5 flex flex-col ${p.id==='p4'?'ring-2 ring-brand-600':''}">
+      ${p.tag?`<span class="self-start mb-2 text-[11px] font-bold px-2 py-1 rounded-full ${p.id==='p4'?'bg-brand-700 text-white':'bg-mint-500/15 text-mint-600'}">${p.tag}</span>`:''}
+      <div class="w-11 h-11 rounded-xl bg-brand-50 text-brand-700 grid place-items-center mb-3"><i class="fa-solid ${p.icon}"></i></div>
+      <h3 class="font-display font-extrabold text-lg text-brand-900">${p.name}</h3>
+      <p class="text-sm text-slate-500 mt-1 grow">${p.detail}</p>
+      <div class="flex items-end justify-between mt-4">
+        <div><div class="font-display text-xl font-extrabold text-brand-900">${money(p.price)}</div><div class="text-[11px] text-slate-500">estimasi ${p.eta}</div></div>
+        <button onclick="addToCart('package','${p.id}')" class="px-4 py-2 rounded-xl bg-brand-700 text-white text-sm font-bold hover:bg-brand-800">Ambil</button>
+      </div>
+    </div>`).join('');
+
+  return `
+  <section class="hero-bg text-white">
+    <div class="max-w-6xl mx-auto px-5 py-16 grid lg:grid-cols-[1.1fr_0.9fr] gap-10 items-center">
+      <div>
+        <div class="inline-flex items-center gap-2 text-xs font-bold tracking-widest bg-white/10 border border-white/20 rounded-full px-3 py-1.5">
+          <span class="w-2 h-2 rounded-full bg-mint-400"></span> ANTAR-JEMPUT GRATIS MIN. 3 KG
+        </div>
+        <h1 class="font-display font-extrabold text-4xl sm:text-5xl leading-[1.05] mt-5">Cucian bersih,<br><span class="text-mint-400">hidup lebih ringan.</span></h1>
+        <p class="mt-4 text-brand-100/90 max-w-md leading-relaxed">Pesan laundry dari rumah, kami jemput dan antar kembali. Cuci kiloan, satuan, sampai paket express 6 jam.</p>
+        <div class="mt-7 flex flex-wrap gap-3">
+          <button onclick="go('katalog')" class="px-6 py-3.5 rounded-xl bg-mint-500 hover:bg-mint-600 text-white font-bold">Pesan Sekarang <i class="fa-solid fa-arrow-right ml-1 text-xs"></i></button>
+          <button onclick="go('home')" class="px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/25 font-bold">Lihat Paket</button>
+        </div>
+        <div class="mt-9 grid grid-cols-3 gap-4 max-w-sm text-sm">
+          <div><div class="font-display text-2xl font-extrabold">6 jam</div><div class="text-brand-200 text-xs">paket express</div></div>
+          <div><div class="font-display text-2xl font-extrabold">4.9/5</div><div class="text-brand-200 text-xs">1.200+ ulasan</div></div>
+          <div><div class="font-display text-2xl font-extrabold">Rp7rb</div><div class="text-brand-200 text-xs">mulai per kg</div></div>
+        </div>
+      </div>
+      <div class="bg-white/10 border border-white/15 rounded-3xl p-6 backdrop-blur">
+        <div class="text-xs font-bold tracking-widest text-brand-200">CEK STATUS CUCIAN</div>
+        <div class="mt-3 bg-white rounded-2xl p-4 text-slate-800 space-y-2">
+          ${STATUS.map((s,i)=>`<div class="flex items-center gap-3 text-sm"><span class="w-6 h-6 rounded-full ${i<2?'bg-mint-500 text-white':'bg-slate-100 text-slate-400'} grid place-items-center text-[11px] font-bold">${i+1}</span><span class="${i<2?'font-semibold':'text-slate-400'}">${s}</span></div>`).join('')}
+          <div class="text-[11px] text-slate-400 pt-1 border-t border-slate-100">Contoh: pesanan LDY-2401 di tahap “Siap Diambil”.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="max-w-6xl mx-auto px-5 py-14">
+    <div class="flex items-end justify-between gap-4 mb-6">
+      <div><div class="text-xs font-bold tracking-[0.2em] text-brand-600">PAKET LAUNDRY</div>
+        <h2 class="font-display text-3xl font-extrabold text-brand-900 mt-2">Pilih paket, sisanya kami urus</h2></div>
+      <button onclick="go('katalog')" class="hidden sm:inline-flex text-sm font-bold text-brand-700 hover:underline">Semua layanan <i class="fa-solid fa-arrow-right text-xs ml-1"></i></button>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">${paket}</div>
+  </section>
+
+  <section class="max-w-6xl mx-auto px-5 pb-14">
+    <div class="grid md:grid-cols-4 gap-4">
+      ${[['fa-truck-fast','Antar-jemput','Jemput & antar gratis area kota untuk order ≥ 3 kg.'],
+         ['fa-clock','Tepat waktu','Estimasi jelas per paket, update status tiap tahap.'],
+         ['fa-leaf','Aman untuk kain','Deterjen lembut, pewangi tahan lama, tanpa pemutih keras.'],
+         ['fa-shield-heart','Garansi cuci ulang','Hasil kurang bersih? Cuci ulang gratis 1x24 jam.']]
+        .map(([ic,t,d])=>`<div class="bg-white rounded-2xl border border-slate-200 p-5"><div class="w-10 h-10 rounded-xl bg-brand-50 text-brand-700 grid place-items-center mb-3"><i class="fa-solid ${ic}"></i></div><h3 class="font-bold text-brand-900">${t}</h3><p class="text-sm text-slate-500 mt-1 leading-relaxed">${d}</p></div>`).join('')}
+    </div>
+  </section>
+
+  <section class="max-w-6xl mx-auto px-5 pb-16">
+    <div class="rounded-3xl bg-brand-900 text-white p-8 sm:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+      <div><h2 class="font-display text-2xl sm:text-3xl font-extrabold">Cucian menumpuk? Jemput sekarang.</h2>
+        <p class="text-brand-200 mt-2 text-sm">Daftar gratis, pesan dalam 1 menit, bayar saat cucian diantar.</p></div>
+      <button onclick="${user()?`go('katalog')`:`state.authMode='register';go('auth')`}" class="px-7 py-3.5 rounded-xl bg-mint-500 hover:bg-mint-600 font-bold shrink-0">${user()?'Pesan Laundry':'Daftar & Pesan'}</button>
+    </div>
+  </section>`;
+}
+
+function viewKatalog(){
+  const card = (s) => `
+    <div class="card-hover bg-white rounded-2xl border border-slate-200 p-5 flex flex-col">
+      <div class="flex items-start justify-between">
+        <div class="w-11 h-11 rounded-xl bg-brand-50 text-brand-700 grid place-items-center"><i class="fa-solid ${s.icon}"></i></div>
+        <span class="text-[11px] font-bold px-2 py-1 rounded-full bg-slate-100 text-slate-600">per ${s.unit}</span>
+      </div>
+      <h3 class="font-bold text-brand-900 mt-3">${s.name}</h3>
+      <p class="text-sm text-slate-500 mt-1 grow">${s.desc}</p>
+      <div class="flex items-end justify-between mt-4">
+        <div class="font-display text-xl font-extrabold text-brand-900">${money(s.price)}<span class="text-xs font-semibold text-slate-400">/${s.unit}</span></div>
+        <button onclick="addToCart('service','${s.id}')" class="px-4 py-2 rounded-xl border-2 border-brand-700 text-brand-700 text-sm font-bold hover:bg-brand-700 hover:text-white"><i class="fa-solid fa-plus text-xs mr-1"></i>Tambah</button>
+      </div>
+    </div>`;
+  const group = g => `
+    <div class="mb-10">
+      <h2 class="font-display text-xl font-extrabold text-brand-900 mb-3 flex items-center gap-2">
+        <i class="fa-solid ${g==='Kiloan'?'fa-weight-hanging':'fa-shirt'} text-brand-500 text-sm"></i> Layanan ${g}
+      </h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">${db.services.filter(s => s.group === g).map(card).join('')}</div>
+    </div>`;
+
+  return `<div class="max-w-6xl mx-auto px-5 py-10">
+    <div class="text-xs font-bold tracking-[0.2em] text-brand-600">KATALOG</div>
+    <h1 class="font-display text-3xl font-extrabold text-brand-900 mt-2">Layanan & daftar harga</h1>
+    <p class="text-slate-500 mt-2 text-sm max-w-xl">Harga transparan. Kiloan dihitung per kg (minimal 1 kg), satuan dihitung per item.</p>
+    <div class="mt-8">${group('Kiloan')}${group('Satuan')}</div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      ${db.packages.map(p=>`<div class="bg-brand-900 text-white rounded-2xl p-5 flex flex-col">
+        <div class="w-11 h-11 rounded-xl bg-white/10 grid place-items-center mb-3"><i class="fa-solid ${p.icon}"></i></div>
+        <h3 class="font-display font-extrabold text-lg">${p.name}</h3>
+        <p class="text-brand-200 text-sm mt-1 grow">${p.detail} · ${p.eta}</p>
+        <div class="flex items-end justify-between mt-4">
+          <div class="font-display text-xl font-extrabold">${money(p.price)}</div>
+          <button onclick="addToCart('package','${p.id}')" class="px-4 py-2 rounded-xl bg-mint-500 hover:bg-mint-600 text-white text-sm font-bold">Ambil</button>
+        </div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function viewCart(){
+  if (!user()) return viewAuth();
+  const c = cart();
+  if (!c.length) return `<div class="max-w-3xl mx-auto px-5 py-20 text-center">
+    <div class="text-5xl mb-4">🧺</div><h1 class="font-display text-2xl font-extrabold text-brand-900">Keranjang masih kosong</h1>
+    <p class="text-slate-500 mt-2 text-sm">Pilih layanan atau paket dulu, ya.</p>
+    <button onclick="go('katalog')" class="mt-6 px-6 py-3 rounded-xl bg-brand-700 text-white font-bold">Lihat Layanan</button></div>`;
+  const sub = subTotal(), del = state.delivery ? 5000 : 0;
+  return `<div class="max-w-5xl mx-auto px-5 py-10 grid lg:grid-cols-[1.3fr_0.7fr] gap-6 items-start">
+    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+      <div class="px-5 py-4 border-b border-slate-100 font-display font-extrabold text-brand-900">Keranjang (${c.length} item)</div>
+      ${c.map(it => { const l = line(it); return `
+        <div class="px-5 py-4 flex items-center gap-3 border-b border-slate-50 last:border-0">
+          <div class="grow"><div class="font-semibold text-brand-900">${l.name}</div>
+            <div class="text-xs text-slate-500">${money(l.price)} / ${l.unit}</div></div>
+          <div class="flex items-center border border-slate-200 rounded-xl overflow-hidden">
+            <button onclick="changeQty('${it.kind}','${it.id}',-1)" class="w-8 h-9 hover:bg-slate-50"><i class="fa-solid fa-minus text-xs"></i></button>
+            <span class="w-10 text-center text-sm font-bold">${it.qty}</span>
+            <button onclick="changeQty('${it.kind}','${it.id}',1)" class="w-8 h-9 hover:bg-slate-50"><i class="fa-solid fa-plus text-xs"></i></button>
+          </div>
+          <div class="w-24 text-right font-bold text-brand-900 text-sm">${money(l.sum)}</div>
+          <button onclick="removeItem('${it.kind}','${it.id}')" class="text-slate-300 hover:text-rose-600 w-6"><i class="fa-solid fa-trash-can text-xs"></i></button>
+        </div>`; }).join('')}
+      <div class="px-5 py-4 bg-slate-50 flex items-center justify-between text-sm">
+        <span class="text-slate-600">Subtotal</span><b class="text-brand-900">${money(sub)}</b>
+      </div>
+    </div>
+
+    <form onsubmit="checkout(event)" class="bg-white rounded-2xl border border-slate-200 p-5 space-y-3">
+      <div class="font-display font-extrabold text-brand-900">Pengantaran & pembayaran</div>
+      <label class="flex items-center justify-between gap-3 text-sm bg-brand-50 rounded-xl px-3 py-2.5 cursor-pointer">
+        <span><b>Antar-jemput</b><span class="block text-xs text-slate-500">+ Rp5.000 · gratis min. 3 kg</span></span>
+        <input type="checkbox" ${state.delivery?'checked':''} onchange="state.delivery=this.checked;render()" class="w-5 h-5 accent-brand-700">
+      </label>
+      <div><label class="text-xs font-bold text-slate-600">Alamat penjemputan</label>
+        <textarea id="co-address" rows="2" class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-300" placeholder="Jalan, nomor, kelurahan, patokan">${user().address||''}</textarea></div>
+      <div><label class="text-xs font-bold text-slate-600">Nomor HP</label>
+        <input id="co-phone" value="${user().phone||''}" inputmode="numeric" class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-300"></div>
+      <div><label class="text-xs font-bold text-slate-600">Metode bayar</label>
+        <select id="co-pay" class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm bg-white">
+          <option>Tunai (COD)</option><option>Transfer Bank</option><option>QRIS</option></select></div>
+      <div><label class="text-xs font-bold text-slate-600">Catatan (opsional)</label>
+        <input id="co-note" placeholder="Contoh: pisahkan pakaian putih" class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm"></div>
+      <div class="border-t border-slate-100 pt-3 space-y-1 text-sm">
+        <div class="flex justify-between text-slate-600"><span>Subtotal</span><span>${money(sub)}</span></div>
+        <div class="flex justify-between text-slate-600"><span>Antar-jemput</span><span>${del?money(del):'—'}</span></div>
+        <div class="flex justify-between text-base font-extrabold text-brand-900 pt-1"><span>Total</span><span>${money(sub+del)}</span></div>
+      </div>
+      <button class="w-full py-3.5 rounded-xl bg-mint-500 hover:bg-mint-600 text-white font-bold">Buat Pesanan</button>
+      <p class="text-[11px] text-slate-400 text-center">Bayar setelah cucian diantar. Estimasi 2–3 hari kerja.</p>
+    </form>
+  </div>`;
+}
+
+function viewOrders(){
+  if (!user()) return viewAuth();
+  const list = myOrders();
+  if (!list.length) return `<div class="max-w-3xl mx-auto px-5 py-20 text-center">
+    <div class="text-5xl mb-4">📦</div><h1 class="font-display text-2xl font-extrabold text-brand-900">Belum ada pesanan</h1>
+    <button onclick="go('katalog')" class="mt-6 px-6 py-3 rounded-xl bg-brand-700 text-white font-bold">Mulai Pesan</button></div>`;
+  return `<div class="max-w-4xl mx-auto px-5 py-10">
+    <h1 class="font-display text-2xl font-extrabold text-brand-900">Pesanan saya</h1>
+    <div class="mt-5 space-y-3">${list.map(o => {
+      const idx = STATUS.indexOf(o.status), done = o.status === 'Selesai', cancel = o.status === 'Dibatalkan';
+      return `<div class="bg-white rounded-2xl border border-slate-200 p-5">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div><div class="font-display font-extrabold text-brand-900">${o.code}</div>
+            <div class="text-xs text-slate-500">${new Date(o.createdAt).toLocaleString('id-ID',{dateStyle:'medium',timeStyle:'short'})} · ${o.items.length} item</div></div>
+          <div class="flex items-center gap-3">
+            <span class="text-xs font-bold px-3 py-1.5 rounded-full ${cancel?'bg-rose-100 text-rose-700':done?'bg-mint-500/15 text-mint-600':'bg-brand-50 text-brand-700'}">${o.status}</span>
+            <button onclick="openOrder('${o.id}')" class="text-sm font-bold text-brand-700 hover:underline">Detail</button>
+          </div>
+        </div>
+        ${cancel?'' : `<div class="mt-4 flex items-center gap-1">
+          ${STATUS.map((s,i)=>`<div class="grow"><div class="h-1.5 rounded-full ${i<=idx?'bg-mint-500':'bg-slate-200'}"></div>
+            <div class="text-[10px] mt-1 ${i<=idx?'text-slate-700 font-semibold':'text-slate-400'} hidden sm:block">${s}</div></div>`).join('')}
+        </div>`}
+        <div class="mt-3 flex items-center justify-between text-sm border-t border-slate-100 pt-3">
+          <span class="text-slate-500">${o.items.map(i=>`${i.name} ${i.qty}${i.unit}`).join(', ')}</span>
+          <b class="text-brand-900">${money(o.total)}</b>
+        </div>
+      </div>`; }).join('')}</div>
+  </div>`;
+}
+
+function viewNotif(){
+  if (!user()) return viewAuth();
+  const list = myNotifs();
+  return `<div class="max-w-3xl mx-auto px-5 py-10">
+    <div class="flex items-center justify-between mb-4">
+      <h1 class="font-display text-2xl font-extrabold text-brand-900">Notifikasi</h1>
+      ${list.length?`<button onclick="readAll()" class="text-sm font-bold text-brand-700 hover:underline">Tandai semua dibaca</button>`:''}
+    </div>
+    ${list.length? `<div class="bg-white rounded-2xl border border-slate-200 divide-y divide-slate-100">
+      ${list.map(n=>`<div class="px-5 py-4 flex gap-3 ${n.read?'':'bg-brand-50/40'}">
+        <div class="w-9 h-9 rounded-full ${n.read?'bg-slate-100 text-slate-400':'bg-brand-100 text-brand-700'} grid place-items-center shrink-0"><i class="fa-regular fa-bell text-sm"></i></div>
+        <div><div class="text-sm ${n.read?'text-slate-600':'font-semibold text-brand-900'}">${n.text}</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">${new Date(n.at).toLocaleString('id-ID',{dateStyle:'medium',timeStyle:'short'})}</div></div>
+        ${n.read?'':'<span class="ml-auto w-2 h-2 rounded-full bg-rose-500 mt-2"></span>'}
+      </div>`).join('')}</div>`
+    : `<div class="bg-white rounded-2xl border border-slate-200 p-10 text-center text-slate-500 text-sm">Belum ada notifikasi.</div>`}
+  </div>`;
+}
+
+function viewAdmin(){
+  if (!isAdmin()) return viewAuth();
+  const all = db.orders.slice().sort((a,b)=>b.createdAt.localeCompare(a.createdAt));
+  const list = state.adminFilter === 'Semua' ? all : all.filter(o => o.status === state.adminFilter);
+  const paid = all.filter(o => o.status !== 'Dibatalkan');
+  const kpi = [
+    ['Pesanan aktif', all.filter(o=>!['Selesai','Dibatalkan'].includes(o.status)).length, 'fa-spinner'],
+    ['Selesai', all.filter(o=>o.status==='Selesai').length, 'fa-circle-check'],
+    ['Omzet', money(paid.reduce((a,o)=>a+o.total,0)), 'fa-wallet'],
+    ['Pelanggan', db.users.filter(u=>u.role==='customer').length, 'fa-users']
+  ];
+  return `<div class="max-w-6xl mx-auto px-5 py-10">
+    <div class="text-xs font-bold tracking-[0.2em] text-brand-600">DASHBOARD</div>
+    <h1 class="font-display text-2xl font-extrabold text-brand-900 mt-2">Kelola pesanan</h1>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-5">
+      ${kpi.map(([t,v,ic])=>`<div class="bg-white rounded-2xl border border-slate-200 p-5"><div class="flex items-center gap-2 text-slate-500 text-xs font-bold"><i class="fa-solid ${ic} text-brand-500"></i>${t}</div><div class="font-display text-2xl font-extrabold text-brand-900 mt-2">${v}</div></div>`).join('')}
+    </div>
+    <div class="flex gap-2 flex-wrap mt-6">
+      ${['Semua',...STATUS,'Dibatalkan'].map(s=>`<button onclick="state.adminFilter='${s}';render()" class="px-3.5 py-2 rounded-xl text-xs font-bold ${state.adminFilter===s?'bg-brand-700 text-white':'bg-white border border-slate-200 text-slate-600 hover:border-brand-300'}">${s}</button>`).join('')}
+    </div>
+    <div class="mt-4 bg-white rounded-2xl border border-slate-200 overflow-hidden">
+      <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-50 text-slate-500 text-xs uppercase tracking-wide"><tr>
+          <th class="text-left px-4 py-3">Kode</th><th class="text-left px-4 py-3">Pelanggan</th>
+          <th class="text-left px-4 py-3">Item</th><th class="text-left px-4 py-3">Total</th>
+          <th class="text-left px-4 py-3">Status</th><th class="text-right px-4 py-3">Aksi</th></tr></thead>
+        <tbody>
+        ${list.length? list.map(o=>{ const u = db.users.find(x=>x.id===o.userId);
+          const next = STATUS[STATUS.indexOf(o.status)+1];
+          return `<tr class="border-t border-slate-100 align-top">
+            <td class="px-4 py-3"><div class="font-bold text-brand-900">${o.code}</div><div class="text-[11px] text-slate-400">${new Date(o.createdAt).toLocaleDateString('id-ID',{dateStyle:'medium'})}</div></td>
+            <td class="px-4 py-3"><div>${u?u.name:'—'}</div><div class="text-[11px] text-slate-400">${o.phone}</div></td>
+            <td class="px-4 py-3 text-slate-600 max-w-[220px]">${o.items.map(i=>`${i.name} ${i.qty}${i.unit}`).join('<br>')}</td>
+            <td class="px-4 py-3 font-bold">${money(o.total)}</td>
+            <td class="px-4 py-3"><span class="text-[11px] font-bold px-2.5 py-1 rounded-full ${o.status==='Dibatalkan'?'bg-rose-100 text-rose-700':o.status==='Selesai'?'bg-mint-500/15 text-mint-600':'bg-brand-50 text-brand-700'}">${o.status}</span></td>
+            <td class="px-4 py-3 text-right whitespace-nowrap">
+              <button onclick="openOrder('${o.id}')" class="px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-bold hover:bg-slate-50">Detail</button>
+              ${next?`<button onclick="advance('${o.id}')" class="ml-1 px-3 py-1.5 rounded-lg bg-brand-700 text-white text-xs font-bold hover:bg-brand-800">${next}</button>`:''}
+              ${['Selesai','Dibatalkan'].includes(o.status)?'':`<button onclick="cancelOrder('${o.id}')" class="ml-1 px-3 py-1.5 rounded-lg text-xs font-bold text-rose-600 hover:bg-rose-50">Batal</button>`}
+            </td></tr>`; }).join('')
+        : `<tr><td colspan="6" class="px-4 py-10 text-center text-slate-500">Tidak ada pesanan pada filter ini.</td></tr>`}
+        </tbody>
+      </table></div>
+    </div>
+  </div>`;
+}
+
+function viewAuth(){
+  const login = state.authMode === 'login';
+  const field = (id, label, type='text', ph='', extra='') => `
+    <div><label class="text-xs font-bold text-slate-600">${label}</label>
+      <input id="${id}" type="${type}" ${extra} placeholder="${ph}" class="mt-1 w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-300"></div>`;
+  return `<div class="max-w-5xl mx-auto px-5 py-12 grid lg:grid-cols-2 gap-8 items-center">
+    <div class="hidden lg:block">
+      <div class="text-xs font-bold tracking-[0.2em] text-brand-600">KILAT LAUNDRY</div>
+      <h1 class="font-display text-4xl font-extrabold text-brand-900 mt-3 leading-tight">Laundry jadi urusan<br>dua menit.</h1>
+      <p class="text-slate-500 mt-3 leading-relaxed max-w-sm">Simpan alamat, ulangi pesanan lama, dan pantau status cucian tanpa perlu chat admin.</p>
+      <ul class="mt-6 space-y-3 text-sm">
+        ${[['fa-basket-shopping','Pesan layanan & paket langsung'],['fa-truck-fast','Antar-jemput sesuai jadwal'],['fa-bell','Notifikasi tiap perubahan status'],['fa-clock-rotate-left','Riwayat pesanan tersimpan']]
+          .map(([i,t])=>`<li class="flex items-center gap-3"><span class="w-8 h-8 rounded-lg bg-brand-50 text-brand-700 grid place-items-center"><i class="fa-solid ${i} text-xs"></i></span>${t}</li>`).join('')}
+      </ul>
+    </div>
+    <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+      <div class="flex bg-slate-100 p-1 rounded-xl mb-5">
+        <button onclick="state.authMode='login';render()" class="grow py-2 rounded-lg text-sm font-bold ${login?'bg-white shadow text-brand-900':'text-slate-500'}">Masuk</button>
+        <button onclick="state.authMode='register';render()" class="grow py-2 rounded-lg text-sm font-bold ${!login?'bg-white shadow text-brand-900':'text-slate-500'}">Daftar</button>
+      </div>
+      ${login ? `
+        <form onsubmit="doLogin(event)" class="space-y-3">
+          ${field('li-email','Email','email','nama@email.com')}
+          ${field('li-pass','Kata sandi','password','••••••')}
+          <button class="w-full py-3 rounded-xl bg-brand-700 hover:bg-brand-800 text-white font-bold">Masuk</button>
+        </form>
+        <div class="mt-4 rounded-xl bg-slate-50 p-3 text-xs text-slate-600 space-y-1">
+          <div class="font-bold text-slate-700">Akun demo</div>
+          <div>Admin — admin@laundry.id / admin123</div>
+          <div>Pelanggan — pelanggan@laundry.id / 123456</div>
+        </div>`
+      : `
+        <form onsubmit="doRegister(event)" class="space-y-3">
+          ${field('rg-name','Nama lengkap','text','Nama Anda')}
+          ${field('rg-email','Email','email','nama@email.com')}
+          ${field('rg-phone','Nomor HP','tel','0812xxxxxxx','inputmode="numeric"')}
+          ${field('rg-pass','Kata sandi (min. 6)','password','••••••')}
+          <button class="w-full py-3 rounded-xl bg-brand-700 hover:bg-brand-800 text-white font-bold">Buat akun pelanggan</button>
+        </form>`}
+    </div>
+  </div>`;
+}
+
+/* ---------------- render ---------------- */
+function render(){
+  document.getElementById('hdr').innerHTML = header();
+  const v = { home:viewHome, katalog:viewKatalog, cart:viewCart, orders:viewOrders, notif:viewNotif, admin:viewAdmin, auth:viewAuth }[state.view] || viewHome;
+  document.getElementById('app').innerHTML = v();
+}
+load(); render();
+window.go = go; window.addToCart = addToCart; window.changeQty = changeQty; window.removeItem = removeItem;
+window.doLogin = doLogin; window.doRegister = doRegister; window.logout = logout; window.checkout = checkout;
+window.advance = advance; window.cancelOrder = cancelOrder; window.readAll = readAll; window.openOrder = openOrder;
+window.closeModal = closeModal; window.state = state; window.render = render;
+</script>
+</body>
+</html>
