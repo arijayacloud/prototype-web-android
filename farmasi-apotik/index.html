@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apotikku — Manajemen Obat & Penjualan Farmasi</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
+          colors: {
+            apotik: {
+              50: '#f0fdf4', 100: '#dcfce7', 200: '#bbf7d0', 300: '#86efac',
+              400: '#4ade80', 500: '#22c55e', 600: '#16a34a', 700: '#15803d',
+              800: '#166534', 900: '#14532d'
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased font-sans">
+
+  <!-- ================= NAVBAR ================= -->
+  <nav class="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-600 to-cyan-400 text-white flex items-center justify-center font-black text-lg">
+          <i class="fa-solid fa-medication"></i>
+        </div>
+        <span class="font-black text-sm tracking-tight hidden sm:inline text-blue-900">APOTIKKU<br><span class="text-[10px] font-bold text-blue-500">MANAJEMEN FARMASI</span></span>
+      </div>
+
+      <!-- Desktop Menu -->
+      <div class="hidden md:flex items-center gap-1 text-xs font-bold">
+        <a href="#beranda" class="px-4 py-2 rounded-lg text-blue-700 hover:bg-blue-50 transition">Beranda</a>
+        <a href="#input-obat" class="px-4 py-2 rounded-lg text-blue-700 hover:bg-blue-50 transition">Input Obat</a>
+        <a href="#penjualan" class="px-4 py-2 rounded-lg text-blue-700 hover:bg-blue-50 transition">Penjualan</a>
+        <a href="#laporan" class="px-4 py-2 rounded-lg text-blue-700 hover:bg-blue-50 transition">Laporan</a>
+        <a href="#profil" class="px-4 py-2 rounded-lg text-blue-700 hover:bg-blue-50 transition">Profil</a>
+      </div>
+
+      <!-- CTA & Mobile -->
+      <div class="flex items-center gap-3">
+        <button onclick="scrollToKontak()" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-black text-xs transition shadow-md">
+          Login / Daftar
+        </button>
+        <button onclick="toggleMenu()" class="md:hidden w-8 h-8 rounded-lg border border-slate-200 flex items-center justify-center">
+          <i class="fa-solid fa-bars text-blue-900"></i>
+        </button>
+      </div>
+    </div>
+
+      <!-- Mobile Menu -->
+      <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-slate-200 px-4 py-3 space-y-2">
+        <a href="#beranda" class="block px-3 py-2 rounded-lg text-blue-700 hover:bg-blue-50 font-bold text-xs">Beranda</a>
+        <a href="#input-obat" class="block px-3 py-2 rounded-lg text-blue-700 hover:bg-blue-50 font-bold text-xs">Input Obat</a>
+        <a href="#penjualan" class="block px-3 py-2 rounded-lg text-blue-700 hover:bg-blue-50 font-bold text-xs">Penjualan</a>
+        <a href="#laporan" class="block px-3 py-2 rounded-lg text-blue-700 hover:bg-blue-50 font-bold text-xs">Laporan</a>
+        <a href="#profil" class="block px-3 py-2 rounded-lg text-blue-700 hover:bg-blue-50 font-bold text-xs">Profil</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ================= HERO SECTION ================= -->
+  <section id="beranda" class="bg-gradient-to-br from-blue-900 to-cyan-700 text-white py-16 sm:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8 items-center">
+      <div class="space-y-6">
+        <div class="space-y-2">
+          <span class="text-blue-400 font-black text-xs tracking-wider uppercase">Sistem Manajemen Farmasi Terintegrasi</span>
+          <h1 class="text-4xl sm:text-5xl font-black leading-tight">
+            Apotikku<br>
+            <span class="text-blue-400">Input & Penjualan Obat</span>
+          </h1>
+          <p class="text-sm text-blue-100 max-w-md">Aplikasi manajemen farmasi untuk stok obat, barcode otomatis, transaksi penjualan, laporan, dan piutang terintegrasi.</p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button onclick="scrollToKontak()" class="px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-black text-sm transition shadow-lg">
+            <i class="fa-solid fa-download"></i> Unduh di Play Store
+          </button>
+          <a href="#input-obat" class="px-6 py-3 rounded-full bg-white/20 hover:bg-white/30 text-white font-bold text-sm transition border border-white/30 flex items-center gap-2">
+            <i class="fa-solid fa-pills"></i> Input Obat
+          </a>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="space-y-4">
+        <div class="bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/20 text-center">
+          <div class="text-3xl font-black text-blue-300">1,284</div>
+          <div class="text-xs text-blue-200 mt-1">Total Obat Aktif</div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="bg-white/10 backdrop-blur rounded-xl p-3 border border-white/20 text-center">
+            <div class="text-2xl font-black text-blue-300">456</div>
+            <div class="text-[10px] text-blue-200">Penjualan Hari Ini</div>
+          </div>
+          <div class="bg-white/10 backdrop-blur rounded-xl p-3 border border-white/20 text-center">
+            <div class="text-2xl font-black text-blue-300">89%</div>
+            <div class="text-[10px] text-blue-200">Tingkat Keberhasilan</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= INPUT OBAT ================= -->
+  <section id="input-obat" class="py-16 bg-white border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-black text-blue-900 mb-8 text-center">Input <span class="text-blue-500">Obat</span></h2>
+      <div class="bg-blue-50 rounded-3xl p-6 border-2 border-blue-300">
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="space-y-4">
+            <div class="bg-white rounded-xl p-4 border border-blue-200">
+              <h3 class="font-black text-sm text-blue-900 mb-3">📋 Detail Obat</h3>
+              <div class="space-y-3">
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1">Nama Obat</label>
+                  <input type="text" placeholder="Contoh: Paracetamol 500mg" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1">Kode Barcode</label>
+                  <input type="text" readonly value="AUTO-GENERATED" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs bg-slate-50">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1">Kategori</label>
+                  <select class="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs">
+                    <option>Pilih kategori</option>
+                    <option>Tablet</option>
+                    <option>Kapsul</option>
+                    <option>Cair</option>
+                    <option>Oles</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1">Harga Beli</label>
+                  <input type="number" placeholder="10000" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1">Harga Jual</label>
+                  <input type="number" placeholder="12000" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs">
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 mb-1">Stok</label>
+                  <input type="number" placeholder="100" class="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs">
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-xl p-4 border border-blue-200">
+              <h3 class="font-black text-sm text-blue-900 mb-3">📦 Info Tambahan</h3>
+              <div class="space-y-3">
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" class="w-4 h-4 text-blue-600"> Obat Resep?
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" class="w-4 h-4 text-blue-600"> BPJS?
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" class="w-4 h-4 text-blue-600"> Generik?
+                </label>
+                <label class="flex items-center gap-2">
+                  <input type="checkbox" class="w-4 h-4 text-blue-600"> OTC?
+                </label>
+                <textarea placeholder="Catatan tambahan..." class="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs h-20 resize-none"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <div class="bg-blue-100 rounded-xl p-4 border-2 border-blue-400">
+              <h3 class="font-black text-sm text-blue-900 mb-3">📊 Preview Obat</h3>
+              <div class="space-y-2">
+                <div class="flex justify-between text-xs">
+                  <span>Nama:</span>
+                  <span class="font-bold text-blue-700">-</span>
+                </div>
+                <div class="flex justify-between text-xs">
+                  <span>Barcode:</span>
+                  <span class="font-bold text-blue-700">AUTO</span>
+                </div>
+                <div class="flex justify-between text-xs">
+                  <span>Kategori:</span>
+                  <span class="font-bold text-blue-700">-</span>
+                </div>
+                <div class="flex justify-between text-xs">
+                  <span>Stok:</span>
+                  <span class="font-bold text-blue-700">0</span>
+                </div>
+                <div class="flex justify-between text-xs">
+                  <span>Harga Jual:</span>
+                  <span class="font-bold text-blue-700">Rp 0</span>
+                </div>
+                <div class="flex justify-between text-xs">
+                  <span>Total Nilai Stok:</span>
+                  <span class="font-bold text-blue-700">Rp 0</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-xl p-4 border border-blue-200">
+              <h3 class="font-black text-sm text-blue-900 mb-3">💾 Aksi</h3>
+              <div class="space-y-2">
+                <button onclick="simpanObat()" class="w-full py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-black text-sm transition">
+                  <i class="fa-solid fa-save"></i> Simpan Obat
+                </button>
+                <button onclick="previewObat()" class="w-full py-3 rounded-full bg-white border border-blue-300 text-blue-700 font-bold text-sm hover:bg-blue-50 transition">
+                  <i class="fa-solid fa-eye"></i> Preview Obat
+                </button>
+                <button onclick="shareWhatsApp()" class="w-full py-3 rounded-full bg-white border border-blue-300 text-blue-700 font-bold text-sm hover:bg-blue-50 transition">
+                  <i class="fa-brands fa-whatsapp"></i> Bagikan ke WhatsApp
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PENJUALAN ================= -->
+  <section id="penjualan" class="py-16 bg-slate-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-black text-blue-900 mb-8 text-center">Transaksi <span class="text-blue-500">Penjualan</span></h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="md:col-span-2 bg-white rounded-2xl p-6 border border-slate-200">
+          <h3 class="font-black text-lg text-blue-900 mb-4">🛒 Keranjang</h3>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between p-3 rounded-lg bg-blue-50 border border-blue-200">
+              <div class="flex-1">
+                <div class="text-xs font-bold text-slate-900">Paracetamol 500mg</div>
+                <div class="text-[10px] text-slate-600">Stok: 100 | Harga: Rp 12.000</div>
+              </div>
+              <div class="flex items-center gap-3">
+                <input type="number" value="1" class="w-16 px-2 py-1 rounded-lg border border-slate-300 text-xs">
+                <div class="text-xs font-bold text-blue-700">Rp 12.000</div>
+                <button class="text-red-500 hover:text-red-700"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </div>
+            <div class="flex items-center justify-between p-3 rounded-lg bg-blue-50 border border-blue-200">
+              <div class="flex-1">
+                <div class="text-xs font-bold text-slate-900">Amoxicillin 250mg</div>
+                <div class="text-[10px] text-slate-600">Stok: 50 | Harga: Rp 15.000</div>
+              </div>
+              <div class="flex items-center gap-3">
+                <input type="number" value="2" class="w-16 px-2 py-1 rounded-lg border border-slate-300 text-xs">
+                <div class="text-xs font-bold text-blue-700">Rp 30.000</div>
+                <button class="text-red-500 hover:text-red-700"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </div>
+          </div>
+          <div class="border-t border-slate-200 pt-4 mt-4">
+            <div class="flex justify-between text-sm font-black mb-2">
+              <span>Subtotal:</span>
+              <span>Rp 42.000</span>
+            </div>
+            <div class="flex justify-between text-sm font-black mb-2">
+              <span>Diskon:</span>
+              <span>Rp 0</span>
+            </div>
+            <div class="flex justify-between text-lg font-black text-blue-900">
+              <span>Total:</span>
+              <span>Rp 42.000</span>
+            </div>
+          </div>
+          <div class="mt-6 space-y-3">
+            <button onclick="prosesPembayaran()" class="w-full py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-black text-sm transition">
+              <i class="fa-solid fa-credit-card"></i> Proses Pembayaran
+            </button>
+            <button onclick="exportStruk()" class="w-full py-3 rounded-full bg-white border border-blue-300 text-blue-700 font-bold text-sm hover:bg-blue-50 transition">
+              <i class="fa-solid fa-print"></i> Export Struk
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 border border-slate-200">
+          <h3 class="font-black text-lg text-blue-900 mb-4">💳 Metode Pembayaran</h3>
+          <div class="space-y-3">
+            <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer">
+              <input type="radio" name="payment" class="w-4 h-4 text-blue-600">
+              <i class="fa-brands fa-qrcode text-blue-600 text-xl"></i>
+              <div>
+                <div class="text-xs font-bold">QRIS</div>
+                <div class="text-[10px] text-slate-600">Instant</div>
+              </div>
+            </label>
+            <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-300 bg-slate-50 cursor-pointer">
+              <input type="radio" name="payment" class="w-4 h-4 text-blue-600" checked>
+              <i class="fa-solid fa-money-bill text-blue-600 text-xl"></i>
+              <div>
+                <div class="text-xs font-bold">Tunai</div>
+                <div class="text-[10px] text-slate-600">Biasa</div>
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-slate-900 text-white py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="flex items-center justify-center gap-2 mb-4">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-cyan-400 flex items-center justify-center text-white font-black text-sm">
+          <i class="fa-solid fa-medication"></i>
+        </div>
+        <span class="font-black text-sm">APOTIKKU</span>
+      </div>
+      <p class="text-xs text-slate-400">© 2024 Apotikku — Manajemen Obat & Penjualan Farmasi. Semua hak dilindungi.</p>
+    </div>
+  </footer>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('hidden');
+    }
+    function scrollToKontak() {
+      window.location.hash = '#kontak';
+    }
+    function simpanObat() {
+      alert('Obat disimpan!');
+    }
+    function previewObat() {
+      alert('Preview obat');
+    }
+    function shareWhatsApp() {
+      window.open('https://wa.me/6281234567890?text=Apotikku - Obat stok terbaru', '_blank');
+    }
+    function prosesPembayaran() {
+      alert('Pembayaran diproses!');
+    }
+    function exportStruk() {
+      alert('Struk dieksport ke PDF!');
+    }
+  </script>
+</body>
+</html>
