@@ -5,37 +5,36 @@
 <title>Laqhir — Aplikasi Baca-Tulis Quran</title>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>
-html,body{margin:0;height:100%;font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,Ubuntu,sans-serif;background:#f6f7fa;color:#0a0a0a;}
-.wrap{max-width:960px;margin:0 auto;padding:24px 16px 80px}
-h1{margin:0 0 6px;font-size:clamp(22px,4vw,32px);letter-spacing:-.03em}
-.sub{color:#69768a;font-size:14px;margin:0 0 20px}
-/* cards */
-.card{background:#fff;border:1px solid #e1e4ea;border-radius:16px;padding:16px;margin-bottom:20px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
-/* buttons */
-.btn{display:inline-flex;align-items:center;justify-content:center;border:none;background:#fff;border:1px solid #cfd5de;border-radius:999px;padding:11px 18px;font-size:14px;font-weight:600;cursor:pointer;color:#0a0a0a;transition:.15s}
-.btn:hover{background:#f5f6f7;border-color:#b9c0c9}
+html,body{margin:0;height:100%;font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,Ubuntu,sans-serif;background:#f5f6f9;color:#0a0a0a;overflow:hidden;-webkit-tap-highlight-color:transparent}
+.wrap{width:100%;height:100%;display:flex;flex-direction:column;padding:12px;box-sizing:border-box}
+h1{margin:0 0 6px;font-size:clamp(20px,4vw,28px);letter-spacing:-.03em;text-align:center}
+.sub{color:#6b778d;font-size:13px;margin:0 0 16px;text-align:center}
+.card{background:#fff;border:1px solid #e3e6ec;border-radius:14px;padding:14px;margin-bottom:14px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.btn{display:inline-flex;align-items:center;justify-content:center;border:none;background:#fff;border:1px solid #d6dce5;border-radius:999px;padding:10px 16px;font-size:13px;font-weight:600;cursor:pointer;color:#0a0a0a;transition:.15s}
+.btn:hover{background:#f5f6f7;border-color:#b8c0cc}
 .btn.primary{background:#0d6efd;color:#fff;border-color:#0d6efd}
 .btn.primary:hover{filter:brightness(.95)}
-/* inputs */
-input[type=text],input[type=number],textarea{font:inherit;border:1px solid #cfd5de;border-radius:12px;padding:10px 12px;background:#fff;color:#0a0a0a}
-input:focus,textarea:focus{outline:none;border-color:#8ab4f8}
-/* canvas */
-canvas{border:2px dashed #cfd5de;border-radius:12px;background:#fff;touch-action:none;display:block;margin:0 auto}
-/* popups */
+.btn.danger{background:#dc3545;color:#fff;border-color:#dc3545}
+input[type=text]{width:100%;padding:10px;border:1px solid #d6dce5;border-radius:10px;background:#fff;color:#0a0a0a;font:inherit}
+input:focus{border-color:#8ab4f8;outline:none}
+canvas{display:block;margin:0 auto;border:2px dashed #d6dce5;border-radius:10px;background:#fff;touch-action:none;width:100%;max-width:800px;height:400px}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:1000;opacity:0;pointer-events:none;transition:opacity .2s}
 .modal.on{opacity:1;pointer-events:all}
-.modal .panel{background:#fff;border-radius:18px;padding:20px;max-width:90vw;max-height:80vh;overflow:auto;box-shadow:0 8px 24px rgba(0,0,0,.12)}
-/* tree */
-svg.tree{width:100%;height:240px;overflow:visible}
+.modal .panel{background:#fff;border-radius:16px;padding:16px;max-width:90vw;max-height:80vh;overflow:auto;box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.svg-tree{width:100%;height:200px;overflow:visible}
 .leaf{stroke:#dc3545;fill:#dc3545;stroke-width:2}
 .stem{stroke:#16a342;stroke-width:8;fill:none}
-/* list */
 ul.list{margin:0;padding:0;list-style:none}
-ul.list li{padding:12px;border-bottom:1px solid #f0f2f5}
-.label{color:#69768a;font-size:12px;margin-bottom:4px}
-.value{font-weight:600}
-/* hint */
-.hint{font-size:13px;color:#8a96a6;margin-top:8px;line-height:1.5}
+ul.list li{padding:10px;border-bottom:1px solid #eff1f3}
+.label{color:#6b778d;font-size:12px;margin-bottom:4px;display:block}
+.value{font-weight:600;color:#333}
+.hint{font-size:12px;color:#8a96a6;margin-top:8px;line-height:1.5}
+.hidden{display:none!important}
+.locked{opacity:.35;pointer-events:none}
+.active{opacity:1;pointer-events:all}
+.drag-piece{display:inline-block;padding:10px 14px;margin:6px;background:#eef2f7;border:1px solid #d0d7de;border-radius:10px;cursor:grab;touch-action:none;user-select:none}
+.drag-piece:active{cursor:grabbing}
+.log-entry{margin:6px 0;padding:6px;background:#f9fafb;border-left:3px solid #8ab4f8;font-size:12px}
 </style>
 </head>
 <body>
@@ -43,38 +42,52 @@ ul.list li{padding:12px;border-bottom:1px solid #f0f2f5}
   <h1>Laqhir — Aplikasi Baca-Tulis Quran</h1>
   <p class="sub">Pelacakan progress: Lauh → Qiroah → Takrir | Lock system</p>
 
-  <div class="card">
-    <div class="row" style="display:flex;gap:12;margin:-4">
-      <div><label>ID Peserta</label><input id="pid" type="text" placeholder="misal: A001"></div>
-      <div><label>Nama</label><input id="pname" type="text" placeholder="misal: Ali"></div>
+  <div class="card" id="setup-card">
+    <div class="row" style="display:flex;gap:12;flex-wrap:wrap">
+      <div style="flex:1;min-width:120px">
+        <label class="label">ID Peserta</label>
+        <input id="pid" type="text" placeholder="misal: A001">
+      </div>
+      <div style="flex:1;min-width:120px">
+        <label class="label">Nama</label>
+        <input id="pname" type="text" placeholder="misal: Ali">
+      </div>
+      <div style="align-self:flex-end">
+        <button id="btnStart" class="btn primary">Mulai</button>
+      </div>
     </div>
   </div>
 
-  <div class="card" id="stage1" class="locked">
+  <!-- stage1 Lauh (tracing) -->
+  <div class="card locked" id="stage1">
     <h3>Sesi Laqhir – Lauh</h3>
-    <div class="hint">Tarik ayah → tekan → menebalkan.</div>
+    <div class="hint">Tarik jari → tekan → menebalkan.</div>
     <canvas id="canvasLauh" width="800" height="560" data-ayat="Basmala"></canvas>
     <div class="hint" id="hintLauh"></div>
   </div>
 
-  <div class="card" id="stage2" class="locked">
+  <!-- stage2 Qiroah -->
+  <div class="card locked" id="stage2">
     <h3>Sesi Laqhir – Qiroah</h3>
-    <div class="hint">Tonton audio Qari anak + karaoke highlight.</div>
-    <div id="audioQiroah"></div>
+    <div class="hint">Putar audio Qari anak + teks karaoke.</div>
+    <div id="audioPlayer"></div>
     <div class="hint" id="hintQiroah"></div>
-    <div class="row" style="display:flex;gap:12;margin:8"><button id="btnListen3x" class="btn primary">Dengarkan 3x (diperlukan)</button></div>
+    <div style="margin-top:10px">
+      <button id="btnListen3x" class="btn primary">Dengarkan 3x (diperlukan)</button>
+    </div>
   </div>
 
-  <div class="card" id="stage3" class="locked">
+  <!-- stage3 Takrir -->
+  <div class="card locked" id="stage3">
     <h3>Sesi Laqhir – Takrir</h3>
-    <div class="hint">Upload audio sendiri, putar ulang, tumbuhkan pohon.</div>
+    <div class="hint">Upload audio sendiri → putar ulang → tumbuhkan pohon progress.</div>
     <input id="fileUpload" type="file" accept="audio/*" hidden>
     <button id="btnRecord" class="btn">Rekam & Selesai</button>
     <div id="progressTree"></div>
     <ul class="list" id="logTakrir"></ul>
   </div>
 
-  <div class="card">
+  <div class="card" id="dashboard-card" style="display:none">
     <h3>Dasbor Monitoring Guru</h3>
     <div class="hint">Status lock, progres per peserta.</div>
     <ul class="list" id="dashboard"></ul>
@@ -88,63 +101,172 @@ ul.list li{padding:12px;border-bottom:1px solid #f0f2f5}
 // helpers
 const $ = id => document.getElementById(id);
 const log = txt => console.log('[Laqhir]', txt);
-const now = () => Date.now();
 
-// storage per peserta
-const pid = () => localStorage.pid||'';
-const pname = () => localStorage.pname||'';
-const setPid = v=>{localStorage.pid=v;localStorage.pname=$('pname').value};
-
-// lock system
-const stageLocked = (stage)=>localStorage[`stage${stage}Locked`]||0;
-const setStageLocked = (s,v)=>localStorage[`stage${s}Locked`=v];
-
-// audio playback util
-const audio = (src)=>`<audio src="${src}" controls autoplay></audio>`;
-
-// draw page
-drawPage=(id,c,next)=>{canvas=$('canvasLauh');const ctx=canvas.getContext('2d');
-ctx.clearRect(unktion);ctx.beginPath();ctx.lineWidth=4;ctx.strokeStyle='#0a0a0a';
-// simplified stroke logic
+let appState = {
+  pid: '',
+  pname: '',
+  lockedLauh: false,
+  lockedQiroah: false,
+ piston : false,
+  lockedTakrir: false,
+  recordedAudios: [],
+  treeGrownCount: 0,
+  logTakrir: [],
 };
 
-// drag&drop puzzle
-function initDrag(){const items=document.querySelectorAll('.piece');
-items.forEach(el=>{el.addEventListener('touchstart',e=>{e.preventDefault();});});}
-
-// audio record
-let recorder=null;async function startRec(){const stream=await navigator.mediaDevices.getUserMedia({audio:true});recorder=new MediaRecorder(stream);
-recorder.ondataavailable=e=>{localStorage.recordedAudio=btoa(String.fromCharCode(...new Uint8Array(e.data)));
-$('btnRecord').textContent='Selesai';};
-recorder.start();}
-
-// tree visualization
-function drawTree(growCount){const svg=$('progressTree');svg.innerHTML='';
-const w=svg.clientWidth||960;h=240;
-svg.setAttribute('viewBox',`0 0 ${w} ${h}`);
-svg.innerHTML=`<path class="stem" d="M${w/2},0 L${w/2},${h}"/><circle class="leaf" cx="${w/2}" cy="${h}-20" r="10"/>`;
-if(growCount>=3){svg.innerHTML+='<circle class="leaf" cx="120" cy="120" r="10"/>';}
-if(growCount>=5){svg.innerHTML+='<path class="stem" d="M60,120 L60,220"/><circle class="leaf" cx="60" cy="220" r="10"/>';}
+function persist() {
+  localStorage.setItem('laqhir_pid', appState.pid);
+  localStorage.setItem('laqhir_pname', appState.pname);
+  localStorage.setItem('laqhir_lockedLauh', appState.lockedLauh);
+  localStorage.setItem('laqhir_lockedQiroah', appState.lockedQiroah);
+  localStorage.setItem('laqhir_lockedTakrir', appState.lockedTakrir);
+  localStorage.setItem('laqhir_recordedAudios', JSON.stringify(appState.recordedAudios));
+  localStorage.setItem('laqhir_treeGrownCount', appState.treeGrownCount);
+  localStorage.setItem('laqhir_logTakrir', JSON.stringify(appState.logTakrir));
+}
+function restore() {
+  appState.pid = localStorage.getItem('laqhir_pid') || '';
+  appState.pname = localStorage.getItem('laqhir_pname') || '';
+  appState.lockedLauh = localStorage.getItem('laqhir_lockedLauh') === 'true';
+  appState.lockedQiroah = localStorage.getItem('laqhir_lockedQiroah') === 'true';
+  appState.lockedTakrir = localStorage.getItem('laqhir_lockedTakrir') === 'true';
+  appState.recordedAudios = JSON.parse(localStorage.getItem('laqhir_recordedAudios')) || [];
+  appState.treeGrownCount = Number(localStorage.getItem('laqhir_treeGrownCount')) || 0;
+  appState.logTakrir = JSON.parse(localStorage.getItem('laqhir_logTakrir')) || [];
+  if (appState.pid) $('pid').value = appState.pid;
+  if (appState.pname) $('pname').value = appState.pname;
 }
 
-// init per turn
-function init(){const pid=$('pid').value;$('stage2').classList.add('locked');$('stage3').classList.add('locked');
-if(localStorage.lockedLauh){$('stage1').classList.add('locked');$('stage2').classList.remove('locked');}
-if(localStorage.lockedQiroah){$('stage2').classList.add('locked');$('stage3').classList.remove('locked');}}
+function showSetup() {$('setup-card').classList.remove('hidden');$('dashboard-card').style.display = 'none';
+  ['stage1','stage2','stage3'].forEach(id=>$(''+id+'').classList.add('locked'));}
+function showStage(id) {showSetup();$(''+id+'').classList.remove('locked');}
+function updateDashboard() {
+  const ul = $('dashboard');
+  ul.innerHTML = '';
+  const li1 = document.createElement('li');
+  li1.innerHTML = '<span class="label">ID Peserta:</span> <span class="value">'+appState.pid+'</span>';
+  ul.appendChild(li1);
+  const li2 = document.createElement('li');
+  li2.innerHTML = '<span class="label">Nama:</span> <span class="value">'+appState.pname+'</span>';
+  ul.appendChild(li2);
+  const li3 = document.createElement('li');
+  li3.innerHTML = '<span class="label">Lauh:</span> <span class="value">'+ (appState.lockedLauh ? 'Selesai' : 'Terkunci') +'</span>';
+  ul.appendChild(li3);
+  const li4 = document.createElement('li');
+  li4.innerHTML = '<span class="label">Qiroah:</span> <span class="value">'+ (appState.lockedQiroah ? 'Selesai' : 'Terkunci') +'</span>';
+  ul.appendChild(li4);
+  const li5 = document.createElement('li');
+  li5.innerHTML = '<span class="label">Takrir:</span> <span class="value">'+ (appState.lockedTakrir ? 'Selesai' : 'Terkunci') +'</span>';
+  ul.appendChild(li5);
+}
 
-$('btnListen3x').onclick=()=>{localStorage.lockedLauh=1;localStorage.lockedQiroah=0;$('stage1').classList.add('locked');$('stage2').classList.remove('locked');init();};
+$('btnStart').addEventListener('click', ()=>{
+  appState.pid = $('pid').value.trim() || 'Anonim';
+  appState.pname = $('pname').value.trim() || 'Peserta';
+  persist();
+  $('setup-card').classList.add('hidden');
+  showStage('stage1');
+  updateDashboard();
+});
 
-// preview dummy
-$('canvasLauh').addEventListener('touchstart',e=>{e.preventDefault();log('touched');});
+$('btnListen3x').addEventListener('click', ()=>{
+  if (!appState.lockedLauh) return;
+  appState.lockedQiroah = true;
+  persist();
+  showStage('stage2');
+  // dummy audio player
+  const wrap = $('<div style="display:flex;flex-wrap:wrap;gap:4;margin-top:8"></div>');
+  const words = ['بسم', 'الله', 'الرحمن', 'الرحيم'];
+  words.forEach((w,i)=>{
+    const sp = document.createElement('span');
+    sp.textContent = w;
+    sp.style.padding='6px 10px;background:#eef2f7;border-radius:8px;border:1px solid #d0d7de;display:inline-block';
+    sp.className='word-highlight';
+    wrap.appendChild(sp);
+  });
+  $('audioPlayer').innerHTML='';
+  $('audioPlayer').appendChild(wrap);
+  // simulate highlight
+  let idx=0;
+  const sim = setInterval(()=>{
+    document.querySelectorAll('.word-highlight').forEach((el,j)=>el.style.background=j===idx?'#8ab4f8':'#eef2f7');
+    idx=(idx+1)%words.length;
+  },1000);
+  updateDashboard();
+});
+
+// Lauh canvas
+touch handling
+const canvas = $('canvasLauh');
+const ctx = canvas.getContext('2d');
+let drawing=false;
+canvas.addEventListener('touchstart', e=>{e.preventDefault(); drawing=true; ctx.beginPath(); const p=e.touches[0]; ctx.moveTo(p.clientX-canvas.offsetLeft, p.clientY-canvas.offsetTop); },{passive:false});
+canvas.addEventListener('touchmove', e=>{if(!drawing)return;e.preventDefault(); const p=e.touches[0]; ctx.lineTo(p.clientX-canvas.offsetLeft, p.clientY-canvas.offsetTop); },{passive:false});
+canvas.addEventListener('touchend', ()=>{if(drawing){drawing=false; ctx.stroke(); appState.lockedLauh=true; persist(); showStage('stage2'); updateDashboard();}});
+
+// Takrir file upload
+$('btnRecord').addEventListener('click', ()=>{
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'audio/*';
+  input.hidden = true;
+  input.onchange = e=>{
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = ()=>{
+      const base64 = reader.result.split(',')[1];
+      appState.recordedAudios.push(base64);
+      appState.logTakrir.push(`Audio tercatat: ${file.name} pada ${new Date().toLocaleString()}`);
+      appState.treeGrownCount++;
+      persist();
+      // render tree
+      const container = $('progressTree');
+      container.innerHTML='';
+      const w=240,h=200;
+      const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+      svg.setAttribute('viewBox','0 0 '+w+' '+h);
+      svg.classList.add('svg-tree');
+      const trunk=document.createElementNS('http://www.w3.org/2000/svg','path');
+      trunk.setAttribute('class','stem');
+      trunk.setAttribute('d','M'+w/2+',0 L'+w/2+','+h);
+      svg.appendChild(trunk);
+      const leaf1=document.createElementNS('http://www.w3.org/2000/svg','circle');
+      leaf1.setAttribute('class','leaf');
+      leaf1.setAttribute('cx', w/2);
+      leaf1.setAttribute('cy', h-20);
+      leaf1.setAttribute('r',10);
+      svg.appendChild(leaf1);
+      if(appState.treeGrownCount>=2){const leaf2=document.createElementNS('http://www.w3.org/2000/svg','circle'); leaf2.setAttribute('class','leaf'); leaf2.setAttribute('cx','120'); leaf2.setAttribute('cy','120'); leaf2.setAttribute('r',10); svg.appendChild(leaf2);}
+      if(appState.treeGrownCount>=3){const stem2=document.createElementNS('http://www.w3.org/2000/svg','path'); stem2.setAttribute('class','stem'); stem2.setAttribute('d','M60,120 L60,220'); svg.appendChild(stem2); const leaf3=document.createElementNS('http://www.w3.org/2000/svg','circle'); leaf3.setAttribute('class','leaf'); leaf3.setAttribute('cx','60'); leaf3.setAttribute('cy','220'); leaf3.setAttribute('r',10); svg.appendChild(leaf3);}
+      container.appendChild(svg);
+      updateLogTakrir();
+      if(appState.treeGrownCount>=3){appState.lockedTakrir=true; persist(); updateDashboard();}
+    };
+    reader.readAsDataURL(file);
+  };
+  input.click();
+});
+function updateLogTakrir(){const ul=$('logTakrir'); ul.innerHTML=''; appState.logTakrir.forEach(txt=>{const li=document.createElement('li'); li.className='log-entry'; li.textContent=txt; ul.appendChild(li);});}
 
 // export CSV
-$('btnExport').onclick=()=>{
-let csv='ID,Nama,Lauh,Qiroah,Takrir\n';
-Object.keys(localStorage).forEach(k=>{if(k.startsWith('log_')){const v=localStorage[k];csv+=v+',\n';}});
-const blob=new Blob([csv],{type:'text/csv'});const url=URL.createObjectURL(blob);
-const a=document.createElement('a');a.href=url;a.download='laqhir-report.csv';a.click();};
+$('btnExport').addEventListener('click', ()=>{
+  let csv = 'ID,Nama,Lauh,Qiroah,Takrir\n';
+  csv += appState.pid+','+appState.pname+','+(appState.lockedLauh?1:0)+','+(appState.lockedQiroah?1:0)+','+(appState.lockedTakrir?1:0)+'\n';
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'laqhir-report.csv';
+  a.click();
+});
 
-init();
+restore();
+if (appState.pid && appState.pname) {
+  showSetup();
+  $('pid').value = appState.pid;
+  $('pname').value = appState.pname;
+}
 </script>
 </body>
 </html>
