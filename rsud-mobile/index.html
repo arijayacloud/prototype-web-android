@@ -2,216 +2,305 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Rumah Sakit Mobile — Pedialan Digital</title>
+<title>PUAS — RSUD Mayjen H.A Thalib</title>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#164e63">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-html,body{margin:0;height:100%;font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,Ubuntu,sans-serif;background:#f2f4f8;color:#0d1117}
-.wrap{max-width:960px;margin:0 auto;padding:16px 12px;box-sizing:border-box}
-h1{font-weight:600;margin:0 0 4px;font-size:clamp(20px,5vw,28px);text-align:center}
-.sub{color:#6b778d;font-size:13px;margin:0 0 16px;text-align:center}
-/* cards */
-.card{background:#fff;border:1px solid #e3e6ec;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 1px 2px rgba(3,8,15,.05);position:relative;overflow:hidden}
-/* service icons */
-.services-icons{display:flex;flex-wrap:wrap;gap:14px;margin:12px 0}
-.icon-box{width:80px;height:80px;background:#fff;border:1px solid #dfe3e8;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:.15s}
-.icon-box:hover{background:#f6f7fa;border-color:#b8c0c9}
-.icon-box .icon{width:36px;height:36px;margin-bottom:6px;fill:#343a41}
-.icon-box .label{font-size:11px;color:#474e57;font-weight:600;text-align:center;line-height:1.2}
-/* prayer time */
-.prayer-card{background:#fdfefe;border:1px solid #e9edf3;border-radius:14px;padding:16px;margin:12px 0}
-.prayer-row{display:flex;justify-content:space-between;align-items:center;margin:8px 0}
-.prayer-label{font-weight:600;color:#1a2130}
-.prayer-time{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;color:#0057b8}
-.cta{height:36px;width:120px;background:#0057b8;color:#fff;border:none;border-radius:10px;font-weight:600;cursor:pointer;transition:.15s}
-.cta:hover{filter:brightness(.95)}
-/* bottom nav */
-.nav{position:fixed;left:0;right:0;bottom:0;height:56px;background:#fff;border-top:1px solid #e3e6ec;display:flex;justify-content:space-around;align-items:center;z-index:1000}
-.nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:#6b778d;cursor:pointer;transition:.15s}
-.nav-item.active,.nav-item:hover{color:#0057b8}
-.nav-icon{width:22px;height:22px;fill:currentColor}
-/* modal overlay */
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1100;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
-.modal.open{opacity:1;pointer-events:all}
-.modal .panel{background:#fff;border-radius:18px;padding:20px;max-width:90vw;max-height:80vh;overflow:auto;box-shadow:0 8px 24px rgba(0,0,0,.12)}
-/* list */
-ul.list{margin:0;padding:0;list-style:none}
-ul.list li{padding:12px;border-bottom:1px solid #f0f2f5}
-.label{color:#6b778d;font-size:12px;margin-bottom:4px;display:block}
-.value{font-weight:600;color:#1a2130}
-.hint{font-size:12px;color:#8a96a6;margin-top:8px;line-height:1.5}
-.btn{min-width:40px;height:36px;margin-right:6px;border:1px solid #cfd5de;border-radius:10px;background:#fff;font-weight:600;cursor:pointer}
-.btn:hover{background:#f2f4f8}
-.wrap{padding-bottom:76px}
+:root{
+  --cyan:#104e63; --em:#035f46; --primary:#059669; --indigo:#312c86;
+  --slate-50:#f9fafc; --slate-400:#94a3b8; --slate-500:#64748b; --slate-800:#1e293b;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:"Plus Jakarta Sans",system-ui,-apple-system,sans-serif;background:var(--slate-50);color:var(--slate-800);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+img,svg{display:block}
+/* ============ header ============ */
+header{position:relative;overflow:hidden;background:var(--cyan);color:#fff;padding:24px 20px 44px;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+header .ring{position:absolute;border-radius:999px;pointer-events:none;border:20px solid rgba(255,255,255,.10);width:250px;height:250px;top:-70px;right:-70px}
+header .blob{position:absolute;border-radius:999px;pointer-events:none;background:rgba(255,255,255,.10);width:180px;height:180px;top:50%;left:-64px;transform:translateY(-50%)}
+header .arc{position:absolute;border-radius:999px;pointer-events:none;border:12px solid rgba(255,255,255,.10);width:140px;height:140px;bottom:-40px;right:25%}
+header .dots{position:absolute;inset:0;width:100%;height:100%;opacity:.10;pointer-events:none}
+.hrow{position:relative;z-index:1;display:flex;align-items:center;gap:12px}
+.logo{width:44px;height:44px;flex:0 0 44px;border-radius:16px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 6px -1px rgba(0,0,0,.1)}
+.logo svg{width:26px;height:26px;stroke:#fff;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.greet{display:block;font-size:12px;font-weight:600;letter-spacing:.05em;color:#a5f3fc}
+h1{margin:2px 0 0;font-size:clamp(17px,5.1vw,20px);white-space:nowrap;line-height:1;font-weight:900;letter-spacing:-.02em;color:#fff}
+header p{margin:5px 0 0;font-size:11px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:rgba(165,243,252,.9)}
+/* ============ layout ============ */
+main{padding:24px 16px 108px}
+.sec-title{margin:0;font-size:16px;font-weight:900;letter-spacing:-.02em;color:var(--slate-800)}
+.sec-sub{margin:2px 0 0;font-size:12px;color:var(--slate-500)}
+/* ============ kartu waktu salat ============ */
+.prayer{margin-top:0;background:var(--em);color:#fff;border-radius:16px;padding:12px;box-shadow:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1);position:relative;overflow:hidden;z-index:2}
+.prayer-top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid #047857}
+.pt-left{display:flex;align-items:center;gap:8px;min-width:0}
+.pt-ico{width:28px;height:28px;flex:0 0 28px;border-radius:8px;background:rgba(4,47,46,.4);display:flex;align-items:center;justify-content:center}
+.pt-ico svg{width:16px;height:16px;stroke:#6ee7b7;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pt-name{font-size:14px;font-weight:800;color:#fff;line-height:1.3}
+.pt-city{display:inline-block;font-size:10px;font-weight:700;color:#d1fae5;background:rgba(2,44,34,.5);padding:2px 8px;border-radius:999px;margin-top:2px}
+.count{display:flex;align-items:center;gap:6px;background:rgba(2,44,34,.5);border:1px solid rgba(16,185,129,.4);border-radius:8px;padding:9px 11px;flex:0 0 auto}
+.count svg{width:14px;height:14px;stroke:#fcd34d;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:0 0 14px}
+.count .lbl{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:#a7f3d0;font-weight:700;line-height:1.1}
+.count .val{display:block;font-size:13px;font-weight:800;color:#fff;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;line-height:1.2;white-space:nowrap}
+.pgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:4px}
+.pcell{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:9px 4px;border-radius:10px;background:rgba(2,44,34,.35);border:1px solid rgba(4,120,87,.5);color:#d1fae5;text-align:center}
+.pcell svg{width:14px;height:14px;stroke:#a7f3d0;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;margin-bottom:2px}
+.pcell .n{font-size:10px;font-weight:700;line-height:1.3;letter-spacing:-.02em;white-space:nowrap}
+.pcell .t{font-size:10px;font-weight:800;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#fff;line-height:1.3}
+.pcell.on{background:#047857;border-color:#059669;color:#fff}
+.pcell.on svg{stroke:#fff}
+/* ============ menu layanan ============ */
+.menu{margin-top:23px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+.tile{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px 6px;border-radius:16px;background:#fff;border:1px solid #f1f5f9;box-shadow:0 1px 2px rgba(0,0,0,.05);text-align:center;cursor:pointer;transition:transform .15s,box-shadow .15s,border-color .15s;font:inherit;color:inherit}
+.tile:active{transform:scale(.97)}
+.tile:hover{box-shadow:0 4px 6px -1px rgba(0,0,0,.1);border-color:#dbeafe}
+.tico{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;color:#fff}
+.tico svg{width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tile>span:last-child{font-size:12px;font-weight:800;line-height:1.2;color:var(--slate-800)}
+.g-em{background:linear-gradient(135deg,#10b981,#0d9488);box-shadow:0 4px 6px -1px rgba(16,185,129,.2)}
+.g-am{background:linear-gradient(135deg,#f59e0b,#ea580c);box-shadow:0 4px 6px -1px rgba(245,158,11,.2)}
+.g-bl{background:linear-gradient(135deg,#2563eb,#4f46e5);box-shadow:0 4px 6px -1px rgba(79,70,229,.2)}
+.g-ye{background:linear-gradient(135deg,#facc15,#f59e0b);box-shadow:0 4px 6px -1px rgba(250,204,21,.2)}
+.g-ro{background:linear-gradient(135deg,#f43f5e,#dc2626);box-shadow:0 4px 6px -1px rgba(244,63,94,.2)}
+.g-gr{background:linear-gradient(135deg,#34d399,#16a34a);box-shadow:0 4px 6px -1px rgba(52,211,153,.2)}
+/* ============ monitoring ============ */
+.mon{margin-top:56px;background:var(--indigo);border-radius:16px;padding:20px;color:#fff;position:relative;overflow:hidden;box-shadow:0 4px 6px -1px rgba(0,0,0,.1)}
+.mon .bub{position:absolute;width:144px;height:144px;border-radius:999px;background:rgba(255,255,255,.1);top:-40px;right:-40px;pointer-events:none}
+.mon h3{position:relative;margin:0;font-size:18px;font-weight:900;letter-spacing:-.02em;line-height:28px}
+.mon p{position:relative;margin:4px 0 0;font-size:12px;color:#c7d2fe;line-height:1.5}
+.mon button{position:relative;margin-top:16px;display:inline-flex;align-items:center;gap:8px;background:#fff;color:#1e1b4b;font-weight:800;font-size:12px;padding:11px 18px;border:none;border-radius:12px;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.05);font-family:inherit}
+.mon button:active{transform:scale(.97)}
+.mon button svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+/* ============ faq ============ */
+.faq{margin-top:40px}
+.faq>.sec-title{text-align:center}
+details{background:#fff;border:1px solid #f1f5f9;border-radius:12px;padding:12px 14px;margin-bottom:8px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+summary{font-size:13px;font-weight:700;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:10px;color:var(--slate-800)}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--primary);font-weight:800}
+details[open] summary::after{content:"–"}
+details p{margin:8px 0 0;font-size:12px;color:var(--slate-500);line-height:1.55}
+/* ============ bottom nav ============ */
+nav{position:fixed;left:0;right:0;bottom:0;z-index:50;height:70px;padding-bottom:env(safe-area-inset-bottom);background:rgba(255,255,255,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid rgba(226,232,240,.6);border-radius:20px 20px 0 0;box-shadow:0 -4px 20px -5px rgba(0,0,0,.08)}
+.ninner{position:relative;display:grid;grid-template-columns:repeat(5,1fr);height:100%;max-width:512px;margin:0 auto}
+.nitem{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;background:none;border:none;font:inherit;color:var(--slate-400);cursor:pointer;padding:0}
+.nitem svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.nitem span{font-size:10px;font-weight:700}
+.nitem.on{color:var(--primary)}
+.nitem.on svg{transform:scale(1.1);filter:drop-shadow(0 2px 2px rgba(5,150,105,.25))}
+.nmid{position:relative;display:flex;align-items:center;justify-content:center}
+.nmid button{position:absolute;top:-24px;width:56px;height:56px;border-radius:999px;background:#10b981;border:4px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 15px -3px rgba(16,185,129,.3);cursor:pointer;color:#fff}
+.nmid button svg{width:26px;height:26px;stroke:#fff}
+.nmid>span{position:relative;margin-top:30px;font-size:9px;font-weight:700;color:var(--slate-400)}
+/* ============ sheet / modal ============ */
+.sheet{position:fixed;inset:0;z-index:100;display:flex;align-items:flex-end;justify-content:center;background:rgba(15,23,42,.5);opacity:0;pointer-events:none;transition:opacity .2s}
+.sheet.on{opacity:1;pointer-events:auto}
+.sheet .box{width:100%;max-width:512px;background:#fff;border-radius:22px 22px 0 0;padding:18px 18px calc(18px + env(safe-area-inset-bottom));max-height:85vh;overflow:auto;transform:translateY(16px);transition:transform .22s}
+.sheet.on .box{transform:none}
+.sheet h2{margin:0;font-size:17px;font-weight:800;letter-spacing:-.02em}
+.sheet .demo{display:inline-block;margin:8px 0 0;font-size:10px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#b45309;background:#fef3c7;border:1px solid #fde68a;padding:4px 8px;border-radius:999px;line-height:1.4}
+.sheet p{font-size:13px;color:var(--slate-500);line-height:1.6;margin:10px 0 0}
+.sheet ul{margin:10px 0 0;padding-left:18px;font-size:13px;color:var(--slate-500);line-height:1.7}
+.sheet input,.sheet textarea,.sheet select{width:100%;margin-top:8px;padding:11px 12px;border:1px solid #e2e8f0;border-radius:10px;font:inherit;font-size:13px;color:var(--slate-800);background:#fff}
+.sheet textarea{min-height:88px;resize:vertical}
+.sheet label{display:block;margin-top:12px;font-size:11px;font-weight:800;color:var(--slate-800);text-transform:uppercase;letter-spacing:.03em}
+.sheet .go{width:100%;margin-top:14px;padding:13px;border:none;border-radius:12px;background:var(--primary);color:#fff;font:inherit;font-size:14px;font-weight:800;cursor:pointer}
+.sheet .close{width:100%;margin-top:8px;padding:11px;border:1px solid #e2e8f0;border-radius:12px;background:#fff;font:inherit;font-size:13px;font-weight:700;color:var(--slate-500);cursor:pointer}
+.badge-ok{margin-top:12px;padding:10px 12px;border-radius:10px;background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46;font-size:12px;font-weight:600;line-height:1.5}
 </style>
 </head>
 <body>
-<div class="wrap" id="app">
-  <h1>Rumah Sakit Mobile — Pedialan Digital</h1>
-  <p class="sub">Pedialan (pelacakan): hari ini, sudah dibaca, tersisa</p>
 
-  <!-- Waktu Sholat -->
-  <div class="card prayer-card">
-    <div class="prayer-row">
-      <span class="prayer-label">Subuh</span>
-      <span class="prayer-time">04:40</span>
+<header>
+  <div class="ring"></div><div class="blob"></div><div class="arc"></div>
+  <svg class="dots" aria-hidden="true"><defs><pattern id="p" width="30" height="30" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.5" fill="#fff"/></pattern></defs><rect width="100%" height="100%" fill="url(#p)"/></svg>
+  <div class="hrow">
+    <div class="logo" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 7v10M7 12h10"/></svg>
     </div>
-    <div class="prayer-row">
-      <span class="prayer-label">Dzuhur</span>
-      <span class="prayer-time">11:30 <span style="font-size:10px;color:#dc3545;margin-left:6px">Hampir sampai: 00:12</span></span>
-    </div>
-    <div class="prayer-row">
-      <span class="prayer-label">Ashar</span>
-      <span class="prayer-time">15:20</span>
-    </div>
-    <div class="prayer-row">
-      <span class="prayer-label">Maghrib</span>
-      <span class="prayer-time">18:30</span>
-    </div>
-    <div class="prayer-row">
-      <span class="prayer-label">Isya</span>
-      <span class="prayer-time">19:40</span>
-    </div>
-    <div style="margin-top:14px;text-align:center">
-      <button class="cta" onclick="alert('Ajukan Kunjungan')">Ajukan Kunjungan</button>
+    <div>
+      <span class="greet" id="greet">Selamat Pagi</span>
+      <h1>RSUD Mayjen H.A Thalib</h1>
+      <p>Kanal Aduan, Survey &amp; Informasi Integratif</p>
     </div>
   </div>
+</header>
+
+<main>
+  <!-- Waktu salat -->
+  <section class="prayer" aria-label="Waktu sholat">
+    <div class="prayer-top">
+      <div class="pt-left">
+        <div class="pt-ico"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 5-7.4 11.8-7.4 11.8a1 1 0 0 1-1.2 0C9.5 20 4 15 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div>
+          <div class="pt-name">Waktu Sholat</div>
+          <span class="pt-city">Kota Pekalongan</span>
+        </div>
+      </div>
+      <div class="count">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        <div><span class="lbl" id="nextName">Menuju Dzuhur</span><span class="val" id="countdown">–</span></div>
+      </div>
+    </div>
+    <div class="pgrid" id="pgrid"></div>
+  </section>
 
   <!-- Menu layanan -->
-  <div class="card">
-    <div class="services-icons">
-      <div class="icon-box" data-action="complaint">
-        <div class="icon">
-          <svg viewBox="0 0 24 24"><path d="M12 21.5c4.2-4.7 7.5-7.3 7.5-7.3s-3.3 2.6-7.5 7.3C8.9 21.5 8.9 21.5 12 21.5z"/></svg>
-        </div>
-        <span class="label">Pengaduan</span>
-      </div>
-      <div class="icon-box" data-action="queue">
-        <div class="icon">
-          <svg viewBox="0 0 24 24"><path d="M4 5h16a1 1 0 011 1v3a2 2 0 000 4v3a1 1 0 01-1 1H4a1 1 0 01-1-1v-3a2 2 0 000-4V6a1 1 0 011-1zm4 5h8v2H8v-2z"/></svg>
-        </div>
-        <span class="label">Antrian</span>
-      </div>
-      <div class="icon-box" data-action="survey">
-        <div class="icon">
-          <svg viewBox="0 0 24 24"><path d="M3 5v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2z"/></svg>
-        </div>
-        <span class="label">Survei</span>
-      </div>
-      <div class="icon-box" data-action="contact">
-        <div class="icon">
-          <svg viewBox="0 0 24 24"><path d="M4 4h16v2h-1M4 10h16v2H4zM4 16h10v2H4z"/></svg>
-        </div>
-        <span class="label">Kontak</span>
-      </div>
+  <section class="menu">
+    <h2 class="sec-title">Menu Utama Layanan</h2>
+    <p class="sec-sub">Pilih layanan yang Anda perlukan</p>
+    <div class="grid3" id="menugrid"></div>
+  </section>
+
+  <!-- Monitoring -->
+  <section class="mon">
+    <div class="bub"></div>
+    <h3>Monitoring Penanganan Komplain Anda</h3>
+    <p>Cek posisi, tindak lanjut, dan status penanganan tiket komplain Anda kapan saja dengan mudah.</p>
+    <button data-open="lacak">Buka Lacak Tiket
+      <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+    </button>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq">
+    <h2 class="sec-title">Pertanyaan Umum (FAQ)</h2>
+    <div style="margin-top:12px">
+      <details><summary>Apa itu layanan PUAS?</summary><p>PUAS adalah kanal aduan, survei kepuasan, dan informasi RSUD Mayjen H.A Thalib dalam satu aplikasi.</p></details>
+      <details><summary>Bagaimana cara mengajukan komplain?</summary><p>Pilih menu <b>Komplain Pasien</b>, isi data kunjungan dan uraian keluhan, lalu simpan untuk mendapatkan nomor tiket.</p></details>
+      <details><summary>Bagaimana cara melacak tiket?</summary><p>Buka <b>Lacak Tiket</b> dan masukkan nomor tiket yang Anda terima saat mengajukan komplain.</p></details>
+      <details><summary>Bagaimana cara menghubungi petugas CS?</summary><p>Gunakan tombol hijau <b>CS</b> di tengah navigasi bawah untuk menghubungi petugas.</p></details>
     </div>
-  </div>
+  </section>
+</main>
 
-  <!-- Riwayat kunjungan -->
-  <div class="card">
-    <h3>Riwayat Kunjungan</h3>
-    <ul class="list" id="visitList">
-      <li>
-        <span class="label">10 Mei 2025</span>
-        <span class="value">Tegalyasa, Poliklinik Gigi</span>
-      </li>
-      <li>
-        <span class="label">03 Jun 2025</span>
-        <span class="value">Melati, Laboratorium</span>
-      </li>
-    </ul>
+<nav>
+  <div class="ninner">
+    <button class="nitem on" data-tab="beranda"><svg viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .7-1.5l7-6a2 2 0 0 1 2.6 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>Beranda</span></button>
+    <button class="nitem" data-tab="survei"><svg viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg><span>Survei</span></button>
+    <div class="nmid"><button data-tab="cs" aria-label="Kontak CS"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg></button><span>CS</span></div>
+    <button class="nitem" data-tab="komplain"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg><span>Komplain</span></button>
+    <button class="nitem" data-tab="lacak"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="m9 14 2 2 4-4"/></svg><span>Lacak</span></button>
   </div>
+</nav>
 
-  <!-- Dasbor -->
-  <div class="card" style="margin-top:20px">
-    <h3>Dasbor Penggunaan</h3>
-    <div class="hint">Hari ini: sudah dibaca 0/3, tersisa 3</div>
-    <button class="cta" style="width:100%;margin-top:8px" onclick="alert('PDF diekspor')">Export PDF</button>
-  </div>
-</div>
-
-<!-- navigation bottom -->
-<div class="nav">
-  <div class="nav-item active" data-page="home">
-    <svg class="nav-icon" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 13 13-2-2M9 10v10H2"/></svg>
-    <span>Beranda</span>
-  </div>
-  <div class="nav-item" data-page="schedule">
-    <svg class="nav-icon" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-8 8h8m-8 4h8m-8 4h8M5 21v-2a2 2 0 012-2h10a2 2 0 012 2v2"/></svg>
-    <span>Jadwal</span>
-  </div>
-  <div class="nav-item" data-page="more">
-    <svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zM12 14c-4.42 0-8 3.58-8 8h16c0-4.42-3.58-8-8-8z"/></svg>
-    <span>Lainnya</span>
-  </div>
-</div>
-
-<!-- Modal placeholder -->
-<div class="modal" id="modal"><div class="panel"></div></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true"><div class="box" id="sheetBox"></div></div>
 
 <script>
-// simple navigation
-function navigateTo(page) {
-  // dummy navigation
-  if (page === 'schedule') {
-    // render simple schedule view
-    const panel = document.querySelector('#modal .panel');
-    panel.innerHTML = '<h3>Jadwal Harian</h3><ul class="list"><li>10:00 Poli Umum</li><li>14:00 Laboratorium</li></ul>';
-    document.querySelector('.modal').classList.add('open');
-  } else if (page === 'more') {
-    const panel = document.querySelector('#modal .panel');
-    panel.innerHTML = '<h3>Lainnya</h3><p>Akun, Pengaturan, Bantuan</p>';
-    document.querySelector('.modal').classList.add('open');
+const S = (p, extra='') => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ${extra}>${p}</svg>`;
+
+/* ---------- waktu salat (jadwal contoh, dihitung di sisi klien) ---------- */
+const PRAYERS = [
+  {n:'Subuh',   t:'04:06', i:'<path d="M12 2v8"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="m8 6 4-4 4 4"/><path d="M16 18a4 4 0 0 0-8 0"/>'},
+  {n:'Terbit',  t:'05:20', i:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>'},
+  {n:'Dzuhur',  t:'11:39', i:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>'},
+  {n:'Ashar',   t:'14:53', i:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>'},
+  {n:'Maghrib', t:'17:46', i:'<path d="M12 10V2"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="M16 18a4 4 0 0 0-8 0"/><path d="m8 6 4 4 4-4"/>'},
+  {n:'Isya',    t:'18:57', i:'<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/>'}
+];
+const toMin = t => +t.slice(0,2)*60 + +t.slice(3);
+
+function renderPrayer(){
+  const now = new Date(), cur = now.getHours()*60 + now.getMinutes();
+  let idx = PRAYERS.findIndex(p => toMin(p.t) > cur);
+  if (idx === -1) idx = 0;                                  /* lewat Isya → menuju Subuh */
+  document.getElementById('pgrid').innerHTML = PRAYERS.map((p,j)=>
+    `<div class="pcell${j===idx?' on':''}">${S(p.i)}<span class="n">${p.n}</span><span class="t">${p.t}</span></div>`
+  ).join('');
+  document.getElementById('nextName').textContent = 'Menuju ' + PRAYERS[idx].n;
+  tick();
+}
+function tick(){
+  const now = new Date();
+  const cur = now.getHours()*60 + now.getMinutes() + now.getSeconds()/60;
+  const next = PRAYERS.find(p => toMin(p.t) > cur);
+  let diff = toMin(next ? next.t : PRAYERS[0].t) - cur;
+  if (diff < 0) diff += 1440;
+  const h = Math.floor(diff/60), m = Math.floor(diff%60);
+  document.getElementById('countdown').textContent = h > 0 ? `${h}j ${m}m` : `${m}m`;
+}
+renderPrayer();
+setInterval(tick, 30000);
+
+const hh = new Date().getHours();
+document.getElementById('greet').textContent = hh < 11 ? 'Selamat Pagi' : hh < 15 ? 'Selamat Siang' : hh < 18 ? 'Selamat Sore' : 'Selamat Malam';
+
+/* ---------- menu layanan ---------- */
+const MENU = [
+  {k:'survei',   l:'Survei',          c:'g-em', i:'<rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/>'},
+  {k:'komplain', l:'Komplain Pasien', c:'g-am', i:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M12 8v4"/><path d="M12 16h.01"/>'},
+  {k:'lacak',    l:'Lacak Tiket',     c:'g-bl', i:'<path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="m9 14 2 2 4-4"/>'},
+  {k:'informasi',l:'Informasi',       c:'g-ye', i:'<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>'},
+  {k:'aduan',    l:'Aduan Internal',  c:'g-ro', i:'<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="M12 8v4"/><path d="M12 16h.01"/>'},
+  {k:'cs',       l:'Kontak CS',       c:'g-gr', i:'<path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>'}
+];
+document.getElementById('menugrid').innerHTML = MENU.map(m =>
+  `<button class="tile" data-open="${m.k}"><span class="tico ${m.c}">${S(m.i)}</span><span>${m.l}</span></button>`
+).join('');
+
+/* ---------- sheet: semua konten demo, tanpa backend ---------- */
+const DEMO = '<span class="demo">Demo — data contoh, belum terhubung ke sistem RSUD</span>';
+const SHEETS = {
+  survei: {t:'Survei Kepuasan Layanan', b:`${DEMO}
+    <p>Beri penilaian atas pelayanan yang Anda terima hari ini.</p>
+    <label>Unit layanan</label><select><option>Poliklinik Umum</option><option>Poliklinik Gigi</option><option>Laboratorium</option><option>Rawat Inap</option></select>
+    <label>Nilai (1–5)</label><select><option>5 — Sangat puas</option><option>4 — Puas</option><option>3 — Cukup</option><option>2 — Kurang</option><option>1 — Sangat kurang</option></select>
+    <label>Catatan</label><textarea placeholder="Opsional..."></textarea>
+    <button class="go" data-demo-ok="Terima kasih! Survei contoh diterima (data dummy, tidak dikirim ke server).">Kirim survei</button>`},
+  komplain: {t:'Komplain Pasien', b:`${DEMO}
+    <p>Isi data berikut untuk membuat tiket komplain contoh.</p>
+    <label>Nama pasien</label><input placeholder="Nama lengkap">
+    <label>No. rekam medis</label><input placeholder="Contoh: 00-12-34-56">
+    <label>Uraian keluhan</label><textarea placeholder="Ceritakan keluhan Anda..."></textarea>
+    <button class="go" data-demo-ok="Tiket contoh dibuat: RSUD-DEMO-0001 (tidak dikirim ke server).">Kirim komplain</button>`},
+  lacak: {t:'Lacak Tiket', b:`${DEMO}
+    <p>Masukkan nomor tiket untuk melihat status contoh.</p>
+    <label>Nomor tiket</label><input placeholder="Contoh: RSUD-DEMO-0001">
+    <button class="go" data-demo-ok="Status contoh: Diterima unit pengaduan — menunggu tindak lanjut (data dummy).">Lacak tiket</button>`},
+  informasi: {t:'Informasi Layanan', b:`${DEMO}
+    <ul><li>Jam pendaftaran: 07.30 – 14.00 (Senin–Jumat)</li><li>IGD buka 24 jam</li><li>Lokasi: Jl. W.R. Supratman, Pekalongan</li><li>Telepon: (0285) 000-0000</li></ul>`},
+  aduan: {t:'Aduan Internal', b:`${DEMO}
+    <p>Kanal khusus pegawai untuk melaporkan kendala operasional.</p>
+    <label>Unit kerja</label><input placeholder="Contoh: Instalasi Gawat Darurat">
+    <label>Uraian</label><textarea placeholder="Uraikan kendala..."></textarea>
+    <button class="go" data-demo-ok="Aduan contoh diterima (belum dikirim ke server).">Kirim aduan</button>`},
+  cs: {t:'Kontak CS', b:`${DEMO}
+    <p>Petugas layanan: Senin–Sabtu, 07.30–20.00.</p>
+    <ul><li>WhatsApp: 0812-3456-7890 (contoh)</li><li>Email: pengaduan@rsud-demo.go.id (contoh)</li><li>Loket informasi lantai 1</li></ul>
+    <button class="go" data-demo-ok="Mode demo: pesan tidak dikirim. Nomor di atas hanya contoh.">Mulai chat (demo)</button>`},
+  beranda: {t:'Beranda', b:`${DEMO}
+    <p>Anda sudah berada di halaman utama. Pilih salah satu menu layanan untuk melihat alur demonya.</p>`}
+};
+const sheet = document.getElementById('sheet'), box = document.getElementById('sheetBox');
+
+function openSheet(key){
+  const s = SHEETS[key]; if (!s) return;
+  box.innerHTML = `<h2>${s.t}</h2>${s.b}<button class="close" data-close>Tutup</button>`;
+  sheet.classList.add('on');
+  document.body.style.overflow = 'hidden';
+  box.scrollTop = 0;
+  document.querySelectorAll('.nitem').forEach(b=>b.classList.toggle('on', b.dataset.tab === key));
+}
+function closeSheet(){ sheet.classList.remove('on'); document.body.style.overflow = ''; }
+
+document.addEventListener('click', e => {
+  const opener = e.target.closest('[data-open]');
+  if (opener){ openSheet(opener.dataset.open); return; }
+  const tab = e.target.closest('[data-tab]');
+  if (tab){ openSheet(tab.dataset.tab); return; }
+  if (e.target.closest('[data-close]') || e.target === sheet){ closeSheet(); return; }
+  const ok = e.target.closest('[data-demo-ok]');
+  if (ok){
+    let note = box.querySelector('.badge-ok');
+    if (!note){ note = document.createElement('div'); note.className = 'badge-ok'; box.insertBefore(note, box.querySelector('.close')); }
+    note.textContent = ok.dataset.demoOk;
   }
-}
-
-// actions in service icons
-function initIcons() {
-  document.querySelectorAll('.icon-box').forEach(box => {
-    box.addEventListener('click', () => {
-      const action = box.dataset.action;
-      const modal = document.querySelector('.modal');
-      const panel = modal.querySelector('.panel');
-      modal.classList.remove('open');
-      setTimeout(() => {
-        modal.classList.add('open');
-        if (action === 'complaint') {
-          panel.innerHTML = '<h3>Formulir Pengaduan</h3><textarea placeholder="Ketik keluhan..." style="width:100%;height:100px;padding:8px;margin-top:8px"></textarea><button class="cta" style="margin-top:12px">Kirim</button>';
-        } else if (action === 'queue') {
-          panel.innerHTML = '<h3>Tracking Antrian</h3><p>Silakan masukkan nomor antrian.</p><input placeholder="Nomor Antrian" style="width:100%;padding:8px;margin-top:8px"><button class="cta" style="margin-top:12px">Lacak</button>';
-        } else if (action === 'survey') {
-          panel.innerHTML = '<h3>Survei Kepuasan</h3><p>Berikan rating Anda (1-5)</p><div style="margin:12px 0"><button class="btn">1</button><button class="btn">2</button><button class="btn">3</button><button class="btn">4</button><button class="btn">5</button></div>';
-        } else if (action === 'contact') {
-          panel.innerHTML = '<h3>Kontak Kami</h3><p>Email: rsud@example.com</p><p>Telp: +62 123 456 7890</p>';
-        }
-      }, 200);
-    });
-  });
-}
-
-// navigation bottom
-function initNav() {
-  document.querySelectorAll('.nav-item').forEach(item => {
-    item.addEventListener('click', () => {
-      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-      item.classList.add('active');
-      navigateTo(item.dataset.page);
-    });
-  });
-}
-
-window.addEventListener('load', () => {
-  initIcons();
-  initNav();
 });
-
-// close modal by clicking outside
-function initModalClose() {
-  const modal = document.querySelector('.modal');
-  modal.addEventListener('click', e => {
-    if (e.target === modal) modal.classList.remove('open');
-  });
-}
-initModalClose();
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
 </script>
 </body>
 </html>
