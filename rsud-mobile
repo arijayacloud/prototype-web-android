@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Rumah Sakit Mobile — Pedialan Digital</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>
+html,body{margin:0;height:100%;font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,Ubuntu,sans-serif;background:#f2f4f8;color:#0d1117}
+.wrap{max-width:960px;margin:0 auto;padding:16px 12px;box-sizing:border-box}
+h1{font-weight:600;margin:0 0 4px;font-size:clamp(20px,5vw,28px);text-align:center}
+.sub{color:#6b778d;font-size:13px;margin:0 0 16px;text-align:center}
+/* cards */
+.card{background:#fff;border:1px solid #e3e6ec;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 1px 2px rgba(3,8,15,.05);position:relative;overflow:hidden}
+/* service icons */
+.services-icons{display:flex;flex-wrap:wrap;gap:14px;margin:12px 0}
+.icon-box{width:80px;height:80px;background:#fff;border:1px solid #dfe3e8;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:.15s}
+.icon-box:hover{background:#f6f7fa;border-color:#b8c0c9}
+.icon-box .icon{width:36px;height:36px;margin-bottom:6px;fill:#343a41}
+.icon-box .label{font-size:11px;color:#474e57;font-weight:600;text-align:center;line-height:1.2}
+/* prayer time */
+.prayer-card{background:#fdfefe;border:1px solid #e9edf3;border-radius:14px;padding:16px;margin:12px 0}
+.prayer-row{display:flex;justify-content:space-between;align-items:center;margin:8px 0}
+.prayer-label{font-weight:600;color:#1a2130}
+.prayer-time{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;color:#0057b8}
+.cta{height:36px;width:120px;background:#0057b8;color:#fff;border:none;border-radius:10px;font-weight:600;cursor:pointer;transition:.15s}
+.cta:hover{filter:brightness(.95)}
+/* bottom nav */
+.nav{position:fixed;left:0;right:0;bottom:0;height:56px;background:#fff;border-top:1px solid #e3e6ec;display:flex;justify-content:space-around;align-items:center;z-index:1000}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:#6b778d;cursor:pointer;transition:.15s}
+.nav-item.active,.nav-item:hover{color:#0057b8}
+.nav-icon{width:22px;height:22px;fill:currentColor}
+/* modal overlay */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1100;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
+.modal.open{opacity:1;pointer-events:all}
+.modal .panel{background:#fff;border-radius:18px;padding:20px;max-width:90vw;max-height:80vh;overflow:auto;box-shadow:0 8px 24px rgba(0,0,0,.12)}
+/* list */
+ul.list{margin:0;padding:0;list-style:none}
+ul.list li{padding:12px;border-bottom:1px solid #f0f2f5}
+.label{color:#6b778d;font-size:12px;margin-bottom:4px;display:block}
+.value{font-weight:600;color:#1a2130}
+.hint{font-size:12px;color:#8a96a6;margin-top:8px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+  <h1>Rumah Sakit Mobile — Pedialan Digital</h1>
+  <p class="sub">Pedialan (pelacakan): hari ini, sudah dibaca, tersisa</p>
+
+  <!-- Waktu Sholat -->
+  <div class="card prayer-card">
+    <div class="prayer-row">
+      <span class="prayer-label">Subuh</span>
+      <span class="prayer-time">04:40</span>
+    </div>
+    <div class="prayer-row">
+      <span class="prayer-label">Dzuhur</span>
+      <span class="prayer-time">11:30 <span style="font-size:10px;color:#dc3545;margin-left:6px">Hampir sampai: 00:12</span></span>
+    </div>
+    <div class="prayer-row">
+      <span class="prayer-label">Ashar</span>
+      <span class="prayer-time">15:20</span>
+    </div>
+    <div class="prayer-row">
+      <span class="prayer-label">Maghrib</span>
+      <span class="prayer-time">18:30</span>
+    </div>
+    <div class="prayer-row">
+      <span class="prayer-label">Isya</span>
+      <span class="prayer-time">19:40</span>
+    </div>
+    <div style="margin-top:14px;text-align:center">
+      <button class="cta" onclick="alert('Ajukan Kunjungan')">Ajukan Kunjungan</button>
+    </div>
+  </div>
+
+  <!-- Menu layanan -->
+  <div class="card">
+    <div class="services-icons">
+      <div class="icon-box" data-action="complaint">
+        <div class="icon">
+          <svg viewBox="0 0 24 24"><path d="M12 21.5c4.2-4.7 7.5-7.3 7.5-7.3s-3.3 2.6-7.5 7.3C8.9 21.5 8.9 21.5 12 21.5z"/></svg>
+        </div>
+        <span class="label">Pengaduan</span>
+      </div>
+      <div class="icon-box" data-action="queue">
+        <div class="icon">
+         ## SVG Placeholder for Queue Icon (transaction icon)
+        </div>
+        <span class="label">Antrian</span>
+      </div>
+      <div class="icon-box" data-action="survey">
+        <div class="icon">
+          <svg viewBox="0 0 24 24"><path d="M3 5v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2z"/></svg>
+        </div>
+        <span class="label">Survei</span>
+      </div>
+      <div class="icon-box" data-action="contact">
+        <div class="icon">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16v2h-1M4 10h16v2H4zM4 16h10v2H4z"/></svg>
+        </div>
+        <span class="label">Kontak</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Riwayat kunjungan -->
+  <div class="card">
+    <h3>Riwayat Kunjungan</h3>
+    <ul class="list" id="visitList">
+      <li>
+        <span class="label">10 Mei 2025</span>
+        <span class="value">Tegalyasa, Poliklinik Gigi</span>
+      </li>
+      <li>
+        <span class="label">03 Jun 2025</span>
+        <span class="value">Melati, Laboratorium</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Dasbor -->
+  <div class="card" style="margin-top:20px">
+    <h3>Dasbor Penggunaan</h3>
+    <div class="hint">Hari ini: sudah dibaca 0/3, tersisa 3</div>
+    <button class="cta" style="width:100%;margin-top:8px" onclick="alert('PDF diekspor')">Export PDF</button>
+  </div>
+</div>
+
+<!-- navigation bottom -->
+<div class="nav">
+  <div class="nav-item active" data-page="home">
+    <svg class="nav-icon" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 13 13-2-2M9 10v10H2"/></svg>
+    <span>Beranda</span>
+  </div>
+  <div class="nav-item" data-page="schedule">
+    <svg class="nav-icon" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-8 8h8m-8 4h8m-8 4h8M5 21v-2a2 2 0 012-2h10a2 2 0 012 2v2"/></svg>
+    <span>Jadwal</span>
+  </div>
+  <div class="nav-item" data-page="more">
+    <svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zM12 14c-4.42 0-8 3.58-8 8h16c0-4.42-3.58-8-8-8z"/></svg>
+    <span>Lainnya</span>
+  </div>
+</div>
+
+<!-- Modal placeholder -->
+<div class="modal" id="modal"><div class="panel"></div></div>
+
+<script>
+// simple navigation
+function navigateTo(page) {
+  // dummy navigation
+  if (page === 'schedule') {
+    // render simple schedule view
+    const panel = document.querySelector('#modal .panel');
+    panel.innerHTML = '<h3>Jadwal Harian</h3><ul class="list"><li>10:00 Poli Umum</li><li>14:00 Laboratorium</li></ul>';
+    document.querySelector('.modal').classList.add('open');
+  } else if (page === 'more') {
+    const panel = document.querySelector('#modal .panel');
+    panel.innerHTML = '<h3>Lainnya</h3><p>Akun, Pengaturan, Bantuan</p>';
+    document.querySelector('.modal').classList.add('open');
+  }
+}
+
+// actions in service icons
+function initIcons() {
+  document.querySelectorAll('.icon-box').forEach(box => {
+    box.addEventListener('click', () => {
+      const action = box.dataset.action;
+      const modal = document.querySelector('.modal');
+      const panel = modal.querySelector('.panel');
+      modal.classList.remove('open');
+      setTimeout(() => {
+        modal.classList.add('open');
+        if (action === 'complaint') {
+          panel.innerHTML = '<h3>Formulir Pengaduan</h3><textarea placeholder="Ketik keluhan..." style="width:100%;height:100px;padding:8px;margin-top:8px"></textarea><button class="cta" style="margin-top:12px">Kirim</button>';
+        } else if (action === 'queue') {
+          panel.innerHTML = '<h3>Tracking Antrian</h3><p>Silakan masukkan nomor antrian.</p><input placeholder="Nomor Antrian" style="width:100%;padding:8px;margin-top:8px"><button class="cta" style="margin-top:12px">Lacak</button>';
+        } else if (action === 'survey') {
+          panel.innerHTML = '<h3>Survei Kepuasan</h3><p>Berikan rating Anda (1-5)</p><div style="margin:12px 0"><button class="btn">1</button><button class="btn">2</button><button class="btn">3</button><button class="btn">4</button><button class="btn">5</button></div>';
+        } else if (action === 'contact') {
+          panel.innerHTML = '<h3>Kontak Kami</h3><p>Email: rsud@example.com</p><p>Telp: +62 123 456 7890</p>';
+        }
+      }, 200);
+    });
+  });
+}
+
+// navigation bottom
+function initNav() {
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', () => {
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+      navigateTo(item.dataset.page);
+    });
+  });
+}
+
+window.addEventListener('load', () => {
+  initIcons();
+  initNav();
+});
+
+// close modal by clicking outside
+function initModalClose() {
+  const modal = document.querySelector('.modal');
+  modal.addEventListener('click', e => {
+    if (e.target === modal) modal.classList.remove('open');
+  });
+}
+initModalClose();
+</script>
+</body>
+</html>
