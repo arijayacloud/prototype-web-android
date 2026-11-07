@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Laqhir — Aplikasi Baca-Tulis Quran</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>
+html,body{margin:0;height:100%;font-family:system-ui,-apple-system,Segoe UI,Inter,Roboto,Ubuntu,sans-serif;background:#f6f7fa;color:#0a0a0a;}
+.wrap{max-width:960px;margin:0 auto;padding:24px 16px 80px}
+h1{margin:0 0 6px;font-size:clamp(22px,4vw,32px);letter-spacing:-.03em}
+.sub{color:#69768a;font-size:14px;margin:0 0 20px}
+/* cards */
+.card{background:#fff;border:1px solid #e1e4ea;border-radius:16px;padding:16px;margin-bottom:20px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;border:none;background:#fff;border:1px solid #cfd5de;border-radius:999px;padding:11px 18px;font-size:14px;font-weight:600;cursor:pointer;color:#0a0a0a;transition:.15s}
+.btn:hover{background:#f5f6f7;border-color:#b9c0c9}
+.btn.primary{background:#0d6efd;color:#fff;border-color:#0d6efd}
+.btn.primary:hover{filter:brightness(.95)}
+/* inputs */
+input[type=text],input[type=number],textarea{font:inherit;border:1px solid #cfd5de;border-radius:12px;padding:10px 12px;background:#fff;color:#0a0a0a}
+input:focus,textarea:focus{outline:none;border-color:#8ab4f8}
+/* canvas */
+canvas{border:2px dashed #cfd5de;border-radius:12px;background:#fff;touch-action:none;display:block;margin:0 auto}
+/* popups */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:1000;opacity:0;pointer-events:none;transition:opacity .2s}
+.modal.on{opacity:1;pointer-events:all}
+.modal .panel{background:#fff;border-radius:18px;padding:20px;max-width:90vw;max-height:80vh;overflow:auto;box-shadow:0 8px 24px rgba(0,0,0,.12)}
+/* tree */
+svg.tree{width:100%;height:240px;overflow:visible}
+.leaf{stroke:#dc3545;fill:#dc3545;stroke-width:2}
+.stem{stroke:#16a342;stroke-width:8;fill:none}
+/* list */
+ul.list{margin:0;padding:0;list-style:none}
+ul.list li{padding:12px;border-bottom:1px solid #f0f2f5}
+.label{color:#69768a;font-size:12px;margin-bottom:4px}
+.value{font-weight:600}
+/* hint */
+.hint{font-size:13px;color:#8a96a6;margin-top:8px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+  <h1>Laqhir — Aplikasi Baca-Tulis Quran</h1>
+  <p class="sub">Pelacakan progress: Lauh → Qiroah → Takrir | Lock system</p>
+
+  <div class="card">
+    <div class="row" style="display:flex;gap:12;margin:-4">
+      <div><label>ID Peserta</label><input id="pid" type="text" placeholder="misal: A001"></div>
+      <div><label>Nama</label><input id="pname" type="text" placeholder="misal: Ali"></div>
+    </div>
+  </div>
+
+  <div class="card" id="stage1" class="locked">
+    <h3>Sesi Laqhir – Lauh</h3>
+    <div class="hint">Tarik ayah → tekan → menebalkan.</div>
+    <canvas id="canvasLauh" width="800" height="560" data-ayat="Basmala"></canvas>
+    <div class="hint" id="hintLauh"></div>
+  </div>
+
+  <div class="card" id="stage2" class="locked">
+    <h3>Sesi Laqhir – Qiroah</h3>
+    <div class="hint">Tonton audio Qari anak + karaoke highlight.</div>
+    <div id="audioQiroah"></div>
+    <div class="hint" id="hintQiroah"></div>
+    <div class="row" style="display:flex;gap:12;margin:8"><button id="btnListen3x" class="btn primary">Dengarkan 3x (diperlukan)</button></div>
+  </div>
+
+  <div class="card" id="stage3" class="locked">
+    <h3>Sesi Laqhir – Takrir</h3>
+    <div class="hint">Upload audio sendiri, putar ulang, tumbuhkan pohon.</div>
+    <input id="fileUpload" type="file" accept="audio/*" hidden>
+    <button id="btnRecord" class="btn">Rekam & Selesai</button>
+    <div id="progressTree"></div>
+    <ul class="list" id="logTakrir"></ul>
+  </div>
+
+  <div class="card">
+    <h3>Dasbor Monitoring Guru</h3>
+    <div class="hint">Status lock, progres per peserta.</div>
+    <ul class="list" id="dashboard"></ul>
+    <button id="btnExport" class="btn primary">Export CSV</button>
+  </div>
+</div>
+
+<template id="modalTpl"><div class="modal"><div class="panel"></div></div></template>
+
+<script>
+// helpers
+const $ = id => document.getElementById(id);
+const log = txt => console.log('[Laqhir]', txt);
+const now = () => Date.now();
+
+// storage per peserta
+const pid = () => localStorage.pid||'';
+const pname = () => localStorage.pname||'';
+const setPid = v=>{localStorage.pid=v;localStorage.pname=$('pname').value};
+
+// lock system
+const stageLocked = (stage)=>localStorage[`stage${stage}Locked`]||0;
+const setStageLocked = (s,v)=>localStorage[`stage${s}Locked`=v];
+
+// audio playback util
+const audio = (src)=>`<audio src="${src}" controls autoplay></audio>`;
+
+// draw page
+drawPage=(id,c,next)=>{canvas=$('canvasLauh');const ctx=canvas.getContext('2d');
+ctx.clearRect(unktion);ctx.beginPath();ctx.lineWidth=4;ctx.strokeStyle='#0a0a0a';
+// simplified stroke logic
+};
+
+// drag&drop puzzle
+function initDrag(){const items=document.querySelectorAll('.piece');
+items.forEach(el=>{el.addEventListener('touchstart',e=>{e.preventDefault();});});}
+
+// audio record
+let recorder=null;async function startRec(){const stream=await navigator.mediaDevices.getUserMedia({audio:true});recorder=new MediaRecorder(stream);
+recorder.ondataavailable=e=>{localStorage.recordedAudio=btoa(String.fromCharCode(...new Uint8Array(e.data)));
+$('btnRecord').textContent='Selesai';};
+recorder.start();}
+
+// tree visualization
+function drawTree(growCount){const svg=$('progressTree');svg.innerHTML='';
+const w=svg.clientWidth||960;h=240;
+svg.setAttribute('viewBox',`0 0 ${w} ${h}`);
+svg.innerHTML=`<path class="stem" d="M${w/2},0 L${w/2},${h}"/><circle class="leaf" cx="${w/2}" cy="${h}-20" r="10"/>`;
+if(growCount>=3){svg.innerHTML+='<circle class="leaf" cx="120" cy="120" r="10"/>';}
+if(growCount>=5){svg.innerHTML+='<path class="stem" d="M60,120 L60,220"/><circle class="leaf" cx="60" cy="220" r="10"/>';}
+}
+
+// init per turn
+function init(){const pid=$('pid').value;$('stage2').classList.add('locked');$('stage3').classList.add('locked');
+if(localStorage.lockedLauh){$('stage1').classList.add('locked');$('stage2').classList.remove('locked');}
+if(localStorage.lockedQiroah){$('stage2').classList.add('locked');$('stage3').classList.remove('locked');}}
+
+$('btnListen3x').onclick=()=>{localStorage.lockedLauh=1;localStorage.lockedQiroah=0;$('stage1').classList.add('locked');$('stage2').classList.remove('locked');init();};
+
+// preview dummy
+$('canvasLauh').addEventListener('touchstart',e=>{e.preventDefault();log('touched');});
+
+// export CSV
+$('btnExport').onclick=()=>{
+let csv='ID,Nama,Lauh,Qiroah,Takrir\n';
+Object.keys(localStorage).forEach(k=>{if(k.startsWith('log_')){const v=localStorage[k];csv+=v+',\n';}});
+const blob=new Blob([csv],{type:'text/csv'});const url=URL.createObjectURL(blob);
+const a=document.createElement('a');a.href=url;a.download='laqhir-report.csv';a.click();};
+
+init();
+</script>
+</body>
+</html>
