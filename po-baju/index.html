@@ -69,27 +69,29 @@ let db, state = { view:'home', authMode:'login', delivery:true, activeAddressId:
 
 function seed(){
   db = { users:SAMPLE_USERS.slice(), session:null, carts:{}, orders:[], notifs:[], addresses:[], payments:[] };
-  const addAddr = (phone, addr) => { const a = { id:uid(), phone, address:addr }; db.addresses.push(a); return a.id; };
-  const addPay = (label, type, last4) => { const p = { id:uid(), label, type, last4, isDefault: false }; db.payments.push(p); return p.id; };
-  addAddr('081200000002', 'Jl. Melati No. 12, Bandung, Jawa Barat');
-  addAddr('081300000003', 'Perum. Cirendeu Permai, Jl. Cisanggem, Tangerang');
-  addPay('BCA 1234', 'bank_transfer', '1234');
-  addPay('OVO 0987', 'e_wallet', '0987');
-  const add = (code, items, status, daysAgo) => {
-    const sub = items.reduce((a,i)=>a + i.qty * i.price, 0);
-    const total = sub + (state.delivery ? 15000 : 0);
-    const at = new Date(Date.now() - daysAgo*864e5).toISOString();
-    const o = { id:uid(), code, userId:'u2', items, subtotal:sub, delivery:state.delivery?15000:0, total,
-      addressId: db.addresses[0].id, paymentId: db.payments[0].id, note:'',
-      status, createdAt:at, timeline:[{ status:'Dipesan', at }] };
-    const idx = STATUS.indexOf(status);
-    for (let i=1;i<=idx;i++) o.timeline.push({ status:STATUS[i], at:new Date(Date.now()-(daysAgo-i*0.5)*864e5).toISOString() });
-    db.orders.push(o);
-    db.notifs.push({ id:uid(), userId:'u2', text:`Pesanan ${code} berstatus "${status}".`, at:o.timeline.at(-1).at, read:false });
-  };
-  add('PO-2501', [{ kind:'product', id:'p1', name:'Kaos Polos Cotton', unit:'pcs', price:75000, qty:2, size:'M', color:'putih' }, { kind:'product', id:'p3', name:'Kemeja Lengan Pendek Batik', unit:'pcs', price:120000, qty:1, size:'L', color:'biru' }], 'Selesai', 5);
-  add('PO-2502', [{ kind:'product', id:'p2', name:'Jeans Skinny Black', unit:'pcs', price:150000, qty:1, size:'XL', color:'hitam' }, { kind:'product', id:'p5', name:'Jacket Jeans Denim', unit:'pcs', price:250000, qty:1, size:'L', color:'biru' }], 'Dikirim', 2);
-}
+  db.products = SAMPLE_PRODUCTS.slice();
+  db.products = SAMPLE_PRODUCTS.slice();
+    const addAddr = (phone, addr) => { const a = { id:uid(), phone, address:addr }; db.addresses.push(a); return a.id; };
+    const addPay = (label, type, last4) => { const p = { id:uid(), label, type, last4, isDefault: false }; db.payments.push(p); return p.id; };
+    addAddr('081200000002', 'Jl. Melati No. 12, Bandung, Jawa Barat');
+    addAddr('081300000003', 'Perum. Cirendeu Permai, Jl. Cisanggem, Tangerang');
+    addPay('BCA 1234', 'bank_transfer', '1234');
+    addPay('OVO 0987', 'e_wallet', '0987');
+    const add = (code, items, status, daysAgo) => {
+      const sub = items.reduce((a,i)=>a + i.qty * i.price, 0);
+      const total = sub + (state.delivery ? 15000 : 0);
+      const at = new Date(Date.now() - daysAgo*864e5).toISOString();
+      const o = { id:uid(), code, userId:'u2', items, subtotal:sub, delivery:state.delivery?15000:0, total,
+        addressId: db.addresses[0].id, paymentId: db.payments[0].id, note:'',
+        status, createdAt:at, timeline:[{ status:'Dipesan', at }] };
+      const idx = STATUS.indexOf(status);
+      for (let i=1;i<=idx;i++) o.timeline.push({ status:STATUS[i], at:new Date(Date.now()-(daysAgo-i*0.5)*864e5).toISOString() });
+      db.orders.push(o);
+      db.notifs.push({ id:uid(), userId:'u2', text:`Pesanan ${code} berstatus "${status}".`, at:o.timeline.at(-1).at, read:false });
+    };
+    add('PO-2501', [{ kind:'product', id:'p1', name:'Kaos Polos Cotton', unit:'pcs', price:75000, qty:2, size:'M', color:'putih' }, { kind:'product', id:'p3', name:'Kemeja Lengan Pendek Batik', unit:'pcs', price:120000, qty:1, size:'L', color:'biru' }], 'Selesai', 5);
+    add('PO-2502', [{ kind:'product', id:'p2', name:'Jeans Skinny Black', unit:'pcs', price:150000, qty:1, size:'XL', color:'hitam' }, { kind:'product', id:'p5', name:'Jacket Jeans Denim', unit:'pcs', price:250000, qty:1, size:'L', color:'biru' }], 'Dikirim', 2);
+  }
 function load(){ try { db = JSON.parse(localStorage.getItem(KEY)); } catch(e) { db = null; }
   if (!db || !db.users) { seed(); save(); }
 }
